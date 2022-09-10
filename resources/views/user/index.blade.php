@@ -23,7 +23,7 @@
                 <div class="card">
                     <div class="card-header">
                         @can('user_create')
-                            <a href="{{ route('user.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i> Add User</a>
+                            <a href="{{ route('user.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i> Create</a>
                         @endcan
                     </div>
                     <div class="card-body">

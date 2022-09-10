@@ -39,7 +39,7 @@
                                         <img src="{{ Storage::url('public/img/setting_app/') . $setting_app->logo }}" class="img-preview d-block w-50 mb-3 col-sm-5 rounded ">
                                         <p style="color: red">* Choose a logo if you want to change it</p>
                                         @endif
-
+                                        <label class="form-label" for="logo">App Logo </label>
                                         <input type="file" class="form-control @error('logo') is-invalid @enderror" id="logo" name="logo" onchange="previewImg()" value="{{  $setting_app->logo }}">
                                         @error('logo')
                                         <span style="color: red;">{{ $message }}</span>
@@ -50,7 +50,7 @@
                                         <img src="{{ Storage::url('public/img/setting_app/') . $setting_app->favicon }}" class="img-preview d-block w-30 mb-3 col-sm-5 rounded " style="width: 50px">
                                         <p style="color: red">* Choose favicon if you want to change it</p>
                                         @endif
-
+                                        <label class="form-label" for="favicon">Favicon </label>
                                         <input type="file" class="form-control @error('favicon') is-invalid @enderror" id="favicon" name="favicon" onchange="previewImg()" value="{{  $setting_app->favicon }}">
                                         @error('favicon')
                                         <span style="color: red;">{{ $message }}</span>
@@ -78,7 +78,7 @@
                                         @enderror
                                     </div>
                                     @can('setting_app_update')
-                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update</button>
+                                    <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Update</button>
                                     @endcan
                                 </div>
 

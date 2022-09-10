@@ -13,7 +13,7 @@
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Users</a></li>
-                            <li class="breadcrumb-item active">Edit User</li>
+                            <li class="breadcrumb-item active">Edit</li>
                         </ol>
                     </div>
 
@@ -23,12 +23,6 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="form-group ">
-                            <a href="{{ route('user.index') }}" class="btn btn-warning" style="float: right"><i
-                                    class="mdi mdi-arrow-left-thin"></i> Back</a>
-                        </div>
-                    </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('user.update', $user->id) }}">
                             @csrf
@@ -92,7 +86,9 @@
                             </div>
 
                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> UPDATE</button>
+                                <a href="{{ route('user.index') }}" class="btn btn-warning"><i
+                                    class="mdi mdi-arrow-left-thin"></i> Back</a>
+                                <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> UPDATE</button>
                             </div>
                         </form>
                     </div>

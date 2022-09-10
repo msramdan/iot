@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MerchantsCategoryController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SettingAppController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +33,8 @@ Route::prefix('panel')->middleware('auth')->group(function () {
     Route::resource('/roles', RolesController::class);
     // user
     Route::resource('/user', UserController::class);
+    // merchants_category
+    Route::resource('/merchants_c', MerchantsCategoryController::class);
     // setting app
     Route::controller(SettingAppController::class)->group(function () {
         Route::get('/settingApp/{id}', 'index')->name('settingApp.index');

@@ -13,7 +13,7 @@
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('roles.index') }}">Roles</a></li>
-                            <li class="breadcrumb-item active">Edit Role</li>
+                            <li class="breadcrumb-item active">Edit</li>
                         </ol>
                     </div>
 
@@ -23,12 +23,6 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="form-group ">
-                            <a href="{{ route('roles.index') }}" class="btn btn-warning" style="float: right"><i
-                                    class="mdi mdi-arrow-left-thin"></i> Back</a>
-                        </div>
-                    </div>
                     <div class="card-body">
                         <form action="{{ route('roles.update', $role->id) }}" method="POST">
                             @csrf
@@ -82,8 +76,9 @@
                             @enderror
                             <br>
                             <div class="form-group">
-                                <button type="submit" {{ $role->id == 1 ? 'disabled' : '' }} class="btn btn-primary" style="float: right"><i
-                                        class="fas fa-save"></i> UPDATE</button>
+                                <a href="{{ route('roles.index') }}" class="btn btn-warning" ><i
+                                    class="mdi mdi-arrow-left-thin"></i> Back</a>
+                                <button type="submit" {{ $role->id == 1 ? 'disabled' : '' }} class="btn btn-primary"><i class="mdi mdi-content-save"></i> UPDATE</button>
                             </div>
                         </form>
                     </div>

@@ -25,17 +25,18 @@
                     <i class="mdi mdi-lock-open-check-outline"></i> <span data-key="t-layouts">OTP</span>
                 </a>
             </li>
-
+            @canany(['merchants_category_show'])
             <li class="nav-item">
                 <a class="nav-link menu-link collapsed" href="#sidebarIcons" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
-                    <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Data Master</span>
+                    <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Master Data</span>
                 </a>
-                <div class="menu-dropdown collapse" id="sidebarIcons" style="">
+                <div class="collapse menu-dropdown {{ set_show(['merchants_c*']) }}" id="sidebarIcons">
                     <ul class="nav nav-sm flex-column">
-
+                        @can('merchants_category_show')
                         <li class="nav-item">
-                            <a href="icons-boxicons.html" class="nav-link" data-key="t-boxicons">Merchants Category</a>
+                            <a href="{{ route('merchants_c.index') }}" class="nav-link {{ set_active(['merchants_c*']) }}" data-key="t-boxicons">Merchants Category</a>
                         </li>
+                        @endcan
                         <li class="nav-item">
                             <a href="icons-remix.html" class="nav-link" data-key="t-remix">Bank</a>
                         </li>
@@ -45,6 +46,7 @@
                     </ul>
                 </div>
             </li>
+            @endcanany
 
             @canany(['user_show', 'role_show','setting_app_show'])
             <li class="nav-item">
@@ -68,6 +70,9 @@
                             <a href="{{ route('settingApp.index',1) }}" class="nav-link {{ set_active(['settingApp*']) }}" data-key="t-chat"> Setting Apps </a>
                         </li>
                         @endcan
+                        <li class="nav-item">
+                            <a href="" class="nav-link {{ set_active(['audit*']) }}" data-key="t-chat"> Audit Trail Log </a>
+                        </li>
                     </ul>
                 </div>
             </li>
