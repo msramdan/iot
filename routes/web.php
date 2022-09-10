@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\SettingAppController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,13 @@ Route::controller(DashboardController::class)->group(function () {
 });
 
 Route::prefix('panel')->middleware('auth')->group(function () {
+    // roles
     Route::resource('/roles', RolesController::class);
+    // user
     Route::resource('/user', UserController::class);
+    // setting app
+    Route::controller(SettingAppController::class)->group(function () {
+        Route::get('/settingApp/{id}', 'index')->name('settingApp.index');
+        Route::put('/settingApp/update/{id}', 'update')->name('settingApp.update');
+    });
 });

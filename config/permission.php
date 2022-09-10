@@ -14,6 +14,10 @@ return [
             'role_update',
             'role_delete',
         ],
+        'setting_app' =>[
+            'setting_app_show',
+            'setting_app_update',
+        ],
     ],
 
     'models' => [

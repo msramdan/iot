@@ -23,9 +23,7 @@
                     <label class="form-label">{{ __('Email Address') }}</label>
                     <input type="email" class="form-control" id="email" placeholder="Enter email address" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                     @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
+                       <span style="color: red">{{ $message }}</span>
                     @enderror
                 </div>
 
