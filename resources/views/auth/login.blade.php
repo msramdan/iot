@@ -39,7 +39,7 @@
             </form>
         </div>
         <div class="mt-5 text-center">
-            <p class="mb-0">Forgot your password ? <a href="auth-signup-cover.html" class="fw-semibold text-primary text-decoration-underline"> Recover Here</a> </p>
+            <p class="mb-0">Forgot your password ? <a href="{{ route('password.request') }}" class="fw-semibold text-primary text-decoration-underline"> Recover Here</a> </p>
         </div>
     </div>
 </div>

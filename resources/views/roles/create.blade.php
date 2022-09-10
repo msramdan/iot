@@ -79,7 +79,7 @@
                             <br>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary" style="float: right"><i
-                                        class="fas fa-save"></i> Simpan</button>
+                                        class="fas fa-save"></i> SAVE</button>
                             </div>
                         </form>
                     </div>

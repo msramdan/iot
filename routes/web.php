@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RolesController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,4 +27,5 @@ Route::controller(DashboardController::class)->group(function () {
 
 Route::prefix('panel')->middleware('auth')->group(function () {
     Route::resource('/roles', RolesController::class);
+    Route::resource('/user', UserController::class);
 });

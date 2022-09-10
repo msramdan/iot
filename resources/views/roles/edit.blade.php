@@ -83,7 +83,7 @@
                             <br>
                             <div class="form-group">
                                 <button type="submit" {{ $role->id == 1 ? 'disabled' : '' }} class="btn btn-primary" style="float: right"><i
-                                        class="fas fa-save"></i> Simpan</button>
+                                        class="fas fa-save"></i> UPDATE</button>
                             </div>
                         </form>
                     </div>
