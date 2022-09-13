@@ -47,6 +47,23 @@
                 </div>
             </li>
             @endcanany
+            @canany(['activity_log_show'])
+            <li class="nav-item">
+                <a class="nav-link menu-link collapsed" href="#sidebarAdvanceUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
+                    <i class="mdi mdi-math-log"></i> <span data-key="t-advance-ui">System Log</span>
+                </a>
+                <div class="menu-dropdown collapse {{ set_show(['activity_log*']) }}" id="sidebarAdvanceUI" style="">
+                    <ul class="nav nav-sm flex-column">
+                        <li class="nav-item">
+                            <a href="{{ route('activity_log.index') }}" class="nav-link {{ set_active(['activity_log*']) }}" data-key="t-chat"> Activity Log</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link {{ set_active(['audit*']) }}" data-key="t-chat"> Api Log</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            @endcanany
 
             @canany(['user_show', 'role_show','setting_app_show'])
             <li class="nav-item">
@@ -70,9 +87,7 @@
                             <a href="{{ route('settingApp.index',1) }}" class="nav-link {{ set_active(['settingApp*']) }}" data-key="t-chat"> Setting Apps </a>
                         </li>
                         @endcan
-                        <li class="nav-item">
-                            <a href="" class="nav-link {{ set_active(['audit*']) }}" data-key="t-chat"> Audit Trail Log </a>
-                        </li>
+
                     </ul>
                 </div>
             </li>

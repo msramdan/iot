@@ -8,6 +8,11 @@
 <script src="{{ asset('backend/assets/libs/feather-icons/feather.min.js') }}"></script>
 <script src="{{ asset("backend/assets/libs/swiper/swiper-bundle.min.js") }} "></script>
 <script src="{{ asset('backend/assets/js/app.js') }}"></script>
+<script>
+    $('#ubahPassword').click(function() {
+        $('#ajaxModelEditPassword').modal('show');
+    });
+</script>
 @stack('js')
 @include('sweetalert::alert')
 

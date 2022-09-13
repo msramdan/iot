@@ -15,8 +15,6 @@ class MerchantsCategorySeeder extends Seeder
      */
     public function run()
     {
-        MerchantsCategory::create([
-            'merchants_category_name' => 'Food',
-        ]);
+        MerchantsCategory::factory()->count(1)->create();
     }
 }

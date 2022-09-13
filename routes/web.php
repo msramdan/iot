@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MerchantsCategoryController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SettingAppController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+
 
 
 /*
@@ -39,5 +41,9 @@ Route::prefix('panel')->middleware('auth')->group(function () {
     Route::controller(SettingAppController::class)->group(function () {
         Route::get('/settingApp/{id}', 'index')->name('settingApp.index');
         Route::put('/settingApp/update/{id}', 'update')->name('settingApp.update');
+    });
+    // activity log
+    Route::controller(ActivityLogController::class)->group(function () {
+        Route::get('/activity_log', 'index')->name('activity_log.index');
     });
 });

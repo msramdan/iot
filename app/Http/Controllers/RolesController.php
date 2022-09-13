@@ -9,6 +9,8 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Spatie\Activitylog\Models\Activity;
+use Illuminate\Support\Facades\Auth;
 
 class RolesController extends Controller
 {
@@ -63,6 +65,15 @@ class RolesController extends Controller
             $role = Role::create(['name' => $request->name]);
             // kemudian kasih akses permission
             $role->givePermissionTo($request->permissions);
+            activity()
+                ->useLog('log_role')
+                ->performedOn($role)
+                ->event('create')
+                ->withProperties(['attributes' => $role->getAttributes()])
+                ->log('Role ' . $request->name . " created By " . Auth::user()->name);
+            $lastActivity = Activity::all()->last();
+            $lastActivity->subject;
+
             Alert::toast('Data saved successfully', 'success');
             return redirect()->route('roles.index');
         } catch (\Throwable $th) {
@@ -105,6 +116,21 @@ class RolesController extends Controller
             // kemudian kasih akses permission
             $role->syncPermissions($request->permissions);
             $role->save();
+
+            activity()
+                ->performedOn($role)
+                ->event('updated')
+                ->withProperties(
+                    [
+                        'attributes' => $role->getAttributes(),
+                        'old' => $role->getOriginal()
+                    ]
+                )
+                ->log('Role ' . $request->name . " updated By " . Auth::user()->name);
+            $lastActivity = Activity::all()->last();
+            $lastActivity->subject;
+
+
             Alert::toast('Data updated successfully', 'success');
             return redirect()->route('roles.index');
         } catch (\Throwable $th) {
@@ -130,6 +156,14 @@ class RolesController extends Controller
             // hapus permission
             $role->revokePermissionTo($role->permissions()->pluck('name')->toArray());
             $role->delete();
+            activity()
+                ->performedOn($role)
+                ->event('deleted')
+                ->withProperties(['old' => $role->getOriginal()])
+                ->log('Role ' . $role->name . " deleted By " . Auth::user()->name);
+            $lastActivity = Activity::all()->last();
+            $lastActivity->subject;
+
             Alert::toast('Data deleted successfully', 'success');
         } catch (\Throwable $th) {
             DB::rollBack();

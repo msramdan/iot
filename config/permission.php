@@ -24,6 +24,9 @@ return [
             'setting_app_show',
             'setting_app_update',
         ],
+        'activity_log' =>[
+            'activity_log_show',
+        ],
     ],
 
     'models' => [
