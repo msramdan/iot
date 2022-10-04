@@ -22,7 +22,7 @@ class MerchantsCategory extends Model
     {
         return LogOptions::defaults()
          -> useLogName('log_merchants_category')
-         -> logOnly(['merchants_category_name'])
+         -> logOnly(['merchants_category_code','merchants_category_name','merchants_category_title'])
          -> logOnlyDirty()
          -> dontSubmitEmptyLogs();
     }

@@ -14,7 +14,6 @@ class SettingApp extends Model
     protected $table = 'setting_app';
     protected $fillable = ['app_name','logo','favicon','phone','email','address'];
     protected static $logFillable = true;
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
