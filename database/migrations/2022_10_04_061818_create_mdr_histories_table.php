@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('merchants_category', function (Blueprint $table) {
+        Schema::create('mdr_histories', function (Blueprint $table) {
             $table->id();
-            $table->string('merchants_category_code', 50);
-            $table->string('merchants_category_name', 100);
-            $table->string('merchants_category_title', 100);
+            $table->bigInteger('merchant_id');
+            $table->float('value_mdr');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('mdr_histories');
     }
 };

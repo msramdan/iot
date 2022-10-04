@@ -6,6 +6,7 @@ use App\Http\Controllers\MerchantsCategoryController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\SettingAppController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BankController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -37,6 +38,8 @@ Route::prefix('panel')->middleware('auth')->group(function () {
     Route::resource('/user', UserController::class);
     // merchants_category
     Route::resource('/merchants_c', MerchantsCategoryController::class);
+    // Bank
+    Route::resource('/bank', BankController::class);
     // setting app
     Route::controller(SettingAppController::class)->group(function () {
         Route::get('/settingApp/{id}', 'index')->name('settingApp.index');

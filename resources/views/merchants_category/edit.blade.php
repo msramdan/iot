@@ -28,9 +28,23 @@
                             @csrf
                             @method('PUT')
                             <div class="mb-3">
+                                <label for="merchants_category_code">Merchants Category Code</label>
+                                <input type="text" class="form-control @error('merchants_category_code') is-invalid @enderror" name="merchants_category_code" id="merchants_category_code" placeholder="" value="{{ old('merchants_category_code') ? old('merchants_category_code') : $merchantsCategory->merchants_category_code }}" autocomplete="off">
+                                @error('merchants_category_code')
+                                <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
                                 <label for="merchants_category_name">Merchants Category Name</label>
                                 <input type="text" class="form-control @error('merchants_category_name') is-invalid @enderror" name="merchants_category_name" id="merchants_category_name" placeholder="" value="{{ old('merchants_category_name') ? old('merchants_category_name') : $merchantsCategory->merchants_category_name }}" autocomplete="off">
                                 @error('merchants_category_name')
+                                <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="merchants_category_title">Merchants Category Title</label>
+                                <input type="text" class="form-control @error('merchants_category_title') is-invalid @enderror" name="merchants_category_title" id="merchants_category_title" placeholder="" value="{{ old('merchants_category_title') ? old('merchants_category_title') : $merchantsCategory->merchants_category_title }}" autocomplete="off">
+                                @error('merchants_category_title')
                                 <span style="color: red;">{{ $message }}</span>
                                 @enderror
                             </div>

@@ -53,14 +53,19 @@ class MerchantsCategoryController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
+                'merchants_category_code' => "required|string|max:50|unique:merchants_category,merchants_category_code",
                 'merchants_category_name' => "required|string|max:100|unique:merchants_category,merchants_category_name",
+                'merchants_category_title' => 'required|string|max:100',
             ],
         );
         if ($validator->fails()) {
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
+
         $merchants_category = MerchantsCategory::create([
-            'merchants_category_name'   => $request->merchants_category_name
+            'merchants_category_code' => $request->merchants_category_code,
+            'merchants_category_name'   => $request->merchants_category_name,
+            'merchants_category_title' => $request->merchants_category_title
         ]);
         if ($merchants_category) {
             Alert::toast('Data saved successfully', 'success');
@@ -108,7 +113,9 @@ class MerchantsCategoryController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
+                'merchants_category_code' => "required|string|max:50|unique:merchants_category,merchants_category_code," . $id,
                 'merchants_category_name' => "required|string|max:200|unique:merchants_category,merchants_category_name," . $id,
+                'merchants_category_title' => 'required|string|max:100',
             ],
         );
         if ($validator->fails()) {
@@ -119,7 +126,9 @@ class MerchantsCategoryController extends Controller
         try {
             $merchantsCategory = MerchantsCategory::findOrFail($id);
             $merchantsCategory->update([
-                'merchants_category_name'   => $request->merchants_category_name
+                'merchants_category_code' => $request->merchants_category_code,
+                'merchants_category_name'   => $request->merchants_category_name,
+                'merchants_category_title' => $request->merchants_category_title
             ]);
             if ($merchantsCategory) {
                 Alert::toast('Data berhasil diupdate', 'success');
