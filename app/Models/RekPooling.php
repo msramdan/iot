@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Auth;
 
-class MerchantsCategory extends Model
+class RekPooling extends Model
 {
     use LogsActivity;
     use HasFactory;
-    protected $table = 'merchants_category';
+
     protected $guarded = ['id'];
     protected static $logUnguarded = true;
 
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
+    }
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -34,6 +37,6 @@ class MerchantsCategory extends Model
         } else {
             $user = "Super Admin";
         }
-        return "Merchants category " .$this->merchants_category_name . " {$eventName} By "  . $user;
+        return "Rek pooling " .$this->rek_pooling_code . " {$eventName} By "  . $user;
     }
 }

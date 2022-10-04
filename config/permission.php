@@ -20,6 +20,30 @@ return [
             'merchants_category_update',
             'merchants_category_delete',
         ],
+        'bank' => [
+            'bank_show',
+            'bank_create',
+            'bank_update',
+            'bank_delete',
+        ],
+        'bussiness' => [
+            'bussiness_show',
+            'bussiness_create',
+            'bussiness_update',
+            'bussiness_delete',
+        ],
+        'rek_pooling' => [
+            'rek_poolling_show',
+            'rek_pooling_create',
+            'rek_pooling_update',
+            'rek_pooling_delete',
+        ],
+        'merchant' => [
+            'merchant_show',
+            'merchant_create',
+            'merchant_update',
+            'merchant_delete',
+        ],
         'setting_app' =>[
             'setting_app_show',
             'setting_app_update',

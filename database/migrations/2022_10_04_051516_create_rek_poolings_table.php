@@ -13,13 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('merchants_category', function (Blueprint $table) {
+        Schema::create('rek_poolings', function (Blueprint $table) {
             $table->id();
-            $table->string('merchants_category_code', 50);
-            $table->string('merchants_category_name', 100);
-            $table->string('merchants_category_title', 100);
+            $table->string('rek_pooling_code', 50);
+            $table->foreignId('bank_id');
+            $table->string('account_name', 100);
+            $table->string('number_account', 100);
             $table->timestamps();
+            $table->foreign('bank_id')->references('id')->on('banks');
         });
+
+
     }
 
     /**
@@ -29,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('rek_poolings');
     }
 };
