@@ -25,24 +25,33 @@
                     <i class="mdi mdi-lock-open-check-outline"></i> <span data-key="t-layouts">OTP</span>
                 </a>
             </li>
-            @canany(['merchants_category_show'])
+            @canany(['merchants_category_show','bank_show','bussiness_show','rek_poolling_show'])
             <li class="nav-item">
                 <a class="nav-link menu-link collapsed" href="#sidebarIcons" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
                     <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Master Data</span>
                 </a>
-                <div class="collapse menu-dropdown {{ set_show(['merchants_c*']) }}" id="sidebarIcons">
+                <div class="collapse menu-dropdown {{ set_show(['merchants_c*','bank*']) }}" id="sidebarIcons">
                     <ul class="nav nav-sm flex-column">
                         @can('merchants_category_show')
                         <li class="nav-item">
                             <a href="{{ route('merchants_c.index') }}" class="nav-link {{ set_active(['merchants_c*']) }}" data-key="t-boxicons">Merchants Category</a>
                         </li>
                         @endcan
+                        @can('bank_show')
                         <li class="nav-item">
                             <a href="{{ route('bank.index') }}" class="nav-link {{ set_active(['bank*']) }}" data-key="t-remix">Bank</a>
                         </li>
+                        @endcan
+                        @can('bussiness_show')
                         <li class="nav-item">
                             <a href="icons-remix.html" class="nav-link" data-key="t-remix">Business Type</a>
                         </li>
+                        @endcan
+                        @can('rek_poolling_show')
+                        <li class="nav-item">
+                            <a href="icons-remix.html" class="nav-link" data-key="t-remix">Rekening Pooling</a>
+                        </li>
+                        @endcan
                     </ul>
                 </div>
             </li>
@@ -59,6 +68,12 @@
                         </li>
                         <li class="nav-item">
                             <a href="" class="nav-link {{ set_active(['audit*']) }}" data-key="t-chat"> Api Log</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link {{ set_active(['audit*']) }}" data-key="t-chat"> Approved Log</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link {{ set_active(['audit*']) }}" data-key="t-chat"> Mdr Log</a>
                         </li>
                     </ul>
                 </div>
