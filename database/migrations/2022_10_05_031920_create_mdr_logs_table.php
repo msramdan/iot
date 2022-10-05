@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mdr_histories', function (Blueprint $table) {
+        Schema::create('mdr_logs', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('merchant_id');
+            $table->foreignId('merchant_id');
             $table->float('value_mdr');
             $table->timestamps();
+            $table->foreign('merchant_id')->references('id')->on('merchants');
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mdr_histories');
+        Schema::dropIfExists('mdr_logs');
     }
 };

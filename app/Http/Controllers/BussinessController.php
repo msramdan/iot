@@ -57,7 +57,7 @@ class BussinessController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'bussiness_code' => 'required|string|max:50|unique:bussiness,bussiness_code',
+                'bussiness_code' => 'required|string|max:50|unique:bussinesses,bussiness_code',
                 'bussiness_name' => 'required|string|max:100',
             ]
         );
@@ -100,7 +100,7 @@ class BussinessController extends Controller
     public function edit($id)
     {
         $bussiness = Bussiness::findOrFail($id);
-        return view('bank.edit', [
+        return view('bussiness.edit', [
             'bussiness' => $bussiness
         ]);
     }
@@ -117,7 +117,7 @@ class BussinessController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'bussiness_code' => 'required|string|max:50|unique:bussiness,bussiness_code' . $id,
+                'bussiness_code' => 'required|string|max:50|unique:bussinesses,bussiness_code,' . $id,
                 'bussiness_name' => 'required|string|max:100',
             ]
         );

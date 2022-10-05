@@ -24,8 +24,8 @@ class RekPooling extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-         -> useLogName('log_merchants_category')
-         -> logOnly(['merchants_category_name'])
+         -> useLogName('log_rek_pooling')
+         -> logOnly(['rek_pooling_code', 'bank_id', 'account_name', 'number_account'])
          -> logOnlyDirty()
          -> dontSubmitEmptyLogs();
     }
