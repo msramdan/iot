@@ -29,15 +29,15 @@
                                     <th>#</th>
                                     <th>Log Name</th>
                                     <th>Description</th>
-                                    <th>Subject Type </th>
                                     <th>Event</th>
                                     <th>User</th>
+                                    <th>New Value</th>
+                                    <th>Old Value</th>
                                     <th>Date</th>
                                     <th>Time</th>
                                 </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                         </div>
@@ -67,16 +67,20 @@
                 name: 'description'
             },
             {
-                data: 'subject_type',
-                name: 'subject_type'
-            },
-            {
                 data: 'event',
                 name: 'event'
             },
             {
                 data: 'causer',
                 name: 'causer'
+            },
+            {
+                data: 'new_value',
+                name: 'new_value'
+            },
+            {
+                data: 'old_value',
+                name: 'old_value'
             },
             {
                 data: 'created_at',

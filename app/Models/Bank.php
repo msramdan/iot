@@ -24,7 +24,7 @@ class Bank extends Model
     {
         return LogOptions::defaults()
          -> useLogName('log_banks')
-         -> logOnly(['bank_name'])
+         -> logOnly(['bank_code','bank_name'])
          -> logOnlyDirty()
          -> dontSubmitEmptyLogs();
     }

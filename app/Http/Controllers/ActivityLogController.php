@@ -14,11 +14,37 @@ class ActivityLogController extends Controller
     {
 
         if (request()->ajax()) {
-            $query = ActivityLog::with('user')->orderBy('id','DESC')->get();
+            $query = ActivityLog::with('user')->orderBy('id', 'DESC')->get();
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('causer', function ($row) {
                     return $row->user->name;
+                })
+                ->addColumn('new_value', function ($row) {
+                    $array =  json_decode($row->properties);
+                    $items = array();
+                    foreach ($array as $key => $value) {
+                        if ($key == 'attributes') {
+                            foreach ($value as $r => $b) {
+                                $items[$r] = $b;
+                            }
+                        }
+                    }
+                    $hasil =  json_encode(($items), JSON_PRETTY_PRINT);
+                    return '<pre>' . $hasil . '</pre>';
+                })
+                ->addColumn('old_value', function ($row) {
+                    $array =  json_decode($row->properties);
+                    $items = array();
+                    foreach ($array as $key => $value) {
+                        if ($key == 'old') {
+                            foreach ($value as $r => $b) {
+                                $items[$r] = $b;
+                            }
+                        }
+                    }
+                    $hasil =  json_encode(($items), JSON_PRETTY_PRINT);
+                    return '<pre>' . $hasil . '</pre>';
                 })
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d M Y H:i:s');
@@ -26,10 +52,10 @@ class ActivityLogController extends Controller
                 ->addColumn('time', function ($row) {
                     return Carbon::parse($row->created_at)->diffForHumans();
                 })
-                ->toJson();
+                ->rawColumns(['new_value', 'old_value'])
+                ->make(true);
+            // ->toJson();
         }
         return view('activity_log.index');
     }
-
-
 }
