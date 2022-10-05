@@ -38,6 +38,13 @@ return [
             'rek_pooling_update',
             'rek_pooling_delete',
         ],
+        'setting_app' =>[
+            'setting_app_show',
+            'setting_app_update',
+        ],
+        'activity_log' =>[
+            'activity_log_show',
+        ],
         'merchant' => [
             'merchant_show',
             'merchant_create',
@@ -47,13 +54,6 @@ return [
             'approved_step_2',
             'bulk_upload',
             'bulk_download',
-        ],
-        'setting_app' =>[
-            'setting_app_show',
-            'setting_app_update',
-        ],
-        'activity_log' =>[
-            'activity_log_show',
         ],
 
     ],
