@@ -41,7 +41,7 @@
                             <a href="{{ route('bank.index') }}" class="nav-link {{ set_active(['bank*']) }}" data-key="t-remix">Bank</a>
                         </li>
                         <li class="nav-item">
-                            <a href="icons-remix.html" class="nav-link" data-key="t-remix">Business Type</a>
+                            <a href="{{ route('bussiness.index') }}" class="nav-link {{ set_active(['bussiness*']) }}" data-key="t-remix">Business Type</a>
                         </li>
                     </ul>
                 </div>

@@ -20,7 +20,7 @@ class Bussiness extends Model
     {
         return LogOptions::defaults()
          -> useLogName('log_bussiness')
-         -> logOnly(['bussiness_name'])
+         -> logOnly(['bussiness_code','bussiness_name'])
          -> logOnlyDirty()
          -> dontSubmitEmptyLogs();
     }
