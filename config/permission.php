@@ -33,7 +33,7 @@ return [
             'bussiness_delete',
         ],
         'rek_pooling' => [
-            'rek_poolling_show',
+            'rek_pooling_show',
             'rek_pooling_create',
             'rek_pooling_update',
             'rek_pooling_delete',

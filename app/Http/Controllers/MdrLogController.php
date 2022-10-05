@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MdrHistory;
+use App\Models\MdrLog;
 use Illuminate\Http\Request;
 
-class MdrHistoryController extends Controller
+class MdrLogController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class MdrHistoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\MdrHistory  $mdrHistory
+     * @param  \App\Models\MdrLog  $mdrLog
      * @return \Illuminate\Http\Response
      */
-    public function show(MdrHistory $mdrHistory)
+    public function show(MdrLog $mdrLog)
     {
         //
     }
@@ -52,10 +52,10 @@ class MdrHistoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\MdrHistory  $mdrHistory
+     * @param  \App\Models\MdrLog  $mdrLog
      * @return \Illuminate\Http\Response
      */
-    public function edit(MdrHistory $mdrHistory)
+    public function edit(MdrLog $mdrLog)
     {
         //
     }
@@ -64,10 +64,10 @@ class MdrHistoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\MdrHistory  $mdrHistory
+     * @param  \App\Models\MdrLog  $mdrLog
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, MdrHistory $mdrHistory)
+    public function update(Request $request, MdrLog $mdrLog)
     {
         //
     }
@@ -75,10 +75,10 @@ class MdrHistoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\MdrHistory  $mdrHistory
+     * @param  \App\Models\MdrLog  $mdrLog
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MdrHistory $mdrHistory)
+    public function destroy(MdrLog $mdrLog)
     {
         //
     }

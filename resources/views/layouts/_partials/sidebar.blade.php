@@ -49,7 +49,7 @@
                         @endcan
                         @can('rek_poolling_show')
                         <li class="nav-item">
-                            <a href="icons-remix.html" class="nav-link" data-key="t-remix">Rekening Pooling</a>
+                            <a href="{{ route('rek_pooling.index') }}" class="nav-link {{ set_active(['rek_pooling']) }}" data-key="t-remix">Rekening Pooling</a>
                         </li>
                         @endcan
                     </ul>
