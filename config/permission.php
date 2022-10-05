@@ -43,6 +43,10 @@ return [
             'merchant_create',
             'merchant_update',
             'merchant_delete',
+            'approved_step_1',
+            'approved_step_2',
+            'bulk_upload',
+            'bulk_download',
         ],
         'setting_app' =>[
             'setting_app_show',
@@ -51,6 +55,7 @@ return [
         'activity_log' =>[
             'activity_log_show',
         ],
+
     ],
 
     'models' => [
