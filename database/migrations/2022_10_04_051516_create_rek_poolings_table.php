@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('rek_poolings', function (Blueprint $table) {
             $table->id();
-            $table->string('rek_pooling_code', 50);
+            $table->string('rek_pooling_code', 50)->unique();
             $table->foreignId('bank_id');
             $table->string('account_name', 100);
             $table->string('number_account', 100);

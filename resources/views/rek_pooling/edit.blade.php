@@ -25,7 +25,7 @@
                     <div class="card-body">
                         <form action="{{ route('rek_pooling.update', $rek_pooling->id) }}" method="POST">
                             @csrf
-                             @method('PUT')
+                            @method('PUT')
                             <div class="mb-3">
                                 <label for="rek_pooling_name">Rekening Pooling Code</label>
                                 <input type="text" class="form-control @error('rek_pooling_code') is-invalid @enderror" name="rek_pooling_code" id="rek_pooling_code" placeholder="" value="{{ old('rek_pooling_code') ? old('rek_pooling_code') : $rek_pooling->rek_pooling_code }}" autocomplete="off">
