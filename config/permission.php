@@ -14,11 +14,19 @@ return [
             'role_update',
             'role_delete',
         ],
-        'merchants_category' =>[
+        'merchants_category' => [
             'merchants_category_show',
             'merchants_category_create',
             'merchants_category_update',
             'merchants_category_delete',
+        ],
+        'merchant' => [
+            'merchant_show',
+            'merchant_create',
+            'merchant_update',
+            'merchant_edit',
+            'merchant_approved',
+            'merchant_reject'
         ],
         'bank' => [
             'bank_show',

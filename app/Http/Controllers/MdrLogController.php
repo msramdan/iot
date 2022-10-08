@@ -4,6 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\MdrLog;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Exception;
+use Throwable;
 
 class MdrLogController extends Controller
 {
@@ -14,72 +22,26 @@ class MdrLogController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\MdrLog  $mdrLog
-     * @return \Illuminate\Http\Response
-     */
-    public function show(MdrLog $mdrLog)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\MdrLog  $mdrLog
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(MdrLog $mdrLog)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\MdrLog  $mdrLog
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, MdrLog $mdrLog)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\MdrLog  $mdrLog
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(MdrLog $mdrLog)
-    {
-        //
+         if (request()->ajax()) {
+            $query = MdrLog::with([
+                'merchant',
+            ])
+            ->orderBy('id', 'desc')
+            ->get();
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->addColumn('merchant', function($row) {
+                    return $row->merchant->first()->merchant_name;
+                })
+                ->addColumn('created_at', function ($row) {
+                    return $row->created_at->format('d M Y H:i:s');
+                })
+                ->addColumn('time', function ($row) {
+                    return Carbon::parse($row->created_at)->diffForHumans();
+                })
+                ->addColumn('action', 'merchant._action')
+                ->toJson();
+        }
+        return view('mdr_log.index');
     }
 }

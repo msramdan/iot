@@ -9,6 +9,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\BussinessController;
 use App\Http\Controllers\RekPoolingController;
+use App\Http\Controllers\MerchantController;
+use App\Http\Controllers\ApprovalLogMerchantController;
+use App\Http\Controllers\MdrLogController;
+use App\Models\ApprovalLogMerchant;
 use Illuminate\Support\Facades\Route;
 
 
@@ -40,6 +44,13 @@ Route::prefix('panel')->middleware('auth')->group(function () {
     Route::resource('/user', UserController::class);
     // merchants_category
     Route::resource('/merchants_c', MerchantsCategoryController::class);
+    // merchant
+    Route::controller(MerchantController::class)->group(function() {
+        Route::get('merchant/approval', 'need_approved')->name('merchant.approval');
+        Route::get('merchant_reject', 'reject')->name('merchant.nonactive');
+    });
+    Route::resource('merchant', MerchantController::class);
+
     // Bank
     Route::resource('/bank', BankController::class);
     //Bussiness
@@ -51,6 +62,15 @@ Route::prefix('panel')->middleware('auth')->group(function () {
         Route::get('/settingApp/{id}', 'index')->name('settingApp.index');
         Route::put('/settingApp/update/{id}', 'update')->name('settingApp.update');
     });
+
+    Route::controller(ApprovalLogMerchantController::class)->group(function(){
+        Route::get('/approval_merchant_log', 'index')->name('approved_log_merchant.index');
+    });
+
+    Route::controller(MdrLogController::class)->group(function(){
+        Route::get('/mdr_log', 'index')->name('mdr_log.index');
+    });
+
     // activity log
     Route::controller(ActivityLogController::class)->group(function () {
         Route::get('/activity_log', 'index')->name('activity_log.index');

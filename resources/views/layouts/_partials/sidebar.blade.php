@@ -16,9 +16,27 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link menu-link" href="" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                <a class="nav-link menu-link collapsed" href="#sidebarIconsMerchant" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebarIcons" aria-expanded="false">
                     <i class="mdi mdi-view-carousel-outline"></i> <span data-key="t-layouts">Merchants</span>
                 </a>
+                <div class="collapse menu-dropdown {{ set_show(['merchant', 'merchants_c*','bank*','rek_pooling*','bussiness*']) }}" id="sidebarIconsMerchant">
+                    <ul class="nav nav-sm flex-column">
+
+                        <li class="nav-item">
+                            <a href="{{ route('merchant.index') }}" class="nav-link {{ set_active(['merchant*']) }}" data-key="t-boxicons">Merchants Aktif</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('merchant.approval') }}" class="nav-link {{ set_active(['merchant*']) }}" data-key="t-remix">Merchant Approval</a>
+                        </li>
+
+                         <li class="nav-item">
+                            <a href="{{ route('merchant.nonactive') }}" class="nav-link {{ set_active(['merchant*']) }}" data-key="t-remix">Merchant Non Aktif / Ditolak</a>
+                        </li>
+
+
+                    </ul>
+                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link menu-link" href="" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
@@ -70,10 +88,10 @@
                             <a href="" class="nav-link {{ set_active(['audit*']) }}" data-key="t-chat"> Api Log</a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ set_active(['audit*']) }}" data-key="t-chat"> Approved Log</a>
+                            <a href="{{ route('approved_log_merchant.index') }}" class="nav-link {{ set_active(['approved*']) }}" data-key="t-chat"> Approved Log</a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ set_active(['audit*']) }}" data-key="t-chat"> Mdr Log</a>
+                            <a href="{{ route('mdr_log.index') }}" class="nav-link {{ set_active(['mdr*']) }}" data-key="t-chat"> Mdr Log</a>
                         </li>
                     </ul>
                 </div>
