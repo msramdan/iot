@@ -40,7 +40,7 @@
                                     <th>Bank</th>
                                     <th>Account Name</th>
                                     @canany(['merchant_show','merchant_update', 'merchant_delete'])
-                                            <th>Action</th>
+                                            <th style="width: 270px">Action</th>
                                     @endcanany
                                 </tr>
                             </thead>
