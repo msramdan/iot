@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Creat Bussiness')
+@section('title', 'Create Bussiness')
 
 @section('content')
 <div class="page-content">

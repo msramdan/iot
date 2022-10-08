@@ -38,7 +38,7 @@ return new class extends Migration
             $table->foreign('bank_id')->references('id')->on('banks');
             $table->foreign('merchant_category_id')->references('id')->on('merchants_category');
             $table->foreign('bussiness_id')->references('id')->on('bussinesses');
-            $table->foreign('rek_pool_id')->references('id')->on('rek_poolings');
+            $table->foreign('rek_pooling_id')->references('id')->on('rek_poolings');
         });
     }
 

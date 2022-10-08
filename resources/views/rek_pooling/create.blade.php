@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Creat Rekening Pooling')
+@section('title', 'Create Pooling Account')
 
 @section('content')
 <div class="page-content">
@@ -7,11 +7,11 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Rekening Pooling</h4>
+                    <h4 class="mb-sm-0">Pooling Account</h4>
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('rek_pooling.index') }}">Rekening Pooling</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('rek_pooling.index') }}">Pooling Account</a></li>
                             <li class="breadcrumb-item active">Create</li>
                         </ol>
                     </div>
@@ -26,7 +26,7 @@
                         <form action="{{ route('rek_pooling.store') }}" method="POST">
                             @csrf
                             <div class="mb-3">
-                                <label for="rek_pooling_name">Rekening Pooling Code</label>
+                                <label for="rek_pooling_name">Pooling Account Code</label>
                                 <input type="text" class="form-control @error('rek_pooling_code') is-invalid @enderror" name="rek_pooling_code" id="rek_pooling_code" placeholder="" value="{{ old('rek_pooling_code') }}" autocomplete="off">
                                 @error('rek_pooling_code')
                                 <span style="color: red;">{{ $message }}</span>

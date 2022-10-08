@@ -14,30 +14,32 @@
                     <i class="mdi mdi-view-grid-plus-outline"></i> <span data-key="t-apps">Transactions</span>
                 </a>
             </li>
-
+            @canany(['merchant_show'])
             <li class="nav-item">
                 <a class="nav-link menu-link collapsed" href="#sidebarIconsMerchant" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebarIcons" aria-expanded="false">
                     <i class="mdi mdi-view-carousel-outline"></i> <span data-key="t-layouts">Merchants</span>
                 </a>
-                <div class="collapse menu-dropdown {{ set_show(['merchant', 'merchants_c*','bank*','rek_pooling*','bussiness*']) }}" id="sidebarIconsMerchant">
+                <div class="collapse menu-dropdown" id="sidebarIconsMerchant">
                     <ul class="nav nav-sm flex-column">
-
+                        @can('merchant_show')
                         <li class="nav-item">
-                            <a href="{{ route('merchant.index') }}" class="nav-link {{ set_active(['merchant*']) }}" data-key="t-boxicons">Merchants Aktif</a>
+                            <a href="{{ route('merchant.index') }}" class="nav-link {{ set_active(['merchant*']) }}" data-key="t-boxicons">Merchants Active</a>
                         </li>
-
+                        @endcan
+                        @can('merchant_show')
                         <li class="nav-item">
-                            <a href="{{ route('merchant.approval') }}" class="nav-link {{ set_active(['merchant*']) }}" data-key="t-remix">Merchant Approval</a>
+                            <a href="{{ route('merchant.approval') }}" class="nav-link " data-key="t-remix">Merchants Need Approval <span class="badge badge-pill bg-danger" data-key="t-new">5 Data</span></a>
                         </li>
-
+                        @endcan
+                        @can('merchant_show')
                          <li class="nav-item">
-                            <a href="{{ route('merchant.nonactive') }}" class="nav-link {{ set_active(['merchant*']) }}" data-key="t-remix">Merchant Non Aktif / Ditolak</a>
+                            <a href="{{ route('merchant.nonactive') }}" class="nav-link " data-key="t-remix">Merchant Inactive / Rejected</a>
                         </li>
-
-
+                        @endcan
                     </ul>
                 </div>
             </li>
+            @endcanany
             <li class="nav-item">
                 <a class="nav-link menu-link" href="" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                     <i class="mdi mdi-lock-open-check-outline"></i> <span data-key="t-layouts">OTP</span>
@@ -67,7 +69,7 @@
                         @endcan
                         @can('rek_pooling_show')
                         <li class="nav-item">
-                            <a href="{{ route('rek_pooling.index') }}" class="nav-link {{ set_active(['rek_pooling*']) }}" data-key="t-remix">Rekening Pooling</a>
+                            <a href="{{ route('rek_pooling.index') }}" class="nav-link {{ set_active(['rek_pooling*']) }}" data-key="t-remix">Pooling Account</a>
                         </li>
                         @endcan
                     </ul>

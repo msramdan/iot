@@ -1,17 +1,17 @@
 @extends('layouts.master')
-@section('title', 'Data Rekening Pooling')
+@section('title', 'Data Pooling Account')
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Rekening Pooling</h4>
+                    <h4 class="mb-sm-0">Pooling Account</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Rekening Pooling</li>
+                            <li class="breadcrumb-item active">Pooling Account</li>
                         </ol>
                     </div>
 
@@ -31,7 +31,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Rekening Pooling Code</th>
+                                    <th>Pooling Account Code</th>
                                     <th>Bank</th>
                                     <th>Account Name</th>
                                     <th>Number Account</th>
