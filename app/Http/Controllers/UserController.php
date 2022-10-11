@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -63,7 +64,14 @@ class UserController extends Controller
             [
                 'name' => "required|string|max:50|unique:users,name",
                 'email' => "required|email|unique:users,email",
-                'password' => "required|min:6|confirmed",
+                'password' => [
+                    'required', 'confirmed', Password::min(8)
+                        ->letters()
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                        ->uncompromised()
+                ],
                 'role' => "required"
             ],
         );

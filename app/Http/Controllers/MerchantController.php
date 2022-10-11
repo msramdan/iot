@@ -14,6 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 use Exception;
 use Throwable;
@@ -111,6 +112,14 @@ class MerchantController extends Controller
                 'city' => 'required|string|max:100',
                 'zip_code' => 'required|string|max:10',
                 'note' => 'string|nullable',
+                'password' => [
+                    'required', Password::min(8)
+                        ->letters()
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                        ->uncompromised()
+                ],
             ]
         );
 

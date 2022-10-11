@@ -59,7 +59,7 @@
                                         <select class="form-control @error('bussiness_id') @enderror" name="bussiness_id" id="bussiness_id">
                                             <option value="">-- Select --</option>
                                             @foreach ($bussiness as $busines)
-                                            <option value="{{ $busines->id }}" {{ old('busines_id') == $busines->id ? 'selected' : ''}}>{{ $busines->bussiness_name }}</option>
+                                            <option value="{{ $busines->id }}" {{ old('bussiness_id') == $busines->id ? 'selected' : ''}}>{{ $busines->bussiness_name }}</option>
                                             @endforeach
                                         </select>
                                         @error('bussiness_id')
