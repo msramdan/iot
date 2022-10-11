@@ -35,6 +35,7 @@
                             <div class="mb-3">
                                 <label for="bank_id">Bank</label>
                                 <select class="form-control @error('bank_id') @enderror" name="bank_id" id="bank_id">
+                                    <option value="">Select Bank</option>
                                     @foreach ($bank as $item)
                                       <option value="{{ $item->id }}" {{ old('bank_id') == $item->id ? 'selected' : ''}}>{{ $item->bank_name }}</option>
                                     @endforeach

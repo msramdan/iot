@@ -40,9 +40,13 @@ class MerchantController extends Controller
                 'bank:id,bank_name',
                 'rek_pooling',
                 'bussiness'
-            ])->where('is_active', 1)
+            ])
+            ->where('is_active', 1)
+            ->where('approved1', 'approved')
+            ->where('approved2', 'approved')
             ->orderBy('id', 'desc')
             ->get();
+
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('mid', function($row) {
@@ -157,7 +161,7 @@ class MerchantController extends Controller
         ]);
 
         if ($merchant) {
-            Alert::toast('Data saved successfully', 'success');
+            Alert::toast('Data Berhasil Dibuat Silahkan cek halaman Merchant Approved', 'success');
             return redirect()->route('merchant.index');
         } else {
             Alert::toast('Data failed to save', 'error');
@@ -171,9 +175,16 @@ class MerchantController extends Controller
      * @param  \App\Models\Merchant  $merchant
      * @return \Illuminate\Http\Response
      */
-    public function show(Merchant $merchant)
+    public function show($id)
     {
+        $merchant = Merchant::with([
+            'merchant_category',
+            'bank:id,bank_name',
+            'rek_pooling',
+            'bussiness'
+        ])->findOrFail($id);
 
+        return response()->json($merchant);
     }
 
     /**
@@ -331,22 +342,12 @@ class MerchantController extends Controller
             $query = Merchant::with([
                 'merchant_category',
                 'bank:id,bank_name',
-                'rek_pool',
+                'rek_pooling',
                 'bussiness',
-                'approval_log' => function($q) {
-                    $q->wherehas(function($qr) {
-                        $qr->where('step', 'approval1')
-                           ->where('status', 'need_approved')
-                           ->limit(1)
-                           ->orderBy('id', 'desc');
-                    })->wherehas(function($r) {
-                        $r->where('step', 'approval2')
-                        ->where('status', 'need_approved')
-                        ->limit(1)
-                        ->orderBy('id', 'desc');
-                    });
-                }
-            ])->where('is_active', 1)
+            ])
+            ->where('is_active', 0)
+            ->where('approved1', 'need_approved')
+            ->where('approved2', 'need_approved')
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($query)
@@ -377,26 +378,15 @@ class MerchantController extends Controller
                 'bank:id,bank_name',
                 'rek_pool',
                 'bussiness',
-                'approval_log' => function($q) {
-                    $q->wherehas(function($qr) {
-                        $qr->where('step', 'approval1')
-                           ->where(function($s) {
-                            $s->where('status', 'rejected')
-                              ->orwhere('status', 'non_active');
-                           })
-                           ->limit(1)
-                           ->orderBy('id', 'desc');
-                    })->wherehas(function($r) {
-                        $r->where('step', 'approval2')
-                        ->where(function($k) {
-                            $k->where('status', 'rejected')
-                            ->orwhere('status', 'non_active');
-                        })
-                        ->limit(1)
-                        ->orderBy('id', 'desc');
-                    });
-                }
-            ])->where('is_active', 1)
+            ])
+            ->where('is_Active', 0)
+            ->where(function($q){
+                $q->where('approved1', 'approved')
+                  ->orwhere('approved1', 'reject');
+            })->where(function($q){
+                $q->where('approved2', 'approved')
+                ->orwhere('approved2', 'reject');
+            })
             ->orderBy('id', 'desc')
             ->get();
             return DataTables::of($query)

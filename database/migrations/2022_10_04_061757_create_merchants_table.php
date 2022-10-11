@@ -32,6 +32,8 @@ return new class extends Migration
             $table->string('city', 100);
             $table->string('zip_code', 100);
             $table->tinyInteger('is_active');
+            $table->string('approved1', 100)->default('need_approved');
+            $table->string('approved2', 100)->default('need_approved');
             $table->text('note')->nullable();
             $table->string('password', 200);
             $table->timestamps();
