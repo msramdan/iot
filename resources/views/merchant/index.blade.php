@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Data Rekening Pooling')
+@section('title', 'Data Merchant Active')
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
