@@ -1,6 +1,5 @@
 <td >
     @can('merchant_update')
-    {{-- <a href="{{ route('merchant.show', $model->id) }}" class="btn  btn-success"><i class="mdi mdi-pencil"></i> Detail </a> --}}
     <a href="{{ route('merchant.edit', $model->id) }}" class="btn btn-md  btn-warning"><i class="mdi mdi-pencil"></i> Edit </a>
     @endcan
     @can('merchant_delete')
@@ -13,7 +12,7 @@
     <div class="btn-group">
         <button type="button" class="btn btn-md btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-cog"></i> Other</button>
         <div class="dropdown-menu" style="">
-            <a class="dropdown-item" href="#">Detail</a>
+            <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal" >Detail</button>
             <a class="dropdown-item" href="#">Approved Log</a>
             <a class="dropdown-item" href="#">Mdr Log</a>
         </div>

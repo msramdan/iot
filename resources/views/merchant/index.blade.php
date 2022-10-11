@@ -1,35 +1,6 @@
 @extends('layouts.master')
-@section('title', 'Data Merchant')
+@section('title', 'Data Rekening Pooling')
 @section('content')
-
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Upload format please download at this link <a href=""><i
-                                class="mdi mdi-download"></i> Here...</a> </h5>
-                </div>
-                <hr>
-                <form action="" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div>
-                            <label for="bank_name">File Upload</label>
-                            <input type="file" class="form-control" name="bank_code" id="bank_code" placeholder=""
-                                value="" autocomplete="off" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success "><i class="mdi mdi-upload"></i> Upload</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="page-content">
     <div class="container-fluid">
         <div class="row">
@@ -52,50 +23,92 @@
                 <div class="card">
                     <div class="card-header">
                         @can('role_create')
-                        <a href="{{ route('merchant.create') }}" class="btn btn-md btn-secondary"> <i
-                                class="mdi mdi-plus"></i> Create</a>
+                            <a href="{{ route('merchant.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i> Create</a>
                         @endcan
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">
-                            <i class="mdi mdi-upload"></i> Upload
-                        </button>
-                        <a href="{{ route('merchant.create') }}" class="btn btn-md btn-warning"> <i
-                                class="mdi mdi-download"></i> Download</a>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>MID</th>
-                                        <th>Merchant Name</th>
-                                        <th>Email</th>
-                                        <th>Merchant Category</th>
-                                        <th>Phone</th>
-                                        <th>Bussiness</th>
-                                        <th>Bank</th>
-                                        <th>Account Name</th>
-                                        @canany(['merchant_show', 'merchant_update', 'merchant_delete'])
-                                        <th style="width: 270px">Action</th>
-                                        @endcanany
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
+                        <table class="table table-bordered" id="dataTable" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>MID</th>
+                                    <th>Merchant Name</th>
+                                    <th>Email</th>
+                                    <th>Merchant Category</th>
+                                    <th>Phone</th>
+                                    <th>Bussiness</th>
+                                    <th>Bank</th>
+                                    <th>Account Name</th>
+                                    @canany(['merchant_show','merchant_update', 'merchant_delete'])
+                                            <th style="width: 270px">Action</th>
+                                    @endcanany
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
+
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+            <div class="col-md-6">
+                {{-- <table>
+                    <tr>
+                        <th>ID</th>
+                        <td>2312</td>
+                    </tr>
+                    <tr>
+                        <th>MID</th>
+                        <td>23123415213</td>
+                    </tr>
+                    <tr>
+                        <th>Merchant Name</th>
+                        <td>PT Maju Bersama</td>
+                    </tr>
+                </table> --}}
+                <ul class="nav">
+                    <li>
+                        <div class="d-flex">
+                            <h6>ID</h6>
+                            <div>2312311</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+           <div class="col-md-6">
+
+           </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 @endsection
 @push('js')
-<script>
-    const action =
-            '{{ auth()->user()->can('merchant_update') ||auth()->user()->can('merchant_delete')? 'yes yes yes': '' }}'
-        let columns = [{
+    <script>
+
+        let base_url = "{{ url('/') }}";
+
+        const action = '{{ auth()->user()->can('merchant_update') || auth()->user()->can('merchant_delete') ? 'yes yes yes' : '' }}'
+        let columns = [
+            {
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
@@ -103,7 +116,7 @@
             },
             {
                 data: 'mid',
-                name: 'mid'
+                name : 'mid'
             },
             {
                 data: 'merchant_name',
@@ -114,25 +127,25 @@
                 name: 'merchant_email'
             },
             {
-                data: 'merchant_category',
-                name: 'merchant_category'
+                data : 'merchant_category',
+                name : 'merchant_category'
             },
             {
-                data: 'phone',
-                name: 'phone'
+                data : 'phone',
+                name : 'phone'
             },
             {
-                data: 'bussiness',
-                name: 'bussiness',
+                data : 'bussiness',
+                name : 'bussiness',
 
             },
             {
-                data: 'bank',
-                name: 'bank',
+                data : 'bank',
+                name : 'bank',
             },
             {
                 data: 'account_name',
-                name: 'account_name'
+                name : 'account_name'
             }
         ]
 
@@ -151,5 +164,15 @@
             ajax: "{{ route('merchant.index') }}",
             columns: columns
         });
-</script>
+
+        function detail(id) {
+            $.ajax({
+                type:'GET',
+                url: base_url + `/panel/merchant/show/${id}`,
+                success:function(result) {
+                    console.log(result);
+                }
+            });
+        }
+    </script>
 @endpush
