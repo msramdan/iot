@@ -22,19 +22,19 @@ class MdrLogController extends Controller
      */
     public function index()
     {
-         if (request()->ajax()) {
+        if (request()->ajax()) {
             $query = MdrLog::with([
                 'merchant',
             ])
-            ->orderBy('id', 'desc')
-            ->get();
+                ->orderBy('id', 'desc')
+                ->get();
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('merchant', function($row) {
+                ->addColumn('merchant', function ($row) {
                     return $row->merchant->merchant_name;
                 })
                 ->addColumn('value_mdr', function ($row) {
-                    return $row->value_mdr. '%';
+                    return $row->value_mdr . '%';
                 })
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d M Y H:i:s');
@@ -46,5 +46,33 @@ class MdrLogController extends Controller
                 ->toJson();
         }
         return view('mdr_log.index');
+    }
+
+    public function getDetailMdr($id)
+    {
+        $data = DB::table('mdr_logs')
+            ->select('mdr_logs.*')
+            ->where('merchant_id', '=', $id)
+            ->get();
+        $output = '';
+        $output .= '<table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Value Mdr</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>';
+        foreach ($data as $row) {
+            $output .= '<tr>
+            <td>' . $row->value_mdr . ' %</td>
+            <td>' . $row->created_at . '</td>
+            <td>' .  Carbon::parse($row->created_at)->diffForHumans(). '</td>
+        </tr>';
+        }
+        $output .= '</tbody>
+        </table>';
+        echo $output;
     }
 }

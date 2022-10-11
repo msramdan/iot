@@ -41,27 +41,27 @@ class MerchantController extends Controller
                 'rek_pooling',
                 'bussiness'
             ])
-            ->where('is_active', 1)
-            ->where('approved1', 'approved')
-            ->where('approved2', 'approved')
-            ->orderBy('id', 'desc')
-            ->get();
+                ->where('is_active', 1)
+                ->where('approved1', 'approved')
+                ->where('approved2', 'approved')
+                ->orderBy('id', 'desc')
+                ->get();
 
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('mid', function($row) {
+                ->addColumn('mid', function ($row) {
                     return $row->mid ? $row->mid : '-';
                 })
-                ->addColumn('merchant_category', function($row) {
+                ->addColumn('merchant_category', function ($row) {
                     return $row->merchant_category->first()->merchants_category_name;
                 })
-                ->addColumn('bussiness', function($row) {
+                ->addColumn('bussiness', function ($row) {
                     return $row->bussiness->first()->bussiness_name;
                 })
-                ->addColumn('bank', function($row) {
+                ->addColumn('bank', function ($row) {
                     return $row->bank->first()->bank_name;
                 })
-                ->addColumn('rek_pooling', function($row) {
+                ->addColumn('rek_pooling', function ($row) {
                     return $row->rek_pooling->first()->rek_pooling_code;
                 })
                 ->addColumn('action', 'merchant._action')
@@ -212,7 +212,7 @@ class MerchantController extends Controller
      */
     public function update(Request $request, $id)
     {
-         $validator = validator::make(
+        $validator = validator::make(
             $request->all(),
             [
                 'merchant_name' => 'required|string|max:200',
@@ -259,7 +259,7 @@ class MerchantController extends Controller
                 'address2' => $request->address2,
                 'city' => $request->city,
                 'zip_code' => $request->zip_code,
-                'is_active' => $request->is_active == 'active' ? 1 : 0 ,
+                'is_active' => $request->is_active == 'active' ? 1 : 0,
                 'note' => $request->note,
             ]);
 
@@ -325,12 +325,14 @@ class MerchantController extends Controller
         try {
             if ($merchant->delete()) {
                 Alert::toast('Data deleted successfully', 'success');
-                return redirect()->route('merchant.index');
+                // return redirect()->route('merchant.index');
+                return redirect()->back();
             } else {
                 Alert::toast('Data deleted successfully', 'success');
-                return redirect()->route('merchant.index');
+                // return redirect()->route('merchant.index');
+                return redirect()->back();
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             Alert::toast('Data failed to delete, already related', 'error');
             return redirect()->back();
         }
@@ -345,23 +347,23 @@ class MerchantController extends Controller
                 'rek_pooling',
                 'bussiness',
             ])
-            ->where('is_active', 0)
-            ->where('approved1', 'need_approved')
-            ->where('approved2', 'need_approved')
-            ->orderBy('id', 'desc')
-            ->get();
+                ->where('is_active', 0)
+                ->where('approved1', 'need_approved')
+                ->where('approved2', 'need_approved')
+                ->orderBy('id', 'desc')
+                ->get();
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('merchant_category', function($row) {
+                ->addColumn('merchant_category', function ($row) {
                     return $row->merchant_category->first()->merchants_category_name;
                 })
-                ->addColumn('bussiness', function($row) {
+                ->addColumn('bussiness', function ($row) {
                     return $row->bussiness->first()->bussiness_name;
                 })
-                ->addColumn('bank', function($row) {
+                ->addColumn('bank', function ($row) {
                     return $row->bank->first()->bank_name;
                 })
-                ->addColumn('rek_pooling', function($row) {
+                ->addColumn('rek_pooling', function ($row) {
                     return $row->rek_pooling->first()->rek_pooling_code;
                 })
                 ->addColumn('action', 'merchant._action')
@@ -379,28 +381,28 @@ class MerchantController extends Controller
                 'rek_pool',
                 'bussiness',
             ])
-            ->where('is_Active', 0)
-            ->where(function($q){
-                $q->where('approved1', 'approved')
-                  ->orwhere('approved1', 'reject');
-            })->where(function($q){
-                $q->where('approved2', 'approved')
-                ->orwhere('approved2', 'reject');
-            })
-            ->orderBy('id', 'desc')
-            ->get();
+                ->where('is_Active', 0)
+                ->where(function ($q) {
+                    $q->where('approved1', 'approved')
+                        ->orwhere('approved1', 'reject');
+                })->where(function ($q) {
+                    $q->where('approved2', 'approved')
+                        ->orwhere('approved2', 'reject');
+                })
+                ->orderBy('id', 'desc')
+                ->get();
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('merchant_category', function($row) {
+                ->addColumn('merchant_category', function ($row) {
                     return $row->merchant_category->first()->merchants_category_name;
                 })
-                ->addColumn('bussiness', function($row) {
+                ->addColumn('bussiness', function ($row) {
                     return $row->bussiness->first()->bussiness_name;
                 })
-                ->addColumn('bank', function($row) {
+                ->addColumn('bank', function ($row) {
                     return $row->bank->first()->bank_name;
                 })
-                ->addColumn('rek_pooling', function($row) {
+                ->addColumn('rek_pooling', function ($row) {
                     return $row->rek_pooling->first()->rek_pooling_code;
                 })
                 ->addColumn('action', 'merchant._action')
@@ -427,7 +429,7 @@ class MerchantController extends Controller
         DB::beginTransaction();
         try {
             $approval_merchant = ApprovalLogMerchant::where('merchant_id', $request->merchant_id)
-                              ->where('status', 'need_approved');
+                ->where('status', 'need_approved');
 
             if (isset($request->approval) && $request->approval == 'approval1') {
                 $approval_merchant =  $approval_merchant->where('step', 'approved1');

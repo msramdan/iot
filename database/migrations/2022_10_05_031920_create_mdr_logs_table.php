@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('mdr_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('merchant_id');
+            $table->foreignId('merchant_id')->constrained('merchants')->cascadeOnDelete();
             $table->float('value_mdr');
             $table->timestamps();
-            $table->foreign('merchant_id')->references('id')->on('merchants');
         });
     }
 

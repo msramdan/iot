@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\MerchantsCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class MerchantsCategorySeeder extends Seeder
+class BussinessSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,15 +15,13 @@ class MerchantsCategorySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('merchants_category')->insert([
+        DB::table('bussinesses')->insert([
             [
-                'merchants_category_code' => 'MC001',
-                'merchants_category_name' => 'Pendidikan',
-                'merchants_category_title' => '-',
+                'bussiness_code' => 'BUS001',
+                'bussiness_name' => 'Retail',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-
         ]);
     }
 }

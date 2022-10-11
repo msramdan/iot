@@ -27,17 +27,17 @@ class ApprovalLogMerchantController extends Controller
                 'merchant',
                 'user'
             ])
-            ->orderBy('id', 'desc')
-            ->get();
+                ->orderBy('id', 'desc')
+                ->get();
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('merchant', function($row) {
+                ->addColumn('merchant', function ($row) {
                     return $row->merchant->merchant_name;
                 })
-                ->addColumn('user', function($row) {
+                ->addColumn('user', function ($row) {
                     return $row->user->first()->name;
                 })
-                ->addColumn('status', function($row) {
+                ->addColumn('status', function ($row) {
                     if ($row->status == 'need_approved') {
                         $status = 'Need Approved';
                     } elseif ($row->status == 'approved') {
@@ -50,7 +50,7 @@ class ApprovalLogMerchantController extends Controller
 
                     return $status;
                 })
-                ->addColumn('step', function($row) {
+                ->addColumn('step', function ($row) {
                     if ($row->step == 'approved1') {
                         $step = 'Approved 1';
                     } elseif ($row->step == 'approved2') {
@@ -59,7 +59,7 @@ class ApprovalLogMerchantController extends Controller
 
                     return $step;
                 })
-                ->addColumn('ref', function($row) {
+                ->addColumn('ref', function ($row) {
                     return $row->ref;
                 })
                 ->addColumn('created_at', function ($row) {
@@ -138,5 +138,40 @@ class ApprovalLogMerchantController extends Controller
     public function destroy(ApprovalLogMerchant $approvalLogMerchant)
     {
         //
+    }
+
+    public function getDetailApp($id)
+    {
+        $data = DB::table('approval_log_merchants')
+            ->join('users', 'users.id', '=', 'approval_log_merchants.user_id')
+            ->select('approval_log_merchants.*', 'users.name')
+            ->where('merchant_id', '=', $id)
+            ->get();
+        $output = '';
+        $output .= '<table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Status</th>
+                <th>Step</th>
+                <th>Ref</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>';
+        foreach ($data as $row) {
+            $output .= '<tr>
+            <td>' . $row->name . '</td>
+            <td>' . $row->status . '</td>
+            <td>' . $row->step . '</td>
+            <td>' . $row->ref . '</td>
+            <td>' . $row->created_at . '</td>
+            <td>' .  Carbon::parse($row->created_at)->diffForHumans() . '</td>
+        </tr>';
+        }
+        $output .= '</tbody>
+        </table>';
+        echo $output;
     }
 }

@@ -20,7 +20,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RoleSeeder::class,
             SettingAppSeeder::class,
-            // MerchantsCategorySeeder::class,
+            MerchantsCategorySeeder::class,
+            BankSeeder::class,
+            BussinessSeeder::class,
+            RekPoolingSeeder::class,
         ]);
     }
 }

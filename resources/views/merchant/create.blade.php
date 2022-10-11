@@ -150,7 +150,8 @@
                                         <span style="color: red;">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    <div class="mb-3">
+                                    <input type="hidden" name="is_active" id="is_active" value="nonactive">
+                                    {{-- <div class="mb-3">
                                         <label for="is_active">Status</label>
                                         <select class="form-control @error('is_active') @enderror" name="is_active" id="is_active">
                                             <option value="">-- Select --</option>
@@ -160,7 +161,7 @@
                                         @error('rek_pooling_code')
                                         <span style="color: red;">{{ $message }}</span>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="mb-3">
                                         <label for="note">Note</label>
                                         <textarea name="note" id="note" rows="3" class="form-control @error('note') is-invalid @enderror" placeholder="" value="{{ old('note') }}" autocomplete="off"></textarea>

@@ -66,10 +66,12 @@ Route::prefix('panel')->middleware('auth')->group(function () {
 
     Route::controller(ApprovalLogMerchantController::class)->group(function(){
         Route::get('/approval_merchant_log', 'index')->name('approved_log_merchant.index');
+        Route::get('/getDetailApp/{id}', 'getDetailApp');
     });
 
     Route::controller(MdrLogController::class)->group(function(){
         Route::get('/mdr_log', 'index')->name('mdr_log.index');
+        Route::get('/getDetailMdr/{id}', 'getDetailMdr');
     });
 
     // activity log

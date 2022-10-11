@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\MerchantsCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class MerchantsCategorySeeder extends Seeder
+class RekPoolingSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,15 +15,15 @@ class MerchantsCategorySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('merchants_category')->insert([
+        DB::table('rek_poolings')->insert([
             [
-                'merchants_category_code' => 'MC001',
-                'merchants_category_name' => 'Pendidikan',
-                'merchants_category_title' => '-',
+                'rek_pooling_code' => 'RK001',
+                'bank_id' => 1,
+                'account_name' => 'Indopay Bank A',
+                'number_account' => '12345675432',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-
         ]);
     }
 }

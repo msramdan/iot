@@ -6,12 +6,12 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Merchant</h4>
+                    <h4 class="mb-sm-0">Merchant Active</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Merchant</li>
+                            <li class="breadcrumb-item active">Merchant Avtive</li>
                         </ol>
                     </div>
 
@@ -29,7 +29,8 @@
                         <a href="{{ route('merchant.create') }}" class="btn btn-md btn-danger"> <i class="mdi mdi-download"></i> Download</a>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-sm" id="dataTable" style="width:100%">
+                        <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -47,6 +48,7 @@
                                 </tr>
                             </thead>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>

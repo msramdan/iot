@@ -19,21 +19,28 @@
                 <a class="nav-link menu-link collapsed" href="#sidebarIconsMerchant" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebarIcons" aria-expanded="false">
                     <i class="mdi mdi-view-carousel-outline"></i> <span data-key="t-layouts">Merchants</span>
                 </a>
-                <div class="collapse menu-dropdown" id="sidebarIconsMerchant">
+                <div class="collapse menu-dropdown <?= request()->segment(2) == 'merchant' ? 'show' : '' ?>" id="sidebarIconsMerchant">
                     <ul class="nav nav-sm flex-column">
                         @can('merchant_show')
                         <li class="nav-item">
-                            <a href="{{ route('merchant.index') }}" class="nav-link {{ set_active(['merchant*']) }}" data-key="t-boxicons">Merchants Active</a>
+                            <a href="{{ route('merchant.index') }}" class="nav-link <?= request()->segment(2) == 'merchant' && request()->segment(3) == '' ? 'active' : '' ?>" data-key="t-boxicons">Merchants Active</a>
                         </li>
                         @endcan
                         @can('merchant_show')
                         <li class="nav-item">
-                            <a href="{{ route('merchant.approval') }}" class="nav-link " data-key="t-remix">Merchants Need Approval <span class="badge badge-pill bg-danger" data-key="t-new">5 Data</span></a>
+                            @php
+                            $jml = DB::table("merchants")
+                            ->where('approved1', '=', 'need_approved')
+                            ->where('approved2', '=', 'need_approved')
+                            ->where('is_active', '=', 0)
+                            ->count();
+                            @endphp
+                            <a href="{{ route('merchant.approval') }}" class="nav-link <?= request()->segment(2) == 'merchant' && request()->segment(3) == 'approval'   ? 'active' : '' ?>  " data-key="t-remix">Merchants Need Approval <span class="badge badge-pill bg-danger" data-key="t-new">{{ $jml }} Data</span></a>
                         </li>
                         @endcan
                         @can('merchant_show')
-                         <li class="nav-item">
-                            <a href="{{ route('merchant.nonactive') }}" class="nav-link " data-key="t-remix">Merchant Inactive / Rejected</a>
+                        <li class="nav-item">
+                            <a href="{{ route('merchant.nonactive') }}" class="nav-link <?= request()->segment(2) == 'merchant' ? 'show' : '' ?> " data-key="t-remix">Merchant Inactive / Rejected</a>
                         </li>
                         @endcan
                     </ul>
@@ -81,7 +88,7 @@
                 <a class="nav-link menu-link collapsed" href="#sidebarAdvanceUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                     <i class="mdi mdi-math-log"></i> <span data-key="t-advance-ui">System Log</span>
                 </a>
-                <div class="menu-dropdown collapse {{ set_show(['activity_log*']) }}" id="sidebarAdvanceUI" style="">
+                <div class="menu-dropdown collapse {{ set_show(['activity_log*','approved_log_merchant*','mdr_log*']) }}" id="sidebarAdvanceUI" style="">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
                             <a href="{{ route('activity_log.index') }}" class="nav-link {{ set_active(['activity_log*']) }}" data-key="t-chat"> Activity Log</a>
@@ -90,10 +97,10 @@
                             <a href="" class="nav-link {{ set_active(['audit*']) }}" data-key="t-chat"> Api Log</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('approved_log_merchant.index') }}" class="nav-link {{ set_active(['approved*']) }}" data-key="t-chat"> Approved Log</a>
+                            <a href="{{ route('approved_log_merchant.index') }}" class="nav-link {{ set_active(['approved_log_merchant*']) }}" data-key="t-chat"> Approved Log</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('mdr_log.index') }}" class="nav-link {{ set_active(['mdr*']) }}" data-key="t-chat"> Mdr Log</a>
+                            <a href="{{ route('mdr_log.index') }}" class="nav-link {{ set_active(['mdr_log*']) }}" data-key="t-chat"> Mdr Log</a>
                         </li>
                     </ul>
                 </div>
