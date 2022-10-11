@@ -12,7 +12,7 @@
     <div class="btn-group">
         <button type="button" class="btn btn-md btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-cog"></i> Other</button>
         <div class="dropdown-menu" style="">
-            <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal" >Detail</button>
+            <button class="dropdown-item" onclick="detail('{{ $model->id }}')">Detail</button>
             <a class="dropdown-item" href="#">Approved Log</a>
             <a class="dropdown-item" href="#">Mdr Log</a>
         </div>

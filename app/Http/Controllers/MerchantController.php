@@ -180,8 +180,8 @@ class MerchantController extends Controller
         $merchant = Merchant::with([
             'merchant_category',
             'bank:id,bank_name',
-            'rek_pooling',
-            'bussiness'
+            'rek_pooling:id,rek_pooling_code',
+            'bussiness:id,bussiness_name',
         ])->findOrFail($id);
 
         return response()->json($merchant);
@@ -416,7 +416,7 @@ class MerchantController extends Controller
             [
                 'approval' => 'required|string',
                 'merchant_id' => 'required|numeric',
-                'status' => 'required|string|in:approve,reject,'
+                'status' => 'required|string|in:approved,reject,'
             ]
         );
 
