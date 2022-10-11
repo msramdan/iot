@@ -23,22 +23,25 @@
                 <div class="card">
                     <div class="card-header">
                         @can('role_create')
-                            <a href="{{ route('bank.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i> Create</a>
+                        <a href="{{ route('bank.create') }}" class="btn btn-md btn-secondary"> <i
+                                class="mdi mdi-plus"></i> Create</a>
                         @endcan
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered" id="dataTable" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Bank Code</th>
-                                    <th>Bank Name</th>
-                                    @canany(['bank_update', 'bank_delete'])
-                                            <th>Action</th>
-                                    @endcanany
-                                </tr>
-                            </thead>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Bank Code</th>
+                                        <th>Bank Name</th>
+                                        @canany(['bank_update', 'bank_delete'])
+                                        <th>Action</th>
+                                        @endcanany
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,8 +51,8 @@
 </div>
 @endsection
 @push('js')
-    <script>
-        const action = '{{ auth()->user()->can('bank_update') || auth()->user()->can('bank_delete') ? 'yes yes yes' : '' }}'
+<script>
+    const action = '{{ auth()->user()->can('bank_update') || auth()->user()->can('bank_delete') ? 'yes yes yes' : '' }}'
         let columns = [
             {
                 data: 'DT_RowIndex',
@@ -82,5 +85,5 @@
             ajax: "{{ route('bank.index') }}",
             columns: columns
         });
-    </script>
+</script>
 @endpush

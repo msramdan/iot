@@ -23,23 +23,26 @@
                 <div class="card">
                     <div class="card-header">
                         @can('role_create')
-                            <a href="{{ route('merchants_c.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i> Create</a>
+                        <a href="{{ route('merchants_c.create') }}" class="btn btn-md btn-secondary"> <i
+                                class="mdi mdi-plus"></i> Create</a>
                         @endcan
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered" id="dataTable" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Merchants Category Code</th>
-                                    <th>Merchants Category Name</th>
-                                    <th>Merchants Category Title</th>
-                                    @canany(['merchants_category_update', 'merchants_category_delete'])
-                                            <th>Action</th>
-                                    @endcanany
-                                </tr>
-                            </thead>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Merchants Category Code</th>
+                                        <th>Merchants Category Name</th>
+                                        <th>Merchants Category Title</th>
+                                        @canany(['merchants_category_update', 'merchants_category_delete'])
+                                        <th>Action</th>
+                                        @endcanany
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -49,8 +52,8 @@
 </div>
 @endsection
 @push('js')
-    <script>
-        const action = '{{ auth()->user()->can('merchants_category_update') || auth()->user()->can('merchants_category_delete') ? 'yes yes yes' : '' }}'
+<script>
+    const action = '{{ auth()->user()->can('merchants_category_update') || auth()->user()->can('merchants_category_delete') ? 'yes yes yes' : '' }}'
         let columns = [
             {
                 data: 'DT_RowIndex',
@@ -87,5 +90,5 @@
             ajax: "{{ route('merchants_c.index') }}",
             columns: columns
         });
-    </script>
+</script>
 @endpush
