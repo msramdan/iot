@@ -67,18 +67,6 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3">
-                                        <label for="bank_id">Bank</label>
-                                        <select class="form-control @error('bank_id') @enderror" name="bank_id" id="bank_id">
-                                            <option value="">-- Select --</option>
-                                            @foreach ($bank as $data)
-                                            <option value="{{ $data->id }}" {{ old('bank_id') == $data->id ? 'selected' : ''}}>{{ $data->bank_name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @error('bank_name')
-                                        <span style="color: red;">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
                                         <label for="rek_pooling_id">Rekening Pooling</label>
                                         <select class="form-control @error('rek_pooling_id') @enderror" name="rek_pooling_id" id="rek_pooling_id">
                                             <option value="">-- Select --</option>
@@ -90,6 +78,19 @@
                                         <span style="color: red;">{{ $message }}</span>
                                         @enderror
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="bank_id">Bank</label>
+                                        <select class="form-control @error('bank_id') @enderror" name="bank_id" id="bank_id">
+                                            <option value="">-- Select --</option>
+                                            @foreach ($bank as $data)
+                                            <option value="{{ $data->id }}" {{ old('bank_id') == $data->id ? 'selected' : ''}}>{{ $data->bank_name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('bank_name')
+                                        <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
                                     <div class="mb-3">
                                         <label for="account_name">Account Name</label>
                                         <input type="text" class="form-control @error('account_name') is-invalid @enderror" name="account_name" id="account_name" placeholder="" value="{{ old('account_name') }}" autocomplete="off">
@@ -106,7 +107,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="mdr">Mdr</label>
-                                        <input type="text" class="form-control @error('mdr') is-invalid @enderror" name="mdr" id="mdr" placeholder="" value="{{ old('mdr') }}" autocomplete="off">
+                                        <input type="number" step="0.01" class="form-control @error('mdr') is-invalid @enderror" name="mdr" id="mdr" placeholder="" value="{{ old('mdr') }}" autocomplete="off">
                                         @error('mdr')
                                         <span style="color: red;">{{ $message }}</span>
                                         @enderror

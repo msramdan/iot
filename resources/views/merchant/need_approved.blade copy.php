@@ -28,7 +28,7 @@
                         @endcan
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-sm" id="dataTable" style="width:100%">
+                        <table class="table table-bordered table-sm table-sm" id="dataTable" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -38,10 +38,9 @@
                                     <th>Merchant Category</th>
                                     <th>Phone</th>
                                     <th>Bussiness</th>
-                                    <th>City</th>
-                                    @canany(['merchant_show','merchant_update', 'merchant_delete'])
-                                    <th>Action</th>
-                                    @endcanany
+                                    <th>Bank</th>
+                                    <th>Account Name</th>
+
                                 </tr>
                             </thead>
                         </table>
@@ -61,72 +60,95 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <table class="table table-bordered table-sm">
                                 <tr>
-                                    <th>ID</th>
-                                    <td class="text-right" id="merchant-id"></td>
-                                    <th>Rekening Pooling</th>
-                                    <td class="text-right" id="merchant-rekening-pooling"></td>
-
+                                    <th width="50%">ID</th>
+                                    <td width="100%" class="text-right" id="merchant-id"></td>
                                 </tr>
                                 <tr>
-                                    <th>MID</th>
-                                    <td class="text-right" id="merchant-mid"></td>
-                                    <th>Phone</th>
-                                    <td class="text-right" id="merchant-phone"></td>
+                                    <th width="50%">MID</th>
+                                    <td width="100%" class="text-right" id="merchant-mid"></td>
                                 </tr>
                                 <tr>
-                                    <th>Merchant Name</th>
-                                    <td class="text-right" id="merchant-name"></td>
-                                    <th>Address 1</th>
-                                    <td class="text-right" id="merchant-address1"></td>
+                                    <th width="50%">Merchant Name</th>
+                                    <td width="100%" class="text-right" id="merchant-name"></td>
                                 </tr>
                                 <tr>
-                                    <th>Merchant email</th>
-                                    <td class="text-right" id="merchant-email"></td>
-                                    <th>Address 2</th>
-                                    <td class="text-right" id="merchant-address2"></td>
+                                    <th width="50%">Merchant email</th>
+                                    <td width="100%" class="text-right" id="merchant-email"></td>
                                 </tr>
                                 <tr>
-                                    <th>Merchant Category</th>
-                                    <td class="text-right" id="merchant-category"></td>
-                                    <th>City</th>
-                                    <td class="text-right" id="merchant-city"></td>
+                                    <th width="50%">Merchant Category</th>
+                                    <td width="100%" class="text-right" id="merchant-category"></td>
                                 </tr>
                                 <tr>
-                                    <th>Bussiness</th>
-                                    <td class="text-right" id="merchant-bussiness"></td>
-                                    <th>Zip code</th>
-                                    <td class="text-right" id="merchant-zip-code"></td>
+                                    <th width="50%">Bussiness</th>
+                                    <td width="100%" class="text-right" id="merchant-bussiness"></td>
                                 </tr>
                                 <tr>
-                                    <th>Bank</th>
-                                    <td class="text-right" id="merchant-bank"></td>
-                                    <th>Note</th>
-                                    <td class="text-right" id="merchant-note"></td>
+                                    <th width="50%">Bank</th>
+                                    <td width="100%" class="text-right" id="merchant-bank"></td>
                                 </tr>
                                 <tr>
-                                    <th>Account name</th>
-                                    <td class="text-right" id="merchant-account-name"></td>
-                                    <th>Status</th>
-                                    <td class="text-right" id="merchant-status"></td>
+                                    <th width="50%">Account name</th>
+                                    <td width="100%" class="text-right" id="merchant-account-name"></td>
                                 </tr>
                                 <tr>
-                                    <th>Number Account</th>
-                                    <td class="text-right" id="merchant-number-account"></td>
-                                    <th>Approve 1</th>
-                                    <td class="text-right" id="merchant-approve1"></td>
+                                    <th width="50%">Number Account</th>
+                                    <td width="100%" class="text-right" id="merchant-number-account"></td>
                                 </tr>
                                 <tr>
-                                    <th>Mdr</th>
-                                    <td class="text-right" id="merchant-mdr"></td>
-                                    <th>Approve 2</th>
-                                    <td class="text-right" id="merchant-approve2"></td>
+                                    <th width="50%">Mdr</th>
+                                    <td width="1000%" class="text-right" id="merchant-mdr"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-bordered table-sm">
+                                <tr>
+                                    <th width="50%">Rekening Pooling</th>
+                                    <td width="50%" class="text-right" id="merchant-rekening-pooling"></td>
                                 </tr>
                                 <tr>
-                                    <th >Created at</th>
-                                    <td  class="text-right" id="merchant-created_at"></td>
+                                    <th width="50%">Phone</th>
+                                    <td width="50%" class="text-right" id="merchant-phone"></td>
+                                </tr>
+                                <tr>
+                                    <th width="50%">Address 1</th>
+                                    <td width="50%" class="text-right" id="merchant-address1"></td>
+                                </tr>
+                                <tr>
+                                    <th width="50%">Address 2</th>
+                                    <td width="50%" class="text-right" id="merchant-address2"></td>
+                                </tr>
+                                <tr>
+                                    <th width="50%">City</th>
+                                    <td width="50%" class="text-right" id="merchant-city"></td>
+                                </tr>
+                                <tr>
+                                    <th width="50%">Zip code</th>
+                                    <td width="50%" class="text-right" id="merchant-zip-code"></td>
+                                </tr>
+                                <tr>
+                                    <th width="50%">Note</th>
+                                    <td width="50%" class="text-right" id="merchant-note"></td>
+                                </tr>
+                                <tr>
+                                    <th width="50%">Status</th>
+                                    <td width="50%" class="text-right" id="merchant-status"></td>
+                                </tr>
+                                <tr>
+                                    <th width="50%">Approve 1</th>
+                                    <td width="50%" class="text-right" id="merchant-approve1"></td>
+                                </tr>
+                                <tr>
+                                    <th width="50%">Approve 2</th>
+                                    <td width="50%" class="text-right" id="merchant-approve2"></td>
+                                </tr>
+                                <tr>
+                                    <th width="50%">Created at</th>
+                                    <td width="50%" class="text-right" id="merchant-created_at"></td>
                                 </tr>
                             </table>
                         </div>
@@ -152,7 +174,7 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 
 </div>
 @endsection
@@ -194,19 +216,16 @@
 
             },
             {
-                data : 'city',
-                name : 'city',
+                data : 'bank',
+                name : 'bank',
+            },
+            {
+                data: 'account_name',
+                name : 'account_name'
             }
         ]
 
-        if (action) {
-            columns.push({
-                data: 'action',
-                name: 'action',
-                orderable: false,
-                searchable: false
-            })
-        }
+
 
         $('#dataTable').DataTable({
             processing: true,

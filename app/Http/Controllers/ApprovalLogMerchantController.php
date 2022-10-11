@@ -32,7 +32,7 @@ class ApprovalLogMerchantController extends Controller
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('merchant', function($row) {
-                    return $row->merchant->first()->merchant_name;
+                    return $row->merchant->merchant_name;
                 })
                 ->addColumn('user', function($row) {
                     return $row->user->first()->name;

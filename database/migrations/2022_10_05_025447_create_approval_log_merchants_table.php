@@ -15,13 +15,12 @@ return new class extends Migration
     {
         Schema::create('approval_log_merchants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('merchant_id');
+            $table->foreignId('merchant_id')->constrained('merchants')->cascadeOnDelete();
             $table->foreignId('user_id');
             $table->string('status', 50);
             $table->string('step', 100);
             $table->integer('ref');
             $table->timestamps();
-            $table->foreign('merchant_id')->references('id')->on('merchants');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

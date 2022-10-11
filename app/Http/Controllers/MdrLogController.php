@@ -31,7 +31,10 @@ class MdrLogController extends Controller
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('merchant', function($row) {
-                    return $row->merchant->first()->merchant_name;
+                    return $row->merchant->merchant_name;
+                })
+                ->addColumn('value_mdr', function ($row) {
+                    return $row->value_mdr. '%';
                 })
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d M Y H:i:s');
