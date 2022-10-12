@@ -407,16 +407,16 @@ class MerchantController extends Controller
             $query = Merchant::with([
                 'merchant_category',
                 'bank:id,bank_name',
-                'rek_pool',
+                'rek_pooling',
                 'bussiness',
             ])
                 ->where('is_active', 0)
                 ->where(function ($q) {
                     $q->where('approved1', 'approved')
-                        ->orwhere('approved1', 'reject');
+                        ->orwhere('approved1', 'rejected');
                 })->where(function ($q) {
                     $q->where('approved2', 'approved')
-                        ->orwhere('approved2', 'reject');
+                        ->orwhere('approved2', 'rejected');
                 })
                 ->orderBy('id', 'desc')
                 ->get();
@@ -447,7 +447,7 @@ class MerchantController extends Controller
             [
                 'approval' => 'required|string',
                 'merchant_id' => 'required|numeric',
-                'status' => 'required|string|in:approved,reject,'
+                'status' => 'required|string|in:approved,rejected,'
             ]
         );
 

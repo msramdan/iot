@@ -36,6 +36,7 @@ Route::get('/dashboard', function () {
 });
 Route::controller(DashboardController::class)->group(function () {
     Route::get('/', 'index')->name('dashboard');
+    Route::put('/change_password', 'change_password')->name('dashboard.change_password');
 });
 
 Route::prefix('panel')->middleware('auth')->group(function () {

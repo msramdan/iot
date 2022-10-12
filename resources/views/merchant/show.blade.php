@@ -118,7 +118,7 @@
                                                 <span class="badge bg-warning">Need Approved</span>
                                                 @elseif ($merchant->approved1 == 'approved')
                                                 <span class="badge bg-success">Approved</span>
-                                                @elseif ($merchant->approved1 == 'reject')
+                                                @elseif ($merchant->approved1 == 'rejected')
                                                 <span class="badge bg-danger">Reject</span>
                                                 @endif
                                             </td>
@@ -131,7 +131,7 @@
                                                 <span class="badge bg-warning">Need Approved</span>
                                                 @elseif ($merchant->approved2 == 'approved')
                                                 <span class="badge bg-success">Approved</span>
-                                                @elseif ($merchant->approved2 == 'reject')
+                                                @elseif ($merchant->approved2 == 'rejected')
                                                 <span class="badge bg-danger">Reject</span>
                                                 @endif
                                             </td>
