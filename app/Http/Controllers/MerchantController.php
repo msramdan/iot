@@ -440,7 +440,7 @@ class MerchantController extends Controller
         return view('merchant.rejected');
     }
 
-    public function approv(Request $request)
+    public function approve(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
@@ -455,28 +455,55 @@ class MerchantController extends Controller
             return response()->json(['success' => false, 'message' => $validator->error()->first()], 422);
         }
 
+        $text_status = '';
+
+        if ($request->status == 'approved') {
+            $text_status = 'approve';
+        } elseif ($request->status == 'rejected') {
+            $text_status = 'rejected';
+        }
+
         DB::beginTransaction();
         try {
+            $merchant = Merchant::where('id', $request->merchant_id)->first();
+
+            if (!$merchant) {
+                return response()->json(['success' => false, 'message' => 'Merchant not found'], 500);
+            }
+
             $approval_merchant = ApprovalLogMerchant::where('merchant_id', $request->merchant_id)
                 ->where('status', 'need_approved');
 
-            if (isset($request->approval) && $request->approval == 'approval1') {
+            if (isset($request->approval) && $request->approval == 'approved1') {
                 $approval_merchant =  $approval_merchant->where('step', 'approved1');
             }
 
-            if (isset($request->approval) && $request->approval == 'approval2') {
+            if (isset($request->approval) && $request->approval == 'approved2') {
                 $approval_merchant =  $approval_merchant->where('step', 'approved1');
             }
 
             $approval_merchant = $approval_merchant->orderBy('id', 'desc')->first();
 
             if (!$approval_merchant) {
-                return response()->json(['success' => false, 'message' => 'Terjadi Kesalahan pada sistem'], 500);
+                return response()->json(['success' => false, 'message' => 'Failed to '.$text_status.' merchant'], 500);
             }
+
+            if ($request->approval == 'approved1') {
+                $merchant->update([
+                    'approved1' => $request->status,
+                ]);
+            } elseif($request->approval == 'approved2') {
+                $merchant->update([
+                    'approved2' => $request->status,
+                ]);
+            }
+
 
             $approval_merchant = $approval_merchant->update([
                 'status' => $request->status
             ]);
+
+            return response()->json(['success' => true, 'message' => 'Success to '.$text_status.' merchant']);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);

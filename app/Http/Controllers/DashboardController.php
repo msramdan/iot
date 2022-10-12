@@ -34,6 +34,7 @@ class DashboardController extends Controller
                         ->numbers()
                         ->symbols()
                         ->uncompromised()
+                        ->rules('confirmed')
                 ],
             ]
         );

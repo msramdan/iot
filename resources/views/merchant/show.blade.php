@@ -148,12 +148,87 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="btn-approve float-end">
+                            <div class="btn-group">
+                                <button type="button" title="Other" class="btn btn-md btn-success btn-sm dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Approve 1 </button>
+                                <div class="dropdown-menu" style="">
+                                    <button type="button" onclick="approve('approved1', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'approved')" class="dropdown-item">Approve</button>
+                                    <button type="button" onclick="approve('approved1', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'rejected')" class="dropdown-item">Reject</button>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" title="Other" class="btn btn-md btn-success btn-sm dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Approve 2 </button>
+                                <div class="dropdown-menu" style="">
+                                    <button type="button" onclick="approve('approved2', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'approved')" class="dropdown-item">Approve</button>
+                                    <button type="button" onclick="approve('approved2', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'rejected')" class="dropdown-item">Reject</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
 @endsection
+
+@push('js')
+    <script>
+        function approve(approval, merchant_id, merchant_name, status) {
+            let text_status;
+
+            if (status == 'approved') {
+                text_status = 'Approve';
+            }  else if (status == 'rejected') {
+                text_status = 'Reject';
+            }
+
+            Swal.fire({
+                title:"<h5 style='color:black'>Are you sure?</h5>",
+                color: '#000',
+                text:`${text_status} ${merchant_name}`,
+                type:"warning",
+                confirmButtonColor:"#0bd915",
+                showCancelButton:true,
+                confirmButtonText:"VALIDATE",
+                showLoaderOnConfirm:true,
+                backdrop:'rgba(0,0,1,0.4)',
+                preConfirm:login=>{
+                    return $.ajax({
+                        type:"put",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        data: {
+                            approval: approval,
+                            merchant_id: merchant_id,
+                            status: status
+                        },
+                        url:"{{ route('merchant.approve') }}",
+                    }).then(response =>{
+                        Swal.fire({
+                            backdrop:'rgba(0,0,1,0.4)',
+                            title:'Success!',
+                            text:`Success to ${text_status} merchant`,
+                            type:"success"
+                        }).then(res => {
+                            window.location.reload();
+                        })
+                    }).catch(error => {
+                        Swal.fire({
+                            backdrop:'rgba(0,0,1,0.4)',
+                            title:'Error!',
+                            text:`Failed to ${text_status} merchant. ${error.responseJSON.message}`,
+                            type:"error"
+                        }).then(res => {
+                            window.location.reload();
+                        })
+                    });
+                }
+            })
+        }
+    </script>
+@endpush

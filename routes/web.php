@@ -50,7 +50,7 @@ Route::prefix('panel')->middleware('auth')->group(function () {
     Route::controller(MerchantController::class)->group(function() {
         Route::get('merchant/approval', 'need_approved')->name('merchant.approval');
         Route::get('merchant/reject', 'reject')->name('merchant.rejected');
-        Route::get('merchant/approve', 'approve')->name('merchant.approve');
+        Route::put('merchant/approve', 'approve')->name('merchant.approve');
     });
     Route::resource('merchant', MerchantController::class);
 
