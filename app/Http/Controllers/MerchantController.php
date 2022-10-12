@@ -171,10 +171,10 @@ class MerchantController extends Controller
 
         if ($merchant) {
             Alert::toast('Data Successfully Created Please check the Merchant Approved page', 'success');
-            return redirect()->route('merchant.index');
+            return redirect()->route('merchant.approval');
         } else {
             Alert::toast('Data failed to save', 'error');
-            return redirect()->route('merchant.index');
+            return redirect()->route('merchant.approval');
         }
     }
 
@@ -193,7 +193,7 @@ class MerchantController extends Controller
             'bussiness:id,bussiness_name',
         ])->findOrFail($id);
 
-        return response()->json($merchant);
+        return view('merchant.show', compact('merchant'));
     }
 
     /**
@@ -252,6 +252,13 @@ class MerchantController extends Controller
         DB::beginTransaction();
 
         try {
+            if (isset($request->mdr) && !empty($request->mdr) && (floatval($merchant->mdr) != floatval($request->mdr))) {
+                $mdr_log = MdrLog::create([
+                    'merchant_id' => $merchant->id,
+                    'value_mdr' => floatval($request->mdr),
+                ]);
+            }
+
             $merchant->update([
                 'merchant_name' => $request->merchant_name,
                 'merchant_email' => $request->merchant_email,
@@ -278,12 +285,7 @@ class MerchantController extends Controller
                 ]);
             }
 
-            if (isset($request->mdr) && !empty($request->mdr)) {
-                $mdr_log = MdrLog::create([
-                    'merchant_id' => $merchant->id,
-                    'value_mdr' => floatval($request->mdr),
-                ]);
-            }
+
 
             $ref_approval1 = ApprovalLogMerchant::where('merchant_id', $merchant->id)->where('step', 'approved1')->orderBy('id', 'desc')->first();
 
@@ -307,15 +309,15 @@ class MerchantController extends Controller
 
             if ($merchant) {
                 Alert::toast('Data Updated successfully', 'success');
-                return redirect()->route('merchant.index');
+                return redirect()->route('merchant.approval');
             } else {
                 Alert::toast('Data Updated to save', 'error');
-                return redirect()->route('merchant.index');
+               return redirect()->route('merchant.approval');
             }
         } catch (Exception $e) {
             DB::rollBack();
             Alert::toast('Data gagal diupdate', 'error');
-            return redirect()->route('merchant.index');
+            return redirect()->back();
         } finally {
             DB::commit();
         }
@@ -330,6 +332,16 @@ class MerchantController extends Controller
     public function destroy($id)
     {
         $merchant = Merchant::findOrFail($id);
+
+        if ($merchant->approved1 == 'approved'){
+            Alert::toast('Data Failed to delete, already approved 1', 'error');
+        }
+
+        if ($merchant->approved2 == 'approved') {
+            Alert::toast('Data Failedd to delete, already approved 2', 'error');
+        }
+
+        $transaction_check =
 
         try {
             if ($merchant->delete()) {
@@ -390,7 +402,7 @@ class MerchantController extends Controller
                 'rek_pool',
                 'bussiness',
             ])
-                ->where('is_Active', 0)
+                ->where('is_active', 0)
                 ->where(function ($q) {
                     $q->where('approved1', 'approved')
                         ->orwhere('approved1', 'reject');

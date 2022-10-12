@@ -40,7 +40,7 @@
                         @endcan
                         @can('merchant_show')
                         <li class="nav-item">
-                            <a href="{{ route('merchant.nonactive') }}" class="nav-link <?= request()->segment(2) == 'merchant' ? 'show' : '' ?> " data-key="t-remix">Merchant Inactive / Rejected</a>
+                            <a href="{{ route('merchant.rejected') }}" class="nav-link <?= request()->segment(2) == 'merchant' ? 'show' : '' ?> " data-key="t-remix">Merchant Inactive / Rejected</a>
                         </li>
                         @endcan
                     </ul>
