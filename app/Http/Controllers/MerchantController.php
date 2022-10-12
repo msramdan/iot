@@ -9,6 +9,7 @@ use App\Models\RekPooling;
 use App\Models\MerchantsCategory;
 use App\Models\ApprovalLogMerchant;
 use App\Models\MdrLog;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -273,9 +274,11 @@ class MerchantController extends Controller
                 'phone' => $request->phone,
                 'address1' => $request->address1,
                 'address2' => $request->address2,
+                'approved1' => 'need_approved',
+                'approved2' => 'need_approved',
                 'city' => $request->city,
                 'zip_code' => $request->zip_code,
-                'is_active' => $request->is_active == 'active' ? 1 : 0,
+                'is_active' => 0,
                 'note' => $request->note,
             ]);
 
@@ -284,8 +287,6 @@ class MerchantController extends Controller
                     'password' => Hash::make($request->password),
                 ]);
             }
-
-
 
             $ref_approval1 = ApprovalLogMerchant::where('merchant_id', $merchant->id)->where('step', 'approved1')->orderBy('id', 'desc')->first();
 
@@ -335,13 +336,20 @@ class MerchantController extends Controller
 
         if ($merchant->approved1 == 'approved'){
             Alert::toast('Data Failed to delete, already approved 1', 'error');
+            return redirect()->back();
         }
 
         if ($merchant->approved2 == 'approved') {
-            Alert::toast('Data Failedd to delete, already approved 2', 'error');
+            Alert::toast('Data Failed to delete, already approved 2', 'error');
+            return redirect()->back();
         }
 
-        $transaction_check =
+        $transaction_check = Transaction::where('merchant_id', $merchant->id)->count();
+
+        if ($transaction_check > 0) {
+             Alert::toast('Data Failed to delete, Merchant have transaction', 'error');
+            return redirect()->back();
+        }
 
         try {
             if ($merchant->delete()) {

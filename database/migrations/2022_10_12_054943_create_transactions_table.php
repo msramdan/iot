@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('merchant_approves', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('merchant_id');
-            //$table->string('')
+             $table->foreign('merchant_id')->references('id')->on('merchants');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('merchant_approves');
+        Schema::dropIfExists('transactions');
     }
 };

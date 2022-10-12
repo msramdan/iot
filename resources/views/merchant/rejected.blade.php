@@ -113,15 +113,5 @@
             ajax: "{{ route('merchant.rejected') }}",
             columns: columns
         });
-
-        function detail(id) {
-            $.ajax({
-                type:'GET',
-                url: base_url + `/panel/merchant/show/${id}`,
-                success:function(result) {
-                    console.log(result);
-                }
-            });
-        }
     </script>
 @endpush
