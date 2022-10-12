@@ -47,11 +47,11 @@
                 </div>
             </li>
             @endcanany
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link menu-link" href="" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                     <i class="mdi mdi-lock-open-check-outline"></i> <span data-key="t-layouts">OTP</span>
                 </a>
-            </li>
+            </li> --}}
             @canany(['merchants_category_show','bank_show','bussiness_show','rek_pooling_show'])
             <li class="nav-item">
                 <a class="nav-link menu-link collapsed" href="#sidebarIcons" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
