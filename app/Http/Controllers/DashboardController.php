@@ -40,7 +40,7 @@ class DashboardController extends Controller
         );
 
         if ($validator->fails()) {
-             Alert::toast($validator->error()->first(), 'error');
+             Alert::toast($validator->errors()->first(), 'error');
             return redirect()->back();
         }
 
