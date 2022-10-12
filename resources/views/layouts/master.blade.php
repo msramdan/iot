@@ -3,11 +3,11 @@
 {{-- style --}}
 @include('layouts._partials.style')
 <body>
-    {{-- <div class="modal fade" id="ajaxModelEditPassword"  >
+    <div class="modal fade" id="ajaxModelEditPassword"  >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <form method="POST" action="">
+                    <form method="POST" action="{{ route('dashboard.change_password') }}">
                         @csrf
                         @method('PUT')
                         <div class="modal-header">
@@ -21,7 +21,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="passcon">Konfirmasi Password</label>
-                                <input class="form-control" id="passcon" name="passcon" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Masukkan Password Yang Sama' : '');" placeholder="Konfirmasi Password" required>
+                                <input class="form-control" id="passcon" name="password_confirmation" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Masukkan Password Yang Sama' : '');" placeholder="Konfirmasi Password" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -31,7 +31,8 @@
                     </form>
                 </div>
             </div>
-        </div> --}}
+        </div>
+    </div>
 
     <div id="layout-wrapper">
         {{-- header --}}

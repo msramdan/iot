@@ -53,7 +53,7 @@
         <button type="button" title="Other" class="btn btn-md btn-success btn-sm dropdown-toggle"
             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-cog"></i> </button>
         <div class="dropdown-menu" style="">
-            <button class="dropdown-item" onclick="detail('{{ $model->id }}')">Detail</button>
+            <a href="{{ route('merchant.show', $model->id) }}" class="dropdown-item">Detail</a>
             <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#myModalApp" id="DetailLogApp"
                 data-id="{{ $model->id }}">Approved Log</a>
             <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#myModalMdr" id="DetailLogMdr"

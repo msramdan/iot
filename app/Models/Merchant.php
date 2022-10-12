@@ -40,6 +40,11 @@ class Merchant extends Model
         return $this->hasMany(ApprovalLogMerchant::class);
     }
 
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

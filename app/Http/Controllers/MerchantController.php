@@ -9,6 +9,7 @@ use App\Models\RekPooling;
 use App\Models\MerchantsCategory;
 use App\Models\ApprovalLogMerchant;
 use App\Models\MdrLog;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -171,10 +172,10 @@ class MerchantController extends Controller
 
         if ($merchant) {
             Alert::toast('Data Successfully Created Please check the Merchant Approved page', 'success');
-            return redirect()->route('merchant.index');
+            return redirect()->route('merchant.approval');
         } else {
             Alert::toast('Data failed to save', 'error');
-            return redirect()->route('merchant.index');
+            return redirect()->route('merchant.approval');
         }
     }
 
@@ -193,7 +194,7 @@ class MerchantController extends Controller
             'bussiness:id,bussiness_name',
         ])->findOrFail($id);
 
-        return response()->json($merchant);
+        return view('merchant.show', compact('merchant'));
     }
 
     /**
@@ -252,6 +253,13 @@ class MerchantController extends Controller
         DB::beginTransaction();
 
         try {
+            if (isset($request->mdr) && !empty($request->mdr) && (floatval($merchant->mdr) != floatval($request->mdr))) {
+                $mdr_log = MdrLog::create([
+                    'merchant_id' => $merchant->id,
+                    'value_mdr' => floatval($request->mdr),
+                ]);
+            }
+
             $merchant->update([
                 'merchant_name' => $request->merchant_name,
                 'merchant_email' => $request->merchant_email,
@@ -266,22 +274,17 @@ class MerchantController extends Controller
                 'phone' => $request->phone,
                 'address1' => $request->address1,
                 'address2' => $request->address2,
+                'approved1' => 'need_approved',
+                'approved2' => 'need_approved',
                 'city' => $request->city,
                 'zip_code' => $request->zip_code,
-                'is_active' => $request->is_active == 'active' ? 1 : 0,
+                'is_active' => 0,
                 'note' => $request->note,
             ]);
 
             if (!empty($request->password)) {
                 $merchant->update([
                     'password' => Hash::make($request->password),
-                ]);
-            }
-
-            if (isset($request->mdr) && !empty($request->mdr)) {
-                $mdr_log = MdrLog::create([
-                    'merchant_id' => $merchant->id,
-                    'value_mdr' => floatval($request->mdr),
                 ]);
             }
 
@@ -307,15 +310,15 @@ class MerchantController extends Controller
 
             if ($merchant) {
                 Alert::toast('Data Updated successfully', 'success');
-                return redirect()->route('merchant.index');
+                return redirect()->route('merchant.approval');
             } else {
                 Alert::toast('Data Updated to save', 'error');
-                return redirect()->route('merchant.index');
+               return redirect()->route('merchant.approval');
             }
         } catch (Exception $e) {
             DB::rollBack();
             Alert::toast('Data gagal diupdate', 'error');
-            return redirect()->route('merchant.index');
+            return redirect()->back();
         } finally {
             DB::commit();
         }
@@ -330,6 +333,23 @@ class MerchantController extends Controller
     public function destroy($id)
     {
         $merchant = Merchant::findOrFail($id);
+
+        if ($merchant->approved1 == 'approved'){
+            Alert::toast('Data Failed to delete, already approved 1', 'error');
+            return redirect()->back();
+        }
+
+        if ($merchant->approved2 == 'approved') {
+            Alert::toast('Data Failed to delete, already approved 2', 'error');
+            return redirect()->back();
+        }
+
+        $transaction_check = Transaction::where('merchant_id', $merchant->id)->count();
+
+        if ($transaction_check > 0) {
+             Alert::toast('Data Failed to delete, Merchant have transaction', 'error');
+            return redirect()->back();
+        }
 
         try {
             if ($merchant->delete()) {
@@ -387,16 +407,16 @@ class MerchantController extends Controller
             $query = Merchant::with([
                 'merchant_category',
                 'bank:id,bank_name',
-                'rek_pool',
+                'rek_pooling',
                 'bussiness',
             ])
-                ->where('is_Active', 0)
+                ->where('is_active', 0)
                 ->where(function ($q) {
                     $q->where('approved1', 'approved')
-                        ->orwhere('approved1', 'reject');
+                        ->orwhere('approved1', 'rejected');
                 })->where(function ($q) {
                     $q->where('approved2', 'approved')
-                        ->orwhere('approved2', 'reject');
+                        ->orwhere('approved2', 'rejected');
                 })
                 ->orderBy('id', 'desc')
                 ->get();
@@ -420,14 +440,14 @@ class MerchantController extends Controller
         return view('merchant.rejected');
     }
 
-    public function approv(Request $request)
+    public function approve(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
             [
                 'approval' => 'required|string',
                 'merchant_id' => 'required|numeric',
-                'status' => 'required|string|in:approved,reject,'
+                'status' => 'required|string|in:approved,rejected,'
             ]
         );
 
@@ -435,28 +455,55 @@ class MerchantController extends Controller
             return response()->json(['success' => false, 'message' => $validator->error()->first()], 422);
         }
 
+        $text_status = '';
+
+        if ($request->status == 'approved') {
+            $text_status = 'approve';
+        } elseif ($request->status == 'rejected') {
+            $text_status = 'rejected';
+        }
+
         DB::beginTransaction();
         try {
+            $merchant = Merchant::where('id', $request->merchant_id)->first();
+
+            if (!$merchant) {
+                return response()->json(['success' => false, 'message' => 'Merchant not found'], 500);
+            }
+
             $approval_merchant = ApprovalLogMerchant::where('merchant_id', $request->merchant_id)
                 ->where('status', 'need_approved');
 
-            if (isset($request->approval) && $request->approval == 'approval1') {
+            if (isset($request->approval) && $request->approval == 'approved1') {
                 $approval_merchant =  $approval_merchant->where('step', 'approved1');
             }
 
-            if (isset($request->approval) && $request->approval == 'approval2') {
+            if (isset($request->approval) && $request->approval == 'approved2') {
                 $approval_merchant =  $approval_merchant->where('step', 'approved1');
             }
 
             $approval_merchant = $approval_merchant->orderBy('id', 'desc')->first();
 
             if (!$approval_merchant) {
-                return response()->json(['success' => false, 'message' => 'Terjadi Kesalahan pada sistem'], 500);
+                return response()->json(['success' => false, 'message' => 'Failed to '.$text_status.' merchant'], 500);
             }
+
+            if ($request->approval == 'approved1') {
+                $merchant->update([
+                    'approved1' => $request->status,
+                ]);
+            } elseif($request->approval == 'approved2') {
+                $merchant->update([
+                    'approved2' => $request->status,
+                ]);
+            }
+
 
             $approval_merchant = $approval_merchant->update([
                 'status' => $request->status
             ]);
+
+            return response()->json(['success' => true, 'message' => 'Success to '.$text_status.' merchant']);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);

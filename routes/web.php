@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MerchantsCategoryController;
@@ -35,6 +36,7 @@ Route::get('/dashboard', function () {
 });
 Route::controller(DashboardController::class)->group(function () {
     Route::get('/', 'index')->name('dashboard');
+    Route::put('/change_password', 'change_password')->name('dashboard.change_password');
 });
 
 Route::prefix('panel')->middleware('auth')->group(function () {
@@ -47,8 +49,8 @@ Route::prefix('panel')->middleware('auth')->group(function () {
     // merchant
     Route::controller(MerchantController::class)->group(function() {
         Route::get('merchant/approval', 'need_approved')->name('merchant.approval');
-        Route::get('merchant_reject', 'reject')->name('merchant.nonactive');
-        Route::get('merchant/approve', 'approve')->name('merchant.approve');
+        Route::get('merchant/reject', 'reject')->name('merchant.rejected');
+        Route::put('merchant/approve', 'approve')->name('merchant.approve');
     });
     Route::resource('merchant', MerchantController::class);
 
