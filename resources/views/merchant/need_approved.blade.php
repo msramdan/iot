@@ -22,25 +22,25 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="table-responsive">
-                        <table class="table table-bordered table-sm" id="dataTable" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>MID</th>
-                                    <th>Merchant Name</th>
-                                    <th>Email</th>
-                                    <th>Merchant Category</th>
-                                    <th>Phone</th>
-                                    <th>Bussiness</th>
-                                    <th>City</th>
-                                    @canany(['merchant_show','merchant_update', 'merchant_delete'])
-                                    <th>Action</th>
-                                    @endcanany
-                                </tr>
-                            </thead>
-                        </table>
-                        </div>
+                        {{-- <div class="table-responsive"> --}}
+                            <table class="table table-bordered table-sm" id="dataTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>MID</th>
+                                        <th>Merchant Name</th>
+                                        <th>Email</th>
+                                        <th>Merchant Category</th>
+                                        <th>Phone</th>
+                                        <th>Bussiness</th>
+                                        <th>City</th>
+                                        @canany(['merchant_show','merchant_update', 'merchant_delete'])
+                                        <th>Action</th>
+                                        @endcanany
+                                    </tr>
+                                </thead>
+                            </table>
+                        {{-- </div> --}}
                     </div>
                 </div>
             </div>

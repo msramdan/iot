@@ -27,7 +27,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="">
-                                    <table class="merchant-detail">
+                                    <table class="table table-sm">
                                         <tr>
                                             <th>ID</th>
                                             <td class="text-right" id="merchant-id">: {{ $merchant->id }}</td>
@@ -79,7 +79,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="">
-                                    <table class="merchant-detail">
+                                    <table class="table table-sm">
                                         <tr>
                                             <th>Bank</th>
                                             <td class="text-right" id="merchant-bank">: {{ $merchant->bank->bank_name }}</td>

@@ -13,6 +13,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\Rules\Password;
 
+
 class UserController extends Controller
 {
     public function __construct()

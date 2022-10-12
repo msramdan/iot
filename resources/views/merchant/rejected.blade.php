@@ -33,10 +33,9 @@
                                     <th>Merchant Category</th>
                                     <th>Phone</th>
                                     <th>Bussiness</th>
-                                    <th>Bank</th>
-                                    <th>Account Name</th>
+                                    <th>City</th>
                                     @canany(['merchant_show','merchant_update', 'merchant_delete'])
-                                            <th style="width: 270px">Action</th>
+                                            <th>Action</th>
                                     @endcanany
                                 </tr>
                             </thead>
@@ -89,12 +88,8 @@
 
             },
             {
-                data : 'bank',
-                name : 'bank',
-            },
-            {
-                data: 'account_name',
-                name : 'account_name'
+                data : 'city',
+                name : 'city',
             }
         ]
 
