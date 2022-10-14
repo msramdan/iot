@@ -23,8 +23,9 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('merchant.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('merchant.update', $merchant->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <input type="hidden" name="ci_csrf_token" value="">
                             <div class="row">
                                 <div class="col-md-6">
@@ -239,7 +240,7 @@
                                                                 <select class="form-control @error('rek_pooling_id') @enderror" name="rek_pooling_id" id="rek_pooling_id">
                                                                     <option value="">-- Select --</option>
                                                                     @foreach ($rek_pooling as $rekening)
-                                                                    <option value="{{ $rekening->id }}" {{ old('rek_pooling_id') == $rekening->id ? 'selected' : ''}}>{{ $rekening->rek_pooling_code }}</option>
+                                                                    <option value="{{ $rekening->id }}" {{ (old('rek_pooling_id') ? old('rek_pooling_id') : $merchant->rek_pooling_id) == $rekening->id ? 'selected' : ''}}>{{ $rekening->rek_pooling_code }}</option>
                                                                     @endforeach
                                                                 </select>
                                                                 @error('rek_pooling_id')

@@ -288,7 +288,7 @@ class MerchantController extends Controller
                 'address2' => 'required|string',
                 'city' => 'required|string|max:100',
                 'zip_code' => 'required|string|max:10',
-                'note' => 'string',
+                'note' => 'string|nullable',
                 'identity_card_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
                 'npwp_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
                 'owner_outlet_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
@@ -296,7 +296,7 @@ class MerchantController extends Controller
                 'outlet_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
                 'in_outlet_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
                 'password' => [
-                    Password::min(8)
+                    'nullable',Password::min(8)
                         ->letters()
                         ->mixedCase()
                         ->numbers()
