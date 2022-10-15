@@ -10,7 +10,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link" href="" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                <a class="nav-link menu-link {{ set_active('transaction*') }}" href="{{ route('transaction.index') }}" role="button" aria-expanded="false" aria-controls="sidebarApps">
                     <i class="mdi mdi-view-grid-plus-outline"></i> <span data-key="t-apps">Transactions</span>
                 </a>
             </li>
@@ -30,7 +30,7 @@
                         <li class="nav-item">
                             @php
                             $jml = DB::table("merchants")
-                            ->where('approved1', '=', 'need_approved')
+                            ->whereIn('approved1', ['need_approved', 'approved', 'rejected'])
                             ->where('approved2', '=', 'need_approved')
                             ->where('is_active', '=', 0)
                             ->count();

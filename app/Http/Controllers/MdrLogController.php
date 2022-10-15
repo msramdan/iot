@@ -52,7 +52,7 @@ class MdrLogController extends Controller
     {
         $data = DB::table('mdr_logs')
             ->select('mdr_logs.*')
-            ->where('merchant_id', '=', $id)
+            ->where('merchant_id', $id)
             ->get();
         $output = '';
         $output .= '<table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">

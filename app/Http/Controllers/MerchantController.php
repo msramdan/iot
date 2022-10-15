@@ -240,6 +240,7 @@ class MerchantController extends Controller
             'bank:id,bank_name',
             'rek_pooling:id,rek_pooling_code',
             'bussiness:id,bussiness_name',
+            'merchant_approve'
         ])->findOrFail($id);
 
         return view('merchant.show', compact('merchant'));
@@ -513,7 +514,7 @@ class MerchantController extends Controller
                 'bussiness',
             ])
                 ->where('is_active', 0)
-                ->where('approved1', 'need_approved')
+                ->whereIn('approved1',['need_approved', 'rejected', 'approved'])
                 ->where('approved2', 'need_approved')
                 ->orderBy('id', 'desc')
                 ->get();
@@ -603,25 +604,16 @@ class MerchantController extends Controller
         try {
             $merchant = Merchant::where('id', $request->merchant_id)->first();
 
+            $ref_approval1 = ApprovalLogMerchant::where('merchant_id', $merchant->id)->where('step', 'approved1')->orderBy('id', 'desc')->first();
+
+            $ref_approval2 = ApprovalLogMerchant::where('merchant_id', $merchant->id)->where('step', 'approved2')->orderBy('id', 'desc')->first();
+
             if (!$merchant) {
                 return response()->json(['success' => false, 'message' => 'Merchant not found'], 500);
             }
 
-            $approval_merchant = ApprovalLogMerchant::where('merchant_id', $request->merchant_id)
-                ->where('status', 'need_approved');
-
-            if (isset($request->approval) && $request->approval == 'approved1') {
-                $approval_merchant =  $approval_merchant->where('step', 'approved1');
-            }
-
-            if (isset($request->approval) && $request->approval == 'approved2') {
-                $approval_merchant =  $approval_merchant->where('step', 'approved1');
-            }
-
-            $approval_merchant = $approval_merchant->orderBy('id', 'desc')->first();
-
-            if (!$approval_merchant) {
-                return response()->json(['success' => false, 'message' => 'Failed to '.$text_status.' merchant'], 500);
+            if ($request->approval == 'approved2' && $merchant->approved1 == 'need_approved') {
+                return response()->json(['success' => false, 'message' => 'Failed to Approved 2, please approve approved 1'], 500);
             }
 
             if ($request->approval == 'approved1') {
@@ -630,13 +622,31 @@ class MerchantController extends Controller
                 ]);
             } elseif($request->approval == 'approved2') {
                 $merchant->update([
+                    'is_active' => 1,
                     'approved2' => $request->status,
                 ]);
             }
 
+            $ref = 1;
 
-            $approval_merchant = $approval_merchant->update([
-                'status' => $request->status
+            if ($ref_approval1->status == 'rejected' || $ref_approval2->status == 'rejected') {
+                $ref = intval($ref_approval1->ref) + 1;
+            }
+
+            $approval_merchant1 = ApprovalLogMerchant::create([
+                'merchant_id' => $merchant->id,
+                'user_id' => auth()->user()->id,
+                'status' => $request->status,
+                'step' => 'approved1',
+                'ref' => $ref
+            ]);
+
+            $approval_merchant2 = ApprovalLogMerchant::create([
+                'merchant_id' => $merchant->id,
+                'user_id' => auth()->user()->id,
+                'status' => $request->status,
+                'step' => 'approved2',
+                'ref' => $ref
             ]);
 
             return response()->json(['success' => true, 'message' => 'Success to '.$text_status.' merchant']);

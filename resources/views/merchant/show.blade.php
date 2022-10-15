@@ -74,6 +74,30 @@
                                             <th>Bussiness</th>
                                             <td class="text-right" id="merchant-bussiness">: {{ $merchant->bussiness->bussiness_name }}</td>
                                         </tr>
+                                        <tr>
+                                            <th>Foto KTP</th>
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/identity_card/'.$merchant->merchant_approve->identity_card_photo ) }}" target="__blank">Click to see images</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Foto Selfie KTP</th>
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/selfie_ktp/'.$merchant->merchant_approve->selfie_ktp_photo ) }}" target="__blank">Click to see images</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Foto NPWP</th>
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/npwp/'.$merchant->merchant_approve->npwp_photo ) }}" target="__blank">Click to see images</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Foto Owner + Outlet</th>
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/owner_outlet/'.$merchant->merchant_approve->owner_outlet_photo ) }}" target="__blank">Click to see images</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Foto Outlet</th>
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/outlet/'.$merchant->merchant_approve->outlet_photo ) }}" target="__blank">Click to see images</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Foto Dalam Outlet</th>
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/in_outlet/'.$merchant->merchant_approve->in_outlet_photo ) }}" target="__blank">Click to see images</a></td>
+                                        </tr>
                                     </table>
                                 </div>
                             </div>

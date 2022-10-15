@@ -145,7 +145,7 @@ class ApprovalLogMerchantController extends Controller
         $data = DB::table('approval_log_merchants')
             ->join('users', 'users.id', '=', 'approval_log_merchants.user_id')
             ->select('approval_log_merchants.*', 'users.name')
-            ->where('merchant_id', '=', $id)
+            ->where('merchant_id', $id)
             ->get();
         $output = '';
         $output .= '<table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">

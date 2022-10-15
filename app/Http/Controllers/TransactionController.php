@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-
+use Yajra\DataTables\Facades\DataTables;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 class TransactionController extends Controller
 {
     /**
@@ -14,7 +17,20 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        if (request()->ajax()) {
+            $query = Transaction::with([
+                'merchant',
+            ])
+                ->orderBy('id', 'desc')
+                ->get();
+
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->addColumn('action', 'transaction._action')
+                ->toJson();
+        }
+
+        return view('transaction.index');
     }
 
     /**
