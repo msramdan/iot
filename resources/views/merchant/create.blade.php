@@ -23,7 +23,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('merchant.store') }}" method="POST">
+                        <form action="{{ route('merchant.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="ci_csrf_token" value="">
                             <div class="row">
@@ -169,37 +169,55 @@
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto KTP</label>
-                                                                <input type="file" class="form-control" id="basiInput">
+                                                                <input type="file" name="identity_card_photo" class="form-control @error('identity_card_photo') is-invalid @enderror" id="basiInput">
+                                                                @error('identity_card_photo')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto Selfie KTP</label>
-                                                                <input type="file" class="form-control" id="basiInput">
+                                                                <input type="file" name="selfie_ktp_photo" class="form-control @error('selfie_ktp_photo') is-invalid @enderror" id="basiInput">
+                                                                @error('selfie_ktp_photo')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto NPWP</label>
-                                                                <input type="file" class="form-control" id="basiInput">
+                                                                <input type="file" name="npwp_photo" class="form-control  @error('npwp_photo') is-invalid @enderror" id="basiInput">
+                                                                @error('npwp_photo')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto Outlet</label>
-                                                                <input type="file" class="form-control" id="basiInput">
+                                                                <input type="file" name="outlet_photo" class="form-control @error('outlet_photo') is-invalid @enderror" id="basiInput">
+                                                                @error('outlet_photo')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto Owner + Outlet</label>
-                                                                <input type="file" class="form-control" id="basiInput">
+                                                                <input type="file" name="owner_outlet_photo" class="form-control @error('owner_outlet_photo') is-invalid @enderror" id="basiInput">
+                                                                @error('owner_outlet_photo')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto Dalam Outlet</label>
-                                                                <input type="file" class="form-control" id="basiInput">
+                                                                <input type="file" name="in_outlet_photo" class="form-control @error('in_outlet_photo') is-invalid @enderror" id="basiInput">
+                                                                @error('in_outlet_photo')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
                                                             </div>
                                                         </div>
                                                     </div>

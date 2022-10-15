@@ -13,9 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('merchant_approves', function (Blueprint $table) {
             $table->id();
             $table->foreignId('merchant_id');
+            $table->string('identity_card_photo', 100)->nullable();
+            $table->string('npwp_photo', 100)->nullable();
+            $table->string('owner_outlet_photo')->nullable();
+            $table->string('selfie_ktp_photo')->nullable();
+            $table->string('outlet_photo')->nullable();
+            $table->string('in_outlet_photo')->nullable();
             $table->foreign('merchant_id')->references('id')->on('merchants');
             $table->timestamps();
         });
@@ -28,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('merchant_approves');
     }
 };

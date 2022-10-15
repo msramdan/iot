@@ -13,7 +13,7 @@ use App\Http\Controllers\RekPoolingController;
 use App\Http\Controllers\MerchantController;
 use App\Http\Controllers\ApprovalLogMerchantController;
 use App\Http\Controllers\MdrLogController;
-use App\Models\ApprovalLogMerchant;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -54,6 +54,7 @@ Route::prefix('panel')->middleware('auth')->group(function () {
     });
     Route::resource('merchant', MerchantController::class);
 
+    Route::resource('transaction', TransactionController::class);
     // Bank
     Route::resource('/bank', BankController::class);
     //Bussiness
