@@ -26,7 +26,7 @@
                             <a href="{{ route('merchant.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i> Create</a>
                         @endcan
                         <a href="{{ route('merchant.create') }}" class="btn btn-md btn-success"> <i class="mdi mdi-upload"></i> Upload</a>
-                        <a href="{{ route('merchant.create') }}" class="btn btn-md btn-danger"> <i class="mdi mdi-download"></i> Download</a>
+                        <a href="{{ route('merchant.excel') }}" class="btn btn-md btn-danger"> <i class="mdi mdi-download"></i> Download</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">

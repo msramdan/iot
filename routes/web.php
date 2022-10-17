@@ -51,6 +51,7 @@ Route::prefix('panel')->middleware('auth')->group(function () {
         Route::get('merchant/approval', 'need_approved')->name('merchant.approval');
         Route::get('merchant/reject', 'reject')->name('merchant.rejected');
         Route::put('merchant/approve', 'approve')->name('merchant.approve');
+        Route::get('merchant/excel', 'export_excel')->name('merchant.excel');
     });
     Route::resource('merchant', MerchantController::class);
 

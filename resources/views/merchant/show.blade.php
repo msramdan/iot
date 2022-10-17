@@ -181,6 +181,7 @@
                                     <button type="button" onclick="approve('approved1', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'rejected')" class="dropdown-item">Reject</button>
                                 </div>
                             </div>
+                            @if ($merchant->approved1 == 'approved')
                             <div class="btn-group">
                                 <button type="button" title="Other" class="btn btn-md btn-success btn-sm dropdown-toggle"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Approve 2 </button>
@@ -189,6 +190,7 @@
                                     <button type="button" onclick="approve('approved2', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'rejected')" class="dropdown-item">Reject</button>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>

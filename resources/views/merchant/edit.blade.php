@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Create Merchant')
+@section('title', 'Edit Merchant')
 
 @section('content')
 <div class="page-content">
@@ -12,7 +12,7 @@
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('merchant.index') }}">Merchant</a></li>
-                            <li class="breadcrumb-item active">Create</li>
+                            <li class="breadcrumb-item active">Edit</li>
                         </ol>
                     </div>
 
@@ -174,6 +174,9 @@
                                                                 @error('identity_card_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
+                                                                @if ($merchant->merchant_approve->identity_card_photo)
+                                                                <a href="{{ Storage::url('public/backend/images/identity_card/'.$merchant->merchant_approve->identity_card_photo ) }}" target="__blank">Click to see images</a>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
@@ -183,6 +186,9 @@
                                                                 @error('selfie_ktp_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
+                                                                @if ($merchant->merchant_approve->selfie_ktp_photo)
+                                                                <a href="{{ Storage::url('public/backend/images/selfie_ktp/'.$merchant->merchant_approve->selfie_ktp_photo ) }}" target="__blank">Click to see images</a>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
@@ -192,6 +198,9 @@
                                                                 @error('npwp_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
+                                                                @if ($merchant->merchant_approve->npwp_photo)
+                                                                <a href="{{ Storage::url('public/backend/images/npwp/'.$merchant->merchant_approve->npwp_photo ) }}" target="__blank">Click to see images</a>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
@@ -201,6 +210,9 @@
                                                                 @error('outlet_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
+                                                                @if ($merchant->merchant_approve->outlet_photo)
+                                                                <a href="{{ Storage::url('public/backend/images/outlet/'.$merchant->merchant_approve->outlet_photo ) }}" target="__blank">Click to see images</a>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
@@ -210,6 +222,9 @@
                                                                 @error('owner_outlet_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
+                                                                @if ($merchant->merchant_approve->owner_outlet_photo)
+                                                                <a href="{{ Storage::url('public/backend/images/owner_outlet/'.$merchant->merchant_approve->owner_outlet_photo ) }}" target="__blank">Click to see images</a>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
@@ -219,6 +234,9 @@
                                                                 @error('in_outlet_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
+                                                                @if ($merchant->merchant_approve->in_outlet_photo)
+                                                                <a href="{{ Storage::url('public/backend/images/in_outlet/'.$merchant->merchant_approve->in_outlet_photo ) }}" target="__blank">Click to see images</a>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>

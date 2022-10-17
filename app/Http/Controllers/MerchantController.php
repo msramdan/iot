@@ -23,6 +23,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Exception;
 use Throwable;
+use Excel;
+use App\Exports\MerchantExport;
 
 class MerchantController extends Controller
 {
@@ -254,7 +256,7 @@ class MerchantController extends Controller
      */
     public function edit($id)
     {
-        $merchant = Merchant::findOrFail($id);
+        $merchant = Merchant::with('merchant_approve')->findOrFail($id);
         $bank = Bank::all();
         $merchant_category = MerchantsCategory::all();
         $bussiness = Bussiness::all();
@@ -656,5 +658,22 @@ class MerchantController extends Controller
         } finally {
             DB::commit();
         }
+    }
+
+    public function export_excel()
+    {
+        $merchant = Merchant::with([
+                    'merchant_category',
+                    'bank:id,bank_name',
+                    'rek_pooling',
+                    'bussiness'
+                ])
+                ->where('is_active', 1)
+                ->where('approved1', 'approved')
+                ->where('approved2', 'approved')
+                ->orderBy('id', 'desc')
+                ->get();
+
+        return Excel::download(new MerchantExport($merchant), 'merchant.xlsx');
     }
 }
