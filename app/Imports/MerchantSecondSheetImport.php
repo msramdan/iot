@@ -19,7 +19,9 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
-class MerchantImport implements ToModel,
+
+class MerchantSecondSheetImport implements ToModel,
+HasReferencesToOtherSheets,
 WithHeadingRow,
 WithBatchInserts,
 WithChunkReading,
@@ -27,55 +29,21 @@ WithValidation
 {
     public function model(array $row)
     {
-        $merchant_category_id = null;
-        $bank_id = null;
-        $bussiness_id = null;
-        $rek_pooling_id = null;
-
-        if (!empty($row['merchant_category'])) {
-            $merchant_category = MerchantsCategory::where('merchants_category_code', $row['merchant_category'])
-            ->orwhere('merchants_category_name', $row['merchant_category'])->first();
-
-            if ($merchant_category) {
-                $merchant_category_id = $merchant_category->id;
-            }
-        }
-
-        if (!empty($row['bussiness'])) {
-            $bussiness = Bussiness::where('bussiness_code', $row['bussiness'])
-                        ->orwhere('bussiness_name')->first();
-
-            if ($bussiness) {
-                $bussiness_id = $bussiness->id;
-            }
-        }
-
-        if (!empty($row['bank'])) {
-            $bank = Bank::where('bank_code', $row['bank'])->orwhere('bank_name', $row['bank'])->first();
-
-            if ($bank) {
-                $bank_id = $bank->id;
-            }
-        }
-
-        if (!empty($row['rek_pooling'])) {
-            $rek_pooling = RekPooling::where('rek_pooling_code', $row['rek_pooling_code'])->first();
-
-            if ($rek_pooling) {
-                $rek_pooling_id = $rek_pooling->id;
-            }
-        }
+        $merchant_category = MerchantsCategory::where('merchants_category_code', $row['merchant_category'])->first();
+        $bussiness = Bussiness::where('bussiness_code', $row['bussiness_code'])->first();
+        $bank = Bank::where('bank_name', $row['bank'])->first();
+        $rek_pooling = RekPooling::where('rek_pooling_code', $row['rek_pooling_code'])->first();
 
         return new Merchant([
             'merchant_name'         => $row['merchant_name'],
             'merchant_email'        => $row['merchant_email'],
-            'merchant_category_id'  => $merchant_category_id,
-            'bussiness_id'          => $bussiness_id,
-            'bank_id'               => $bank_id,
+            'merchant_category_id'  => $merchant_category->id,
+            'bussiness_id'          => $bussiness->id,
+            'bank_id'               => $bank->id,
             'account_name'          => $row['account_name'],
             'mdr'                   => str_replace("%", "", $row['mdr']),
             'number_account'        => $row['number_account'],
-            'rek_pooling_id'        => $rek_pooling_id,
+            'rek_pooling_id'        => $rek_pooling->id,
             'phone'                 => $row['phone'],
             'address1'              => $row['address1'],
             'address2'              => $row['address2'],
@@ -91,21 +59,26 @@ WithValidation
         return  [
             'merchant_name' =>  ['required', 'string', 'max:200'],
             'merchant_email' => ['required', 'string', 'email'],
-            'merchant_category' => ['string'],
-            'bussiness' => ['string'],
-            'bank' => ['string'],
-            'rek_pooling_code' => ['string'],
+            'merchant_category' => ['required', 'string'],
+            'bussiness_code' => ['required', 'string'],
+            'bank' => ['required', 'string'],
+            'rek_pooling_code' => ['required', 'string'],
             'merchant_category' => ['required', 'string'],
             'account_name' => ['required', 'string'],
-            'mdr' => ['required'],
+            'mdr' => ['required', 'string'],
             'number_account' => ['required', 'string'],
-            'phone' => ['required'],
+            'phone' => ['required', 'string'],
             'address1' => ['required', 'string'],
             'address2' => ['required', 'string'],
             'city' => ['required', 'string'],
-            'zip_code' => ['required'],
+            'zip_code' => ['required', 'string'],
             'note' => ['string'],
-            'password' => ['required']
+            'password' => ['required', Password::min(8)
+                        ->letters()
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                        ->uncompromised()]
         ];
     }
 
@@ -121,6 +94,6 @@ WithValidation
 
     public function headingRow(): int
     {
-        return 3;
+        return 2;
     }
 }

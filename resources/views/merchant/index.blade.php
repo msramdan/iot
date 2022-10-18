@@ -25,7 +25,7 @@
                         @can('role_create')
                             <a href="{{ route('merchant.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i> Create</a>
                         @endcan
-                        <a href="{{ route('merchant.create') }}" class="btn btn-md btn-success"> <i class="mdi mdi-upload"></i> Upload</a>
+                        <button data-bs-toggle="modal" data-bs-target="#merchant-upload" id="merchantUpload" class="btn btn-md btn-success"> <i class="mdi mdi-upload"></i> Upload</button>
                         <a href="{{ route('merchant.excel') }}" class="btn btn-md btn-danger"> <i class="mdi mdi-download"></i> Download</a>
                     </div>
                     <div class="card-body">
@@ -54,6 +54,38 @@
         </div>
     </div>
 </div>
+
+<div id="merchant-upload" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
+    style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('merchant.import_excel') }}" enctype="multipart/form-data" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Upload Merchant</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                </div>
+                <div class="modal-body" id="modal-table-mdr">
+                    <div class="form-group">
+                        <div>
+                            <label for="basiInput" class="form-label">File Excel</label>
+                            <input type="file" name="file" class="form-control @error('file') is-invalid @enderror" id="basiInput">
+                            @error('file')
+                            <span style="color: red;">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <a href="{{ Storage::url('public/backend/bulk_upload_format/Format Bulk Upload Merchant.xlsx') }}">Download upload format</a>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="submit">Submit</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 @push('js')
     <script>
