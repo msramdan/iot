@@ -25,7 +25,8 @@ use Exception;
 use Throwable;
 use Excel;
 use App\Exports\MerchantExport;
-
+use Maatwebsite\Excel\Validators\ValidationException as ExcelException;
+use App\Imports\MerchantImport;
 class MerchantController extends Controller
 {
     public function __construct()
@@ -61,16 +62,39 @@ class MerchantController extends Controller
                     return $row->mid ? $row->mid : '-';
                 })
                 ->addColumn('merchant_category', function ($row) {
-                    return $row->merchant_category->first()->merchants_category_name;
+                    if ($row->merchant_category) {
+                        $merchant_category = $row->merchant_category->first()->merchants_category_name;
+                    } else {
+                        $merchant_category = '-';
+                    }
+
+                    return $merchant_category;
                 })
                 ->addColumn('bussiness', function ($row) {
-                    return $row->bussiness->first()->bussiness_name;
+                    if ($row->bussiness->first()) {
+                        $bussiness = $row->bussiness->first()->bussiness_name;
+                    } else {
+                        $bussiness = '-';
+                    }
+
+                    return $bussiness;
                 })
                 ->addColumn('bank', function ($row) {
-                    return $row->bank->first()->bank_name;
+                    if ($row->bank->first()) {
+                        $bank = $row->bank->first()->bank_name;
+                    } else {
+                        $bank = '-';
+                    }
+
+                    return $bank;
                 })
                 ->addColumn('rek_pooling', function ($row) {
-                    return $row->rek_pooling->first()->rek_pooling_code;
+                    if ($row->rek_pooling->first()) {
+                        $rek_pooling = $row->rek_pooling->first()->rek_pooling_code;
+                    } else {
+                        $rek_pooling = '-';
+                    }
+                    return $rek_pooling;
                 })
                 ->addColumn('action', 'merchant._action')
                 ->toJson();
@@ -163,57 +187,71 @@ class MerchantController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
-            $approval_merchant1 = ApprovalLogMerchant::create([
-                'merchant_id' => $merchant->id,
-                'user_id' => auth()->user()->id,
-                'status' => 'need_approved',
-                'step' => 'approved1',
-                'ref' => 1
-            ]);
+            $data_merchant_approve['merchant_id'] = $merchant->id;
 
-            $approval_merchant2 = ApprovalLogMerchant::create([
-                'merchant_id' => $merchant->id,
-                'user_id' => auth()->user()->id,
-                'status' => 'need_approved',
-                'step' => 'approved2',
-                'ref' => 1
-            ]);
+            //==================== Foto KTP ========================
+            if ($request->hasFile('identity_card_photo')) {
+                $identity_card_file     = $request->file('identity_card_photo');
+                $identity_card_name     = Str::random(15).'.'.$identity_card_file->extension();
+                $identity_card_file->storeAs('public/backend/images/identity_card', $identity_card_name);
 
-            $mdr_log = MdrLog::create([
-                'merchant_id' => $merchant->id,
-                'value_mdr' => floatval($request->mdr),
-            ]);
+                $data_merchant_approve['identity_card_photo'] = $identity_card_name;
+            }
+            //================== End Foto KTP ======================
 
-            $identity_card_file     = $request->file('identity_card_photo');
-            $npwp_file              = $request->file('npwp_photo');
-            $owner_outlet_file      = $request->file('owner_outlet_photo');
-            $selfie_ktp_file        = $request->file('selfie_ktp_photo');
-            $outlet_file            = $request->file('outlet_photo');
-            $in_outlet_file         = $request->file('in_outlet_photo');
+            //==================== NPWP Photo =======================
+            if ($request->hasFile('npwp_photo')) {
+                $npwp_file              = $request->file('npwp_photo');
+                $npwp_photo_name        = Str::random(15).'.'.$npwp_file->extension();
+                $npwp_file->storeAs('public/backend/images/npwp', $npwp_photo_name);
 
-            $identity_card_name     = Str::random(15).'.'.$identity_card_file->extension();
-            $npwp_photo_name        = Str::random(15).'.'.$npwp_file->extension();
-            $owner_outlet_name      = Str::random(15).'.'.$owner_outlet_file->extension();
-            $selfie_ktp_name        = Str::random(15).'.'.$selfie_ktp_file->extension();
-            $outlet_name            = Str::random(15).'.'.$outlet_file->extension();
-            $in_outlet_name         = Str::random(15).'.'.$in_outlet_file->extension();
+                $data_merchant_approve['npwp_photo'] = $npwp_photo_name;
+            }
+           //==================== End NPWP Photo ====================
 
-            $identity_card_file->storeAs('public/backend/images/identity_card', $identity_card_name);
-            $npwp_file->storeAs('public/backend/images/npwp', $npwp_photo_name);
-            $owner_outlet_file->storeAs('public/backend/images/owner_outlet', $owner_outlet_name);
-            $selfie_ktp_file->storeAs('public/backend/images/selfie_ktp', $selfie_ktp_name);
-            $outlet_file->storeAs('public/backend/images/outlet', $outlet_name);
-            $in_outlet_file->storeAs('public/backend/images/in_outlet', $in_outlet_name);
+           //=================== Owner outlet photo =================
+            if ($request->hasFile('owner_outlet_photo')) {
+                $owner_outlet_file      = $request->file('owner_outlet_photo');
+                $owner_outlet_name      = Str::random(15).'.'.$owner_outlet_file->extension();
+                $owner_outlet_file->storeAs('public/backend/images/owner_outlet', $owner_outlet_name);
 
-            $merchant_approve = MerchantApprove::create([
-                'merchant_id' => $merchant->id,
-                'identity_card_photo' => $identity_card_name,
-                'npwp_photo' => $npwp_photo_name,
-                'owner_outlet_photo' => $owner_outlet_name,
-                'selfie_ktp_photo' => $selfie_ktp_name,
-                'outlet_photo' => $outlet_name,
-                'in_outlet_photo' => $in_outlet_name,
-            ]);
+                $data_merchant_approve['owner_outlet_photo'] = $owner_outlet_name;
+            }
+            //================= End Owner outlet photo ==============
+
+            //================ Selfie KTP Photo =====================
+            if ($request->hasFile('selfie_ktp_photo')) {
+                $selfie_ktp_file        = $request->file('selfie_ktp_photo');
+                $selfie_ktp_name        = Str::random(15).'.'.$selfie_ktp_file->extension();
+                $selfie_ktp_file->storeAs('public/backend/images/selfie_ktp', $selfie_ktp_name);
+
+                $data_merchant_approve['selfie_ktp_photo'] = $selfie_ktp_name;
+            }
+            //================= End Selfie KTP Photo ================
+
+            //================== Outlet Photo =======================
+            if ($request->hasFile('outlet_photo')) {
+                $outlet_file            = $request->file('outlet_photo');
+                $outlet_name            = Str::random(15).'.'.$outlet_file->extension();
+                $outlet_file->storeAs('public/backend/images/outlet', $outlet_name);
+
+                $data_merchant_approve['outlet_photo'] = $outlet_name;
+            }
+            //================= End Outlet Photo ====================
+
+            //================= In Outlet Photo =====================
+            if ($request->hasFile('in_outlet_photo')) {
+                $in_outlet_file         = $request->file('in_outlet_photo');
+                $in_outlet_name         = Str::random(15).'.'.$in_outlet_file->extension();
+                $in_outlet_file->storeAs('public/backend/images/in_outlet', $in_outlet_name);
+
+                $data_merchant_approve['in_outlet_photo'] = $in_outlet_name;
+            }
+            //================ End In Outlet Photo ==================
+
+            if (count($data_merchant_approve) > 0) {
+                $merchant_approve = MerchantApprove::create($data_merchant_approve);
+            }
 
             if ($merchant) {
                 Alert::toast('Data Successfully Created Please check the Merchant Approved page', 'success');
@@ -493,170 +531,14 @@ class MerchantController extends Controller
         try {
             if ($merchant->delete()) {
                 Alert::toast('Data deleted successfully', 'success');
-                // return redirect()->route('merchant.index');
                 return redirect()->back();
             } else {
                 Alert::toast('Data deleted successfully', 'success');
-                // return redirect()->route('merchant.index');
                 return redirect()->back();
             }
         } catch (Exception $e) {
             Alert::toast('Data failed to delete, already related', 'error');
             return redirect()->back();
-        }
-    }
-
-    public function need_approved()
-    {
-        if (request()->ajax()) {
-            $query = Merchant::with([
-                'merchant_category',
-                'bank:id,bank_name',
-                'rek_pooling',
-                'bussiness',
-            ])
-                ->where('is_active', 0)
-                ->whereIn('approved1',['need_approved', 'rejected', 'approved'])
-                ->where('approved2', 'need_approved')
-                ->orderBy('id', 'desc')
-                ->get();
-            return DataTables::of($query)
-                ->addIndexColumn()
-                ->addColumn('merchant_category', function ($row) {
-                    return $row->merchant_category->first()->merchants_category_name;
-                })
-                ->addColumn('bussiness', function ($row) {
-                    return $row->bussiness->first()->bussiness_name;
-                })
-                ->addColumn('bank', function ($row) {
-                    return $row->bank->first()->bank_name;
-                })
-                ->addColumn('rek_pooling', function ($row) {
-                    return $row->rek_pooling->first()->rek_pooling_code;
-                })
-                ->addColumn('action', 'merchant._action')
-                ->toJson();
-        }
-        return view('merchant.need_approved');
-    }
-
-    public function reject()
-    {
-        if (request()->ajax()) {
-            $query = Merchant::with([
-                'merchant_category',
-                'bank:id,bank_name',
-                'rek_pooling',
-                'bussiness',
-            ])
-                ->where('is_active', 0)
-                ->where(function ($q) {
-                    $q->where('approved1', 'approved')
-                        ->orwhere('approved1', 'rejected');
-                })->where(function ($q) {
-                    $q->where('approved2', 'approved')
-                        ->orwhere('approved2', 'rejected');
-                })
-                ->orderBy('id', 'desc')
-                ->get();
-            return DataTables::of($query)
-                ->addIndexColumn()
-                ->addColumn('merchant_category', function ($row) {
-                    return $row->merchant_category->first()->merchants_category_name;
-                })
-                ->addColumn('bussiness', function ($row) {
-                    return $row->bussiness->first()->bussiness_name;
-                })
-                ->addColumn('bank', function ($row) {
-                    return $row->bank->first()->bank_name;
-                })
-                ->addColumn('rek_pooling', function ($row) {
-                    return $row->rek_pooling->first()->rek_pooling_code;
-                })
-                ->addColumn('action', 'merchant._action')
-                ->toJson();
-        }
-        return view('merchant.rejected');
-    }
-
-    public function approve(Request $request)
-    {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'approval' => 'required|string',
-                'merchant_id' => 'required|numeric',
-                'status' => 'required|string|in:approved,rejected,'
-            ]
-        );
-
-        if ($validator->fails()) {
-            return response()->json(['success' => false, 'message' => $validator->error()->first()], 422);
-        }
-
-        $text_status = '';
-
-        if ($request->status == 'approved') {
-            $text_status = 'approve';
-        } elseif ($request->status == 'rejected') {
-            $text_status = 'rejected';
-        }
-
-        DB::beginTransaction();
-        try {
-            $merchant = Merchant::where('id', $request->merchant_id)->first();
-
-            $ref_approval1 = ApprovalLogMerchant::where('merchant_id', $merchant->id)->where('step', 'approved1')->orderBy('id', 'desc')->first();
-
-            $ref_approval2 = ApprovalLogMerchant::where('merchant_id', $merchant->id)->where('step', 'approved2')->orderBy('id', 'desc')->first();
-
-            if (!$merchant) {
-                return response()->json(['success' => false, 'message' => 'Merchant not found'], 500);
-            }
-
-            if ($request->approval == 'approved2' && $merchant->approved1 == 'need_approved') {
-                return response()->json(['success' => false, 'message' => 'Failed to Approved 2, please approve approved 1'], 500);
-            }
-
-            if ($request->approval == 'approved1') {
-                $merchant->update([
-                    'approved1' => $request->status,
-                ]);
-            } elseif($request->approval == 'approved2') {
-                $merchant->update([
-                    'is_active' => 1,
-                    'approved2' => $request->status,
-                ]);
-            }
-
-            $ref = 1;
-
-            if ($ref_approval1->status == 'rejected' || $ref_approval2->status == 'rejected') {
-                $ref = intval($ref_approval1->ref) + 1;
-            }
-
-            $approval_merchant1 = ApprovalLogMerchant::create([
-                'merchant_id' => $merchant->id,
-                'user_id' => auth()->user()->id,
-                'status' => $request->status,
-                'step' => 'approved1',
-                'ref' => $ref
-            ]);
-
-            $approval_merchant2 = ApprovalLogMerchant::create([
-                'merchant_id' => $merchant->id,
-                'user_id' => auth()->user()->id,
-                'status' => $request->status,
-                'step' => 'approved2',
-                'ref' => $ref
-            ]);
-
-            return response()->json(['success' => true, 'message' => 'Success to '.$text_status.' merchant']);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
-        } finally {
-            DB::commit();
         }
     }
 

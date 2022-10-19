@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('approval_log_merchants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('merchant_id')->constrained('merchants')->cascadeOnDelete();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->nullable();
             $table->string('status', 50);
             $table->string('step', 100);
             $table->integer('ref');

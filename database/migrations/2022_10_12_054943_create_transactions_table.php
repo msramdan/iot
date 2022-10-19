@@ -16,6 +16,11 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('merchant_id');
+            $table->string('mti', 100);
+            $table->dateTime('date_transaction');
+            $table->string('pan', 100);
+            $table->string('rrn', 100);
+            $table->integer('amount');
             $table->foreign('merchant_id')->references('id')->on('merchants');
             $table->timestamps();
         });

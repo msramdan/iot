@@ -11,6 +11,9 @@ use App\Http\Controllers\BankController;
 use App\Http\Controllers\BussinessController;
 use App\Http\Controllers\RekPoolingController;
 use App\Http\Controllers\MerchantController;
+use App\Http\Controllers\MerchantApproveController;
+use App\Http\Controllers\MerchantRejectController;
+use App\Http\Controllers\MerchantUploadController;
 use App\Http\Controllers\ApprovalLogMerchantController;
 use App\Http\Controllers\MdrLogController;
 use App\Http\Controllers\TransactionController;
@@ -48,11 +51,19 @@ Route::prefix('panel')->middleware('auth')->group(function () {
     Route::resource('/merchants_c', MerchantsCategoryController::class);
     // merchant
     Route::controller(MerchantController::class)->group(function() {
-        Route::get('merchant/approval', 'need_approved')->name('merchant.approval');
-        Route::get('merchant/reject', 'reject')->name('merchant.rejected');
-        Route::put('merchant/approve', 'approve')->name('merchant.approve');
         Route::get('merchant/excel', 'export_excel')->name('merchant.excel');
     });
+    Route::controller(MerchantApproveController::class)->group(function() {
+        Route::get('merchant/approval', 'index')->name('merchant.approval');
+        Route::put('merchant/approve', 'approve')->name('merchant.approve');
+    });
+    Route::controller(MerchantRejectController::class)->group(function() {
+        Route::get('merchant/reject', 'reject')->name('merchant.rejected');
+    });
+    Route::controller(MerchantUploadController::class)->group(function(){
+        Route::post('merchant/import_excel', 'import_excel')->name('merchant.import_excel');
+    });
+
     Route::resource('merchant', MerchantController::class);
 
     Route::resource('transaction', TransactionController::class);
