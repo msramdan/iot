@@ -19,7 +19,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('dashbaord.index');
+        return view('admin.dashbaord.index');
     }
 
     public function change_password(Request $request)

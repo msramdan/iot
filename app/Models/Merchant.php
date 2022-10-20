@@ -7,13 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
-class Merchant extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+class Merchant extends Authenticatable
 {
     use LogsActivity;
     use HasFactory;
     protected static $logUnguarded = true;
 
     protected $guarded = ['id'];
+
+    protected $hidden = [
+        'password'
+    ];
 
     public function merchant_category()
     {
@@ -54,7 +59,7 @@ class Merchant extends Model
     {
         return LogOptions::defaults()
          -> useLogName('log_merchants')
-         -> logOnly(['merchant_name','merchant_email','phone', 'address1', 'address2', 'city', 'zip_code' ,'note'])
+         -> logOnly(['merchant_name','email','phone', 'address1', 'address2', 'city', 'zip_code' ,'note'])
          -> logOnlyDirty()
          -> dontSubmitEmptyLogs();
     }

@@ -49,7 +49,7 @@ class MerchantRejectController extends Controller
                 ->addColumn('action', 'merchant._action')
                 ->toJson();
         }
-        return view('merchant.rejected');
+        return view('admin.merchant.rejected');
     }
 
 }

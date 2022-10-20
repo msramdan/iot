@@ -29,7 +29,7 @@ class MerchantsCategoryController extends Controller
                 ->addColumn('action', 'merchants_category._action')
                 ->toJson();
         }
-        return view('merchants_category.index');
+        return view('admin.merchants_category.index');
     }
 
     /**
@@ -39,7 +39,7 @@ class MerchantsCategoryController extends Controller
      */
     public function create()
     {
-        return view('merchants_category.create');
+        return view('admin.merchants_category.create');
     }
 
     /**
@@ -96,9 +96,7 @@ class MerchantsCategoryController extends Controller
     public function edit($id)
     {
         $merchantsCategory = MerchantsCategory::findOrFail($id);
-        return view('merchants_category.edit', [
-            'merchantsCategory' => $merchantsCategory,
-        ]);
+        return view('admin.merchants_category.edit',compact('merchantsCategory'));
     }
 
     /**

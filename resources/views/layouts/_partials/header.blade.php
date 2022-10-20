@@ -28,10 +28,10 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <button class="dropdown-item" id="ubahPassword" data-bs-toggle="modal" data-bs-target="#ajaxModelEditPassword"><i class="mdi mdi-key text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Change Password</span></button>
-                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
+                        <a class="dropdown-item" href="{{ route('admin_auth.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle" data-key="t-logout">{{ __('Logout') }}</span>
                         </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        <form id="logout-form" action="{{ route('admin_auth.logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
 

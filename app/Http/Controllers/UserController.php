@@ -36,7 +36,7 @@ class UserController extends Controller
                 ->addColumn('action', 'user._action')
                 ->toJson();
         }
-        return view('user.index');
+        return view('admin.user.index');
     }
 
     /**
@@ -47,7 +47,7 @@ class UserController extends Controller
     public function create()
     {
         $role = Role::all();
-        return view('user.create', [
+        return view('admin.user.create', [
             'role' => $role
         ]);
     }
@@ -118,7 +118,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('user.edit', [
+        return view('admin.user.edit', [
             'user' => $user,
             'role' => Role::all(),
         ]);

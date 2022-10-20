@@ -20,7 +20,7 @@ class SettingAppController extends Controller
     public function index()
     {
         $setting_app = SettingApp::all()->first();
-        return view('setting_app.index', ['setting_app' => $setting_app]);
+        return view('admin.setting_app.index', ['setting_app' => $setting_app]);
     }
 
     public function update(Request $request, $id)

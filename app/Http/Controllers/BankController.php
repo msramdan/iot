@@ -33,7 +33,7 @@ class BankController extends Controller
                 ->addColumn('action', 'bank._action')
                 ->toJson();
         }
-        return view('bank.index');
+        return view('admin.bank.index');
     }
 
     /**
@@ -43,7 +43,7 @@ class BankController extends Controller
      */
     public function create()
     {
-        return view('bank.create');
+        return view('admin.bank.create');
     }
 
     /**
@@ -100,9 +100,7 @@ class BankController extends Controller
     public function edit($id)
     {
         $bank = Bank::findOrFail($id);
-        return view('bank.edit', [
-            'bank' => $bank
-        ]);
+        return view('admin.bank.edit', compact('bank'));
     }
 
     /**

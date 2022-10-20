@@ -26,11 +26,14 @@ class TransactionController extends Controller
 
             return DataTables::of($query)
                 ->addIndexColumn()
+                ->addColumn('merchant_name', function($row){
+                    return $row->merchant->first()->merchant_name;
+                })
                 ->addColumn('action', 'transaction._action')
                 ->toJson();
         }
 
-        return view('transaction.index');
+        return view('admin.transaction.index');
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\MerchantLoginController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MerchantsCategoryController;
@@ -17,6 +19,7 @@ use App\Http\Controllers\MerchantUploadController;
 use App\Http\Controllers\ApprovalLogMerchantController;
 use App\Http\Controllers\MdrLogController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -32,17 +35,43 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes(['register' => false]);
+/**
+ * Login Admin
+ */
+Route::controller(LoginController::class)->group(function() {
+    Route::get('/panel/login', 'showLoginForm')->name('admin_auth.login');
+    Route::post('/panel/login', 'login')->name('admin_auth.store');
+    Route::post('/panel/logout', 'logout')->name('admin_auth.logout');
+});
+/**
+ * Login Merchant
+ */
+Route::controller(MerchantLoginController::class)->group(function() {
+    Route::get('/login', 'showLoginForm')->name('login');
+    Route::post('/login/store', 'handleLogin')->name('login.store');
+    Route::post('/logout', 'logout')->name('logout');
+});
 
+
+Route::middleware('auth:merchant')->group(function(){
+    Route::controller(HomeController::class)->group(function(){
+        Route::get('/', 'index')->name('home');
+    });
+});
+
+
+
+/**
+ * Route Admin Panel
+ */
 Route::get('/dashboard', function () {
     return redirect()->route('dashboard');
 });
-Route::controller(DashboardController::class)->group(function () {
-    Route::get('/', 'index')->name('dashboard');
-    Route::put('/change_password', 'change_password')->name('dashboard.change_password');
-});
-
-Route::prefix('panel')->middleware('auth')->group(function () {
+Route::prefix('panel')->middleware('auth:web')->group(function () {
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/', 'index')->name('dashboard');
+        Route::put('/change_password', 'change_password')->name('dashboard.change_password');
+    });
     // roles
     Route::resource('/roles', RolesController::class);
     // user

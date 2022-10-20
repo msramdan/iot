@@ -1,17 +1,17 @@
 @extends('layouts.master')
-@section('title', 'Data Merchant Need Approved')
+@section('title', 'Data Merchant Active')
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Merchant Need Approved</h4>
+                    <h4 class="mb-sm-0">Merchant Rejected</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Merchant Need Approved</li>
+                            <li class="breadcrumb-item active">Merchant Rejected</li>
                         </ol>
                     </div>
 
@@ -22,37 +22,37 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        {{-- <div class="table-responsive"> --}}
-                            <table class="table table-bordered table-sm" id="dataTable">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>MID</th>
-                                        <th>Merchant Name</th>
-                                        <th>Email</th>
-                                        <th>Merchant Category</th>
-                                        <th>Phone</th>
-                                        <th>Bussiness</th>
-                                        <th>City</th>
-                                        @canany(['merchant_show','merchant_update', 'merchant_delete'])
-                                        <th>Action</th>
-                                        @endcanany
-                                    </tr>
-                                </thead>
-                            </table>
-                        {{-- </div> --}}
+                        <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>MID</th>
+                                    <th>Merchant Name</th>
+                                    <th>Email</th>
+                                    <th>Merchant Category</th>
+                                    <th>Phone</th>
+                                    <th>Bussiness</th>
+                                    <th>City</th>
+                                    @canany(['merchant_show','merchant_update', 'merchant_delete'])
+                                            <th>Action</th>
+                                    @endcanany
+                                </tr>
+                            </thead>
+                        </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 </div>
 @endsection
 @push('js')
-<script>
-    let base_url = "{{ url('/') }}";
+    <script>
+
+        let base_url = "{{ url('/') }}";
 
         const action = '{{ auth()->user()->can('merchant_update') || auth()->user()->can('merchant_delete') ? 'yes yes yes' : '' }}'
         let columns = [
@@ -71,8 +71,8 @@
                 name: 'merchant_name'
             },
             {
-                data: 'merchant_email',
-                name: 'merchant_email'
+                data: 'email',
+                name: 'email'
             },
             {
                 data : 'merchant_category',
@@ -105,8 +105,8 @@
         $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('merchant.approval') }}",
+            ajax: "{{ route('merchant.rejected') }}",
             columns: columns
         });
-</script>
+    </script>
 @endpush

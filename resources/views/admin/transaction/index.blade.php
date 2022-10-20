@@ -33,6 +33,11 @@
                                     <th>#</th>
                                     <th>MID</th>
                                     <th>Merchant Name</th>
+                                    <th>MTI</th>
+                                    <th>Date Transaction</th>
+                                    <th>Pan</th>
+                                    <th>Rrn</th>
+                                    <th>Amount</th>
                                     @canany(['transaction_show','transaction_delete'])
                                             <th >Action</th>
                                     @endcanany
@@ -59,9 +64,33 @@
                 searchable: false
             },
             {
-                data: 'merchant_name',
-                name: 'merchant_name'
+                data:'mid',
+                name:'mid'
             },
+            {
+                data:'merchant_name',
+                name:'merchant_name'
+            },
+            {
+                data:'mti',
+                name:'mti'
+            },
+            {
+                data: 'date_transaction',
+                name: 'date_transaction',
+            },
+            {
+                data: 'pan',
+                name: 'pan'
+            },
+            {
+                data: 'rrn',
+                name: 'rrn'
+            },
+            {
+                data: 'amount',
+                name: 'amount'
+            }
         ]
 
         if (action) {

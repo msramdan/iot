@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('mid', 50)->nullable();
             $table->string('merchant_name', 200);
-            $table->string('merchant_email', 100)->unique();
+            $table->string('email', 100)->unique();
             $table->foreignId('merchant_category_id')->nullable();
             $table->foreignId('bussiness_id')->nullable();
             $table->foreignId('bank_id')->nullable();
@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('approved2', 100)->default('need_approved');
             $table->text('note')->nullable();
             $table->string('password', 200);
+            $table->rememberToken();
             $table->timestamps();
             $table->foreign('bank_id')->references('id')->on('banks');
             $table->foreign('merchant_category_id')->references('id')->on('merchants_category');
