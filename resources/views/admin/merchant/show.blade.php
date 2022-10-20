@@ -46,7 +46,7 @@
                                         </tr>
                                         <tr>
                                             <th>Merchant email</th>
-                                            <td class="text-right" id="merchant-email">: {{ $merchant->merchant_email }}</td>
+                                            <td class="text-right" id="merchant-email">: {{ $merchant->email }}</td>
                                         </tr>
                                         <tr>
                                             <th>Merchant Category</th>

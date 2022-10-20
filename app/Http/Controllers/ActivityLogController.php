@@ -56,6 +56,6 @@ class ActivityLogController extends Controller
                 ->make(true);
             // ->toJson();
         }
-        return view('activity_log.index');
+        return view('admin.activity_log.index');
     }
 }

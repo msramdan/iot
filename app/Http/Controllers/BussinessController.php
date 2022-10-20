@@ -33,7 +33,7 @@ class BussinessController extends Controller
                 ->addColumn('action', 'bussiness._action')
                 ->toJson();
         }
-        return view('bussiness.index');
+        return view('admin.bussiness.index');
     }
 
     /**
@@ -43,7 +43,7 @@ class BussinessController extends Controller
      */
     public function create()
     {
-        return view('bussiness.create');
+        return view('admin.bussiness.create');
     }
 
     /**
@@ -100,9 +100,7 @@ class BussinessController extends Controller
     public function edit($id)
     {
         $bussiness = Bussiness::findOrFail($id);
-        return view('bussiness.edit', [
-            'bussiness' => $bussiness
-        ]);
+        return view('admin.bussiness.edit', compact('bussiness'));
     }
 
     /**

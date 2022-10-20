@@ -75,7 +75,7 @@ class MerchantApproveController extends Controller
                 ->addColumn('action', 'merchant._action')
                 ->toJson();
         }
-        return view('merchant.need_approved');
+        return view('admin.merchant.need_approved');
     }
 
     public function approve(Request $request)

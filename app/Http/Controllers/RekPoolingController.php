@@ -38,7 +38,7 @@ class RekPoolingController extends Controller
                 ->addColumn('action', 'rek_pooling._action')
                 ->toJson();
         }
-        return view('rek_pooling.index');
+        return view('admin.rek_pooling.index');
     }
 
     /**
@@ -49,7 +49,7 @@ class RekPoolingController extends Controller
     public function create()
     {
         $bank = Bank::all();
-        return view('rek_pooling.create', compact('bank'));
+        return view('admin.rek_pooling.create', compact('bank'));
     }
 
     /**
@@ -111,7 +111,7 @@ class RekPoolingController extends Controller
     {
         $rek_pooling = RekPooling::findOrFail($id);
         $bank = Bank::all();
-        return view('rek_pooling.edit', compact('rek_pooling', 'bank'));
+        return view('admin.rek_pooling.edit', compact('rek_pooling', 'bank'));
     }
 
     /**

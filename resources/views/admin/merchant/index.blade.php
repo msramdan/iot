@@ -109,8 +109,8 @@
                 name: 'merchant_name'
             },
             {
-                data: 'merchant_email',
-                name: 'merchant_email'
+                data: 'email',
+                name: 'email'
             },
             {
                 data : 'merchant_category',

@@ -71,7 +71,7 @@ class ApprovalLogMerchantController extends Controller
                 ->addColumn('action', 'merchant._action')
                 ->toJson();
         }
-        return view('approval_log_merchant.index');
+        return view('admin.approval_log_merchant.index');
     }
 
     /**

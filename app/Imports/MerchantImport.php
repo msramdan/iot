@@ -68,7 +68,7 @@ WithValidation
 
         return new Merchant([
             'merchant_name'         => $row['merchant_name'],
-            'merchant_email'        => $row['merchant_email'],
+            'email'        => $row['merchant_email'],
             'merchant_category_id'  => $merchant_category_id,
             'bussiness_id'          => $bussiness_id,
             'bank_id'               => $bank_id,

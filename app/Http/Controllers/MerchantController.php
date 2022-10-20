@@ -99,7 +99,7 @@ class MerchantController extends Controller
                 ->addColumn('action', 'merchant._action')
                 ->toJson();
         }
-        return view('merchant.index');
+        return view('admin.merchant.index');
     }
 
     /**
@@ -113,7 +113,7 @@ class MerchantController extends Controller
         $merchant_category = MerchantsCategory::all();
         $bussiness = Bussiness::all();
         $rek_pooling = RekPooling::all();
-        return view('merchant.create', compact('bank', 'merchant_category', 'bussiness', 'rek_pooling'));
+        return view('admin.merchant.create', compact('bank', 'merchant_category', 'bussiness', 'rek_pooling'));
     }
 
     /**
@@ -128,7 +128,7 @@ class MerchantController extends Controller
             $request->all(),
             [
                 'merchant_name' => 'required|string|max:200',
-                'merchant_email' => 'required|string|max:100|unique:merchants,merchant_email',
+                'merchant_email' => 'required|string|max:100|unique:merchants,email',
                 'merchant_category_id' => 'required|numeric|exists:merchants_category,id',
                 'bussiness_id' => 'required|numeric|exists:bussinesses,id',
                 'bank_id' => 'required|numeric|exists:banks,id',
@@ -168,7 +168,7 @@ class MerchantController extends Controller
         try {
             $merchant = Merchant::create([
                 'merchant_name' => $request->merchant_name,
-                'merchant_email' => $request->merchant_email,
+                'email' => $request->merchant_email,
                 'merchant_category_id' => $request->merchant_category_id,
                 'bussiness_id' => $request->bussiness_id,
                 'bank_id' => $request->bank_id,
@@ -283,7 +283,7 @@ class MerchantController extends Controller
             'merchant_approve'
         ])->findOrFail($id);
 
-        return view('merchant.show', compact('merchant'));
+        return view('admin.merchant.show', compact('merchant'));
     }
 
     /**
@@ -299,7 +299,7 @@ class MerchantController extends Controller
         $merchant_category = MerchantsCategory::all();
         $bussiness = Bussiness::all();
         $rek_pooling = RekPooling::all();
-        return view('merchant.edit', compact('merchant', 'bank', 'merchant_category', 'bussiness', 'rek_pooling'));
+        return view('admin.merchant.edit', compact('merchant', 'bank', 'merchant_category', 'bussiness', 'rek_pooling'));
     }
 
     /**
@@ -315,7 +315,7 @@ class MerchantController extends Controller
             $request->all(),
             [
                 'merchant_name' => 'required|string|max:200',
-                'merchant_email' => 'required|string|max:100|unique:merchants,merchant_email,' . $id,
+                'merchant_email' => 'required|string|max:100|unique:merchants,email,' . $id,
                 'merchant_category_id' => 'required|numeric|exists:merchants_category,id',
                 'bussiness_id' => 'required|numeric|exists:bussinesses,id',
                 'bank_id' => 'required|numeric|exists:banks,id',
@@ -365,7 +365,7 @@ class MerchantController extends Controller
 
             $merchant->update([
                 'merchant_name' => $request->merchant_name,
-                'merchant_email' => $request->merchant_email,
+                'email' => $request->merchant_email,
                 'merchant_category_id' => $request->merchant_category_id,
                 'bussiness_id' => $request->bussiness_id,
                 'bank_id' => $request->bank_id,

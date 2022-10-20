@@ -47,7 +47,7 @@
                                                 <div class="col-md-3 col-md-6">
                                                     <div>
                                                         <label for="merchant_email">Merchant Email</label>
-                                                        <input type="text" class="form-control @error('merchant_email') is-invalid @enderror" name="merchant_email" id="merchant_email" placeholder="" value="{{ old('merchant_email') ? old('merchant_email') : $merchant->merchant_email  }}" autocomplete="off">
+                                                        <input type="text" class="form-control @error('merchant_email') is-invalid @enderror" name="merchant_email" id="merchant_email" placeholder="" value="{{ old('merchant_email') ? old('merchant_email') : $merchant->email  }}" autocomplete="off">
                                                         @error('merchant_email')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror

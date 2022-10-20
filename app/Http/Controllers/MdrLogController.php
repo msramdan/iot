@@ -45,7 +45,7 @@ class MdrLogController extends Controller
                 ->addColumn('action', 'merchant._action')
                 ->toJson();
         }
-        return view('mdr_log.index');
+        return view('admin.mdr_log.index');
     }
 
     public function getDetailMdr($id)

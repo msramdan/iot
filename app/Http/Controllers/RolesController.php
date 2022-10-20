@@ -31,7 +31,7 @@ class RolesController extends Controller
                 ->addColumn('action', 'roles._action')
                 ->toJson();
         }
-        return view('roles.index');
+        return view('admin.roles.index');
     }
 
     /**
@@ -41,7 +41,7 @@ class RolesController extends Controller
      */
     public function create()
     {
-        return view('roles.create');
+        return view('admin.roles.create');
     }
 
     public function store(Request $request)
@@ -89,7 +89,7 @@ class RolesController extends Controller
     public function edit(Role $role)
     {
         $data = $role->permissions()->pluck('name')->toArray();
-        return view('roles.edit', [
+        return view('admin.roles.edit', [
             'role' => $role,
             'permissionChecked' => $data
         ]);

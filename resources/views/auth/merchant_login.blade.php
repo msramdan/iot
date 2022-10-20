@@ -9,7 +9,7 @@
         </div>
 
         <div class="mt-4">
-            <form class="user" method="POST" action="{{ route('admin_auth.store') }}">
+            <form class="user" method="POST" action="{{ route('login.store') }}">
                 @csrf
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
@@ -35,7 +35,11 @@
                 <div class="mt-4">
                     <button class="btn btn-success w-100" type="submit">Sign In</button>
                 </div>
+
             </form>
+        </div>
+        <div class="mt-5 text-center">
+            <p class="mb-0">Forgot your password ? <a href="#" class="fw-semibold text-primary text-decoration-underline"> Recover Here</a> </p>
         </div>
     </div>
 </div>
