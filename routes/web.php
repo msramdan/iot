@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\MerchantLoginController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\DashboardController;
@@ -51,9 +52,12 @@ Route::controller(MerchantLoginController::class)->group(function() {
     Route::post('/login/store', 'handleLogin')->name('login.store');
     Route::post('/logout', 'logout')->name('logout');
 });
+Route::controller(RegisterController::class)->group(function() {
+    Route::get('/register', 'showRegistrationForm')->name('register');
+});
 
 
-Route::middleware('auth:merchant')->group(function(){
+Route::middleware(['auth:merchant', 'merchant_auth'])->group(function(){
     Route::controller(HomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
     });

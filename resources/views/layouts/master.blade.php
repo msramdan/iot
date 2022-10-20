@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
 {{-- style --}}
-@include('layouts._partials.style')
+@include('layouts._partials.admin.style')
 <body>
     <div class="modal fade" id="ajaxModelEditPassword"  >
         <div class="modal-dialog">
@@ -36,7 +36,7 @@
 
     <div id="layout-wrapper">
         {{-- header --}}
-        @include('layouts._partials.header')
+        @include('layouts._partials.admin.header')
         <div class="app-menu navbar-menu">
             <div class="navbar-brand-box">
                 <a href="index.html" class="logo logo-dark">
@@ -60,21 +60,21 @@
                 </button>
             </div>
             {{-- sidebar --}}
-            @include('layouts._partials.sidebar')
+            @include('layouts._partials.admin.sidebar')
         </div>
         <div class="vertical-overlay"></div>
         <div class="main-content">
             {{-- contents --}}
             @yield('content')
             {{-- footer --}}
-            @include('layouts._partials.footer')
+            @include('layouts._partials.admin.footer')
         </div>
 
     </div>
     <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
         <i class="ri-arrow-up-line"></i>
     </button>
-    @include('layouts._partials.script')
+    @include('layouts._partials.admin.script')
 
 </body>
 </html>

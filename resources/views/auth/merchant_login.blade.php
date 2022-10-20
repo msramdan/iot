@@ -5,7 +5,7 @@
     <div class="p-lg-5 p-4">
         <div>
             <h5 class="text-primary">Welcome Back !</h5>
-            <p class="text-muted">Sign in to continue</p>
+            <p class="text-muted">Sign in to Merchant</p>
         </div>
 
         <div class="mt-4">
@@ -39,6 +39,7 @@
             </form>
         </div>
         <div class="mt-5 text-center">
+            <p class="mb-0">Doesn't have account? <a href="{{ route('register') }}" class="fw-semibold text-primary text-decoration-underline"> Register</a> </p>
             <p class="mb-0">Forgot your password ? <a href="#" class="fw-semibold text-primary text-decoration-underline"> Recover Here</a> </p>
         </div>
     </div>

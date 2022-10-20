@@ -33,12 +33,12 @@ class MerchantLoginController extends Controller
             return redirect('/');
         }
 
-        return redirect()->back()->with('error', 'Invalid Credentials');
+        return redirect()->back()->withErrors(['email' => 'These credentials do not match our records.']);
     }
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('merchant')->logout();
 
         return redirect('/');
     }
