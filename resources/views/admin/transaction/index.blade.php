@@ -22,8 +22,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{ route('transaction.create') }}" class="btn btn-md btn-success"> <i class="mdi mdi-upload"></i> Upload</a>
-                        <a href="{{ route('transaction.create') }}" class="btn btn-md btn-danger"> <i class="mdi mdi-download"></i> Download</a>
+
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
