@@ -75,7 +75,7 @@
                             @enderror
                         </div>
                     </div>
-                    <a href="{{ Storage::url('public/backend/bulk_upload_format/Format Bulk Upload Merchant.xlsx') }}">Download upload format</a>
+                    <a href="{{ asset('backend/format_upload/Format Bulk Upload Merchant.xlsx') }}">Download upload format</a>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" type="submit">Submit</button>
