@@ -35,7 +35,7 @@ class RekPoolingController extends Controller
                 ->addColumn('bank', function($row) {
                     return $row->bank->first()->bank_name;
                 })
-                ->addColumn('action', 'rek_pooling._action')
+                ->addColumn('action', 'admin.rek_pooling._action')
                 ->toJson();
         }
         return view('admin.rek_pooling.index');

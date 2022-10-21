@@ -33,7 +33,7 @@ class UserController extends Controller
                 ->addColumn('roles', function ($row) {
                     return $row->roles->first()->name;
                 })
-                ->addColumn('action', 'user._action')
+                ->addColumn('action', 'admin.user._action')
                 ->toJson();
         }
         return view('admin.user.index');

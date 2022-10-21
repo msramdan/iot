@@ -46,7 +46,7 @@ class MerchantRejectController extends Controller
                 ->addColumn('rek_pooling', function ($row) {
                     return $row->rek_pooling->first()->rek_pooling_code;
                 })
-                ->addColumn('action', 'merchant._action')
+                ->addColumn('action', 'admin.merchant._action')
                 ->toJson();
         }
         return view('admin.merchant.rejected');

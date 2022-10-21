@@ -35,7 +35,12 @@ class ApprovalLogMerchantController extends Controller
                     return $row->merchant->merchant_name;
                 })
                 ->addColumn('user', function ($row) {
-                    return $row->user->first()->name;
+                    if ($row->user) {
+                        $user = $row->user->first()->name;
+                    } else {
+                        $user = '-';
+                    }
+                    return $user;
                 })
                 ->addColumn('status', function ($row) {
                     if ($row->status == 'need_approved') {
@@ -68,7 +73,6 @@ class ApprovalLogMerchantController extends Controller
                 ->addColumn('time', function ($row) {
                     return Carbon::parse($row->created_at)->diffForHumans();
                 })
-                ->addColumn('action', 'merchant._action')
                 ->toJson();
         }
         return view('admin.approval_log_merchant.index');
