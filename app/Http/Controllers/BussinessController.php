@@ -30,7 +30,7 @@ class BussinessController extends Controller
             $query = Bussiness::query();
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('action', 'bussiness._action')
+                ->addColumn('action', 'admin.bussiness._action')
                 ->toJson();
         }
         return view('admin.bussiness.index');

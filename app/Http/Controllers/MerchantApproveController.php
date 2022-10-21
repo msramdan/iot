@@ -10,6 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Exception;
 class MerchantApproveController extends Controller
 {
@@ -72,7 +73,7 @@ class MerchantApproveController extends Controller
                     }
                     return $rek_pooling;
                 })
-                ->addColumn('action', 'merchant._action')
+                ->addColumn('action', 'admin.merchant._action')
                 ->toJson();
         }
         return view('admin.merchant.need_approved');
@@ -123,8 +124,15 @@ class MerchantApproveController extends Controller
                 ]);
             } elseif($request->approval == 'approved2') {
                 $merchant->update([
+                    'mid' => 'MRC'.Str::random(10),
                     'is_active' => 1,
                     'approved2' => $request->status,
+                ]);
+            }
+
+            if ($request->status == 'rejected' && $merchant->is_active == 1) {
+                $merchant->update([
+                    'is_active' => 0
                 ]);
             }
 

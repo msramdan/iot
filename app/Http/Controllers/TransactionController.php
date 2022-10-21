@@ -29,7 +29,7 @@ class TransactionController extends Controller
                 ->addColumn('merchant_name', function($row){
                     return $row->merchant->first()->merchant_name;
                 })
-                ->addColumn('action', 'transaction._action')
+               // ->addColumn('action', 'admin.transaction._action')
                 ->toJson();
         }
 

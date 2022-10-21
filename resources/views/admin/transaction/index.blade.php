@@ -37,9 +37,9 @@
                                     <th>Pan</th>
                                     <th>Rrn</th>
                                     <th>Amount</th>
-                                    @canany(['transaction_show','transaction_delete'])
+                                    {{-- @canany(['transaction_show','transaction_delete'])
                                             <th >Action</th>
-                                    @endcanany
+                                    @endcanany --}}
                                 </tr>
                             </thead>
                         </table>
@@ -92,14 +92,14 @@
             }
         ]
 
-        if (action) {
-            columns.push({
-                data: 'action',
-                name: 'action',
-                orderable: false,
-                searchable: false
-            })
-        }
+        // if (action) {
+        //     columns.push({
+        //         data: 'action',
+        //         name: 'action',
+        //         orderable: false,
+        //         searchable: false
+        //     })
+        // }
 
         $('#dataTable').DataTable({
             processing: true,

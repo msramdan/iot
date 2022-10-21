@@ -26,7 +26,7 @@ class MerchantsCategoryController extends Controller
             $query = MerchantsCategory::query();
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('action', 'merchants_category._action')
+                ->addColumn('action', 'admin.merchants_category._action')
                 ->toJson();
         }
         return view('admin.merchants_category.index');

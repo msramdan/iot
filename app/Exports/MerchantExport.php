@@ -22,6 +22,6 @@ class MerchantExport implements FromView
     {
         $merchants = $this->merchants;
 
-        return view('merchant.excel', compact('merchants'));
+        return view('admin.merchant.excel', compact('merchants'));
     }
 }
