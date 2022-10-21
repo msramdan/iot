@@ -34,7 +34,7 @@
                                         <th>Phone</th>
                                         <th>Bussiness</th>
                                         <th>City</th>
-                                        @canany(['merchant_show','merchant_update', 'merchant_delete'])
+                                        @canany(['merchant_show','merchant_update', 'merchant_delete','approved_step_1','approved_step_2'])
                                         <th>Action</th>
                                         @endcanany
                                     </tr>
@@ -54,7 +54,7 @@
 <script>
     let base_url = "{{ url('/') }}";
 
-        const action = '{{ auth()->user()->can('merchant_update') || auth()->user()->can('merchant_delete') ? 'yes yes yes' : '' }}'
+        const action = '{{ auth()->user()->can('merchant_update') ||auth()->user()->can('approved_step_1') ||auth()->user()->can('approved_step_2') || auth()->user()->can('merchant_delete') ? 'yes yes yes' : '' }}'
         let columns = [
             {
                 data: 'DT_RowIndex',
