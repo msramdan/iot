@@ -96,7 +96,7 @@ class MerchantController extends Controller
                     }
                     return $rek_pooling;
                 })
-                ->addColumn('action', 'merchant._action')
+                ->addColumn('action', 'admin.merchant._action')
                 ->toJson();
         }
         return view('admin.merchant.index');

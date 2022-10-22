@@ -53,6 +53,9 @@ return [
         'activity_log' =>[
             'activity_log_show',
         ],
+        'transaction' =>[
+            'transaction_show',
+        ],
         'merchant' => [
             'merchant_show',
             'merchant_create',

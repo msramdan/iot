@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
 {{-- style --}}
-@include('layouts._auth.style')
+@include('layouts._auth.admin.style')
 <body>
     <div class="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">
         <div class="bg-overlay"></div>
@@ -31,10 +31,10 @@
             </div>
         </div>
         {{-- footer --}}
-        @include('layouts._auth.footer')
+        @include('layouts._auth.admin.footer')
     </div>
     {{-- script --}}
-    @include('layouts._auth.script')
+    @include('layouts._auth.admin.script')
 </body>
 
 </html>

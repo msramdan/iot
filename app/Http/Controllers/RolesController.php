@@ -28,7 +28,7 @@ class RolesController extends Controller
             $query = Role::query();
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('action', 'roles._action')
+                ->addColumn('action', 'admin.roles._action')
                 ->toJson();
         }
         return view('admin.roles.index');

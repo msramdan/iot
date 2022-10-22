@@ -23,30 +23,40 @@
                 <div class="card">
                     <div class="card-header">
                         @can('role_create')
-                            <a href="{{ route('merchant.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i> Create</a>
+                        <a href="{{ route('merchant.create') }}" class="btn btn-md btn-secondary"> <i
+                                class="mdi mdi-plus"></i> Create</a>
                         @endcan
-                        <button data-bs-toggle="modal" data-bs-target="#merchant-upload" id="merchantUpload" class="btn btn-md btn-success"> <i class="mdi mdi-upload"></i> Upload</button>
-                        <a href="{{ route('merchant.excel') }}" class="btn btn-md btn-danger"> <i class="mdi mdi-download"></i> Download</a>
+
+                        @can('bulk_upload')
+                        <button data-bs-toggle="modal" data-bs-target="#merchant-upload" id="merchantUpload"
+                            class="btn btn-md btn-success"> <i class="mdi mdi-upload"></i> Upload</button>
+                        @endcan
+                        @can('bulk_download')
+                        <a href="{{ route('merchant.excel') }}" class="btn btn-md btn-danger"> <i
+                                class="mdi mdi-download"></i> Download</a>
+                        @endcan
+
+
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>MID</th>
-                                    <th>Merchant Name</th>
-                                    <th>Email</th>
-                                    <th>Merchant Category</th>
-                                    <th>Phone</th>
-                                    <th>Bussiness</th>
-                                    <th>City</th>
-                                    @canany(['merchant_show','merchant_update', 'merchant_delete'])
-                                            <th >Action</th>
-                                    @endcanany
-                                </tr>
-                            </thead>
-                        </table>
+                            <table class="table table-bordered" id="dataTable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>MID</th>
+                                        <th>Merchant Name</th>
+                                        <th>Email</th>
+                                        <th>Merchant Category</th>
+                                        <th>Phone</th>
+                                        <th>Bussiness</th>
+                                        <th>City</th>
+                                        @canany(['merchant_show','merchant_update', 'merchant_delete','approved_step_1','approved_step_2'])
+                                        <th>Action</th>
+                                        @endcanany
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -69,13 +79,15 @@
                     <div class="form-group">
                         <div>
                             <label for="basiInput" class="form-label">File Excel</label>
-                            <input type="file" name="file" class="form-control @error('file') is-invalid @enderror" id="basiInput">
+                            <input type="file" name="file" class="form-control @error('file') is-invalid @enderror"
+                                id="basiInput">
                             @error('file')
                             <span style="color: red;">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
-                    <a href="{{ Storage::url('public/backend/bulk_upload_format/Format Bulk Upload Merchant.xlsx') }}">Download upload format</a>
+                    <a href="{{ asset('backend/format_upload/Format Bulk Upload Merchant.xlsx') }}">Download upload
+                        format</a>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" type="submit">Submit</button>
@@ -88,11 +100,10 @@
 
 @endsection
 @push('js')
-    <script>
+<script>
+    let base_url = "{{ url('/') }}";
 
-        let base_url = "{{ url('/') }}";
-
-        const action = '{{ auth()->user()->can('merchant_update') || auth()->user()->can('merchant_delete') ? 'yes yes yes' : '' }}'
+    const action = '{{ auth()->user()->can('merchant_update') ||auth()->user()->can('approved_step_1') ||auth()->user()->can('approved_step_2') || auth()->user()->can('merchant_delete') ? 'yes yes yes' : '' }}'
         let columns = [
             {
                 data: 'DT_RowIndex',
@@ -146,6 +157,5 @@
             ajax: "{{ route('merchant.index') }}",
             columns: columns
         });
-    </script>
+</script>
 @endpush
-

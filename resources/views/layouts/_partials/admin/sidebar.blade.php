@@ -9,11 +9,13 @@
                     <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards">Dashboard</span>
                 </a>
             </li>
+            @canany(['transaction_show'])
             <li class="nav-item">
                 <a class="nav-link menu-link {{ set_active('transaction*') }}" href="{{ route('transaction.index') }}" role="button" aria-expanded="false" aria-controls="sidebarApps">
                     <i class="mdi mdi-view-grid-plus-outline"></i> <span data-key="t-apps">Transactions</span>
                 </a>
             </li>
+            @endcanany
             @canany(['merchant_show'])
             <li class="nav-item">
                 <a class="nav-link menu-link collapsed" href="#sidebarIconsMerchant" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="sidebarIcons" aria-expanded="false">

@@ -42,7 +42,6 @@ class MdrLogController extends Controller
                 ->addColumn('time', function ($row) {
                     return Carbon::parse($row->created_at)->diffForHumans();
                 })
-                ->addColumn('action', 'merchant._action')
                 ->toJson();
         }
         return view('admin.mdr_log.index');

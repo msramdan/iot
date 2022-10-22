@@ -35,7 +35,6 @@
 </div>
 
 
-
 <td>
     @can('merchant_update')
     <a href="{{ route('merchant.edit', $model->id) }}" class="btn btn-md btn-sm  btn-warning"><i
@@ -49,6 +48,7 @@
         <button type="submit" class="btn btn-md btn-sm  btn-danger"><i class="mdi mdi-trash-can-outline"></i> </button>
     </form>
     @endcan
+    @canany(['approved_step_1','approved_step_2'])
     <div class="btn-group">
         <button type="button" title="Other" class="btn btn-md btn-success btn-sm dropdown-toggle"
             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-cog"></i> </button>
@@ -60,6 +60,7 @@
                 data-id="{{ $model->id }}">Mdr Log</a>
         </div>
     </div>
+    @endcanany
 </td>
 
 

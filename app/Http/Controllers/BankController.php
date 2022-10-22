@@ -30,7 +30,7 @@ class BankController extends Controller
             $query = Bank::query();
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('action', 'bank._action')
+                ->addColumn('action', 'admin.bank._action')
                 ->toJson();
         }
         return view('admin.bank.index');

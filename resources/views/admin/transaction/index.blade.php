@@ -22,8 +22,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{ route('transaction.create') }}" class="btn btn-md btn-success"> <i class="mdi mdi-upload"></i> Upload</a>
-                        <a href="{{ route('transaction.create') }}" class="btn btn-md btn-danger"> <i class="mdi mdi-download"></i> Download</a>
+
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -38,9 +37,9 @@
                                     <th>Pan</th>
                                     <th>Rrn</th>
                                     <th>Amount</th>
-                                    @canany(['transaction_show','transaction_delete'])
+                                    {{-- @canany(['transaction_show','transaction_delete'])
                                             <th >Action</th>
-                                    @endcanany
+                                    @endcanany --}}
                                 </tr>
                             </thead>
                         </table>
@@ -93,14 +92,14 @@
             }
         ]
 
-        if (action) {
-            columns.push({
-                data: 'action',
-                name: 'action',
-                orderable: false,
-                searchable: false
-            })
-        }
+        // if (action) {
+        //     columns.push({
+        //         data: 'action',
+        //         name: 'action',
+        //         orderable: false,
+        //         searchable: false
+        //     })
+        // }
 
         $('#dataTable').DataTable({
             processing: true,
