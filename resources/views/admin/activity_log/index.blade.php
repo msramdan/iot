@@ -23,24 +23,22 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                        <table class="table table-bordered table-sm" id="dataTable" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Log Name</th>
-                                    <th>Description</th>
-                                    <th>Event</th>
-                                    <th>User</th>
-                                    <th>New Value</th>
-                                    <th>Old Value</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                        </div>
+                            <table class="table table-sm" id="dataTable" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>#</th>
+                                        <th>Log Name</th>
+                                        <th>Description</th>
+                                        <th>Event</th>
+                                        <th>User</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                               <tbody></tbody>
+                            </table>
+                            
                     </div>
                 </div>
             </div>
@@ -48,10 +46,17 @@
 
     </div>
 </div>
+
 @endsection
 @push('js')
-    <script>
-        let columns = [
+<script>
+    let columns = [
+            {
+                className: 'dt-control',
+                orderable: false,
+                data: null,
+                defaultContent: '',
+            },
             {
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
@@ -75,28 +80,51 @@
                 name: 'causer'
             },
             {
-                data: 'new_value',
-                name: 'new_value'
-            },
-            {
-                data: 'old_value',
-                name: 'old_value'
-            },
-            {
                 data: 'created_at',
                 name: 'created_at'
             },
             {
                 data: 'time',
                 name: 'time'
-            }
+            },
+            
         ]
 
-        $('#dataTable').DataTable({
+        
+
+        const table = $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ route('activity_log.index') }}",
-            columns: columns
+            columns: columns,
+            order: [[1, 'asc']]
         });
-    </script>
+
+        $('#dataTable tbody').on('click', 'td.dt-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+            
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+            } else {
+                row.child(format(row.data())).show();
+                tr.addClass('shown');
+            }
+        });
+
+        function format(d) {
+            console.log(d)
+            return (
+                `<div class="mb-4">
+                    <label for="form-label">Old Value</label>
+                    <textarea name="" id="" cols="30" rows="10" class="form-control" disabled>${d.old_value}</textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="form-label">New Value</label>
+                    <textarea name="" id="" cols="30" rows="10" class="form-control" disabled>${d.new_value}</textarea>
+                </div>`
+                );
+        }
+</script>
 @endpush

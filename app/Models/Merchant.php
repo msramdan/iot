@@ -8,7 +8,9 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-class Merchant extends Authenticatable
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+class Merchant extends Authenticatable implements JWTSubject
 {
     use LogsActivity;
     use HasFactory;
@@ -73,4 +75,15 @@ class Merchant extends Authenticatable
         }
         return "Merchants " .$this->merchant_name . " {$eventName} By "  . $user;
     }
+
+   
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }    
 }

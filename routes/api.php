@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\MerchantController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +18,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+
+Route::get('unauthorize', function(){
+    return response()->json(['message' => 'Unauthorize'], 401);
+})->name('api.unauthorize');
+
+Route::prefix('merchant')->controller(AuthController::class)->group(function(){
+    Route::post('login', 'login');
+    Route::post('refresh', 'refresh');
+    Route::post('logout', 'logout');
+    Route::post('me', 'me')->middleware('merchant:merchant-api');
+    Route::post('/forgot-password', 'forgotPassword')->middleware('guest')->name('password.email');
+    Route::post('/reset-password', 'resetPassword')->middleware('guest')->name('password.reset');
+});
+
+
+Route::prefix('merchant')->middleware(['merchant:merchant-api'])->controller(MerchantController::class)->group(function(){
+    Route::get('transactions/{merchantId}', 'transactions');
 });

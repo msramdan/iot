@@ -12,7 +12,6 @@ class ActivityLogController extends Controller
 
     public function index()
     {
-
         if (request()->ajax()) {
             $query = ActivityLog::with('user')->orderBy('id', 'DESC')->get();
             return DataTables::of($query)
@@ -31,7 +30,7 @@ class ActivityLogController extends Controller
                         }
                     }
                     $hasil =  json_encode(($items), JSON_PRETTY_PRINT);
-                    return '<pre>' . $hasil . '</pre>';
+                    return $hasil;
                 })
                 ->addColumn('old_value', function ($row) {
                     $array =  json_decode($row->properties);
@@ -44,7 +43,7 @@ class ActivityLogController extends Controller
                         }
                     }
                     $hasil =  json_encode(($items), JSON_PRETTY_PRINT);
-                    return '<pre>' . $hasil . '</pre>';
+                    return $hasil;
                 })
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d M Y H:i:s');
@@ -52,7 +51,7 @@ class ActivityLogController extends Controller
                 ->addColumn('time', function ($row) {
                     return Carbon::parse($row->created_at)->diffForHumans();
                 })
-                ->rawColumns(['new_value', 'old_value'])
+                // ->rawColumns([ 'old_value'])
                 ->make(true);
             // ->toJson();
         }

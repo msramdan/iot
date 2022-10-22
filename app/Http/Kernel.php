@@ -68,5 +68,10 @@ class Kernel extends HttpKernel
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+
+        // JWT
+        'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
+        'merchant' => \App\Http\Middleware\MerchantAuthAPI::class,
+
     ];
 }

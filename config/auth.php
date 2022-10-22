@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'merchant-api' => [
+            'driver' => 'jwt',
+            'provider' => 'merchant',
+        ],
         'merchant' => [
             'driver' => 'session',
             'provider' => 'merchant'
@@ -96,6 +100,12 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'merchant' => [
+            'provider' => 'merchant',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
