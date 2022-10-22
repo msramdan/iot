@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\RekPooling;
 use App\Models\Bank;
@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Throwable;
+use App\Http\Controllers\Controller;
 
 class RekPoolingController extends Controller
 {

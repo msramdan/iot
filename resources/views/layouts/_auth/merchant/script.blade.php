@@ -7,3 +7,4 @@
 <script src="{{ asset('frontend/assets/js/countrySelect.min.js') }}"></script>
 
 <script src="{{ asset('frontend/js/custom.js') }}"></script>
+@stack('js')

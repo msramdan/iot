@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Merchant;
 use App\Models\Bank;
@@ -27,6 +27,8 @@ use Excel;
 use App\Exports\MerchantExport;
 use Maatwebsite\Excel\Validators\ValidationException as ExcelException;
 use App\Imports\MerchantImport;
+use App\Http\Controllers\Controller;
+
 class MerchantController extends Controller
 {
     public function __construct()

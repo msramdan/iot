@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Excel;
@@ -10,6 +10,7 @@ use Log;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Validators\ValidationException as ExcelException;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Http\Controllers\Controller;
 
 class MerchantUploadController extends Controller
 {

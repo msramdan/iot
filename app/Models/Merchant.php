@@ -47,6 +47,11 @@ class Merchant extends Authenticatable implements JWTSubject
         return $this->hasMany(ApprovalLogMerchant::class);
     }
 
+    public function mdr_log()
+    {
+        return $this->hasMany(MdrLog::class);
+    }
+
     public function transaction()
     {
         return $this->hasMany(Transaction::class);
@@ -76,14 +81,14 @@ class Merchant extends Authenticatable implements JWTSubject
         return "Merchants " .$this->merchant_name . " {$eventName} By "  . $user;
     }
 
-   
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
     }
-    
+
     public function getJWTCustomClaims()
     {
         return [];
-    }    
+    }
 }

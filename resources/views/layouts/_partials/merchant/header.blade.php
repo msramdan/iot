@@ -26,6 +26,8 @@
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
+                        <h6 class="dropdown-header">Welcome {{ Auth::guard('merchant')->user()->merchant_name }}</h6>
+                        <a class="dropdown-item" href="{{ route('merchants.profile') }}"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
                         <button class="dropdown-item" id="ubahPassword" data-bs-toggle="modal" data-bs-target="#ajaxModelEditPassword"><i class="mdi mdi-key text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Change Password</span></button>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle" data-key="t-logout">{{ __('Logout') }}</span>
