@@ -5,23 +5,24 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\MerchantRegisterController;
 use App\Http\Controllers\Auth\MerchantLoginController;
-use App\Http\Controllers\ActivityLogController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MerchantsCategoryController;
-use App\Http\Controllers\RolesController;
-use App\Http\Controllers\SettingAppController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\BankController;
-use App\Http\Controllers\BussinessController;
-use App\Http\Controllers\RekPoolingController;
-use App\Http\Controllers\MerchantController;
-use App\Http\Controllers\MerchantApproveController;
-use App\Http\Controllers\MerchantRejectController;
-use App\Http\Controllers\MerchantUploadController;
-use App\Http\Controllers\ApprovalLogMerchantController;
-use App\Http\Controllers\MdrLogController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MerchantsCategoryController;
+use App\Http\Controllers\Admin\RolesController;
+use App\Http\Controllers\Admin\SettingAppController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\BankController;
+use App\Http\Controllers\Admin\BussinessController;
+use App\Http\Controllers\Admin\RekPoolingController;
+use App\Http\Controllers\Admin\MerchantController;
+use App\Http\Controllers\Admin\MerchantApproveController;
+use App\Http\Controllers\Admin\MerchantRejectController;
+use App\Http\Controllers\Admin\MerchantUploadController;
+use App\Http\Controllers\Admin\ApprovalLogMerchantController;
+use App\Http\Controllers\Admin\MdrLogController;
+use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Merchant\HomeController;
+use App\Http\Controllers\Merchant\MerchantProfileController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -62,6 +63,9 @@ Route::controller(MerchantRegisterController::class)->group(function() {
 Route::middleware(['auth:merchant', 'merchant_auth'])->group(function(){
     Route::controller(HomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
+    });
+    Route::controller(MerchantProfileController::class)->group(function(){
+        Route::get('/profile', 'index')->name('merchants.profile');
     });
 });
 
