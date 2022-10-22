@@ -13,7 +13,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
 <!-- Favicon -->
-<link rel="icon" href="{{ asset('frontend/images/favicon.png') }}">
-<link rel="apple-touch-icon" href="{{ asset('frontend/images/apple-touch-icon.png') }}">
-<link rel="apple-touch-icon" sizes="72x72" href="{{ asset('frontend/images/icon-72x72.png') }}">
-<link rel="apple-touch-icon" sizes="114x114" href="{{ asset('frontend/images/icon-114x114.png') }}">
+<link rel="icon" href="{{ Storage::url('public/img/setting_app/'. $setting->favicon) }}">
+<link rel="apple-touch-icon" href="{{ Storage::url('public/img/setting_app/'. $setting->favicon) }}">
+<link rel="apple-touch-icon" sizes="72x72" href="{{ Storage::url('public/img/setting_app/'. $setting->favicon) }}">
+<link rel="apple-touch-icon" sizes="114x114" href="{{ Storage::url('public/img/setting_app/'. $setting->favicon) }}">
+@stack('style')
