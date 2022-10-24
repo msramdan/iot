@@ -10,7 +10,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('transaction*') }}" href="#" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                <a class="nav-link menu-link {{ set_active('merchant_transaction*') }}" href="{{ route('merchant_transaction.index') }}" role="button" aria-expanded="false" aria-controls="sidebarApps">
                     <i class="mdi mdi-view-grid-plus-outline"></i> <span data-key="t-apps">Transactions</span>
                 </a>
             </li>

@@ -23,8 +23,9 @@ use App\Http\Controllers\Admin\MdrLogController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Merchant\HomeController;
 use App\Http\Controllers\Merchant\MerchantProfileController;
+use App\Http\Controllers\Merchant\MerchantTransactionController;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Hash;
 
 
 /*
@@ -37,6 +38,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/tes', function() {
+    $tes = Hash::make('12345678');
+    dd($tes);
+});
 
 /**
  * Login Admin
@@ -59,13 +64,23 @@ Route::controller(MerchantRegisterController::class)->group(function() {
     Route::post('/register', 'register')->name('register.store');
 });
 
-
+/**
+ * Route Merchant
+ */
 Route::middleware(['auth:merchant', 'merchant_auth'])->group(function(){
     Route::controller(HomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
     });
-    Route::controller(MerchantProfileController::class)->group(function(){
-        Route::get('/profile', 'index')->name('merchants.profile');
+    Route::prefix('merchant')->group(function() {
+        Route::controller(MerchantProfileController::class)->group(function(){
+            Route::get('/profile', 'index')->name('merchants.profile');
+            Route::post('/profile/update_personal', 'update_personal')->name('merchants.update_personal');
+            Route::post('/profile/update_password', 'update_password')->name('merchants.update_password');
+            Route::post('/profile/update_document', 'update_document')->name('merchants.update_document');
+        });
+        Route::controller(MerchantTransactionController::class)->group(function() {
+            Route::get('/transaction', 'index')->name('merchant_transaction.index');
+        });
     });
 });
 
