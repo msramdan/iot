@@ -175,7 +175,7 @@
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                                 @if ($merchant->merchant_approve->identity_card_photo)
-                                                                <a href="{{ Storage::url('public/backend/images/identity_card/'.$merchant->merchant_approve->identity_card_photo ) }}" target="__blank">Click to see images</a>
+                                                                <a href="{{ Storage::url('public/backend/images/identity_card/'.$merchant->merchant_approve->identity_card_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -187,7 +187,7 @@
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                                 @if ($merchant->merchant_approve->selfie_ktp_photo)
-                                                                <a href="{{ Storage::url('public/backend/images/selfie_ktp/'.$merchant->merchant_approve->selfie_ktp_photo ) }}" target="__blank">Click to see images</a>
+                                                                <a href="{{ Storage::url('public/backend/images/selfie_ktp/'.$merchant->merchant_approve->selfie_ktp_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -199,7 +199,7 @@
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                                 @if ($merchant->merchant_approve->npwp_photo)
-                                                                <a href="{{ Storage::url('public/backend/images/npwp/'.$merchant->merchant_approve->npwp_photo ) }}" target="__blank">Click to see images</a>
+                                                                <a href="{{ Storage::url('public/backend/images/npwp/'.$merchant->merchant_approve->npwp_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -211,7 +211,7 @@
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                                 @if ($merchant->merchant_approve->outlet_photo)
-                                                                <a href="{{ Storage::url('public/backend/images/outlet/'.$merchant->merchant_approve->outlet_photo ) }}" target="__blank">Click to see images</a>
+                                                                <a href="{{ Storage::url('public/backend/images/outlet/'.$merchant->merchant_approve->outlet_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -223,7 +223,7 @@
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                                 @if ($merchant->merchant_approve->owner_outlet_photo)
-                                                                <a href="{{ Storage::url('public/backend/images/owner_outlet/'.$merchant->merchant_approve->owner_outlet_photo ) }}" target="__blank">Click to see images</a>
+                                                                <a href="{{ Storage::url('public/backend/images/owner_outlet/'.$merchant->merchant_approve->owner_outlet_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -235,7 +235,7 @@
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                                 @if ($merchant->merchant_approve->in_outlet_photo)
-                                                                <a href="{{ Storage::url('public/backend/images/in_outlet/'.$merchant->merchant_approve->in_outlet_photo ) }}" target="__blank">Click to see images</a>
+                                                                <a href="{{ Storage::url('public/backend/images/in_outlet/'.$merchant->merchant_approve->in_outlet_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
                                                         </div>
