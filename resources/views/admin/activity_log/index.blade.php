@@ -36,20 +36,19 @@
                                         <th>Time</th>
                                     </tr>
                                 </thead>
-                               <tbody></tbody>
+                                <tbody></tbody>
                             </table>
-                            <textarea name="" id="" cols="30" rows="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis sequi fuga vero earum temporibus animi voluptatibus deleniti culpa, ad, assumenda dolorem odio labore quos, itaque nemo error atque. Recusandae, ex!</textarea>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-@endsection
-@push('js')
-<script>
-    let columns = [
+    @endsection
+    @push('js')
+    <script>
+        let columns = [
             {
                 className: 'dt-control',
                 orderable: false,
@@ -129,5 +128,5 @@
                 </div>`
             );
         }
-</script>
-@endpush
+    </script>
+    @endpush
