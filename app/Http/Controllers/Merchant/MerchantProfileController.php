@@ -31,11 +31,10 @@ class MerchantProfileController extends Controller
             'merchant_approve',
             'bank',
             'merchant_category',
-            'approval_log',
             'mdr_log',
         ])->findOrFail(auth()->guard('merchant')->user()->id);
-
-        return view('merchant.profile.index', compact('merchant', 'merchant_categories', 'banks', 'bussinesses'));
+        $approval_logs = ApprovalLogMerchant::where('merchant_id', $merchant->id)->orderBy('id', 'desc')->limit(5)->get();
+        return view('merchant.profile.index', compact('merchant', 'merchant_categories', 'banks', 'bussinesses', 'approval_logs'));
     }
 
     public function update_personal(Request $request) {
@@ -75,8 +74,8 @@ class MerchantProfileController extends Controller
             $merchant->city = $request->city;
             $merchant->zip_code = $request->zip_code;
             $merchant->save();
+
         } catch (Exception $e) {
-            \Log::error($e);
             DB::rollBack();
             Alert::toast('Failed to update profil', 'error');
             return redirect()->back()->withErrors('Failed to update profil');
@@ -122,11 +121,11 @@ class MerchantProfileController extends Controller
 
             $merchant->password = Hash::make($request->password);
             $merchant->save();
+
             DB::commit();
             Alert::toast('Success update password', 'success');
             return redirect()->back();
         } catch (Exception $e) {
-            \Log::error($e);
             DB::rollBack();
             Alert::toast('Failed to update password', 'error');
             return redirect()->back()->withErrors('Failed to update password');
@@ -179,7 +178,7 @@ class MerchantProfileController extends Controller
                 Storage::disk('local')->delete('public/backend/images/identity_card/' . $merchant_approve->identity_card);
             }
 
-            if ($request->hasFile('npwp_file')) {
+            if ($request->hasFile('npwp_photo')) {
                 $npwp_file              = $request->file('npwp_photo');
                 $npwp_photo_name        = Str::random(15).'.'.$npwp_file->extension();
 
@@ -189,7 +188,7 @@ class MerchantProfileController extends Controller
                 Storage::disk('local')->delete('public/backend/images/npwp/' . $merchant_approve->npwp_photo);
             }
 
-            if ($request->hasFile('owner_outlet_file')) {
+            if ($request->hasFile('owner_outlet_photo')) {
                 $owner_outlet_file      = $request->file('owner_outlet_photo');
                 $owner_outlet_name      = Str::random(15).'.'.$owner_outlet_file->extension();
 
@@ -209,7 +208,7 @@ class MerchantProfileController extends Controller
                 Storage::disk('local')->delete('public/backend/images/selfie_ktp/' . $merchant_approve->selfie_ktp_photo);
             }
 
-            if ($request->hasFile('outlet_file')) {
+            if ($request->hasFile('outlet_photo')) {
                 $outlet_file            = $request->file('outlet_photo');
                 $outlet_name            = Str::random(15).'.'.$outlet_file->extension();
 
@@ -219,7 +218,7 @@ class MerchantProfileController extends Controller
                 Storage::disk('local')->delete('public/backend/images/outlet/' . $merchant_approve->outlet_photo);
             }
 
-            if ($request->hasFile('in_outlet_file')) {
+            if ($request->hasFile('in_outlet_photo')) {
                 $in_outlet_file         = $request->file('in_outlet_photo');
                 $in_outlet_name         = Str::random(15).'.'.$in_outlet_file->extension();
 
@@ -267,8 +266,80 @@ class MerchantProfileController extends Controller
         }
     }
 
+    public function update_bank(Request $request) {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'bank_id' => 'required|numeric|exists:banks,id',
+                'account_name' => 'required|string|max:100',
+                'number_account' => 'required|string|max:100|regex:/[0-9]+/im',
+            ]
+        );
+
+        if ($validator->fails()) {
+            Alert::toast('Failed to update data bank', 'error');
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $merchant = Merchant::findOrFail(auth()->guard('merchant')->user()->id);
+
+        DB::beginTransaction();
+
+        try {
+            $merchant->bank_id = $request->bank_id;
+            $merchant->account_name = $request->account_name;
+            $merchant->number_account = $request->number_account;
+            $merchant->save();
+
+            DB::commit();
+            Alert::toast('Success update data bank', 'success');
+            return redirect()->back();
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            Alert::toast('Failed to update data bank', 'error');
+            return redirect()->back();
+        }
+    }
+
     public function update_pic(Request $request)
     {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'photo' => 'required|mimes:png,jpg,jpeg|max:3072'
+            ]
+        );
 
+        if ($validator->fails()) {
+            Alert::toast('Failed to update Photo', 'error');
+            return redirect()->back();
+        }
+
+        $merchant = Merchant::findOrFail(auth()->guard('merchant')->user()->id);
+
+        if ($request->hasFile('photo')) {
+            $photo_file = $request->file('photo');
+            $photo_name = Str::random(10).'.'.$photo_file->extension();
+
+            $photo_file->storeAs('public/frontend/assets/images/users', $photo_name);
+
+            Storage::disk('local')->delete('public/frontend/assets/images/users/'.$merchant->pic);
+
+            $merchant->update([
+                'pic' => $photo_name
+            ]);
+
+            if ($merchant) {
+                Alert::toast('Success to update photo', 'success');
+                return redirect()->back();
+            } else {
+                Alert::toast('Failed to update photo', 'error');
+                return redirect()->back();
+            }
+        }
+
+        Alert::toast('Failed to update photo', 'error');
+        return redirect()->back();
     }
 }

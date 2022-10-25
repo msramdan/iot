@@ -25,3 +25,10 @@ File: Custom Css File
     margin-right: 10px;
 }
 
+.list-approval-log li:nth-child(odd){
+    background-color: rgb(233, 233, 233);
+}
+.list-approval-log:nth-child(even) {
+    background-color: #fff;
+}
+

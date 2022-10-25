@@ -432,7 +432,7 @@ class MerchantController extends Controller
                 Storage::disk('local')->delete('public/backend/images/identity_card/' . $merchant_approve->identity_card);
             }
 
-            if ($request->hasFile('npwp_file')) {
+            if ($request->hasFile('npwp_photo')) {
                 $npwp_file              = $request->file('npwp_photo');
                 $npwp_photo_name        = Str::random(15).'.'.$npwp_file->extension();
 
@@ -442,7 +442,7 @@ class MerchantController extends Controller
                 Storage::disk('local')->delete('public/backend/images/npwp/' . $merchant_approve->npwp_photo);
             }
 
-            if ($request->hasFile('owner_outlet_file')) {
+            if ($request->hasFile('owner_outlet_photo')) {
                 $owner_outlet_file      = $request->file('owner_outlet_photo');
                 $owner_outlet_name      = Str::random(15).'.'.$owner_outlet_file->extension();
 
@@ -462,7 +462,7 @@ class MerchantController extends Controller
                 Storage::disk('local')->delete('public/backend/images/selfie_ktp/' . $merchant_approve->selfie_ktp_photo);
             }
 
-            if ($request->hasFile('outlet_file')) {
+            if ($request->hasFile('outlet_photo')) {
                 $outlet_file            = $request->file('outlet_photo');
                 $outlet_name            = Str::random(15).'.'.$outlet_file->extension();
 
@@ -472,7 +472,7 @@ class MerchantController extends Controller
                 Storage::disk('local')->delete('public/backend/images/outlet/' . $merchant_approve->outlet_photo);
             }
 
-            if ($request->hasFile('in_outlet_file')) {
+            if ($request->hasFile('in_outlet_photo')) {
                 $in_outlet_file         = $request->file('in_outlet_photo');
                 $in_outlet_name         = Str::random(15).'.'.$in_outlet_file->extension();
 

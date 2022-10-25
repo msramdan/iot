@@ -76,7 +76,9 @@ Route::middleware(['auth:merchant', 'merchant_auth'])->group(function(){
             Route::get('/profile', 'index')->name('merchants.profile');
             Route::post('/profile/update_personal', 'update_personal')->name('merchants.update_personal');
             Route::post('/profile/update_password', 'update_password')->name('merchants.update_password');
+            Route::post('/profile/update_bank', 'update_bank')->name('merchants.update_bank');
             Route::post('/profile/update_document', 'update_document')->name('merchants.update_document');
+            Route::post('/profile/update_pic', 'update_pic')->name('merchants.update_pic');
         });
         Route::controller(MerchantTransactionController::class)->group(function() {
             Route::get('/transaction', 'index')->name('merchant_transaction.index');
