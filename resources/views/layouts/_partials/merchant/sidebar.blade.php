@@ -14,6 +14,12 @@
                     <i class="mdi mdi-view-grid-plus-outline"></i> <span data-key="t-apps">Transactions</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link {{ set_active('profile*') }}" href="{{ route('merchants.profile') }}" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                    <i class="mdi mdi-account"></i> <span data-key="t-apps">Profile</span>
+                </a>
+            </li>
+
         </ul>
     </div>
 </div>

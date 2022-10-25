@@ -37,6 +37,10 @@
                                             <td class="text-right" id="merchant-mid">: {{ $merchant->mid ? $merchant->mid : '-' }}</td>
                                         </tr>
                                         <tr>
+                                            <th>National MID</th>
+                                            <td class="text-right" id="merchant-mid">: {{ $merchant->nmid ? $merchant->nmid : '-' }}</td>
+                                        </tr>
+                                        <tr>
                                             <th>Phone</th>
                                             <td class="text-right" id="merchant-phone">: {{ $merchant->phone }}</td>
                                         </tr>
@@ -105,7 +109,7 @@
                                 <div class="">
                                     <table class="table table-sm">
                                         <tr>
-                                            <th>Bank</th>
+                                            <th>Settlement Account</th>
                                             <td class="text-right" id="merchant-bank">: {{ $merchant->bank->bank_name }}</td>
                                         </tr>
                                         <tr>
@@ -113,7 +117,7 @@
                                             <td class="text-right" id="merchant-account-name">: {{ $merchant->account_name }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Number Account</th>
+                                            <th>Settlement Number Account</th>
                                             <td class="text-right" id="merchant-number-account">: {{ $merchant->number_account }}</td>
                                         </tr>
                                         <tr>
@@ -121,7 +125,7 @@
                                             <td class="text-right" id="merchant-mdr">: {{ $merchant->mdr }}%</td>
                                         </tr>
                                         <tr>
-                                            <th>Rekening Pooling</th>
+                                            <th>BCA Branch Name</th>
                                             <td class="text-right" id="merchant-rekening-pooling">: {{ $merchant->rek_pooling->rek_pooling_code }}</td>
                                         </tr>
                                         <tr>
@@ -177,6 +181,16 @@
                             </div>
                         </div>
                         <div class="btn-approve float-end">
+
+                            @if ($merchant->approved1 == 'need_approved' && $merchant->approved2 == 'need_approved' || $merchant->approved1 == 'approved' && $merchant->approved2 == 'need_approved' )
+                            @else
+                            @if ($merchant->is_active == 1)
+                                <button class="btn btn-danger btn-sm"> <i class="mdi mdi-close"></i> Set Inactive</button>
+                            @else
+                                <button class="btn btn-primary btn-sm"> <i class="mdi mdi-check-bold"></i> Set Active</button>
+                            @endif
+                            @endif
+
                             @can('approved_step_1')
 
                             <div class="btn-group">

@@ -37,6 +37,16 @@
                                             <div class="row gy-3">
                                                 <div class="col-md-3 col-md-6">
                                                     <div>
+                                                        <label for="nmid">National MID</label>
+                                                        <input type="text" class="form-control @error('nmid') is-invalid @enderror" name="nmid" id="nmid" placeholder="" value="{{ (old('nmid') ? old('nmid') : $merchant->nmid) }}" autocomplete="off">
+                                                        @error('nmid')
+                                                        <span style="color: red;">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3 col-md-6">
+                                                    <div>
                                                         <label for="merchant_name">Merchant Name</label>
                                                         <input type="text" class="form-control @error('merchant_name') is-invalid @enderror" name="merchant_name" id="merchant_name" placeholder="" value="{{ (old('merchant_name') ? old('merchant_name') : $merchant->merchant_name) }}" autocomplete="off">
                                                         @error('merchant_name')
@@ -254,11 +264,11 @@
                                                     <div class="row gy-3">
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="rek_pooling_id">Rekening Pooling</label>
+                                                                <label for="rek_pooling_id">BCA Branch Name</label>
                                                                 <select class="form-control @error('rek_pooling_id') @enderror" name="rek_pooling_id" id="rek_pooling_id">
                                                                     <option value="">-- Select --</option>
                                                                     @foreach ($rek_pooling as $rekening)
-                                                                    <option value="{{ $rekening->id }}" {{ (old('rek_pooling_id') ? old('rek_pooling_id') : $merchant->rek_pooling_id) == $rekening->id ? 'selected' : ''}}>{{ $rekening->rek_pooling_code }}</option>
+                                                                    <option value="{{ $rekening->id }}" {{ (old('rek_pooling_id') ? old('rek_pooling_id') : $merchant->rek_pooling_id) == $rekening->id ? 'selected' : ''}}>{{ $rekening->rek_pooling_code }} - {{ $rekening->account_name }}</option>
                                                                     @endforeach
                                                                 </select>
                                                                 @error('rek_pooling_id')
@@ -268,7 +278,7 @@
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="bank_id">Bank</label>
+                                                                <label for="bank_id">Settlement Account</label>
                                                                 <select class="form-control @error('bank_id') @enderror" name="bank_id" id="bank_id">
                                                                     <option value="">-- Select --</option>
                                                                     @foreach ($bank as $data)
@@ -291,7 +301,7 @@
                                                         </div>
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="number_account">Number Account</label>
+                                                                <label for="number_account">Settlement Number Account</label>
                                                                 <input type="text" class="form-control @error('number_account') is-invalid @enderror" name="number_account" id="number_account" placeholder="" value="{{ old('number_account') ? old('number_account') : $merchant->number_account }}" autocomplete="off">
                                                                 @error('number_account')
                                                                 <span style="color: red;">{{ $message }}</span>

@@ -129,6 +129,7 @@ class MerchantController extends Controller
         $validator = validator::make(
             $request->all(),
             [
+                'nmid' => 'required|string|max:50',
                 'merchant_name' => 'required|string|max:200',
                 'merchant_email' => 'required|string|max:100|unique:merchants,email',
                 'merchant_category_id' => 'required|numeric|exists:merchants_category,id',
@@ -169,6 +170,7 @@ class MerchantController extends Controller
 
         try {
             $merchant = Merchant::create([
+                'nmid' => $request->nmid,
                 'merchant_name' => $request->merchant_name,
                 'email' => $request->merchant_email,
                 'merchant_category_id' => $request->merchant_category_id,
@@ -316,6 +318,7 @@ class MerchantController extends Controller
         $validator = validator::make(
             $request->all(),
             [
+                'nmid' => 'required|string|max:50',
                 'merchant_name' => 'required|string|max:200',
                 'merchant_email' => 'required|string|max:100|unique:merchants,email,' . $id,
                 'merchant_category_id' => 'required|numeric|exists:merchants_category,id',
@@ -366,6 +369,7 @@ class MerchantController extends Controller
             }
 
             $merchant->update([
+                'nmid' => $request->nmid,
                 'merchant_name' => $request->merchant_name,
                 'email' => $request->merchant_email,
                 'merchant_category_id' => $request->merchant_category_id,

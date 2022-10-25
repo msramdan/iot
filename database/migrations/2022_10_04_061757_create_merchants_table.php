@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('merchants', function (Blueprint $table) {
             $table->id();
             $table->string('mid', 50)->nullable();
+            $table->string('nmid', 50)->nullable();
             $table->string('merchant_name', 200);
             $table->string('email', 100)->unique();
             $table->foreignId('merchant_category_id')->nullable();

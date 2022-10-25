@@ -20,14 +20,7 @@ return [
             'merchants_category_update',
             'merchants_category_delete',
         ],
-        'merchant' => [
-            'merchant_show',
-            'merchant_create',
-            'merchant_update',
-            'merchant_edit',
-            'merchant_approved',
-            'merchant_reject'
-        ],
+
         'bank' => [
             'bank_show',
             'bank_create',
@@ -65,8 +58,8 @@ return [
             'approved_step_2',
             'bulk_upload',
             'bulk_download',
+            'operational_time',
         ],
-
     ],
 
     'models' => [

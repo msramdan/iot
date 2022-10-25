@@ -28,12 +28,13 @@
                                 <tr>
                                     <th>#</th>
                                     <th>MID</th>
+                                    <th>National MID</th>
                                     <th>Merchant Name</th>
                                     <th>Email</th>
                                     <th>Merchant Category</th>
                                     <th>Phone</th>
                                     <th>Bussiness</th>
-                                    <th>City</th>
+                                    {{-- <th>City</th> --}}
                                     @canany(['merchant_show','merchant_update', 'merchant_delete','approved_step_1','approved_step_2'])
                                             <th>Action</th>
                                     @endcanany
@@ -67,6 +68,10 @@
                 name : 'mid'
             },
             {
+                data: 'nmid',
+                name : 'nmid'
+            },
+            {
                 data: 'merchant_name',
                 name: 'merchant_name'
             },
@@ -86,10 +91,6 @@
                 data : 'bussiness',
                 name : 'bussiness',
 
-            },
-            {
-                data : 'city',
-                name : 'city',
             }
         ]
 

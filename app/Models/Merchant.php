@@ -66,7 +66,7 @@ class Merchant extends Authenticatable implements JWTSubject
     {
         return LogOptions::defaults()
          -> useLogName('log_merchants')
-         -> logOnly(['merchant_name','email','phone', 'address1', 'address2', 'city', 'zip_code' ,'note'])
+         -> logOnly(['nmid','merchant_name','email','phone', 'address1', 'address2', 'city', 'zip_code' ,'note'])
          -> logOnlyDirty()
          -> dontSubmitEmptyLogs();
     }

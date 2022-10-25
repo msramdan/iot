@@ -54,6 +54,9 @@
             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-cog"></i> </button>
         <div class="dropdown-menu" style="">
             <a href="{{ route('merchant.show', $model->id) }}" class="dropdown-item">Detail</a>
+            @can('operational_time')
+            <a href="{{ route('merchant.show', $model->id) }}" class="dropdown-item">Operational Time</a>
+            @endcan
             <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#myModalApp" id="DetailLogApp"
                 data-id="{{ $model->id }}">Approved Log</a>
             <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#myModalMdr" id="DetailLogMdr"
