@@ -39,6 +39,12 @@ return [
             'rek_pooling_update',
             'rek_pooling_delete',
         ],
+        'otp' => [
+            'otp_show',
+            'otp_create',
+            'otp_update',
+            'otp_delete',
+        ],
         'setting_app' =>[
             'setting_app_show',
             'setting_app_update',
