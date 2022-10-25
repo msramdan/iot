@@ -250,7 +250,43 @@ button, .btn {
 .ugf-bg {
   background-size: cover;
 }
-
+.progress-bar {
+    width: 50%;
+}
+.progress-bar-mid{
+    width: 66.66%;
+}
+.progress-bar-full{
+    width: 100%;
+}
+.block{
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+}
+.none{
+    animation-name: fadeOut;
+    animation-duration: 0.5s;
+}
+.custom-file-label > img {
+    width: 40px;
+    height: 40px;
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }100% {
+        opacity: 1;
+        display: block !important;
+    }
+}
+@keyframes fadeOut {
+    0% {
+        opacity: 0;
+    }100% {
+        opacity: 1;
+        display: none !important;
+    }
+}
 /*------------------------------------------
 	Responsive
 -------------------------------------------*/

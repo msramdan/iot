@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId('bussiness_id')->nullable();
             $table->foreignId('bank_id')->nullable();
             $table->string('account_name', 200);
-            $table->float('mdr');
+            $table->float('mdr')->default(0);
             $table->string('number_account', 100);
             $table->foreignId('rek_pooling_id')->nullable();
             $table->string('pic', 100)->nullable();
