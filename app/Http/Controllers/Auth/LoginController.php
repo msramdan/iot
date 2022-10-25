@@ -29,7 +29,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::PANEL;
+    protected $redirectTo = '/panel';
 
     /**
      * Create a new controller instance.

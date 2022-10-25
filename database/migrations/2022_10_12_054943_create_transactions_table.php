@@ -20,7 +20,12 @@ return new class extends Migration
             $table->dateTime('date_transaction');
             $table->string('pan', 100);
             $table->string('rrn', 100);
-            $table->integer('amount');
+            $table->string('tid', 100);
+            $table->string('customer_name', 255);
+            $table->string('transaction_type', 255);
+            $table->float('mdr_amount')->default(0);
+            $table->integer('amount')->default(0);
+            $table->float('total_amount')->default(0);
             $table->foreign('merchant_id')->references('id')->on('merchants');
             $table->timestamps();
         });
