@@ -38,12 +38,11 @@
                                 </thead>
                                <tbody></tbody>
                             </table>
-                            
+                            <textarea name="" id="" cols="30" rows="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis sequi fuga vero earum temporibus animi voluptatibus deleniti culpa, ad, assumenda dolorem odio labore quos, itaque nemo error atque. Recusandae, ex!</textarea>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -111,20 +110,24 @@
                 row.child(format(row.data())).show();
                 tr.addClass('shown');
             }
+            tr.closest('tbody').find('textarea').each(function () {
+                this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
+                this.style.height = 0;
+                this.style.height = (this.scrollHeight) + "px";
+            })
         });
 
         function format(d) {
-            console.log(d)
             return (
                 `<div class="mb-4">
                     <label for="form-label">Old Value</label>
-                    <textarea name="" id="" cols="30" rows="10" class="form-control" disabled>${d.old_value}</textarea>
+                    <textarea name="" id="" cols="30" class="form-control" style="height: 100%;" disabled>${d.old_value}</textarea>
                 </div>
                 <div class="mb-4">
                     <label for="form-label">New Value</label>
-                    <textarea name="" id="" cols="30" rows="10" class="form-control" disabled>${d.new_value}</textarea>
+                    <textarea rows="" name="" id="" cols="30" class="form-control" style="height: 100%;" disabled>${d.new_value}</textarea>
                 </div>`
-                );
+            );
         }
 </script>
 @endpush
