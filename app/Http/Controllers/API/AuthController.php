@@ -93,7 +93,7 @@ class AuthController extends Controller
         ];
 
         Mail::to($user->email)->send(new SendResetPassword($body));
-        return response()->json(['status' => 'Mail sent successfully']);;
+        return response()->json(['message' => 'Mail sent successfully']);;
     }
 
     public function resetPassword(Request $request)
@@ -108,11 +108,13 @@ class AuthController extends Controller
             return response()->json(['message' => 'validation error'], 500);
         }
 
+        
         $password = $request->password;
-        $tokenData = DB::table('password_resets')->where('token', $request->token)->first();
-        if (!$tokenData) return response()->json(['message' => 'token not found'], 500);
+        $user = DB::table('password_resets')->where('email', $request->email)->first();
 
-        $user = Merchant::where('email', $tokenData->email)->first();
+        if (!Hash::check($request->token, $user->token)) return response()->json(['message' => 'token not found'], 500);
+
+        $user = Merchant::where('email', $user->email)->first();
 
         if (!$user) return response()->json(['message' => 'Email not found'], 500);
 
@@ -120,6 +122,6 @@ class AuthController extends Controller
         $user->update();
         DB::table('password_resets')->where('email', $user->email)->delete();
 
-        return response()->json(['message' => 'Password successfully changed'], 500);
+        return response()->json(['message' => 'Password successfully changed'], 200);
     }
 }
