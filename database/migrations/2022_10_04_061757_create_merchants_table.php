@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('merchant_name', 200);
             $table->string('email', 100)->unique();
             $table->foreignId('merchant_category_id')->nullable();
+            $table->enum('type', ['personal', 'bussiness']);
             $table->foreignId('bussiness_id')->nullable();
             $table->foreignId('bank_id')->nullable();
             $table->string('account_name', 200);

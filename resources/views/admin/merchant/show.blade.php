@@ -55,7 +55,7 @@
                                         <tr>
                                             <th>Merchant Category</th>
                                             <td class="text-right" id="merchant-category">
-                                            : {{ $merchant->merchant_category->merchants_category_name }}
+                                            : {{ $merchant->merchant_category ? $merchant->merchant_category->merchants_category_name : '-' }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -76,7 +76,7 @@
                                         </tr>
                                         <tr>
                                             <th>Bussiness</th>
-                                            <td class="text-right" id="merchant-bussiness">: {{ $merchant->bussiness->bussiness_name }}</td>
+                                            <td class="text-right" id="merchant-bussiness">: {{ $merchant->bussiness ?$merchant->bussiness->bussiness_name : '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Foto KTP</th>
@@ -110,7 +110,7 @@
                                     <table class="table table-sm">
                                         <tr>
                                             <th>Settlement Account</th>
-                                            <td class="text-right" id="merchant-bank">: {{ $merchant->bank->bank_name }}</td>
+                                            <td class="text-right" id="merchant-bank">: {{ $merchant->bank ? $merchant->bank->bank_name : '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Account name</th>
@@ -126,7 +126,7 @@
                                         </tr>
                                         <tr>
                                             <th>BCA Branch Name</th>
-                                            <td class="text-right" id="merchant-rekening-pooling">: {{ $merchant->rek_pooling->rek_pooling_code }}</td>
+                                            <td class="text-right" id="merchant-rekening-pooling">: {{ $merchant->rek_pooling ? $merchant->rek_pooling->rek_pooling_code : '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Status</th>
@@ -184,15 +184,14 @@
 
                             @if ($merchant->approved1 == 'need_approved' && $merchant->approved2 == 'need_approved' || $merchant->approved1 == 'approved' && $merchant->approved2 == 'need_approved' )
                             @else
-                            @if ($merchant->is_active == 1)
-                                <button class="btn btn-danger btn-sm"> <i class="mdi mdi-close"></i> Set Inactive</button>
-                            @else
-                                <button class="btn btn-primary btn-sm"> <i class="mdi mdi-check-bold"></i> Set Active</button>
-                            @endif
+                                @if ($merchant->is_active == 1)
+                                    <button class="btn btn-danger btn-sm"> <i class="mdi mdi-close"></i> Set Inactive</button>
+                                @else
+                                    <button class="btn btn-primary btn-sm"> <i class="mdi mdi-check-bold"></i> Set Active</button>
+                                @endif
                             @endif
 
                             @can('approved_step_1')
-
                             <div class="btn-group">
                                 <button type="button" title="Other" class="btn btn-md btn-success btn-sm dropdown-toggle"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Approve 1 </button>
@@ -202,18 +201,18 @@
                                 </div>
                             </div>
                             @endcan
-                            @can('approved_step_2')
 
-                            @if ($merchant->approved1 == 'approved')
-                            <div class="btn-group">
-                                <button type="button" title="Other" class="btn btn-md btn-success btn-sm dropdown-toggle"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Approve 2 </button>
-                                <div class="dropdown-menu" style="">
-                                    <button type="button" onclick="approve('approved2', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'approved')" class="dropdown-item">Approve</button>
-                                    <button type="button" onclick="approve('approved2', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'rejected')" class="dropdown-item">Reject</button>
+                            @can('approved_step_2')
+                                @if ($merchant->approved1 == 'approved')
+                                <div class="btn-group">
+                                    <button type="button" title="Other" class="btn btn-md btn-success btn-sm dropdown-toggle"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Approve 2 </button>
+                                    <div class="dropdown-menu" style="">
+                                        <button type="button" onclick="approve('approved2', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'approved')" class="dropdown-item">Approve</button>
+                                        <button type="button" onclick="approve('approved2', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'rejected')" class="dropdown-item">Reject</button>
+                                    </div>
                                 </div>
-                            </div>
-                            @endif
+                                @endif
                             @endcan
                         </div>
                     </div>
