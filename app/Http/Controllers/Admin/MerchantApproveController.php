@@ -138,27 +138,14 @@ class MerchantApproveController extends Controller
                 ]);
             }
 
-            $ref = 1;
-
-            if ($ref_approval1->status == 'rejected' || $ref_approval2->status == 'rejected') {
-                $ref = intval($ref_approval1->ref) + 1;
-            }
-
-            $approval_merchant1 = ApprovalLogMerchant::create([
-                'merchant_id' => $merchant->id,
-                'user_id' => auth()->user()->id,
-                'status' => $request->status,
-                'step' => 'approved1',
-                'ref' => $ref
+            $ref_approval1->update([
+                'status' => $request->status
             ]);
 
-            $approval_merchant2 = ApprovalLogMerchant::create([
-                'merchant_id' => $merchant->id,
-                'user_id' => auth()->user()->id,
-                'status' => $request->status,
-                'step' => 'approved2',
-                'ref' => $ref
+            $ref_approval2->update([
+                'status' => $request->status
             ]);
+
 
             return response()->json(['success' => true, 'message' => 'Success to '.$text_status.' merchant']);
         } catch (Exception $e) {

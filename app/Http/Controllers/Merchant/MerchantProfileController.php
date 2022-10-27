@@ -10,6 +10,7 @@ use App\Models\MerchantApprove;
 use App\Models\Bank;
 use App\Models\Bussiness;
 use App\Models\ApprovalLogMerchant;
+use App\Models\MdrLog;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -31,10 +32,12 @@ class MerchantProfileController extends Controller
             'merchant_approve',
             'bank',
             'merchant_category',
-            'mdr_log',
         ])->findOrFail(auth()->guard('merchant')->user()->id);
-        $approval_logs = ApprovalLogMerchant::where('merchant_id', $merchant->id)->orderBy('id', 'desc')->limit(5)->get();
-        return view('merchant.profile.index', compact('merchant', 'merchant_categories', 'banks', 'bussinesses', 'approval_logs'));
+
+        $approval_logs = ApprovalLogMerchant::where('merchant_id', $merchant->id)->orderBy('id', 'desc')->limit(6)->get();
+        $mdr_logs = MdrLog::where('merchant_id', $merchant->id)->orderBy('id', 'desc')->limit(5)->get();
+
+        return view('merchant.profile.index', compact('merchant', 'merchant_categories', 'banks', 'bussinesses', 'approval_logs', 'mdr_logs'));
     }
 
     public function update_personal(Request $request) {
