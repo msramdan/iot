@@ -28,10 +28,14 @@ return new class extends Migration
             $table->foreignId('rek_pooling_id')->nullable();
             $table->string('pic', 100)->nullable();
             $table->string('phone', 20);
+            $table->integer('provinsi_id');
+            $table->integer('kabkot_id');
+            $table->integer('kecamatan_id');
+            $table->integer('kelurahan_id');
+            $table->string('zip_code', 100);
             $table->text('address1');
             $table->text('address2');
-            $table->string('city', 100);
-            $table->string('zip_code', 100);
+            // $table->string('city', 100);
             $table->tinyInteger('is_active')->default(0);
             $table->string('approved1', 100)->default('need_approved');
             $table->string('approved2', 100)->default('need_approved');

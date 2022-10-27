@@ -112,7 +112,7 @@ class AuthController extends Controller
         $password = $request->password;
         $user = DB::table('password_resets')->where('email', $request->email)->first();
 
-        if (!Hash::check($request->token, $user->token)) return response()->json(['message' => 'token not found'], 500);
+        if (empty($user) && !Hash::check($request->token, $user->token)) return response()->json(['message' => 'token not found'], 500);
 
         $user = Merchant::where('email', $user->email)->first();
 

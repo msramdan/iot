@@ -115,7 +115,11 @@ class MerchantController extends Controller
         $merchant_category = MerchantsCategory::all();
         $bussiness = Bussiness::all();
         $rek_pooling = RekPooling::all();
-        return view('admin.merchant.create', compact('bank', 'merchant_category', 'bussiness', 'rek_pooling'));
+
+        $provinces = DB::table('tbl_provinsi')->get();
+
+
+        return view('admin.merchant.create', compact('bank', 'merchant_category', 'bussiness', 'rek_pooling', 'provinces'));
     }
 
     /**
@@ -141,9 +145,13 @@ class MerchantController extends Controller
                 'rek_pooling_id' => 'required|numeric|exists:rek_poolings,id',
                 'pic' => 'image|mimes:jpeg,jpp,png',
                 'phone' => 'required|string|max:100|min:11|regex:/[0-9]+/im',
+                'provinsi_id' => 'required',
+                'kabkot_id' => 'required',
+                'kecamatan_id' => 'required',
+                'kelurahan_id' => 'required',
                 'address1' => 'required|string',
                 'address2' => 'required|string',
-                'city' => 'required|string|max:100',
+                // 'city' => 'required|string|max:100',
                 'zip_code' => 'required|string|max:10',
                 'note' => 'string|nullable',
                 'identity_card_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
@@ -182,9 +190,13 @@ class MerchantController extends Controller
                 'rek_pooling_id' => $request->rek_pooling_id,
                 'pic' => null,
                 'phone' => $request->phone,
+                'provinsi_id' => $request->provinsi_id,
+                'kabkot_id' => $request->kabkot_id,
+                'kecamatan_id' => $request->kecamatan_id,
+                'kelurahan_id' => $request->kelurahan_id,
                 'address1' => $request->address1,
                 'address2' => $request->address2,
-                'city' => $request->city,
+                // 'city' => $request->city,
                 'zip_code' => $request->zip_code,
                 'is_active' => $request->is_active == 'active' ? 1 : 0,
                 'note' => $request->note,
@@ -192,7 +204,6 @@ class MerchantController extends Controller
             ]);
 
             $data_merchant_approve['merchant_id'] = $merchant->id;
-
             //==================== Foto KTP ========================
             if ($request->hasFile('identity_card_photo')) {
                 $identity_card_file     = $request->file('identity_card_photo');
@@ -287,6 +298,7 @@ class MerchantController extends Controller
             'merchant_approve'
         ])->findOrFail($id);
 
+        $merchant->load('city');
         return view('admin.merchant.show', compact('merchant'));
     }
 

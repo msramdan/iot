@@ -91,4 +91,14 @@ class Merchant extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function optime()
+    {
+        return $this->hasMany(OperationalTime::class);
+    }
+
+    public function city (){
+        return $this->belongsTo(City::class, 'kabkot_id', 'id');
+    }
+
 }

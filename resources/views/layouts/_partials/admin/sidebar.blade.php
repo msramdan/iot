@@ -51,7 +51,7 @@
             @endcanany
             @canany(['otp_show'])
             <li class="nav-item">
-                <a class="nav-link menu-link" href="" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
+                <a class="nav-link menu-link" href="{{ route('otp.index') }}" role="button" aria-expanded="false" aria-controls="sidebarLayouts">
                     <i class="mdi mdi-lock-open-check-outline"></i> <span data-key="t-layouts">OTP</span>
                 </a>
             </li>
