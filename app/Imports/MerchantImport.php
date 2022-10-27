@@ -43,7 +43,7 @@ WithValidation
 
         if (!empty($row['bussiness'])) {
             $bussiness = Bussiness::where('bussiness_code', $row['bussiness'])
-                        ->orwhere('bussiness_name')->first();
+                        ->orwhere('bussiness_name', $row['bussiness'])->first();
 
             if ($bussiness) {
                 $bussiness_id = $bussiness->id;
@@ -68,7 +68,8 @@ WithValidation
 
         return new Merchant([
             'merchant_name'         => $row['merchant_name'],
-            'email'        => $row['merchant_email'],
+            'email'                 => $row['merchant_email'],
+            'merchant_type'         => $row['merchant_type'],
             'merchant_category_id'  => $merchant_category_id,
             'bussiness_id'          => $bussiness_id,
             'bank_id'               => $bank_id,
@@ -90,6 +91,7 @@ WithValidation
     {
         return  [
             'merchant_name' =>  ['required', 'string', 'max:200'],
+            'merchant_type' => ['required', 'string', 'max:100', 'in:bussiness,personal'],
             'merchant_email' => ['required', 'string', 'email'],
             'merchant_category' => ['string'],
             'bussiness' => ['string'],

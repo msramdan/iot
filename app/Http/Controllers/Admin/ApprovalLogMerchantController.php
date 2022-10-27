@@ -147,11 +147,8 @@ class ApprovalLogMerchantController extends Controller
 
     public function getDetailApp($id)
     {
-        $data = DB::table('approval_log_merchants')
-            ->join('users', 'users.id', '=', 'approval_log_merchants.user_id')
-            ->select('approval_log_merchants.*', 'users.name')
-            ->where('merchant_id', $id)
-            ->get();
+        $approval_logs = ApprovalLogMerchant::with('user')->where('merchant_id', $id)->get();
+
         $output = '';
         $output .= '<table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
@@ -165,9 +162,10 @@ class ApprovalLogMerchantController extends Controller
             </tr>
         </thead>
         <tbody>';
-        foreach ($data as $row) {
+        foreach ($approval_logs as $row) {
+            $user = $row->user ? $row->user->name : '-';
             $output .= '<tr>
-            <td>' . $row->name . '</td>
+            <td>' . $user . '</td>
             <td>' . $row->status . '</td>
             <td>' . $row->step . '</td>
             <td>' . $row->ref . '</td>

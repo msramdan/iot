@@ -86,7 +86,7 @@
         </div>
         <!-- End Buku Rekening -->
         <!-- Surat Sewa / Bukti Kepemilikan -->
-        <div class="custom-file">
+        <div class="custom-file merchant-personal">
             <input type="file" name="copy_proof_ownership" onchange="readUrl(this, '#show_copy_proof_ownership')" class="custom-file-input @error('copy_proof_ownership') is-invalid @enderror" id="copy_proof_ownership">
             <label class="custom-file-label" for="copy_proof_ownership"><img id="show_copy_proof_ownership" src="{{ asset('frontend/images/cloud.png') }}"></label>
             <span class="text">Surat Sewa / Bukti Kepemilikan</span>
@@ -111,7 +111,7 @@
         <div class="custom-file">
             <input type="file" name="tdp_photo" onchange="readUrl(this, '#show_tdp_photo')" class="custom-file-input @error('tdp_photo') is-invalid @enderror" id="tdp_photo">
             <label class="custom-file-label" for="tdp_photo"><img id="show_tdp_photo" src="{{ asset('frontend/images/cloud.png') }}"></label>
-            <span class="text">Foto Owner + Otlet</span>
+            <span class="text">TDP</span>
             @error('tdp_photo')
             <span style="color: red;">{{ $message }}</span>
             @enderror
@@ -121,7 +121,7 @@
         <div class="custom-file">
             <input type="file" name="copy_corporation_deed" onchange="readUrl(this, '#show_copy_corporation_deed')" class="custom-file-input @error('copy_corporation_deed') is-invalid @enderror" id="copy_corporation_deed">
             <label class="custom-file-label" for="copy_corporation_deed"><img id="show_copy_corporation_deed" src="{{ asset('frontend/images/cloud.png') }}"></label>
-            <span class="text">Foto Dalam Outlet</span>
+            <span class="text">Akta Pendirian Perusahaan</span>
             @error('copy_corporation_deed')
             <span style="color: red;">{{ $message }}</span>
             @enderror

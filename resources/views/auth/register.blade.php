@@ -25,6 +25,18 @@
         $('.btn-next').click(function() {
             let next = $('.active').data('target_active')
 
+            let type = $('input[name="merchant_type"]:checked').val();
+
+            if (type == 'bussiness') {
+                $('.merchant-personal').addClass('d-none');
+                $('#merchant-bisnis1').removeClass('d-none');
+                $('#merchant-bisnis2').removeClass('d-none');
+            } else {
+                $('#merchant-bisnis1').addClass('d-none')
+                $('#merchant-bisnis2').addClass('d-none')
+                $('.merchant-personal').removeClass('d-none');
+            }
+
             $('.active').addClass('d-none none').removeClass('active');
             $(next).removeClass('d-none none').addClass('active block')
             $('.btn-prev').removeClass('d-none none').addClass('block')
