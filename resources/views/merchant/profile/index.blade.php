@@ -114,6 +114,32 @@
                     </div>
                 </div>
                 <!--end card-->
+                  <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="flex-grow-1">
+                                <h5 class="card-title mb-0">Mdr Log</h5>
+                            </div>
+                        </div>
+                        <ul class="list-group list-approval-log">
+                            @foreach ($mdr_logs as $mdr_log)
+                            <li class="list-group-item">
+                                <div class="">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <span><b>{{ $mdr_log->value_mdr }}%</b></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <small>{{ date('d M Y H:i:s', strtotime($mdr_log->created_at)) }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <!--end card-->
             </div>
             <!--end col-->
             <div class="col-lg-9">

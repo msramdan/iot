@@ -77,6 +77,19 @@
                                                 </div>
                                                 <div class="col-md-3 col-md-6">
                                                     <div>
+                                                        <label for="merchant_category_id">Merchant Type</label>
+                                                        <select class="form-control @error('merchant_type') @enderror" name="merchant_type" id="merchant_type" onchange="form_change()">
+                                                            <option value="">-- Select --</option>
+                                                            <option value="bussiness">Bussiness</option>
+                                                            <option value="personal">Personal</option>
+                                                        </select>
+                                                        @error('merchant_type')
+                                                        <span style="color: red;">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-md-6">
+                                                    <div>
                                                         <label for="bussiness_id">Bussiness</label>
                                                         <select class="form-control @error('bussiness_id') @enderror" name="bussiness_id" id="bussiness_id">
                                                             <option value="">-- Select --</option>
@@ -211,6 +224,7 @@
                                                 <!-- /.card-header -->
                                                 <div class="card-body">
                                                     <div class="row gy-3">
+                                                        <!-- Foto KTP -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto KTP</label>
@@ -220,6 +234,8 @@
                                                                 @enderror
                                                             </div>
                                                         </div>
+                                                        <!-- End Foto KTP -->
+                                                        <!-- Foto Selfie KTP -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto Selfie KTP</label>
@@ -229,6 +245,8 @@
                                                                 @enderror
                                                             </div>
                                                         </div>
+                                                        <!-- End Foto Selfie KTP -->
+                                                        <!-- NPWP -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto NPWP</label>
@@ -238,6 +256,8 @@
                                                                 @enderror
                                                             </div>
                                                         </div>
+                                                        <!-- End NPWP -->
+                                                        <!-- Outlet -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto Outlet</label>
@@ -247,6 +267,8 @@
                                                                 @enderror
                                                             </div>
                                                         </div>
+                                                        <!-- End Outlet -->
+                                                        <!-- Owner + Outlet -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto Owner + Outlet</label>
@@ -256,6 +278,8 @@
                                                                 @enderror
                                                             </div>
                                                         </div>
+                                                        <!-- End Owner + Outlet -->
+                                                        <!-- In Outlet -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Foto Dalam Outlet</label>
@@ -265,6 +289,95 @@
                                                                 @enderror
                                                             </div>
                                                         </div>
+                                                        <!-- End In Outlet -->
+                                                        <!-- Sertifikat domisili -->
+                                                        <div class="col-md-3 col-md-6">
+                                                            <div>
+                                                                <label for="basiInput" class="form-label">Sertifikat Domisili (SKD / SITU)</label>
+                                                                <input type="file" name="certificate_of_domicile" class="form-control @error('certificate_of_domicile') is-invalid @enderror" id="basiInput">
+                                                                @error('certificate_of_domicile')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        <!-- End Sertifikat Domisili -->
+                                                        <!-- Foto Buku Rekening -->
+                                                        <div class="col-md-3 col-md-6">
+                                                            <div>
+                                                                <label for="basiInput" class="form-label">Foto Buku Rekening</label>
+                                                                <input type="file" name="copy_bank_account_book" class="form-control @error('copy_bank_account_book') is-invalid @enderror" id="basiInput">
+                                                                @error('copy_bank_account_book')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        <!-- End Foto Buku Rekening -->
+                                                        <!-- Sertifikat Bukti Kepemilikan -->
+                                                        <div class="col-md-3 col-md-6 merchant-personal d-none">
+                                                            <div>
+                                                                <label for="basiInput" class="form-label">Surat Sewa / Bukti Kepemilikan</label>
+                                                                <input type="file" name="copy_proof_ownership" class="form-control @error('copy_proof_ownership') is-invalid @enderror" id="basiInput">
+                                                                @error('copy_proof_ownership')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        <!-- End Sertifikat Kemepilikan -->
+                                                        <!-- SIUP / Surat Ijin Usaha -->
+                                                        <div class="col-md-3 col-md-6 merchant-bussiness d-none">
+                                                            <div>
+                                                                <label for="basiInput" class="form-label">SIUP / Surat Ijin Usaha</label>
+                                                                <input type="file" name="siup_photo" class="form-control @error('siup_photo') is-invalid @enderror" id="basiInput">
+                                                                @error('siup_photo')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        <!-- End SIUP / Surat Ijin Usaha -->
+                                                        <!-- TDP -->
+                                                        <div class="col-md-3 col-md-6 merchant-bussiness d-none">
+                                                            <div>
+                                                                <label for="basiInput" class="form-label">TDP</label>
+                                                                <input type="file" name="tdp_photo" class="form-control @error('tdp_photo') is-invalid @enderror" id="basiInput">
+                                                                @error('tdp_photo')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        <!-- End TDP -->
+                                                        <!-- Akta Pendirian Perusahaan -->
+                                                        <div class="col-md-3 col-md-6 merchant-bussiness d-none">
+                                                            <div>
+                                                                <label for="basiInput" class="form-label">Akta Pendirian Perusahaan</label>
+                                                                <input type="file" name="copy_corporation_deed" class="form-control @error('copy_corporation_deed') is-invalid @enderror" id="basiInput">
+                                                                @error('copy_corporation_deed')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        <!-- End Akta Pendirian Perusahaan -->
+                                                        <!-- Akta Pengurus Perusahaan -->
+                                                        <div class="col-md-3 col-md-6 merchant-bussiness d-none">
+                                                            <div>
+                                                                <label for="basiInput" class="form-label">Akta Pengurus Perusahaan</label>
+                                                                <input type="file" name="copy_management_deed" class="form-control @error('copy_management_deed') is-invalid @enderror" id="basiInput">
+                                                                @error('copy_management_deed')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        <!-- End Akta Pengurus Perusahaan -->
+                                                        <!-- Akta Pengurus Perusahaan -->
+                                                        <div class="col-md-3 col-md-6 merchant-bussiness d-none">
+                                                            <div>
+                                                                <label for="basiInput" class="form-label">SK Menkeh / Depkumham</label>
+                                                                <input type="file" name="copy_sk_menkeh" class="form-control @error('copy_sk_menkeh') is-invalid @enderror" id="basiInput">
+                                                                @error('copy_sk_menkeh')
+                                                                <span style="color: red;">{{ $message }}</span>
+                                                                @enderror
+                                                            </div>
+                                                        </div>
+                                                        <!-- End Akta Pengurus Perusahaan -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -347,109 +460,122 @@
 @endsection
 
 @push('js')
-    <script>
-        const options_temp ='<option value="" selected disabled>-- Select --</option>';
+<script>
+    function form_change() {
+        let type = $('select[name=merchant_type] option').filter(':selected').val()
 
-        $('#provinsi').change(function(){
-            $('#kota, #kecamatan, #kelurahan').html(options_temp);
-            if($(this).val() != ""){
-                getKabupatenKota($(this).val());
-            }
-        })
+        if (type == 'personal') {
+            $('.merchant-personal').removeClass('d-none');
+            $('.merchant-bussiness').addClass('d-none');
+        } else if(type == 'bussiness') {
+            $('.merchant-personal').addClass('d-none');
+            $('.merchant-bussiness').removeClass('d-none');
+        }
+    }
+</script>
+<script>
+    const options_temp ='<option value="" selected disabled>-- Select --</option>';
 
-        $('#kota').change(function(){
-            $('#kecamatan, #kelurahan').html(options_temp);
-            if($(this).val() != ""){
-                getKecamatan($(this).val());
-            }
-            
-        })
+    $('#provinsi').change(function(){
+        $('#kota, #kecamatan, #kelurahan').html(options_temp);
+        if($(this).val() != ""){
+            getKabupatenKota($(this).val());
+        }
+    })
 
-        $('#kecamatan').change(function(){
-            $('#kelurahan').html(options_temp);
-            if($(this).val() != ""){
-                getKelurahan($(this).val());
-            }
-        })
-
-        $('#kelurahan').change(function(){
-            if($(this).val() != ""){
-                $('#zip_code').val($(this).find(':selected').data('pos'))
-            }else{
-                $('#zip_code').val('')
-            }
-        });
+    $('#kota').change(function(){
+        $('#kecamatan, #kelurahan').html(options_temp);
+        if($(this).val() != ""){
+            getKecamatan($(this).val());
+        }
         
+    })
 
-        function getKabupatenKota (provinsiId){
-            let url = '{{ route("api.kota", ":id") }}';
-            url = url.replace(':id', provinsiId)
-            $.ajax({
-                url,
-                method: 'GET',
-                beforeSend: function(){
-                    $('#kota').prop('disabled', true);
-                },
-                success: function(res){
-                    const options = res.data.map(value => {
-                        return `<option value="${value.id}">${value.kabupaten_kota}</option>`
-                    });
-                    $('#kota').html(options_temp+options)
-                    $('#kota').prop('disabled', false);
-                },
-                error: function(err){
-                    $('#kota').prop('disabled', false);
-                    alert(JSON.stringify(err))
-                }
-
-            })
+    $('#kecamatan').change(function(){
+        $('#kelurahan').html(options_temp);
+        if($(this).val() != ""){
+            getKelurahan($(this).val());
         }
+    })
 
-        function getKecamatan (kotaId){
-            let url = '{{ route("api.kecamatan", ":id") }}';
-            url = url.replace(':id', kotaId)
-            $.ajax({
-                url,
-                method: 'GET',
-                beforeSend: function(){
-                    $('#kecamatan').prop('disabled', true);
-                },
-                success: function(res){
-                    const options = res.data.map(value => {
-                        return `<option value="${value.id}">${value.kecamatan}</option>`
-                    });
-                    $('#kecamatan').html(options_temp+options);
-                    $('#kecamatan').prop('disabled', false);
-                },
-                error: function(err){
-                    alert(JSON.stringify(err))
-                    $('#kecamatan').prop('disabled', false);
-                }
-            })
+    $('#kelurahan').change(function(){
+        if($(this).val() != ""){
+            $('#zip_code').val($(this).find(':selected').data('pos'))
+        }else{
+            $('#zip_code').val('')
         }
+    });
+    
 
-        function getKelurahan (kotaId){
-            let url = '{{ route("api.kelurahan", ":id") }}';
-            url = url.replace(':id', kotaId)
-            $.ajax({
-                url,
-                method: 'GET',
-                beforeSend: function(){
-                    $('#kelurahan').prop('disabled', true);
-                },
-                success: function(res){
-                    const options = res.data.map(value => {
-                        return `<option value="${value.id}" data-pos="${value.kd_pos}">${value.kelurahan}</option>`
-                    });
-                    $('#kelurahan').html(options_temp+options);
-                    $('#kelurahan').prop('disabled', false);
-                },
-                error: function(err){
-                    alert(JSON.stringify(err))
-                    $('#kelurahan').prop('disabled', false);
-                }
-            })
-        }
+    function getKabupatenKota (provinsiId){
+        let url = '{{ route("api.kota", ":id") }}';
+        url = url.replace(':id', provinsiId)
+        $.ajax({
+            url,
+            method: 'GET',
+            beforeSend: function(){
+                $('#kota').prop('disabled', true);
+            },
+            success: function(res){
+                const options = res.data.map(value => {
+                    return `<option value="${value.id}">${value.kabupaten_kota}</option>`
+                });
+                $('#kota').html(options_temp+options)
+                $('#kota').prop('disabled', false);
+            },
+            error: function(err){
+                $('#kota').prop('disabled', false);
+                alert(JSON.stringify(err))
+            }
 
-    </script>
+        })
+    }
+
+    function getKecamatan (kotaId){
+        let url = '{{ route("api.kecamatan", ":id") }}';
+        url = url.replace(':id', kotaId)
+        $.ajax({
+            url,
+            method: 'GET',
+            beforeSend: function(){
+                $('#kecamatan').prop('disabled', true);
+            },
+            success: function(res){
+                const options = res.data.map(value => {
+                    return `<option value="${value.id}">${value.kecamatan}</option>`
+                });
+                $('#kecamatan').html(options_temp+options);
+                $('#kecamatan').prop('disabled', false);
+            },
+            error: function(err){
+                alert(JSON.stringify(err))
+                $('#kecamatan').prop('disabled', false);
+            }
+        })
+    }
+
+    function getKelurahan (kotaId){
+        let url = '{{ route("api.kelurahan", ":id") }}';
+        url = url.replace(':id', kotaId)
+        $.ajax({
+            url,
+            method: 'GET',
+            beforeSend: function(){
+                $('#kelurahan').prop('disabled', true);
+            },
+            success: function(res){
+                const options = res.data.map(value => {
+                    return `<option value="${value.id}" data-pos="${value.kd_pos}">${value.kelurahan}</option>`
+                });
+                $('#kelurahan').html(options_temp+options);
+                $('#kelurahan').prop('disabled', false);
+            },
+            error: function(err){
+                alert(JSON.stringify(err))
+                $('#kelurahan').prop('disabled', false);
+            }
+        })
+    }
+
+</script>
 @endpush
