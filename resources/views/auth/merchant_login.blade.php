@@ -40,7 +40,7 @@
         </div>
         <div class="mt-5 text-center">
             <p class="mb-0">Doesn't have account? <a href="{{ route('register') }}" class="fw-semibold text-primary text-decoration-underline"> Register</a> </p>
-            <p class="mb-0">Forgot your password ? <a href="#" class="fw-semibold text-primary text-decoration-underline"> Recover Here</a> </p>
+            <p class="mb-0">Forgot your password ? <a href="{{ route('merchants.forgot_password') }}" class="fw-semibold text-primary text-decoration-underline"> Recover Here</a> </p>
         </div>
     </div>
 </div>
