@@ -27,7 +27,7 @@
                             @csrf
                             @method('PUT')
                             <div class="mb-3">
-                                <label for="merchant_id">OTP Number</label>
+                                <label for="merchant_id">Merchant</label>
                                 <select name="merchant_id" id="merchant_id" class="form-control @error('merchant_id') is-invalid @enderror">
                                     {{-- <option value=""{{ $merchants->pluck('id')->contains(old('merchant_id')) ? '' : 'selected'}}  disabled>-- SELECT --</option> --}}
                                     @foreach ($merchants as $merchant)
