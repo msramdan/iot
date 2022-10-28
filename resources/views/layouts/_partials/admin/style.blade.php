@@ -1,5 +1,6 @@
 <head>
     <meta charset="utf-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - {{ config('app.name') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
@@ -13,7 +14,6 @@
     <link href="{{ asset('backend/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
-     <link href="{{ asset('backend/assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('backend/assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
-
 </head>

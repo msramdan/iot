@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\MerchantController;
+use App\Http\Controllers\API\WilayahController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,3 +38,8 @@ Route::prefix('merchant')->controller(AuthController::class)->group(function(){
 Route::prefix('merchant')->middleware(['merchant:merchant-api'])->controller(MerchantController::class)->group(function(){
     Route::get('transactions/{merchantId}', 'transactions');
 });
+
+
+Route::get('kota/{provinsiId}', [WilayahController::class, 'kota'])->name('api.kota');
+Route::get('kecamatan/{kotaId}', [WilayahController::class, 'kecamatan'])->name('api.kecamatan');
+Route::get('kelurahan/{kecamatanId}', [WilayahController::class, 'kelurahan'])->name('api.kelurahan');

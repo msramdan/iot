@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\MerchantRejectController;
 use App\Http\Controllers\Admin\MerchantUploadController;
 use App\Http\Controllers\Admin\ApprovalLogMerchantController;
 use App\Http\Controllers\Admin\MdrLogController;
+use App\Http\Controllers\Admin\MerchantOpTimeController;
+use App\Http\Controllers\Admin\OTPController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Merchant\HomeController;
 use App\Http\Controllers\Merchant\MerchantProfileController;
@@ -127,7 +129,10 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
         Route::post('merchant/import_excel', 'import_excel')->name('merchant.import_excel');
     });
 
+    Route::resource('merchant.optime', MerchantOpTimeController::class);
+
     Route::resource('merchant', MerchantController::class);
+    Route::resource('otp', OTPController::class);
 
     Route::resource('transaction', TransactionController::class);
     // Bank

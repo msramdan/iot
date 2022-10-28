@@ -55,7 +55,7 @@
         <div class="dropdown-menu" style="">
             <a href="{{ route('merchant.show', $model->id) }}" class="dropdown-item">Detail</a>
             @can('operational_time')
-            <a href="{{ route('merchant.show', $model->id) }}" class="dropdown-item">Operational Time</a>
+            <a href="{{ route('merchant.optime.index', $model->id) }}" class="dropdown-item">Operational Time</a>
             @endcan
             <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#myModalApp" id="DetailLogApp"
                 data-id="{{ $model->id }}">Approved Log</a>

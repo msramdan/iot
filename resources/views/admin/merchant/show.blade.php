@@ -68,7 +68,7 @@
                                         </tr>
                                         <tr>
                                             <th>City</th>
-                                            <td class="text-right" id="merchant-city">: {{ $merchant->city }}</td>
+                                            <td class="text-right" id="merchant-city">: {{ $merchant->city->kabupaten_kota }}</td>
                                         </tr>
                                         <tr>
                                             <th>Zip code</th>
