@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\MerchantRegisterController;
 use App\Http\Controllers\Auth\MerchantLoginController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MerchantsCategoryController;
@@ -53,6 +54,7 @@ Route::controller(LoginController::class)->group(function() {
     Route::post('/panel/login', 'login')->name('admin_auth.store');
     Route::post('/panel/logout', 'logout')->name('admin_auth.logout');
 });
+
 /**
  * Login Merchant
  */
@@ -65,7 +67,12 @@ Route::controller(MerchantRegisterController::class)->group(function() {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register')->name('register.store');
 });
-
+Route::controller(ForgotPasswordController::class)->group(function() {
+    Route::get('/forgot_password', 'showForgetPasswordForm')->name('merchants.forgot_password');
+    Route::get('/reset_password/{token}', 'showResetPasswordForm')->name('merchants.reset_password');
+    Route::post('/forgot_password', 'submitForgetPasswordForm')->name('merchants.forgot_password_store');
+    Route::post('/reset_password', 'submitResetPasswordForm')->name('merchants.reset_passsword_store');
+});
 /**
  * Route Merchant
  */
