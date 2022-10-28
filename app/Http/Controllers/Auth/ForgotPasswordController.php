@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ResetPassword;
+use RealRashid\SweetAlert\Facades\Alert;
 class ForgotPasswordController extends Controller
 {
     /*
@@ -62,6 +63,7 @@ class ForgotPasswordController extends Controller
 
         Mail::to($request->email)->send(new ResetPassword($token, $merchant));
 
+        Alert::toast('We have e-mailed your password reset link!', 'success');
         return back()->with('message', 'We have e-mailed your password reset link!');
     }
 
@@ -71,21 +73,27 @@ class ForgotPasswordController extends Controller
 
     public function submitResetPasswordForm(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email|exists:users',
-            'password' => 'required|string|min:6|confirmed',
-            'password_confirmation' => 'required'
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'password' => 'required|string|min:6|confirmed',
+                'password_confirmation' => 'required'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
 
         $updatePassword = DB::table('password_resets')
                             ->where([
-                            'email' => $request->email,
                             'token' => $request->token
                             ])
                             ->first();
 
         if(!$updatePassword){
-            return back()->withInput()->with('error', 'Invalid token!');
+            Alert::toast('Invalid token!', 'error');
+            return back()->withErrors('error', 'Invalid token!');
         }
 
         $user = Merchant::where('email', $request->email)
@@ -93,6 +101,7 @@ class ForgotPasswordController extends Controller
 
         DB::table('password_resets')->where(['email'=> $request->email])->delete();
 
+        Alert::toast('Your password has been changed!', 'success');
         return redirect('/login')->with('message', 'Your password has been changed!');
     }
 }

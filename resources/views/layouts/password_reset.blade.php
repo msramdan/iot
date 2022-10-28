@@ -89,13 +89,14 @@
     <script src="{{ asset('backend/assets/libs/feather-icons/feather.min.js')}}"></script>
     <script src="{{ asset('backend/assets/js/pages/plugins/lord-icon-2.1.0.js')}}"></script>
     <script src="{{ asset('backend/assets/js/plugins.js')}}"></script>
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- particles js -->
     <script src="{{ asset('backend/assets/libs/particles.js/particles.js')}}"></script>
 
     <!-- particles app js -->
     <script src="{{ asset('backend/assets/js/pages/particles.app.js')}}"></script>
     @stack('js')
+    @include('sweetalert::alert')
 </body>
 
 </html>
