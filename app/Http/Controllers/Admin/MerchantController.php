@@ -63,6 +63,9 @@ class MerchantController extends Controller
                 ->addColumn('mid', function ($row) {
                     return $row->mid ? $row->mid : '-';
                 })
+                ->addColumn('nmid', function($row) {
+                    return $row->nmid ? $row->nmid : '-';
+                })
                 ->addColumn('merchant_category', function ($row) {
                     if ($row->merchant_category) {
                         $merchant_category = $row->merchant_category->first()->merchants_category_name;
@@ -73,7 +76,7 @@ class MerchantController extends Controller
                     return $merchant_category;
                 })
                 ->addColumn('bussiness', function ($row) {
-                    if ($row->bussiness->first()) {
+                    if ($row->bussiness) {
                         $bussiness = $row->bussiness->first()->bussiness_name;
                     } else {
                         $bussiness = '-';
@@ -82,7 +85,7 @@ class MerchantController extends Controller
                     return $bussiness;
                 })
                 ->addColumn('bank', function ($row) {
-                    if ($row->bank->first()) {
+                    if ($row->bank) {
                         $bank = $row->bank->first()->bank_name;
                     } else {
                         $bank = '-';
@@ -91,7 +94,7 @@ class MerchantController extends Controller
                     return $bank;
                 })
                 ->addColumn('rek_pooling', function ($row) {
-                    if ($row->rek_pooling->first()) {
+                    if ($row->rek_pooling) {
                         $rek_pooling = $row->rek_pooling->first()->rek_pooling_code;
                     } else {
                         $rek_pooling = '-';
@@ -115,7 +118,6 @@ class MerchantController extends Controller
         $merchant_category = MerchantsCategory::all();
         $bussiness = Bussiness::all();
         $rek_pooling = RekPooling::all();
-
         $provinces = DB::table('tbl_provinsi')->get();
 
 
@@ -779,7 +781,11 @@ class MerchantController extends Controller
                     'merchant_category',
                     'bank:id,bank_name',
                     'rek_pooling',
-                    'bussiness'
+                    'bussiness',
+                    'province',
+                    'kecamatan',
+                    'kelurahan',
+                    'kabkot',
                 ])
                 ->where('is_active', 1)
                 ->where('approved1', 'approved')

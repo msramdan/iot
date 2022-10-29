@@ -303,7 +303,7 @@
                                                         </div>
                                                         <!-- End Foto Buku Rekening -->
                                                         <!-- Sertifikat Bukti Kepemilikan -->
-                                                        <div class="col-md-3 col-md-6 merchant-personal d-none">
+                                                        <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Surat Sewa / Bukti Kepemilikan</label>
                                                                 <input type="file" name="copy_proof_ownership" class="form-control @error('copy_proof_ownership') is-invalid @enderror" id="basiInput">
@@ -472,10 +472,8 @@
         let type = $('select[name=merchant_type] option').filter(':selected').val()
 
         if (type == 'personal') {
-            $('.merchant-personal').removeClass('d-none');
             $('.merchant-bussiness').addClass('d-none');
         } else if(type == 'bussiness') {
-            $('.merchant-personal').addClass('d-none');
             $('.merchant-bussiness').removeClass('d-none');
         }
     }

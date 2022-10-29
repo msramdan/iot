@@ -62,6 +62,26 @@ class Merchant extends Authenticatable implements JWTSubject
         return $this->hasOne(MerchantApprove::class);
     }
 
+    public function province()
+    {
+        return $this->hasOne(Province::class, 'id', 'provinsi_id');
+    }
+
+    public function kabkot()
+    {
+        return $this->hasOne(Kabkot::class, 'id', 'kabkot_id');
+    }
+
+    public function kecamatan()
+    {
+        return $this->hasOne(Kecamatan::class, 'id', 'kecamatan_id');
+    }
+
+    public function kelurahan()
+    {
+        return $this->hasOne(Kelurahan::class, 'id', 'kelurahan_id');
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
