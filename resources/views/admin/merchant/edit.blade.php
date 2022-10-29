@@ -174,6 +174,12 @@
                                                     @error('password')
                                                     <span style="color: red;">{{ $message }}</span>
                                                     @enderror
+                                                    <div class="my-1">
+                                                        <button class="btn btn-sm btn-primary" type="button" onclick="generatePassword()">Generate Password</button>
+                                                        <button class="btn btn-sm btn-secondary" type="button" onclick="toggleShowPassword()"><i
+                                                                class="mdi mdi-eye"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -477,6 +483,58 @@
         } else if(type == 'bussiness') {
             $('.merchant-personal').addClass('d-none');
             $('.merchant-bussiness').removeClass('d-none');
+        }
+    }
+
+    function generatePassword (){
+        let password = "";
+        let passwordLength = 1;
+
+        const lowerCase = 'abcdefghijklmnopqrstuvwxyz'
+        for (let i = 0; i < passwordLength; i++) { 
+            const randomNumber=Math.floor(Math.random() * lowerCase.length);
+            password+=lowerCase.substring(randomNumber, randomNumber +1); 
+        }
+
+        passwordLength = 1;
+        const number = '0123456789'
+        for (let i = 0; i < passwordLength; i++) { 
+            const randomNumber=Math.floor(Math.random() * number.length);
+            password+=number.substring(randomNumber, randomNumber +1); 
+        }      
+
+        passwordLength = 1;
+        const upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        for (let i = 0; i < passwordLength; i++) { 
+            const randomNumber=Math.floor(Math.random() * upperCase.length);
+            password+=upperCase.substring(randomNumber, randomNumber +1); 
+        }        
+
+        passwordLength = 1;
+        const character = '!@#$%^&*()'
+        for (let i = 0; i < passwordLength; i++) { 
+            const randomNumber=Math.floor(Math.random() * character.length);
+            password+=character.substring(randomNumber, randomNumber +1); 
+        }        
+
+        const allChars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        passwordLength = 4;
+        for (let i = 0; i < passwordLength; i++) {
+            const randomNumber = Math.floor(Math.random() * allChars.length);
+            password += allChars.substring(randomNumber, randomNumber +1);
+        }
+
+        const shuffled = password.split('').sort(function(){return 0.5-Math.random()}).join('');
+        $('input#password').val(shuffled);
+        $('input#password').attr('type', 'text')
+    }
+    
+    function toggleShowPassword (){
+        const type = $('input#password').attr('type');
+        if (type === "password") {
+            $('input#password').attr('type', 'text');
+        } else {
+            $('input#password').attr('type', 'password');
         }
     }
 </script>

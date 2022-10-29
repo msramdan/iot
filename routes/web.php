@@ -117,6 +117,7 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
     // merchant
     Route::controller(MerchantController::class)->group(function() {
         Route::get('merchant/excel', 'export_excel')->name('merchant.excel');
+        Route::put('merchant/{id}/toggle-active', 'toggleActive')->name('merchant.toggleActive');
     });
     Route::controller(MerchantApproveController::class)->group(function() {
         Route::get('merchant/approval', 'index')->name('merchant.approval');
@@ -129,9 +130,9 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
         Route::post('merchant/import_excel', 'import_excel')->name('merchant.import_excel');
     });
 
-    Route::resource('merchant.optime', MerchantOpTimeController::class);
-
+    
     Route::resource('merchant', MerchantController::class);
+    Route::resource('merchant.optime', MerchantOpTimeController::class);
     Route::resource('otp', OTPController::class);
 
     Route::resource('transaction', TransactionController::class);

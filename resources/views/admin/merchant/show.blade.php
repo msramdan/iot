@@ -185,9 +185,9 @@
                             @if ($merchant->approved1 == 'need_approved' && $merchant->approved2 == 'need_approved' || $merchant->approved1 == 'approved' && $merchant->approved2 == 'need_approved' )
                             @else
                                 @if ($merchant->is_active == 1)
-                                    <button class="btn btn-danger btn-sm"> <i class="mdi mdi-close"></i> Set Inactive</button>
+                                    <button class="btn btn-danger btn-sm" onclick="toggleActive('{{$merchant->id}}', '{{$merchant->merchant_name}}', 0)"> <i class="mdi mdi-close"></i> Set Inactive</button>
                                 @else
-                                    <button class="btn btn-primary btn-sm"> <i class="mdi mdi-check-bold"></i> Set Active</button>
+                                    <button class="btn btn-primary btn-sm" onclick="toggleActive('{{$merchant->id}}', '{{$merchant->merchant_name}}', 1)"> <i class="mdi mdi-check-bold"></i> Set Active</button>
                                 @endif
                             @endif
 
@@ -276,6 +276,49 @@
                             window.location.reload();
                         })
                     });
+                }
+            })
+        }
+
+        const toggleActive = function(merchant_id, merchant_name, is_active){
+            let text_status;
+
+            if (is_active > 0) {
+                text_status = 'activated ';
+            }  else if (is_active == 0) {
+                text_status = 'inactivated';
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `${text_status} ${merchant_name}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    let url = '{{ route("merchant.toggleActive", ":id") }}';
+                    url = url.replace(":id", merchant_id);
+                    $.ajax({
+                        url,
+                        method: 'PUT',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        },
+                        data: {
+                            is_active
+                        },
+                        success: function(res){
+                            if(res.success){
+                                location.reload()
+                            }
+                        },
+                        error: function(err){
+                            console.log(err)
+                        }
+                    })
                 }
             })
         }
