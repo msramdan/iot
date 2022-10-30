@@ -795,4 +795,16 @@ class MerchantController extends Controller
 
         return Excel::download(new MerchantExport($merchant), 'merchant.xlsx');
     }
+
+    public function toggleActive($merchantId)
+    {
+        try{
+            Merchant::whereId($merchantId)->update(['is_active' => request('is_active')]);
+            Alert::toast('Data successfully to delete', 'success');
+        }catch(Exception $err){
+            Alert::toast('Data failed to delete', 'error');
+        }
+
+        return response()->json(['success' => true]);
+    }
 }
