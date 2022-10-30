@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('email');
             $table->text('address');
             $table->string('is_password_expired',10)->nullable();
+            $table->longText('tos')->nullable();
             $table->timestamps();
         });
     }

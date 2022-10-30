@@ -5,10 +5,14 @@
             <th>MID</th>
             <th>Merchant Name</th>
             <th>Email</th>
+            <th>Merchant Type</th>
             <th>Merchant Category</th>
             <th>Phone</th>
             <th>Bussiness</th>
-            <th>City</th>
+            <th>Province</th>
+            <th>City / Districts</th>
+            <th>Sub District</th>
+            <th>Village</th>
             <th>Zip Code</th>
             <th>Address 1</th>
             <th>Address 2</th>
@@ -28,18 +32,22 @@
             <td>{{ $merchant->id }}</td>
             <td>{{ $merchant->mid ? $merchant->mid : '-'}}</td>
             <td>{{ $merchant->merchant_name }}</td>
-            <td>{{ $merchant->merchant_email }}</td>
-            <td>{{ $merchant->merchant_category->merchants_category_name }}</td>
+            <td>{{ $merchant->email }}</td>
+            <td>{{ ucwords($merchant->type) }}</td>
+            <td>{{ $merchant->merchant_category ? $merchant->merchant_category->merchants_category_name : '-' }}</td>
             <td>{{ $merchant->phone }}</td>
-            <td>{{ $merchant->bussiness->bussiness_name }}</td>
-            <td>{{ $merchant->city }}</td>
+            <td>{{ $merchant->bussiness ? $merchant->bussiness->bussiness_name : '-' }}</td>
+            <td>{{ $merchant->province->provinsi }}</td>
+            <td>{{ $merchant->kabkot->kabupaten_kota }}</td>
+            <td>{{ $merchant->kecamatan->kecamatan }}</td>
+            <td>{{ $merchant->kelurahan->kelurahan }}</td>
             <td>{{ $merchant->zip_code }}</td>
             <td>{{ $merchant->address1 }}</td>
             <td>{{ $merchant->address2 }}</td>
-            <td>{{ $merchant->bank->bank_name }}</td>
+            <td>{{ $merchant->bank ? $merchant->bank->bank_name : '-' }}</td>
             <td>{{ $merchant->number_account }}</td>
             <td>{{ $merchant->account_name }}</td>
-            <td>{{ $merchant->rek_pooling->rek_pooling_code }}</td>
+            <td>{{ $merchant->rek_pooling ? $merchant->rek_pooling->rek_pooling_code : '-' }}</td>
             <td>{{ $merchant->mdr }} %</td>
             <td>
                 @if ($merchant->approved1 == 'approved')

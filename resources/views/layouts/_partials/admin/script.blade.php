@@ -1,6 +1,7 @@
-<script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src=https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js></script>
 <script src=https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.js" ></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('backend/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

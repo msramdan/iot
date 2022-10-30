@@ -49,7 +49,6 @@
                                         <th>Merchant Category</th>
                                         <th>Phone</th>
                                         <th>Bussiness</th>
-                                        {{-- <th>City</th> --}}
                                         @canany(['merchant_show','merchant_update', 'merchant_delete','approved_step_1','approved_step_2'])
                                         <th>Action</th>
                                         @endcanany
@@ -137,7 +136,6 @@
             {
                 data : 'bussiness',
                 name : 'bussiness',
-
             }
         ]
 

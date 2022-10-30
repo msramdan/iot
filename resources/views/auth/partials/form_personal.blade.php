@@ -30,22 +30,60 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label for="city">City</label>
-                <input type="text" name="city" id="city" value="{{ old('city') }}" placeholder="City" class="form-control @error('city') is-invalid @enderror">
-                @error('city')
+                <label for="provinsi">Provinsi</label>
+                <select name="provinsi_id" id="provinsi" class="form-control @error('provinsi_id') is-invalid @enderror">
+                    <option value="">-- Select --</option>
+                    @foreach ($provinces as $province)
+                        <option value="{{ $province->id }}">{{ $province->provinsi }}</option>
+                    @endforeach
+                </select>
+                @error('provinsi_id')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="zip_code">Zip Code</label>
-                <input type="text" name="zip_code" id="zip_code" value="{{ old('zip_code') }}" placeholder="Zip Code" class="form-control @error('zip_code') is-invalid @enderror">
-                @error('zip_code')
+                <label for="kota">Kab/Kota</label>
+                <select name="kabkot_id" id="kota" class="form-control @error('kabkot_id') is-invalid @enderror">
+                    <option value="">-- Select --</option>
+                </select>
+                @error('kabkot_id')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="kecamatan">Kecamatan</label>
+                <select name="kecamatan_id" id="kecamatan" class="form-control @error('kecamatan_id') is-invalid @enderror">
+                    <option value="">-- Select --</option>
+                </select>
+                @error('provinsi_id')
+                <span style="color: red;">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="kelurahan">Kelurahan</label>
+                <select name="kelurahan_id" id="kelurahan" class="form-control @error('kelurahan_id') is-invalid @enderror">
+                    <option value="">-- Select --</option>
+                </select>
+                @error('kabkot_id')
+                <span style="color: red;">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="zip_code">Zip Code</label>
+        <input type="text" name="zip_code" id="zip_code" value="{{ old('zip_code') }}" placeholder="Zip Code" class="form-control @error('zip_code') is-invalid @enderror">
+        @error('zip_code')
+        <span style="color: red;">{{ $message }}</span>
+        @enderror
     </div>
     <div class="form-group">
         <label for="address1">Address Line 1</label>

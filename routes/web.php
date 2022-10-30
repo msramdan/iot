@@ -66,6 +66,7 @@ Route::controller(MerchantLoginController::class)->group(function() {
 Route::controller(MerchantRegisterController::class)->group(function() {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register')->name('register.store');
+    Route::get('/tos', 'tos')->name('tos');
 });
 Route::controller(ForgotPasswordController::class)->group(function() {
     Route::get('/forgot_password', 'showForgetPasswordForm')->name('merchants.forgot_password');

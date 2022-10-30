@@ -11,6 +11,10 @@ use App\Models\Bank;
 use App\Models\Bussiness;
 use App\Models\ApprovalLogMerchant;
 use App\Models\MdrLog;
+use App\Models\Province;
+use App\Models\Kabkot;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -27,6 +31,7 @@ class MerchantProfileController extends Controller
         $merchant_categories = MerchantsCategory::all();
         $banks = Bank::all();
         $bussinesses = Bussiness::all();
+
         $merchant = Merchant::with([
             'bussiness',
             'merchant_approve',
@@ -34,10 +39,27 @@ class MerchantProfileController extends Controller
             'merchant_category',
         ])->findOrFail(auth()->guard('merchant')->user()->id);
 
+        $provinces = Province::all();
+        $kabkot = Kabkot::where('id', $merchant->kabkot_id)->get();
+        $kecamatans = Kecamatan::where('id', $merchant->kecamatan_id)->get();
+        $kelurahans = Kelurahan::where('id', $merchant->kelurahan_id)->get();
+
+
         $approval_logs = ApprovalLogMerchant::where('merchant_id', $merchant->id)->orderBy('id', 'desc')->limit(6)->get();
         $mdr_logs = MdrLog::where('merchant_id', $merchant->id)->orderBy('id', 'desc')->limit(5)->get();
 
-        return view('merchant.profile.index', compact('merchant', 'merchant_categories', 'banks', 'bussinesses', 'approval_logs', 'mdr_logs'));
+        return view('merchant.profile.index', compact(
+            'merchant',
+            'merchant_categories',
+            'banks',
+            'bussinesses',
+            'approval_logs',
+            'mdr_logs',
+            'provinces',
+            'kabkot',
+            'kecamatans',
+            'kelurahans'
+        ));
     }
 
     public function update_personal(Request $request) {

@@ -86,7 +86,7 @@
         </div>
         <!-- End Buku Rekening -->
         <!-- Surat Sewa / Bukti Kepemilikan -->
-        <div class="custom-file merchant-personal">
+        <div class="custom-file">
             <input type="file" name="copy_proof_ownership" onchange="readUrl(this, '#show_copy_proof_ownership')" class="custom-file-input @error('copy_proof_ownership') is-invalid @enderror" id="copy_proof_ownership">
             <label class="custom-file-label" for="copy_proof_ownership"><img id="show_copy_proof_ownership" src="{{ asset('frontend/images/cloud.png') }}"></label>
             <span class="text">Surat Sewa / Bukti Kepemilikan</span>
@@ -163,7 +163,7 @@
     <div class="form-group mt-2">
         <div class="custom-checkbox">
             <input type="checkbox" name="tos" class="custom-control-input" id="customControlValidation1" required>
-            <label class="custom-control-label" for="customControlValidation1">I accept the <a href="#">Terms & Conditions</a> and <a href="#">Privacy policy</a></label>
+            <label class="custom-control-label" for="customControlValidation1">I accept the <a href="{{ route('tos') }}">Terms & Conditions</a> and <a href="#">Privacy policy</a></label>
         </div>
     </div>
 </div>

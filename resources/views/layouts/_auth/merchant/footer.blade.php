@@ -9,7 +9,7 @@
             <li><a href="#">Terms &amp; condition</a></li>
             </ul>
             <div class="copyright">
-            <p>Copyright © 2021 <a href="#">Anfra</a>, All rights reserved</p>
+            <p>Copyright © {{ date('Y') }} <a href="#">{{ $setting->app_name }}</a>, All rights reserved</p>
             </div>
         </div>
         </div>
