@@ -80,6 +80,7 @@ Route::controller(ForgotPasswordController::class)->group(function() {
 Route::middleware(['auth:merchant', 'merchant_auth'])->group(function(){
     Route::controller(HomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
+        Route::post('/merchant/change_password', 'change_password')->name('merchant.change_password');
     });
     Route::prefix('merchant')->group(function() {
         Route::controller(MerchantProfileController::class)->group(function(){
@@ -131,7 +132,7 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
         Route::post('merchant/import_excel', 'import_excel')->name('merchant.import_excel');
     });
 
-    
+
     Route::resource('merchant', MerchantController::class);
     Route::resource('merchant.optime', MerchantOpTimeController::class);
     Route::resource('otp', OTPController::class);

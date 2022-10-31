@@ -13,6 +13,13 @@
     $('#ubahPassword').click(function() {
         $('#ajaxModelEditPassword').modal('show');
     });
+
+    $(document).ready(function() {
+        let is_force_pass = "{{ auth()->guard('merchant')->user()->is_force_pass }}";
+        if (!is_force_pass) {
+            $('#ajaxModelEditForcePassword').modal('show');
+        }
+    });
 </script>
 @stack('js')
 @include('sweetalert::alert')

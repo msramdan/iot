@@ -7,25 +7,35 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('dashboard.change_password') }}">
+                    <form method="POST" action="{{ route('merchant.change_password') }}">
                         @csrf
-                        @method('PUT')
                         <div class="modal-header">
                             <h4 class="modal-title">Update Password <span id="attr_sku_kode"></span> </h4>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group mb-3">
+                                <label for="password">Password Lama</label>
+                                <input id="password" class="form-control @error('old_password') is-invalid @enderror" name="old_password" type="password" pattern="^\S{8,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Minimal 6 Karakter' : ''); if(this.checkValidity()) form.passcon.pattern = this.value;" placeholder="Password Baru" required>
+                                @error('old_password')
+                                <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group mb-3">
                                 <label for="password">Password Baru</label>
-                                <input id="password" class="form-control" name="password" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Minimal 6 Karakter' : ''); if(this.checkValidity()) form.passcon.pattern = this.value;" placeholder="Password Baru" required>
+                                <input id="password" class="form-control @error('password') is-invalid @enderror" name="password" type="password" pattern="^\S{8,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Minimal 6 Karakter' : ''); if(this.checkValidity()) form.passcon.pattern = this.value;" placeholder="Password Baru" required>
+                                @error('password')
+                                <span style="color: red;">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="form-group">
                                 <label for="passcon">Konfirmasi Password</label>
-                                <input class="form-control" id="passcon" name="password_confirmation" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Masukkan Password Yang Sama' : '');" placeholder="Konfirmasi Password" required>
+                                <input class="form-control @error('password_confirmation') is-invalid @enderror" id="passcon" name="password_confirmation" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Masukkan Password Yang Sama' : '');" placeholder="Konfirmasi Password" required>
+                                @error('password_confirmation')
+                                <span style="color: red;">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="javascript:;" class="btn btn-white" data-bs-dismiss="modal">Close</a>
                             <button type="submit" href="javascript:;" class="btn btn-success">Update</button>
                         </div>
                     </form>
@@ -33,6 +43,51 @@
             </div>
         </div>
     </div>
+
+      <div class="modal fade" id="ajaxModelEditForcePassword"  data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="alert alert-warning" role="alert">
+                        Please Change your password!
+                    </div>
+                    <form method="POST" action="{{ route('merchant.change_password') }}">
+                        @csrf
+                        <div class="modal-header">
+                            <h4 class="modal-title">Update Password <span id="attr_sku_kode"></span> </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group mb-3">
+                                <label for="password">Password Lama</label>
+                                <input id="password" class="form-control @error('old_password') is-invalid @enderror" name="old_password" type="password" pattern="^\S{8,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Minimal 6 Karakter' : ''); if(this.checkValidity()) form.passcon.pattern = this.value;" placeholder="Password Baru" required>
+                                @error('old_password')
+                                <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="password">Password Baru</label>
+                                <input id="password" class="form-control @error('password') is-invalid @enderror" name="password" type="password" pattern="^\S{8,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Minimal 6 Karakter' : ''); if(this.checkValidity()) form.passcon.pattern = this.value;" placeholder="Password Baru" required>
+                                @error('password')
+                                <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="passcon">Konfirmasi Password</label>
+                                <input class="form-control @error('password_confirmation') is-invalid @enderror" id="passcon" name="password_confirmation" type="password" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Masukkan Password Yang Sama' : '');" placeholder="Konfirmasi Password" required>
+                                @error('password_confirmation')
+                                <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" href="javascript:;" class="btn btn-success">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div id="layout-wrapper">
         {{-- header --}}
