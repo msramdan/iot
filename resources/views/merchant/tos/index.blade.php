@@ -2,7 +2,7 @@
 @section('title', 'Term Of Service')
 @section('content')
 <div class="page-content">
-    <div class="container-fluid">
+    <div class="container">
         {!! $setting->tos !!}
     </div>
 </div>
