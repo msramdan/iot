@@ -82,8 +82,8 @@
                                                         <label for="merchant_category_id">Merchant Type</label>
                                                         <select class="form-control @error('merchant_type') @enderror" name="merchant_type" id="merchant_type" onchange="form_change()">
                                                             <option value="">-- Select --</option>
-                                                            <option value="bussiness" {{ $merchant->merchant_type == 'bussiness' ? 'selected' : ''  }}>Bussiness</option>
-                                                            <option value="personal" {{ $merchant->merchant_type == 'personal' ? 'selected' : ''  }}>Personal</option>
+                                                            <option value="bussiness" {{ $merchant->type == 'bussiness' ? 'selected' : ''  }}>Bussiness</option>
+                                                            <option value="personal" {{ $merchant->type == 'personal' ? 'selected' : ''  }}>Personal</option>
                                                         </select>
                                                         @error('merchant_type')
                                                         <span style="color: red;">{{ $message }}</span>
@@ -122,6 +122,51 @@
                                                         @enderror
                                                     </div>
                                                 </div>
+                                                  <div class="col-md-3 col-md-6">
+                                                    <div>
+                                                        <label for="provinsi">Provinsi</label>
+                                                        <select name="provinsi_id" id="provinsi" class="form-control">
+                                                            <option value="">-- Select --</option>
+                                                            @foreach ($provinces as $province)
+                                                            <option value="{{ $province->id }}" {{ $province->id == $merchant->provinsi_id ? 'selected' : '' }}>{{ $province->provinsi
+                                                                }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-md-6">
+                                                    <div>
+                                                        <label for="kota">Kab/Kota</label>
+                                                        <select name="kabkot_id" id="kota" class="form-control">
+                                                            <option value="">-- Select --</option>
+                                                            @foreach ($kabkot as $item)
+                                                            <option value="{{ $item->id }}" {{ $item->id == $merchant->kabkot_id ? 'selected' : '' }}>{{ $item->kabupaten_kota }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-md-6">
+                                                    <div>
+                                                        <label for="kecamatan">Kecamatan</label>
+                                                        <select name="kecamatan_id" id="kecamatan" class="form-control">
+                                                            <option value="">-- Select --</option>
+                                                            @foreach ($kecamatans as $kecamatan)
+                                                            <option value="{{ $kecamatan->id }}" {{ $kecamatan->id == $merchant->kecamatan_id ? 'selected' : '' }}>{{ $kecamatan->kecamatan }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-md-6">
+                                                    <div>
+                                                        <label for="kelurahan">Kelurahan</label>
+                                                        <select name="kelurahan_id" id="kelurahan" class="form-control">
+                                                            <option value="">-- Select --</option>
+                                                            @foreach ($kelurahans as $kelurahan)
+                                                            <option value="{{ $kelurahan->id }}" {{ $kelurahan->id == $merchant->kelurahan_id ? 'selected' : '' }}>{{ $kelurahan->kelurahan }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-3 col-md-6">
                                                     <div>
                                                         <label for="address1">Address1</label>
@@ -136,15 +181,6 @@
                                                         <label for="address2">Address2</label>
                                                         <textarea name="address2" id="address2" rows="3" class="form-control @error('address2') is-invalid @enderror" placeholder="" value="{{ old('address2') }}" autocomplete="off">{{ old('address2') ?  old('address2') : $merchant->address2 }}</textarea>
                                                         @error('address2')
-                                                        <span style="color: red;">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 col-md-6">
-                                                    <div>
-                                                        <label for="city">City</label>
-                                                        <input type="text" class="form-control @error('city') is-invalid @enderror" name="city" id="city" placeholder="" value="{{ old('city') ? old('city') : $merchant->city }}" autocomplete="off">
-                                                        @error('city')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
                                                     </div>
@@ -204,7 +240,7 @@
                                                                 @error('identity_card_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->identity_card_photo)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->identity_card_photo)
                                                                 <a href="{{ Storage::url('public/backend/images/identity_card/'.$merchant->merchant_approve->identity_card_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -218,7 +254,7 @@
                                                                 @error('selfie_ktp_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->selfie_ktp_photo)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->selfie_ktp_photo)
                                                                 <a href="{{ Storage::url('public/backend/images/selfie_ktp/'.$merchant->merchant_approve->selfie_ktp_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -232,7 +268,7 @@
                                                                 @error('npwp_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->npwp_photo)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->npwp_photo)
                                                                 <a href="{{ Storage::url('public/backend/images/npwp/'.$merchant->merchant_approve->npwp_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -246,7 +282,7 @@
                                                                 @error('outlet_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->outlet_photo)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->outlet_photo)
                                                                 <a href="{{ Storage::url('public/backend/images/outlet/'.$merchant->merchant_approve->outlet_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -260,7 +296,7 @@
                                                                 @error('owner_outlet_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->owner_outlet_photo)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->owner_outlet_photo)
                                                                 <a href="{{ Storage::url('public/backend/images/owner_outlet/'.$merchant->merchant_approve->owner_outlet_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -274,7 +310,7 @@
                                                                 @error('in_outlet_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->in_outlet_photo)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->in_outlet_photo)
                                                                 <a href="{{ Storage::url('public/backend/images/in_outlet/'.$merchant->merchant_approve->in_outlet_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -288,7 +324,7 @@
                                                                 @error('certificate_of_domicile')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->certificate_of_domicile)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->certificate_of_domicile)
                                                                 <a href="{{ Storage::url('public/backend/images/certificate_of_domicile/'.$merchant->merchant_approve->certificate_of_domicile ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -302,7 +338,7 @@
                                                                 @error('copy_bank_account_book')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->copy_bank_account_book)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->copy_bank_account_book)
                                                                 <a href="{{ Storage::url('public/backend/images/copy_bank_account_book/'.$merchant->merchant_approve->copy_bank_account_book ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -316,7 +352,7 @@
                                                                 @error('copy_proof_ownership')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->copy_proof_ownership)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->copy_proof_ownership)
                                                                 <a href="{{ Storage::url('public/backend/images/copy_proof_ownership/'.$merchant->merchant_approve->copy_proof_ownership ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -330,7 +366,7 @@
                                                                 @error('siup_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->siup_photo)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->siup_photo)
                                                                 <a href="{{ Storage::url('public/backend/images/siup_photo/'.$merchant->merchant_approve->siup_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -344,7 +380,7 @@
                                                                 @error('tdp_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->tdp_photo)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->tdp_photo)
                                                                 <a href="{{ Storage::url('public/backend/images/tdp_photo/'.$merchant->merchant_approve->tdp_photo ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -358,7 +394,7 @@
                                                                 @error('copy_corporation_deed')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->copy_corporation_deed)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->copy_corporation_deed)
                                                                 <a href="{{ Storage::url('public/backend/images/copy_corporation_deed/'.$merchant->merchant_approve->copy_corporation_deed ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -372,7 +408,7 @@
                                                                 @error('copy_management_deed')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->copy_management_deed)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->copy_management_deed)
                                                                 <a href="{{ Storage::url('public/backend/images/copy_management_deed/'.$merchant->merchant_approve->copy_management_deed ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -386,7 +422,7 @@
                                                                 @error('copy_sk_menkeh')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
-                                                                @if ($merchant->merchant_approve->copy_sk_menkeh)
+                                                                @if ($merchant->merchant_approve && $merchant->merchant_approve->copy_sk_menkeh)
                                                                 <a href="{{ Storage::url('public/backend/images/copy_sk_menkeh/'.$merchant->merchant_approve->copy_sk_menkeh ) }}" target="_blank">Click to see images</a>
                                                                 @endif
                                                             </div>
@@ -483,37 +519,142 @@
             $('.merchant-bussiness').removeClass('d-none');
         }
     }
+</script>
+
+<script>
+    const options_temp ='<option value="" selected disabled>-- Select --</option>';
+
+    $('#provinsi').change(function(){
+        $('#kota, #kecamatan, #kelurahan').html(options_temp);
+        if($(this).val() != ""){
+            getKabupatenKota($(this).val());
+        }
+    })
+
+    $('#kota').change(function(){
+        $('#kecamatan, #kelurahan').html(options_temp);
+        if($(this).val() != ""){
+            getKecamatan($(this).val());
+        }
+
+    })
+
+    $('#kecamatan').change(function(){
+        $('#kelurahan').html(options_temp);
+        if($(this).val() != ""){
+            getKelurahan($(this).val());
+        }
+    })
+
+    $('#kelurahan').change(function(){
+        if($(this).val() != ""){
+            $('#zip_code').val($(this).find(':selected').data('pos'))
+        }else{
+            $('#zip_code').val('')
+        }
+    });
+
+
+    function getKabupatenKota (provinsiId){
+        let url = '{{ route("api.kota", ":id") }}';
+        url = url.replace(':id', provinsiId)
+        $.ajax({
+            url,
+            method: 'GET',
+            beforeSend: function(){
+                $('#kota').prop('disabled', true);
+            },
+            success: function(res){
+                const options = res.data.map(value => {
+                    return `<option value="${value.id}">${value.kabupaten_kota}</option>`
+                });
+                $('#kota').html(options_temp+options)
+                $('#kota').prop('disabled', false);
+            },
+            error: function(err){
+                $('#kota').prop('disabled', false);
+                alert(JSON.stringify(err))
+            }
+
+        })
+    }
+
+    function getKecamatan (kotaId){
+        let url = '{{ route("api.kecamatan", ":id") }}';
+        url = url.replace(':id', kotaId)
+        $.ajax({
+            url,
+            method: 'GET',
+            beforeSend: function(){
+                $('#kecamatan').prop('disabled', true);
+            },
+            success: function(res){
+                const options = res.data.map(value => {
+                    return `<option value="${value.id}">${value.kecamatan}</option>`
+                });
+                $('#kecamatan').html(options_temp+options);
+                $('#kecamatan').prop('disabled', false);
+            },
+            error: function(err){
+                alert(JSON.stringify(err))
+                $('#kecamatan').prop('disabled', false);
+            }
+        })
+    }
+
+    function getKelurahan (kotaId){
+        let url = '{{ route("api.kelurahan", ":id") }}';
+        url = url.replace(':id', kotaId)
+        $.ajax({
+            url,
+            method: 'GET',
+            beforeSend: function(){
+                $('#kelurahan').prop('disabled', true);
+            },
+            success: function(res){
+                const options = res.data.map(value => {
+                    return `<option value="${value.id}" data-pos="${value.kd_pos}">${value.kelurahan}</option>`
+                });
+                $('#kelurahan').html(options_temp+options);
+                $('#kelurahan').prop('disabled', false);
+            },
+            error: function(err){
+                alert(JSON.stringify(err))
+                $('#kelurahan').prop('disabled', false);
+            }
+        })
+    }
 
     function generatePassword (){
         let password = "";
         let passwordLength = 1;
 
         const lowerCase = 'abcdefghijklmnopqrstuvwxyz'
-        for (let i = 0; i < passwordLength; i++) { 
+        for (let i = 0; i < passwordLength; i++) {
             const randomNumber=Math.floor(Math.random() * lowerCase.length);
-            password+=lowerCase.substring(randomNumber, randomNumber +1); 
+            password+=lowerCase.substring(randomNumber, randomNumber +1);
         }
 
         passwordLength = 1;
         const number = '0123456789'
-        for (let i = 0; i < passwordLength; i++) { 
+        for (let i = 0; i < passwordLength; i++) {
             const randomNumber=Math.floor(Math.random() * number.length);
-            password+=number.substring(randomNumber, randomNumber +1); 
-        }      
+            password+=number.substring(randomNumber, randomNumber +1);
+        }
 
         passwordLength = 1;
         const upperCase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        for (let i = 0; i < passwordLength; i++) { 
+        for (let i = 0; i < passwordLength; i++) {
             const randomNumber=Math.floor(Math.random() * upperCase.length);
-            password+=upperCase.substring(randomNumber, randomNumber +1); 
-        }        
+            password+=upperCase.substring(randomNumber, randomNumber +1);
+        }
 
         passwordLength = 1;
         const character = '!@#$%^&*()'
-        for (let i = 0; i < passwordLength; i++) { 
+        for (let i = 0; i < passwordLength; i++) {
             const randomNumber=Math.floor(Math.random() * character.length);
-            password+=character.substring(randomNumber, randomNumber +1); 
-        }        
+            password+=character.substring(randomNumber, randomNumber +1);
+        }
 
         const allChars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         passwordLength = 4;
@@ -526,7 +667,7 @@
         $('input#password').val(shuffled);
         $('input#password').attr('type', 'text')
     }
-    
+
     function toggleShowPassword (){
         const type = $('input#password').attr('type');
         if (type === "password") {
@@ -535,5 +676,6 @@
             $('input#password').attr('type', 'password');
         }
     }
+
 </script>
 @endpush
