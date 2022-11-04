@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             BankSeeder::class,
             BussinessSeeder::class,
             RekPoolingSeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }

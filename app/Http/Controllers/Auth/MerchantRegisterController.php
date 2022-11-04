@@ -69,6 +69,7 @@ class MerchantRegisterController extends Controller
             ],
         ];
 
+
         if ($request->merchant_type == 'personal') {
             $rules['copy_proof_ownership'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
         }
