@@ -81,9 +81,9 @@ class DashboardController extends Controller
                 ->limit(10)
                 ->get();
 
-        $merchant_active = DB::scalar(
-                    "SELECT (SELECT COUNT(merchants.id) WHERE merchants.is_active=0) AS total_inactive, (SELECT COUNT(merchants.id) WHERE merchants.is_active=1) AS total_active FROM `merchants` WHERE 1"
-                )->get();
+        // $merchant_active = DB::scalar(
+        //             "SELECT (SELECT COUNT(merchants.id) WHERE merchants.is_active=0) AS total_inactive, (SELECT COUNT(merchants.id) WHERE merchants.is_active=1) AS total_active FROM `merchants` WHERE 1"
+        //         )->get();
 
         $merchant_active = Merchant::where('is_active', 1)->count();
         $merchant_inactive = Merchant::where('is_active', 0)->count();
