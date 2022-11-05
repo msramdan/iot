@@ -3,6 +3,9 @@
 @section('title', 'Dashboard')
 @push('style')
 <style>
+.ui-datepicker-calendar {
+   display: none;
+}
 </style>
 @endpush
 @section('content')
@@ -162,18 +165,18 @@
                                 <div class="card-header p-0 border-0 bg-soft-light">
                                     <div class="d-flex">
                                         <h6 class="float-start mt-3 ml-3">Transaction Per Month</h6>
-                                        {{-- <div class="float-end">
+                                        <div class="float-end">
                                             <form action="{{ route('dashboard') }}" method="get" id="filter_date">
                                                 @csrf
                                                 <div class="input-group" style="left:100px;" >
-                                                   <input type="text" class="form-control" id="filter_year" name="filter_year" onchange="filter_year();" value=""/>
+                                                   <input type="text" class="form-control" id="filter_year" name="filter_year"  value=""/>
                                                     <div class="input-group-text bg-primary border-primary text-white">
                                                         <i class="ri-calendar-2-line"></i>
                                                     </div>
                                                 </div>
                                                 <!--end row-->
                                             </form>
-                                        </div> --}}
+                                        </div>
                                     </div>
                                 </div><!-- end card header -->
                                 <div class="card-body p-0 pb-2">
@@ -190,6 +193,18 @@
                             <div class="card">
                                 <div class="card-header p-0 border-0 bg-soft-light">
                                     <h6 class="mt-2 ml-2">Top 10 Merchant By Transaction</h6>
+                                    <div class="float-end">
+                                        <form  method="get" id="filter_date">
+                                            @csrf
+                                            <div class="input-group mb-4">
+                                                <input type="text" class="form-control" id="filter_year_merchant" name="filter_year"  value=""/>
+                                                <div class="input-group-text bg-primary border-primary text-white">
+                                                    <i class="ri-calendar-2-line"></i>
+                                                </div>
+                                            </div>
+                                            <!--end row-->
+                                        </form>
+                                    </div>
                                 </div><!-- end card header -->
                                 <div class="card-body p-0 pb-2">
                                     <div class="w-100">
@@ -270,30 +285,96 @@
 </script>
 
 <script>
-
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 $(document).ready(function(){
-//   $("#filter_year").datepicker({
-//      format: "yyyy",
-//      viewMode: "years",
-//      minViewMode: "years",
-//      autoclose:true
-//   });
-  flatpickr("#filter_year", {
-    enableTime: false,
-    noCalendar: true,
-    dateFormat: "Y"
-  });
+    $(function() {
+        $( "#filter_year" ).datepicker({
+            changeMonth:false,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy',
+            onClose: function(dateText, inst) {
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, 1));
+                filter_year();
+            }
+        });
+        $( "#filter_year_merchant" ).datepicker({
+            changeMonth:false,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy',
+            onClose: function(dateText, inst) {
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, 1));
+                filter_year_merchant();
+            }
+        });
+    });
 })
 
 function filter_year() {
     var year = $('#filter_year').val();
+
     $.ajax({
         type: 'post',
         url: "{{ route('dashboard.filter_year') }}",
         data: {
             year: year,
         }, success:function(result) {
-            console.log(result);
+
+        }
+    }).then(result => {
+        //console.log(result);
+        var options_month = {
+            chart: {
+                type: 'bar'
+            },
+            dataLabels: {
+                enable: false,
+            },
+            legend: {
+                show: false,
+            },
+            series:[{
+                data:result
+            }]
+
+        }
+        var chart_month = new ApexCharts(document.querySelector("#transaction_by_month"), options_month);
+        chart_month.render();
+    })
+}
+
+function filter_year_merchant() {
+    var year = $('#filter_year_merchant').val();
+
+    $.ajax({
+        type: 'post',
+        url: "{{ route('dashboard.filter_year_merchant') }}",
+        data: {
+            year: year,
+        }, success:function(result) {
+           var options_month = {
+                chart: {
+                    type: 'bar'
+                },
+                dataLabels: {
+                    enable: false,
+                },
+                legend: {
+                    show: false,
+                }
+            }
+            var chart_month = new ApexCharts(document.querySelector("#top_ten_merchant"), options_month);
+
+            chart_month.appendData({
+                data: result
+            })
         }
     })
 }

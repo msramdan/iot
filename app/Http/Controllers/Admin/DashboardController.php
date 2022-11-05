@@ -170,22 +170,53 @@ class DashboardController extends Controller
 
     public function filter_transaction_year(Request $request)
     {
-        $year = $request->filter_year;
+        $year = $request->year;
 
         $start_dates = Carbon::now()->firstOfYear()->year($year);
-        $end_dates = Carbon::now()->lastOfYear()->year($year);
+        $end_dates = Carbon::now()->lastOfYear()
+                                  ->year($year)
+                                  ->hour(23)
+                                  ->minute(59)
+                                  ->second(59);
 
         $transaction_month = Transaction::select(
-            DB::raw("DATE_FORMAT(created_at, '%M') as bulan"),
-            DB::raw("(COUNT(*)) as total_transaction"),
-            DB::raw("sum(amount) as total_amount")
+            DB::raw("DATE_FORMAT(created_at, '%M') as x"),
+            DB::raw("sum(amount) as y")
         )->where('status', 'success')
          ->whereBetween('created_at', [$start_dates, $end_dates])
          ->orderBy('created_at')
-         ->groupBy("bulan")
+         ->groupBy("x")
          ->limit(12)
          ->get();
 
          return response()->json($transaction_month);
+    }
+
+    public function filter_year_merchant(Request $request)
+    {
+        $year = $request->year;
+
+        $start_dates = Carbon::now()->firstOfYear()->year($year);
+        $end_dates = Carbon::now()->lastOfYear()
+                                  ->year($year)
+                                  ->hour(23)
+                                  ->minute(59)
+                                  ->second(59);
+
+          //transaksi sepuluh merchant
+        $transaction_top_merchant = DB::table('transactions')
+                ->select(
+                    DB::raw('SUM(transactions.amount) as total_transaction'),
+                    DB::raw('merchants.merchant_name as merchant_name')
+                )
+                ->join('merchants', 'transactions.merchant_id', '=', 'merchants.id')
+                ->where('transactions.status', 'success')
+                ->whereBetween('transactions.created_at', [$start_dates, $end_dates])
+                ->groupBy('merchant_name')
+                ->orderBy('total_transaction', 'ASC')
+                ->limit(10)
+                ->get();
+
+        return response()->json($transaction_top_merchant);
     }
 }
