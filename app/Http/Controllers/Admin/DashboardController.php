@@ -59,16 +59,18 @@ class DashboardController extends Controller
         //========================= Chart =============================
         $year = $request->query('year') ? $request->query('year') : Carbon::now()->format('Y');
 
+        //Transaksi perbulan
         $transaction_month = Transaction::select(
-            DB::raw("DATE_FORMAT(created_at, '%m') as bulan"),
+            DB::raw("DATE_FORMAT(created_at, '%M') as bulan"),
             DB::raw("(COUNT(*)) as total_transaction"),
             DB::raw("sum(amount) as total_amount")
         )->where('status', 'success')
          ->orderBy('created_at')
          ->groupBy("bulan")
-         ->limit(10)
+         ->limit(12)
          ->get();
 
+         //transaksi sepuluh merchant
         $transaction_top_merchant = DB::table('transactions')
                 ->select(
                     DB::raw('SUM(transactions.amount) as total_transaction'),
@@ -77,32 +79,55 @@ class DashboardController extends Controller
                 ->join('merchants', 'transactions.merchant_id', '=', 'merchants.id')
                 ->where('transactions.status', 'success')
                 ->groupBy('merchant_name')
-                ->orderBy('total_transaction', 'DESC')
+                ->orderBy('total_transaction', 'ASC')
                 ->limit(10)
                 ->get();
 
+        //merchant active && inactive
         $merchant_active = Merchant::where('is_active', 1)->count();
         $merchant_inactive = Merchant::where('is_active', 0)->count();
 
+        //top transaction by city
+        $transaction_top_city = DB::table('transactions')
+                ->select(
+                    DB::raw('SUM(transactions.amount) as total_transaction'),
+                    'merchants.kabkot_id',
+                    'tbl_kabkot.kabupaten_kota'
+                )->join('merchants', 'transactions.merchant_id', '=', 'merchants.id')
+                ->join('tbl_kabkot', 'merchants.kabkot_id', '=', 'tbl_kabkot.id')
+                ->where('transactions.status', 'success')
+                ->groupBy('tbl_kabkot.kabupaten_kota')
+                ->orderBy('total_transaction', 'ASC')
+                ->limit(10)
+                ->get();
+        //total transaction per day current month
+        $transaction_current_month = DB::table('transactions')
+                    ->select(
+                        DB::raw('SUM(transactions.amount) as total_transaction'),
+                        DB::raw("DATE_FORMAT(created_at, '%d') as hari"),
+                    )->where('transactions.status', 'success')
+                    ->whereBetween('created_at', [
+                        Carbon::now()->firstOfMonth()->hour(00)->minute(00)->second(00),
+                        Carbon::now()->lastOfMonth()->hour(23)->minute(59)->second(59),
+                    ])
+                    ->groupBy('hari')
+                    ->orderBy('hari', 'asc')
+                    ->get();
 
 
-        // $transaction_top_merchant = Transaction::select(
-        //     DB::raw("sum(amount) as total_amount")
-        // )->where('status', 'success')
-        //  ->where(DB::raw("year(created_at) = {$year}"))
-        //  ->orderBy('total_amount')
-        //  ->groupBy('merchant_id')
-        //  ->limit(10)
-        //  ->get();
-
-        //  dd($transaction_top_merchant);
         //======================= End Chart ===========================
 
         return view('admin.dashbaord.index', compact(
             'transaction_amount',
             'transaction_count',
             'total_fee_transaction',
-            'total_merchant_active'
+            'total_merchant_active',
+            'transaction_month',
+            'transaction_top_merchant',
+            'merchant_active',
+            'merchant_inactive',
+            'transaction_top_city',
+            'transaction_current_month',
         ));
     }
 
@@ -143,4 +168,24 @@ class DashboardController extends Controller
         }
     }
 
+    public function filter_transaction_year(Request $request)
+    {
+        $year = $request->filter_year;
+
+        $start_dates = Carbon::now()->firstOfYear()->year($year);
+        $end_dates = Carbon::now()->lastOfYear()->year($year);
+
+        $transaction_month = Transaction::select(
+            DB::raw("DATE_FORMAT(created_at, '%M') as bulan"),
+            DB::raw("(COUNT(*)) as total_transaction"),
+            DB::raw("sum(amount) as total_amount")
+        )->where('status', 'success')
+         ->whereBetween('created_at', [$start_dates, $end_dates])
+         ->orderBy('created_at')
+         ->groupBy("bulan")
+         ->limit(12)
+         ->get();
+
+         return response()->json($transaction_month);
+    }
 }

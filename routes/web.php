@@ -109,6 +109,7 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/', 'index')->name('dashboard');
         Route::put('/change_password', 'change_password')->name('dashboard.change_password');
+        Route::post('/filter_year', 'filter_transaction_year')->name('dashboard.filter_year');
     });
     // roles
     Route::resource('/roles', RolesController::class);

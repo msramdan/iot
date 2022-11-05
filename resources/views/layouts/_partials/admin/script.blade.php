@@ -11,11 +11,10 @@
 <script src="{{ asset("backend/assets/libs/swiper/swiper-bundle.min.js") }} "></script>
 <!-- apexcharts -->
 <script src="{{ asset('backend/assets/libs/apexcharts/apexcharts.min.js') }}"></script>
-<!-- Dashboard init -->
-<script src="{{ asset('backend/assets/js/pages/dashboard-ecommerce.init.js') }}"></script>
 <script src="{{ asset('backend/assets/js/plugins.js') }}"></script>
 <script src="{{ asset('backend/assets/js/app.js') }}"></script>
 <script type='text/javascript' src='{{ asset('backend/assets/libs/flatpickr/flatpickr.min.js') }}'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
 <script>
     $('#ubahPassword').click(function() {
         $('#ajaxModelEditPassword').modal('show');
