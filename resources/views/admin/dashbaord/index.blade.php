@@ -169,7 +169,7 @@
                                             <form action="{{ route('dashboard') }}" method="get" id="filter_date">
                                                 @csrf
                                                 <div class="input-group" style="left:100px;" >
-                                                   <input type="text" class="form-control" id="filter_year" name="filter_year"  value=""/>
+                                                   <input type="text" class="form-control" id="filter_year" name="filter_year"  value="{{ date('Y') }}"/>
                                                     <div class="input-group-text bg-primary border-primary text-white">
                                                         <i class="ri-calendar-2-line"></i>
                                                     </div>
@@ -194,10 +194,10 @@
                                 <div class="card-header p-0 border-0 bg-soft-light">
                                     <h6 class="mt-2 ml-2">Top 10 Merchant By Transaction</h6>
                                     <div class="float-end">
-                                        <form  method="get" id="filter_date">
+                                        <form  method="get">
                                             @csrf
                                             <div class="input-group mb-4">
-                                                <input type="text" class="form-control" id="filter_year_merchant" name="filter_year"  value=""/>
+                                                <input type="text" class="form-control border-0 dash-filter-picker shadow" data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y" data-deafult-date="01 Jan 2022 to 31 Jan 2022" value="" id="filter_date_merchant"/>
                                                 <div class="input-group-text bg-primary border-primary text-white">
                                                     <i class="ri-calendar-2-line"></i>
                                                 </div>
@@ -250,6 +250,18 @@
                             <div class="card">
                                 <div class="card-header p-0 border-0 bg-soft-light">
                                     <h6 class="mt-2 ml-2">Total Transaction per Day {{ date('F') }}</h6>
+                                    <div class="float-end">
+                                        <form  method="get">
+                                            @csrf
+                                            <div class="input-group mb-4">
+                                                <input type="text" class="form-control border-0 dash-filter-picker shadow" data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y" value="{{ date('d M Y', strtotime($start_month)) }} to {{ date('d M Y', strtotime($end_month)) }}" id="filter_month_transaction"/>
+                                                <div class="input-group-text bg-primary border-primary text-white">
+                                                    <i class="ri-calendar-2-line"></i>
+                                                </div>
+                                            </div>
+                                            <!--end row-->
+                                        </form>
+                                    </div>
                                 </div><!-- end card header -->
                                 <div class="card-body p-0 pb-2">
                                     <div class="w-100">
@@ -290,101 +302,39 @@ $.ajaxSetup({
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-$(document).ready(function(){
-    $(function() {
-        $( "#filter_year" ).datepicker({
-            changeMonth:false,
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'yy',
-            onClose: function(dateText, inst) {
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker('setDate', new Date(year, 1));
-                filter_year();
-            }
-        });
-        $( "#filter_year_merchant" ).datepicker({
-            changeMonth:false,
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'yy',
-            onClose: function(dateText, inst) {
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker('setDate', new Date(year, 1));
-                filter_year_merchant();
-            }
-        });
-    });
-})
 
-function filter_year() {
-    var year = $('#filter_year').val();
 
-    $.ajax({
-        type: 'post',
-        url: "{{ route('dashboard.filter_year') }}",
-        data: {
-            year: year,
-        }, success:function(result) {
+$('#filter_year').datepicker({
+    format: "yyyy",
+    viewMode: "years",
+    minViewMode: "years",
+    autoclose: true
+}).on('changeDate', function(e) {
+    let year = moment(e.date).format('Y');
+    $('#filter_year').val(year)
+    filter_year(year)
+});
 
-        }
-    }).then(result => {
-        //console.log(result);
-        var options_month = {
-            chart: {
-                type: 'bar'
-            },
-            dataLabels: {
-                enable: false,
-            },
-            legend: {
-                show: false,
-            },
-            series:[{
-                data:result
-            }]
-
-        }
-        var chart_month = new ApexCharts(document.querySelector("#transaction_by_month"), options_month);
-        chart_month.render();
-    })
-}
-
-function filter_year_merchant() {
-    var year = $('#filter_year_merchant').val();
-
-    $.ajax({
-        type: 'post',
-        url: "{{ route('dashboard.filter_year_merchant') }}",
-        data: {
-            year: year,
-        }, success:function(result) {
-           var options_month = {
-                chart: {
-                    type: 'bar'
-                },
-                dataLabels: {
-                    enable: false,
-                },
-                legend: {
-                    show: false,
-                }
-            }
-            var chart_month = new ApexCharts(document.querySelector("#top_ten_merchant"), options_month);
-
-            chart_month.appendData({
-                data: result
-            })
-        }
-    })
-}
 </script>
 
 <script>
     //Transaction By Month
     var options_month = {
         chart: {
-            type: 'bar'
+            type: 'bar',
+            animations: {
+                enabled: true,
+                easing: 'easeinout',
+                speed: 800,
+                animateGradually: {
+                    enabled: true,
+                    delay: 150
+                },
+                dynamicAnimation: {
+                    enabled: true,
+                    speed: 350
+                }
+            }
         },
         dataLabels: {
             enable: false,
@@ -410,7 +360,20 @@ function filter_year_merchant() {
     //Top 10 Merchant
     var options_merchant = {
         chart: {
-            type: 'bar'
+            type: 'bar',
+            animations: {
+                enabled: true,
+                easing: 'easeinout',
+                speed: 800,
+                animateGradually: {
+                    enabled: true,
+                    delay: 150
+                },
+                dynamicAnimation: {
+                    enabled: true,
+                    speed: 350
+                }
+            }
         },
         dataLabels: {
             enable: false,
@@ -436,7 +399,20 @@ function filter_year_merchant() {
     //Top 10 By City
     var options_city = {
         chart: {
-            type: 'bar'
+            type: 'bar',
+            animations: {
+                enabled: true,
+                easing: 'easeinout',
+                speed: 800,
+                animateGradually: {
+                    enabled: true,
+                    delay: 150
+                },
+                dynamicAnimation: {
+                    enabled: true,
+                    speed: 350
+                }
+            }
         },
         dataLabels: {
             enable: false,
@@ -485,9 +461,22 @@ function filter_year_merchant() {
     //End Merchant Active & Inactive
 
      //Total Transaction Perday By month
-    var options_city = {
+    var options_transaction = {
         chart: {
-            type: 'bar'
+            type: 'bar',
+            animations: {
+                enabled: true,
+                easing: 'easeinout',
+                speed: 800,
+                animateGradually: {
+                    enabled: true,
+                    delay: 150
+                },
+                dynamicAnimation: {
+                    enabled: true,
+                    speed: 350
+                }
+            }
         },
         dataLabels: {
             enable: false,
@@ -506,8 +495,69 @@ function filter_year_merchant() {
             ]
         }]
     }
-    var chart_city = new ApexCharts(document.querySelector("#transaction_day"), options_city);
-    chart_city.render();
+    var chart_transaction = new ApexCharts(document.querySelector("#transaction_day"), options_transaction);
+    chart_transaction.render();
     //End Top 10 By City
+</script>
+
+<script>
+function filter_year(year) {
+    $.ajax({
+        type: 'post',
+        url: "{{ route('dashboard.filter_year') }}",
+        data: {
+            year: year,
+        }, success:function(result) {
+            chart_month.updateSeries([{
+                data:result
+            }])
+        }
+    });
+}
+
+
+$('#filter_date_merchant').change(function() {
+    var dates = $(this).val();
+       var split_dates = dates.split(" to ");
+       if ( split_dates.length >= 2 ) {
+            var start_date = split_dates[0];
+            var end_date = split_dates[1];
+
+            $.ajax({
+                type: 'post',
+                url: "{{ route('dashboard.filter_date_merchant') }}",
+                data: {
+                    start_date: start_date,
+                    end_date: end_date,
+                }, success:function(result) {
+                    chart_merchant.updateSeries([{
+                        data:result
+                    }])
+                }
+            })
+       }
+})
+
+$('#filter_month_transaction').change(function() {
+    var dates = $(this).val();
+       var split_dates = dates.split(" to ");
+       if ( split_dates.length >= 2 ) {
+            var start_date = split_dates[0];
+            var end_date = split_dates[1];
+
+            $.ajax({
+                type: 'post',
+                url: "{{ route('dashboard.filter_month_transaction') }}",
+                data: {
+                    start_date: start_date,
+                    end_date: end_date,
+                }, success:function(result) {
+                    chart_transaction.updateSeries([{
+                        data:result
+                    }])
+                }
+            })
+       }
+})
 </script>
 @endpush
