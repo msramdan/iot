@@ -28,6 +28,8 @@ class DashboardController extends Controller
         //======================== Card Transaction ==================================
         $start_date = explode(' ', Carbon::now()->toDateTimeString())[0]. ' 00:00:00';
         $end_date = explode(' ', Carbon::now()->toDateTimeString())[0]. ' 23:59:59';
+        $start_month = Carbon::now()->firstOfMonth()->hour(00)->minute(00)->second(00);
+        $end_month =  Carbon::now()->lastOfMonth()->hour(23)->minute(59)->second(59);
 
         $start = $request->query('start') ? $request->query('start') : null;
         $end = $request->query('end') ? $request->query('end') : null;
@@ -71,13 +73,18 @@ class DashboardController extends Controller
          ->get();
 
          //transaksi sepuluh merchant
+        $ten_merchant_start_dates = Carbon::now()->firstOfMonth()->year(2022)->hour(00)->minute(00)->second(00);
+        $ten_merchant_end_dates = Carbon::now()->lastOfMonth()->year(2022)->hour(23)->minute(59)->second(29);
+
         $transaction_top_merchant = DB::table('transactions')
                 ->select(
+                    DB::raw('transactions.created_at'),
                     DB::raw('SUM(transactions.amount) as total_transaction'),
                     DB::raw('merchants.merchant_name as merchant_name')
                 )
                 ->join('merchants', 'transactions.merchant_id', '=', 'merchants.id')
                 ->where('transactions.status', 'success')
+                ->whereBetween('transactions.created_at', [$ten_merchant_start_dates, $ten_merchant_end_dates])
                 ->groupBy('merchant_name')
                 ->orderBy('total_transaction', 'ASC')
                 ->limit(10)
@@ -106,10 +113,7 @@ class DashboardController extends Controller
                         DB::raw('SUM(transactions.amount) as total_transaction'),
                         DB::raw("DATE_FORMAT(created_at, '%d') as hari"),
                     )->where('transactions.status', 'success')
-                    ->whereBetween('created_at', [
-                        Carbon::now()->firstOfMonth()->hour(00)->minute(00)->second(00),
-                        Carbon::now()->lastOfMonth()->hour(23)->minute(59)->second(59),
-                    ])
+                    ->whereBetween('created_at', [$start_month, $end_month])
                     ->groupBy('hari')
                     ->orderBy('hari', 'asc')
                     ->get();
@@ -128,6 +132,8 @@ class DashboardController extends Controller
             'merchant_inactive',
             'transaction_top_city',
             'transaction_current_month',
+            'start_month',
+            'end_month'
         ));
     }
 
@@ -192,31 +198,63 @@ class DashboardController extends Controller
          return response()->json($transaction_month);
     }
 
-    public function filter_year_merchant(Request $request)
+    public function filter_date_merchant(Request $request)
     {
-        $year = $request->year;
+        $start = $request->start_date;
+        $end = $request->end_date;
 
-        $start_dates = Carbon::now()->firstOfYear()->year($year);
-        $end_dates = Carbon::now()->lastOfYear()
-                                  ->year($year)
-                                  ->hour(23)
-                                  ->minute(59)
-                                  ->second(59);
+        if ($start) {
+            $start = str_replace(',', '', $request->start_date).' 00:00:00';
+            $start_date = date('Y-m-d H:i:s', strtotime($start));
+        }
+
+        if ($end) {
+            $end = str_replace(',', '', $request->end_date).' 23:59:59';
+            $end_date = date('Y-m-d H:i:s', strtotime($end));
+        }
 
           //transaksi sepuluh merchant
         $transaction_top_merchant = DB::table('transactions')
                 ->select(
-                    DB::raw('SUM(transactions.amount) as total_transaction'),
-                    DB::raw('merchants.merchant_name as merchant_name')
+                    DB::raw('SUM(transactions.amount) as y'),
+                    DB::raw('merchants.merchant_name as x')
                 )
                 ->join('merchants', 'transactions.merchant_id', '=', 'merchants.id')
                 ->where('transactions.status', 'success')
-                ->whereBetween('transactions.created_at', [$start_dates, $end_dates])
-                ->groupBy('merchant_name')
-                ->orderBy('total_transaction', 'ASC')
+                ->whereBetween('transactions.created_at', [$start_date, $end_date])
+                ->groupBy('x')
+                ->orderBy('y', 'ASC')
                 ->limit(10)
                 ->get();
 
         return response()->json($transaction_top_merchant);
+    }
+
+    public function filter_month_transaction(Request $request)
+    {
+        $start = $request->start_date;
+        $end = $request->end_date;
+
+        if ($start) {
+            $start = str_replace(',', '', $request->start_date).' 00:00:00';
+            $start_date = date('Y-m-d H:i:s', strtotime($start));
+        }
+
+        if ($end) {
+            $end = str_replace(',', '', $request->end_date).' 23:59:59';
+            $end_date = date('Y-m-d H:i:s', strtotime($end));
+        }
+
+        $transaction_current_month = DB::table('transactions')
+                ->select(
+                    DB::raw('SUM(transactions.amount) as y'),
+                    DB::raw("DATE_FORMAT(created_at, '%d') as x"),
+                )->where('transactions.status', 'success')
+                ->whereBetween('created_at', [$start_date, $end_date])
+                ->groupBy('x')
+                ->orderBy('x', 'asc')
+                ->get();
+
+        return response()->json($transaction_current_month);
     }
 }
