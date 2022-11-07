@@ -1,5 +1,13 @@
 @extends('layouts.master')
+
 @section('title', 'Dashboard')
+@push('style')
+<style>
+.ui-datepicker-calendar {
+   display: none;
+}
+</style>
+@endpush
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
@@ -151,18 +159,107 @@
                     </div> <!-- end row-->
 
                     <div class="row">
-                        <div class="col-xl-8">
+                        <!-- Transaksi Perbulan -->
+                        <div class="col-xl-6">
                             <div class="card">
                                 <div class="card-header p-0 border-0 bg-soft-light">
+                                    <div class="d-flex">
+                                        <h6 class="float-start mt-3 ml-3">Transaction Per Month</h6>
+                                        <div class="float-end">
+                                            <form action="{{ route('dashboard') }}" method="get" id="filter_date">
+                                                @csrf
+                                                <div class="input-group" style="left:100px;" >
+                                                   <input type="text" class="form-control" id="filter_year" name="filter_year"  value=""/>
+                                                    <div class="input-group-text bg-primary border-primary text-white">
+                                                        <i class="ri-calendar-2-line"></i>
+                                                    </div>
+                                                </div>
+                                                <!--end row-->
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div><!-- end card header -->
-
                                 <div class="card-body p-0 pb-2">
                                     <div class="w-100">
-                                        <div id="customer_impression_charts" data-colors='["--vz-success", "--vz-primary", "--vz-danger"]' class="apex-charts" dir="ltr"></div>
+                                        <div id="transaction_by_month" data-colors='["--vz-success", "--vz-primary", "--vz-danger"]' class="apex-charts" dir="ltr"></div>
                                     </div>
                                 </div><!-- end card body -->
                             </div><!-- end card -->
                         </div><!-- end col -->
+                        <!-- End Transaksi Perbulan -->
+
+                        <!-- Transaksi Top 10 Merchant -->
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-header p-0 border-0 bg-soft-light">
+                                    <h6 class="mt-2 ml-2">Top 10 Merchant By Transaction</h6>
+                                    <div class="float-end">
+                                        <form  method="get" id="filter_date">
+                                            @csrf
+                                            <div class="input-group mb-4">
+                                                <input type="text" class="form-control" id="filter_year_merchant" name="filter_year"  value=""/>
+                                                <div class="input-group-text bg-primary border-primary text-white">
+                                                    <i class="ri-calendar-2-line"></i>
+                                                </div>
+                                            </div>
+                                            <!--end row-->
+                                        </form>
+                                    </div>
+                                </div><!-- end card header -->
+                                <div class="card-body p-0 pb-2">
+                                    <div class="w-100">
+                                        <div id="top_ten_merchant" data-colors='["--vz-success", "--vz-primary", "--vz-danger"]' class="apex-charts" dir="ltr"></div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div><!-- end card -->
+                        </div><!-- end col -->
+                        <!-- End Transaksi Top 10 Merchant -->
+
+                        <!-- Transaksi Top 10 by City -->
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-header p-0 border-0 bg-soft-light">
+                                    <h6 class="mt-2 ml-2">Top 10 City By Transaction</h6>
+                                </div><!-- end card header -->
+                                <div class="card-body p-0 pb-2">
+                                    <div class="w-100">
+                                        <div id="top_city" data-colors='["--vz-success", "--vz-primary", "--vz-danger"]' class="apex-charts" dir="ltr"></div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div><!-- end card -->
+                        </div><!-- end col -->
+                        <!-- End Transaksi Top 10 by City -->
+
+                        <!-- Transaksi Top 10 by City -->
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-header p-0 border-0 bg-soft-light">
+                                    <h6 class="mt-2 ml-2">Merchant Active & Inactive Comparison</h6>
+                                </div><!-- end card header -->
+                                <div class="card-body p-0 pb-2">
+                                    <div class="w-100">
+                                        <div id="merchant_status" data-colors='["--vz-success", "--vz-primary", "--vz-danger"]' class="apex-charts" dir="ltr"></div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div><!-- end card -->
+                        </div><!-- end col -->
+                        <!-- End Transaksi Top 10 by City -->
+
+                        <!-- Transaksi Per day by month -->
+                        <div class="col-xl-6">
+                            <div class="card">
+                                <div class="card-header p-0 border-0 bg-soft-light">
+                                    <h6 class="mt-2 ml-2">Total Transaction per Day {{ date('F') }}</h6>
+                                </div><!-- end card header -->
+                                <div class="card-body p-0 pb-2">
+                                    <div class="w-100">
+                                        <div id="transaction_day" data-colors='["--vz-success", "--vz-primary", "--vz-danger"]' class="apex-charts" dir="ltr"></div>
+                                    </div>
+                                </div><!-- end card body -->
+                            </div><!-- end card -->
+                        </div><!-- end col -->
+                        <!-- End Transaksi Top 10 by City -->
+
                     </div>
 
                 </div> <!-- end .h-100-->
@@ -178,8 +275,6 @@
     $("input[name='date']").change(function() {
        var dates = $(this).val();
        var split_dates = dates.split(" to ");
-
-       console.log(split_dates.length);
        if ( split_dates.length >= 2 ) {
             $("input[name='start']").val(split_dates[0]);
             $("input[name='end']").val(split_dates[1]);
@@ -187,5 +282,232 @@
             $('#filter_date').submit();
        }
     })
+</script>
+
+<script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+$(document).ready(function(){
+    $(function() {
+        $( "#filter_year" ).datepicker({
+            changeMonth:false,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy',
+            onClose: function(dateText, inst) {
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, 1));
+                filter_year();
+            }
+        });
+        $( "#filter_year_merchant" ).datepicker({
+            changeMonth:false,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy',
+            onClose: function(dateText, inst) {
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, 1));
+                filter_year_merchant();
+            }
+        });
+    });
+})
+
+function filter_year() {
+    var year = $('#filter_year').val();
+
+    $.ajax({
+        type: 'post',
+        url: "{{ route('dashboard.filter_year') }}",
+        data: {
+            year: year,
+        }, success:function(result) {
+
+        }
+    }).then(result => {
+        //console.log(result);
+        var options_month = {
+            chart: {
+                type: 'bar'
+            },
+            dataLabels: {
+                enable: false,
+            },
+            legend: {
+                show: false,
+            },
+            series:[{
+                data:result
+            }]
+
+        }
+        var chart_month = new ApexCharts(document.querySelector("#transaction_by_month"), options_month);
+        chart_month.render();
+    })
+}
+
+function filter_year_merchant() {
+    var year = $('#filter_year_merchant').val();
+
+    $.ajax({
+        type: 'post',
+        url: "{{ route('dashboard.filter_year_merchant') }}",
+        data: {
+            year: year,
+        }, success:function(result) {
+           var options_month = {
+                chart: {
+                    type: 'bar'
+                },
+                dataLabels: {
+                    enable: false,
+                },
+                legend: {
+                    show: false,
+                }
+            }
+            var chart_month = new ApexCharts(document.querySelector("#top_ten_merchant"), options_month);
+
+            chart_month.appendData({
+                data: result
+            })
+        }
+    })
+}
+</script>
+
+<script>
+    //Transaction By Month
+    var options_month = {
+        chart: {
+            type: 'bar'
+        },
+        dataLabels: {
+            enable: false,
+        },
+        legend: {
+            show: false,
+        },
+        series: [{
+            data: [
+                @foreach ($transaction_month as $month)
+                {
+                    x: "{{ $month->bulan }}",
+                    y: "{{ $month->total_amount }}"
+                },
+                @endforeach
+            ]
+        }]
+    }
+    var chart_month = new ApexCharts(document.querySelector("#transaction_by_month"), options_month);
+    chart_month.render();
+    //End Transaction by month
+
+    //Top 10 Merchant
+    var options_merchant = {
+        chart: {
+            type: 'bar'
+        },
+        dataLabels: {
+            enable: false,
+        },
+        legend: {
+            show: false,
+        },
+        series: [{
+            data: [
+                @foreach ($transaction_top_merchant as $trans)
+                {
+                    x: "{{ $trans->merchant_name }}",
+                    y: "{{ $trans->total_transaction }}"
+                },
+                @endforeach
+            ]
+        }]
+    }
+    var chart_merchant = new ApexCharts(document.querySelector("#top_ten_merchant"), options_merchant);
+    chart_merchant.render();
+    //End Top 10 Merchant
+
+    //Top 10 By City
+    var options_city = {
+        chart: {
+            type: 'bar'
+        },
+        dataLabels: {
+            enable: false,
+        },
+        legend: {
+            show: false,
+        },
+        series: [{
+            data: [
+                @foreach ($transaction_top_city as $top_city)
+                {
+                    x: "{{ $top_city->kabupaten_kota }}",
+                    y: "{{ $top_city->total_transaction }}"
+                },
+                @endforeach
+            ]
+        }]
+    }
+    var chart_city = new ApexCharts(document.querySelector("#top_city"), options_city);
+    chart_city.render();
+    //End Top 10 By City
+
+    //Merchant Active & Inactive
+    var options = {
+          series: [ {{ $merchant_active }} , {{ $merchant_inactive }} ],
+          chart: {
+          width: 380,
+          type: 'pie',
+        },
+        labels: ['Active', 'Inactive'],
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: 'bottom'
+            }
+          }
+        }]
+    };
+
+    var chart = new ApexCharts(document.querySelector("#merchant_status"), options);
+    chart.render();
+    //End Merchant Active & Inactive
+
+     //Total Transaction Perday By month
+    var options_city = {
+        chart: {
+            type: 'bar'
+        },
+        dataLabels: {
+            enable: false,
+        },
+        legend: {
+            show: false,
+        },
+        series: [{
+            data: [
+                @foreach ($transaction_current_month as $transaction)
+                {
+                    x: "{{ $transaction->hari }}",
+                    y: "{{ $transaction->total_transaction }}"
+                },
+                @endforeach
+            ]
+        }]
+    }
+    var chart_city = new ApexCharts(document.querySelector("#transaction_day"), options_city);
+    chart_city.render();
+    //End Top 10 By City
 </script>
 @endpush
