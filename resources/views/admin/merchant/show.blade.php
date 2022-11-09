@@ -192,18 +192,20 @@
                             @endif
 
                             @can('approved_step_1')
-                            <div class="btn-group">
-                                <button type="button" title="Other" class="btn btn-md btn-success btn-sm dropdown-toggle"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Approve 1 </button>
-                                <div class="dropdown-menu" style="">
-                                    <button type="button" onclick="approve('approved1', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'approved')" class="dropdown-item">Approve</button>
-                                    <button type="button" onclick="approve('approved1', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'rejected')" class="dropdown-item">Reject</button>
-                                </div>
-                            </div>
+                                @if ($merchant->approved1 != 'approved')
+                                    <div class="btn-group">
+                                        <button type="button" title="Other" class="btn btn-md btn-success btn-sm dropdown-toggle"
+                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Approve 1 </button>
+                                        <div class="dropdown-menu" style="">
+                                            <button type="button" onclick="approve('approved1', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'approved')" class="dropdown-item">Approve</button>
+                                            <button type="button" onclick="approve('approved1', '{{ $merchant->id }}', '{{ $merchant->merchant_name }}', 'rejected')" class="dropdown-item">Reject</button>
+                                        </div>
+                                    </div>
+                                @endif
                             @endcan
 
                             @can('approved_step_2')
-                                @if ($merchant->approved1 == 'approved')
+                                @if ($merchant->approved1 == 'approved' &&  $merchant->approved2 != 'approved')
                                 <div class="btn-group">
                                     <button type="button" title="Other" class="btn btn-md btn-success btn-sm dropdown-toggle"
                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Approve 2 </button>

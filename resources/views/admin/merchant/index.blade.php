@@ -111,8 +111,11 @@
                 searchable: false
             },
             {
-                data: 'mid',
-                name : 'mid'
+                data: null,
+                render: function(data, dataType, row){
+                    console.log(row);
+                    return `<a href="{{ route('merchant.index') }}/${row.id}">${row.mid}</a>`
+                }
             },
             {
                 data: 'nmid',

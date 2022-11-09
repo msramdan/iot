@@ -20,10 +20,14 @@ use App\Http\Controllers\Admin\MerchantApproveController;
 use App\Http\Controllers\Admin\MerchantRejectController;
 use App\Http\Controllers\Admin\MerchantUploadController;
 use App\Http\Controllers\Admin\ApprovalLogMerchantController;
+use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\MdrLogController;
 use App\Http\Controllers\Admin\MerchantOpTimeController;
 use App\Http\Controllers\Admin\OTPController;
+use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\Merchant\HomeController;
 use App\Http\Controllers\Merchant\MerchantProfileController;
 use App\Http\Controllers\Merchant\MerchantTransactionController;
@@ -134,6 +138,12 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
     Route::resource('merchant', MerchantController::class);
     Route::resource('merchant.optime', MerchantOpTimeController::class);
     Route::resource('otp', OTPController::class);
+
+    // MASTER WILAYAH
+    Route::resource('province', ProvinceController::class);
+    Route::resource('city', CityController::class);
+    Route::resource('district', DistrictController::class);
+    Route::resource('village', VillageController::class);
 
     Route::resource('transaction', TransactionController::class);
     // Bank
