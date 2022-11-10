@@ -19,13 +19,12 @@ CREATE TABLE `tbl_kabkot` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `kabkot` (`kabupaten_kota`) USING BTREE,
   KEY `fk_provs_kabkots_idx` (`provinsi_id`) USING BTREE,
-  KEY `kbsni` (`k_bsni`) USING BTREE,
-  CONSTRAINT `fk_provs_kabkots_idx` FOREIGN KEY (`provinsi_id`) REFERENCES `tbl_provinsi` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=515 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+  KEY `kbsni` (`k_bsni`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=516 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
+TRUNCATE `tbl_kabkot`;
 INSERT INTO `tbl_kabkot` (`id`, `provinsi_id`, `kabupaten_kota`, `ibukota`, `k_bsni`) VALUES
-(1,	1,	'Kabupaten Aceh Barat',	'Meulaboh',	'MBO'),
-(2,	1,	'Kabupaten Aceh Barat Daya',	'Blangpidie',	'BPD'),
+(2,	2,	'Kabupaten Aceh Barat Daya',	'Blangpidie',	'BPD'),
 (3,	1,	'Kabupaten Aceh Besar',	'Jantho',	'JTH'),
 (4,	1,	'Kabupaten Aceh Jaya',	'Calang',	'CAG'),
 (5,	1,	'Kabupaten Aceh Selatan',	'Tapak Tuan',	'TTN'),
@@ -537,7 +536,8 @@ INSERT INTO `tbl_kabkot` (`id`, `provinsi_id`, `kabupaten_kota`, `ibukota`, `k_b
 (511,	34,	'Kabupaten Tambrauw',	'Fef',	'FEF'),
 (512,	34,	'Kabupaten Teluk Bintuni',	'Bintuni',	'BTI'),
 (513,	34,	'Kabupaten Teluk Wondama',	'Rasiei',	'RAS'),
-(514,	34,	'Kota Sorong',	'Sorong',	'SON');
+(514,	34,	'Kota Sorong',	'Sorong',	'SON'),
+(515,	2,	'aaabbb',	'aaa',	NULL);
 
 DROP TABLE IF EXISTS `tbl_kecamatan`;
 CREATE TABLE `tbl_kecamatan` (
@@ -546,10 +546,10 @@ CREATE TABLE `tbl_kecamatan` (
   `kecamatan` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `fk_kabkots_kecs_idx` (`kabkot_id`) USING BTREE,
-  KEY `kecamatan` (`kecamatan`) USING BTREE,
-  CONSTRAINT `fk_kabkots_kecs_idx` FOREIGN KEY (`kabkot_id`) REFERENCES `tbl_kabkot` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7098 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+  KEY `kecamatan` (`kecamatan`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=7100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
+TRUNCATE `tbl_kecamatan`;
 INSERT INTO `tbl_kecamatan` (`id`, `kabkot_id`, `kecamatan`) VALUES
 (1,	1,	'Arongan Lambalek'),
 (2,	1,	'Bubon'),
@@ -1947,7 +1947,6 @@ INSERT INTO `tbl_kecamatan` (`id`, `kabkot_id`, `kecamatan`) VALUES
 (1394,	110,	'Semendawai Barat'),
 (1395,	110,	'Semendawai Suku III'),
 (1396,	110,	'Semendawai Timur'),
-(1397,	111,	'Abab'),
 (1398,	111,	'Penukal'),
 (1399,	111,	'Penukal Utara'),
 (1400,	111,	'Talang Ubi'),
@@ -7647,7 +7646,9 @@ INSERT INTO `tbl_kecamatan` (`id`, `kabkot_id`, `kecamatan`) VALUES
 (7094,	514,	'Sorong Kota'),
 (7095,	514,	'Sorong Manoi'),
 (7096,	514,	'Sorong Timur'),
-(7097,	514,	'Sorong Utara');
+(7097,	514,	'Sorong Utara'),
+(7098,	3,	'aaa'),
+(7099,	2,	'avvvv');
 
 DROP TABLE IF EXISTS `tbl_kelurahan`;
 CREATE TABLE `tbl_kelurahan` (
@@ -7658,10 +7659,10 @@ CREATE TABLE `tbl_kelurahan` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `fk_kecs_kels_idx` (`kecamatan_id`) USING BTREE,
   KEY `kelurahan` (`kelurahan`) USING BTREE,
-  KEY `kdpos` (`kd_pos`) USING BTREE,
-  CONSTRAINT `fk_kecs_kels_idx` FOREIGN KEY (`kecamatan_id`) REFERENCES `tbl_kecamatan` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=82504 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+  KEY `kdpos` (`kd_pos`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=82505 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
+TRUNCATE `tbl_kelurahan`;
 INSERT INTO `tbl_kelurahan` (`id`, `kecamatan_id`, `kelurahan`, `kd_pos`) VALUES
 (1,	1,	'Alue Bagok',	'23652'),
 (2,	1,	'Alue Batee',	'23652'),
@@ -27836,7 +27837,7 @@ INSERT INTO `tbl_kelurahan` (`id`, `kecamatan_id`, `kelurahan`, `kd_pos`) VALUES
 (20171,	1420,	'20 Ilir IV',	'30128'),
 (20172,	1420,	'Kepandean Baru',	'30125'),
 (20173,	1420,	'Sei Pangeran',	'30121'),
-(20174,	1421,	'1 Ilir',	'30117'),
+(20174,	1421,	'1 Ilirj',	'30117'),
 (20175,	1421,	'10 Ilir',	'30111'),
 (20176,	1421,	'11 Ilir',	'30112'),
 (20177,	1421,	'2 Ilir',	'30118'),
@@ -90167,7 +90168,8 @@ INSERT INTO `tbl_kelurahan` (`id`, `kecamatan_id`, `kelurahan`, `kd_pos`) VALUES
 (82500,	7097,	'Klabulu',	'98419'),
 (82501,	7097,	'Malamso',	'98419'),
 (82502,	7097,	'Malanu',	'98419'),
-(82503,	7097,	'Malasilen',	'98419');
+(82503,	7097,	'Malasilen',	'98419'),
+(82504,	6,	'111 angjas',	NULL);
 
 DROP TABLE IF EXISTS `tbl_provinsi`;
 CREATE TABLE `tbl_provinsi` (
@@ -90179,10 +90181,10 @@ CREATE TABLE `tbl_provinsi` (
   KEY `provinsi` (`provinsi`) USING BTREE,
   KEY `ibukota_provinsi` (`ibukota`) USING BTREE,
   KEY `pbsni` (`p_bsni`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
+TRUNCATE `tbl_provinsi`;
 INSERT INTO `tbl_provinsi` (`id`, `provinsi`, `ibukota`, `p_bsni`) VALUES
-(1,	'Aceh',	'Banda Aceh',	'ID-AC'),
 (2,	'Sumatra Utara',	'Medan',	'ID-SU'),
 (3,	'Sumatra Barat',	'Padang',	'ID-SB'),
 (4,	'Riau',	'Pekanbaru',	'ID-RI'),
@@ -90215,6 +90217,7 @@ INSERT INTO `tbl_provinsi` (`id`, `provinsi`, `ibukota`, `p_bsni`) VALUES
 (31,	'Maluku',	'Ambon',	'ID-MA'),
 (32,	'Maluku Utara',	'Sofifi',	'ID-MU'),
 (33,	'Papua',	'Jayapura',	'ID-PA'),
-(34,	'Papua Barat',	'Manokwari',	'ID-PB');
+(34,	'Papua Barat',	'Manokwari',	'ID-PB'),
+(35,	'test',	'test',	NULL);
 
--- 2022-10-30 18:55:48
+-- 2022-11-10 05:10:30
