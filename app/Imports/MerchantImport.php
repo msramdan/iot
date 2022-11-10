@@ -7,6 +7,10 @@ use App\Models\MerchantsCategory;
 use App\Models\Bussiness;
 use App\Models\Bank;
 use App\Models\RekPooling;
+use App\Models\Province;
+use App\Models\Kabkot;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -31,6 +35,10 @@ WithValidation
         $bank_id = null;
         $bussiness_id = null;
         $rek_pooling_id = null;
+        $provinsi_id = null;
+        $kabkot_id = null;
+        $kecamatan_id = null;
+        $kelurahan_id = null;
 
         if (!empty($row['merchant_category'])) {
             $merchant_category = MerchantsCategory::where('merchants_category_code', $row['merchant_category'])
@@ -66,6 +74,38 @@ WithValidation
             }
         }
 
+        if (!empty($row['province'])) {
+            $province = Province::where('provinsi', $row['province'])->first();
+
+            if ($province) {
+                $provinsi_id = $province->id;
+            }
+        }
+
+        if (!empty($row['city'])) {
+            $kabkot = Kabkot::where('kabupaten_kota', $row['city'])->first();
+
+            if ($kabkot) {
+                $kabkot_id = $kabkot->id;
+            }
+        }
+
+        if (!empty($row['sub_district'])) {
+            $kecamatan = Kecamatan::where('kecamatan', $row['sub_district'])->first();
+
+            if ($kecamatan) {
+                $kecamatan_id = $kecamatan->id;
+            }
+        }
+
+        if (!empty($row['village'])) {
+            $kelurahan = Kelurahan::where('kelurahan', $row['kelurahan'])->first();
+
+            if ($kelurahan) {
+                $kelurahan_id = $kelurahan->id;
+            }
+        }
+
         return new Merchant([
             'merchant_name'         => $row['merchant_name'],
             'email'                 => $row['merchant_email'],
@@ -80,7 +120,10 @@ WithValidation
             'phone'                 => $row['phone'],
             'address1'              => $row['address1'],
             'address2'              => $row['address2'],
-            'city'                  => $row['city'],
+            'provinsi_id'           => $provinsi_id,
+            'kabkot_id'             => $kabkot_id,
+            'kecamatan_id'          => $kecamatan_id,
+            'kelurahan_id'          => $kelurahan_id,
             'zip_code'              => $row['zip_code'],
             'note'                  => $row['note'],
             'password'              => Hash::make($row['password']),
@@ -98,15 +141,18 @@ WithValidation
             'bank' => ['string'],
             'rek_pooling_code' => ['string'],
             'merchant_category' => ['required', 'string'],
-            'account_name' => ['required', 'string'],
+            'account_name' => ['required'],
             'mdr' => ['required'],
             'number_account' => ['required', 'string'],
             'phone' => ['required'],
             'address1' => ['required', 'string'],
             'address2' => ['required', 'string'],
-            'city' => ['required', 'string'],
+            'provinsi_id' => ['nullable', 'string'],
+            'kabkot_id' => ['nullable', 'string'],
+            'kecamatan_id' => ['nullable', 'string'],
+            'kelurahan_id' => ['nullable', 'string'],
             'zip_code' => ['required'],
-            'note' => ['string'],
+            'note' => ['nullable','string'],
             'password' => ['required']
         ];
     }

@@ -26,7 +26,7 @@
                             @csrf
                             @method('PUT')
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <div class="mb-3">
                                         <label class="form-label" for="app_name">App Name </label>
                                         <input class="form-control @error('app_name') is-invalid @enderror" id="app_name" type="text" value="{{ old('app_name') ? old('app_name') : $setting_app->app_name }}" placeholder="" name="app_name" autocomplete="off">
@@ -77,14 +77,20 @@
                                         <p style="color: red;">{{ $message }}</p>
                                         @enderror
                                     </div>
+                                    <div class="md-3">
+                                        <label class="form-label" for="address">Term Of Service</label>
+                                        <textarea id="summernote" class="@error('tos') is-invalid @enderror" name="tos">{{ old('tos') ? old('tos') : $setting_app->tos }}</textarea>
+                                        @error('tos')
+                                        <p style="color: red;">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                     @can('setting_app_update')
                                     <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> Update</button>
                                     @endcan
                                 </div>
-
                             </div>
+                        </form>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -94,3 +100,10 @@
 </div>
 
 @endsection
+@push('js')
+<script>
+$(document).ready(function() {
+  $('#summernote').summernote();
+});
+</script>
+@endpush

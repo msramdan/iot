@@ -23,9 +23,10 @@ return new class extends Migration
             $table->string('tid', 100);
             $table->string('customer_name', 255);
             $table->string('transaction_type', 255);
-            $table->float('mdr_amount')->default(0);
+            $table->float('mdr_amount',10,2)->default(0);
             $table->integer('amount')->default(0);
-            $table->float('total_amount')->default(0);
+            $table->float('total_amount',10,2)->default(0);
+            $table->enum('status', ['pending', 'success', 'failed', 'canceled', 'refunded'])->default('pending');
             $table->foreign('merchant_id')->references('id')->on('merchants');
             $table->timestamps();
         });

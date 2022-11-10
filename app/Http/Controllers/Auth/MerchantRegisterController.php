@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Exception;
 use Log;
@@ -25,8 +26,9 @@ class MerchantRegisterController extends Controller
         $banks = Bank::all();
         $bussinesses = Bussiness::all();
         $merchantCategories = MerchantsCategory::all();
+        $provinces = DB::table('tbl_provinsi')->get();
 
-        return view('auth.register', compact('banks', 'bussinesses', 'merchantCategories'));
+        return view('auth.register', compact('banks', 'bussinesses', 'merchantCategories', 'provinces'));
     }
 
     public function register(Request $request)
@@ -43,7 +45,10 @@ class MerchantRegisterController extends Controller
             'phone' => 'required|string|max:100|min:11|regex:/[0-9]+/im',
             'address1' => 'required|string',
             'address2' => 'required|string',
-            'city' => 'required|string|max:100',
+            'provinsi_id' => 'required|numeric',
+            'kabkot_id'=> 'required|numeric',
+            'kecamatan_id' => 'required|numeric',
+            'kelurahan_id' => 'required|numeric',
             'zip_code' => 'required|string|max:10',
             'note' => 'string|nullable',
             'identity_card_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
@@ -63,6 +68,7 @@ class MerchantRegisterController extends Controller
                     ->uncompromised()
             ],
         ];
+
 
         if ($request->merchant_type == 'personal') {
             $rules['copy_proof_ownership'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
@@ -86,13 +92,17 @@ class MerchantRegisterController extends Controller
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
 
-         try {
+        try {
             $merchant = Merchant::create([
                 'merchant_name' => $request->merchant_name,
                 'email' => $request->email,
                 'merchant_category_id' => $request->merchant_category_id,
                 'bussiness_id' => $request->bussiness_id,
                 'bank_id' => $request->bank_id,
+                'provinsi_id' => $request->provinsi_id,
+                'kabkot_id' => $request->kabkot_id,
+                'kecamatan_id' => $request->kecamatan_id,
+                'kelurahan_id' => $request->kelurahan_id,
                 'merchant_type' => $request->merchant_type,
                 'account_name' => $request->account_name,
                 'number_account' => $request->number_account,
@@ -253,21 +263,26 @@ class MerchantRegisterController extends Controller
             }
 
             if ($merchant) {
-               // Alert::toast('Data Successfully Created Please check the Merchant Approved page', 'success');
                $merchants = Merchant::find($merchant->id);
 
                auth()->guard('merchant')->login($merchant);
 
                return redirect()->route('home');
             } else {
-                //Alert::toast('Data failed to save', 'error');
+                Alert::toast('Data failed to save', 'error');
                 return redirect()->back();
             }
 
         } catch(Exception $e) {
             Log::error($e);
-            //Alert::toast('Data failed to save', 'error');
+            Alert::toast('Data failed to save', 'error');
             return redirect()->back()->withErrors('Failed to register');
         }
+    }
+
+    public function tos()
+    {
+        $setting = SettingApp::first();
+        return view('merchant.tos.index', compact('setting'));
     }
 }

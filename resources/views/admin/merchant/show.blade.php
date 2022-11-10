@@ -49,6 +49,12 @@
                                             <td class="text-right" id="merchant-name">: {{ $merchant->merchant_name }}</td>
                                         </tr>
                                         <tr>
+                                            <th>Merchant Type</th>
+                                            <td class="text-right" id="merchant-name">:
+                                                {{ ucwords($merchant->type) }}
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <th>Merchant email</th>
                                             <td class="text-right" id="merchant-email">: {{ $merchant->email }}</td>
                                         </tr>
@@ -68,7 +74,7 @@
                                         </tr>
                                         <tr>
                                             <th>City</th>
-                                            <td class="text-right" id="merchant-city">: {{ $merchant->city->kabupaten_kota }}</td>
+                                            <td class="text-right" id="merchant-city">: {{ $merchant->city ? $merchant->city->kabupaten_kota : '-' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Zip code</th>
@@ -80,27 +86,51 @@
                                         </tr>
                                         <tr>
                                             <th>Foto KTP</th>
+                                            @if ($merchant->merchant_approve)
                                             <td class="text-right">: <a href="{{ Storage::url('public/backend/images/identity_card/'.$merchant->merchant_approve->identity_card_photo ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
                                         </tr>
                                         <tr>
                                             <th>Foto Selfie KTP</th>
+                                            @if ($merchant->merchant_approve)
                                             <td class="text-right">: <a href="{{ Storage::url('public/backend/images/selfie_ktp/'.$merchant->merchant_approve->selfie_ktp_photo ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
                                         </tr>
                                         <tr>
                                             <th>Foto NPWP</th>
+                                            @if ($merchant->merchant_approve)
                                             <td class="text-right">: <a href="{{ Storage::url('public/backend/images/npwp/'.$merchant->merchant_approve->npwp_photo ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
                                         </tr>
                                         <tr>
                                             <th>Foto Owner + Outlet</th>
+                                            @if ($merchant->merchant_approve)
                                             <td class="text-right">: <a href="{{ Storage::url('public/backend/images/owner_outlet/'.$merchant->merchant_approve->owner_outlet_photo ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
                                         </tr>
                                         <tr>
                                             <th>Foto Outlet</th>
+                                            @if ($merchant->merchant_approve)
                                             <td class="text-right">: <a href="{{ Storage::url('public/backend/images/outlet/'.$merchant->merchant_approve->outlet_photo ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
                                         </tr>
                                         <tr>
                                             <th>Foto Dalam Outlet</th>
+                                            @if ($merchant->merchant_approve)
                                             <td class="text-right">: <a href="{{ Storage::url('public/backend/images/in_outlet/'.$merchant->merchant_approve->in_outlet_photo ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
                                         </tr>
                                     </table>
                                 </div>
@@ -139,7 +169,6 @@
                                                 @endif
                                             </td>
                                         </tr>
-
                                         <tr>
                                             <th>Approve 1</th>
                                             <td class="text-right" id="merchant-approve1">
@@ -152,8 +181,6 @@
                                                 @endif
                                             </td>
                                         </tr>
-
-
                                         <tr>
                                             <th>Approve 2</th>
                                             <td class="text-right" id="merchant-approve2">
@@ -167,7 +194,6 @@
                                                 @endif
                                             </td>
                                         </tr>
-
                                         <tr>
                                             <th>Note</th>
                                             <td class="text-right" id="merchant-note">: {{ $merchant->note }}</td>
@@ -176,6 +202,72 @@
                                             <th >Created at</th>
                                             <td  class="text-right" id="merchant-created_at">: {{ date('d F Y H:i:s', strtotime($merchant->created_at)) }}</td>
                                         </tr>
+                                         <tr>
+                                            <th>Sertifikat Domisili (SKD / SITU)</th>
+                                            @if ($merchant->merchant_approve)
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/certificate_of_domicile/'.$merchant->merchant_approve->certificate_of_domicile ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <th>Foto Buku Rekening</th>
+                                            @if ($merchant->merchant_approve)
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/copy_bank_account_book/'.$merchant->merchant_approve->copy_bank_account_book ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <th>Surat Sewa / Bukti Kepemilikan</th>
+                                            @if ($merchant->merchant_approve)
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/copy_proof_ownership/'.$merchant->merchant_approve->copy_proof_ownership ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
+                                        </tr>
+                                        @if ($merchant->type == 'bussiness')
+                                        <tr>
+                                            <th>SIUP / Surat Ijin Usaha</th>
+                                            @if ($merchant->merchant_approve)
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/siup_photo/'.$merchant->merchant_approve->siup_photo ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <th>TDP</th>
+                                            @if ($merchant->merchant_approve)
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/tdp_photo/'.$merchant->merchant_approve->tdp_photo ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <th>Akta Pendirian Perusahaan</th>
+                                            @if ($merchant->merchant_approve)
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/copy_corporation_deed/'.$merchant->merchant_approve->copy_corporation_deed ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <th>Akta Pengurus Perusahaan</th>
+                                            @if ($merchant->merchant_approve)
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/copy_management_deed/'.$merchant->merchant_approve->copy_management_deed ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <th>SK Menkeh / Depkumham</th>
+                                            @if ($merchant->merchant_approve)
+                                            <td class="text-right">: <a href="{{ Storage::url('public/backend/images/copy_sk_menkeh/'.$merchant->merchant_approve->copy_sk_menkeh ) }}" target="__blank">Click to see images</a></td>
+                                            @else
+                                            <td class="text-right">: - </td>
+                                            @endif
+                                        </tr>
+                                        @endif
                                     </table>
                                 </div>
                             </div>

@@ -33,9 +33,59 @@
         <!--end col-->
         <div class="col-lg-6">
             <div class="mb-3">
-                <label for="city" class="form-label">City</label>
-                <input type="text" name="city" class="form-control @error('city') is-invalid @enderror" id="city" placeholder="Enter your City" value="{{ Auth::guard('merchant')->user()->city }}">
-                @error('city')
+                <label for="provinsi">Provinsi</label>
+                <select name="provinsi_id" id="provinsi" class="form-control">
+                    <option value="">-- Select --</option>
+                    @foreach ($provinces as $province)
+                        <option value="{{ $province->id }}" {{ Auth::guard('merchant')->user()->provinsi_id == $province->id ? 'selected' : '' }}>{{ $province->provinsi }}</option>
+                    @endforeach
+                </select>
+                @error('provinsi_id')
+                <span style="color: red;">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <!--end col-->
+       <div class="col-lg-6">
+            <div class="mb-3">
+                <label for="kota">Kab/Kota</label>
+                <select name="kabkot_id" id="kota" class="form-control">
+                    <option value="">-- Select --</option>
+                    @foreach ($kabkot as $kab)
+                        <option value="{{ $kab->id }}" {{ Auth::guard('merchant')->user()->kabkot_id == $kab->id ? 'selected' : '' }}>{{ $kab->kabupaten_kota }}</option>
+                    @endforeach
+                </select>
+                @error('kabkot_id')
+                <span style="color: red;">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <!--end col-->
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <label for="kecamatan">Kecamatan</label>
+                <select name="kecamatan_id" id="kecamatan" class="form-control">
+                    <option value="">-- Select --</option>
+                    @foreach ($kecamatans as $kecamatan)
+                        <option value="{{ $kecamatan->id }}" {{ Auth::guard('merchant')->user()->kecamatan_id == $kecamatan->id ? 'selected' : '' }}>{{ $kecamatan->kecamatan }}</option>
+                    @endforeach
+                </select>
+                @error('kecamatan_id')
+                <span style="color: red;">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <!--end col-->
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <label for="kelurahan">Kelurahan</label>
+                <select name="kelurahan_id" id="kelurahan" class="form-control">
+                    <option value="">-- Select --</option>
+                    @foreach ($kelurahans as $kelurahan)
+                        <option value="{{ $kelurahan->id }}" {{ Auth::guard('merchant')->user()->kelurahan_id == $kelurahan->id ? 'selected' : '' }}>{{ $kelurahan->kelurahan }}</option>
+                    @endforeach
+                </select>
+                @error('kelurahan_id')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
             </div>

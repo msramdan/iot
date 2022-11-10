@@ -70,6 +70,7 @@ Route::controller(MerchantLoginController::class)->group(function() {
 Route::controller(MerchantRegisterController::class)->group(function() {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register')->name('register.store');
+    Route::get('/tos', 'tos')->name('tos');
 });
 Route::controller(ForgotPasswordController::class)->group(function() {
     Route::get('/forgot_password', 'showForgetPasswordForm')->name('merchants.forgot_password');
@@ -83,6 +84,7 @@ Route::controller(ForgotPasswordController::class)->group(function() {
 Route::middleware(['auth:merchant', 'merchant_auth'])->group(function(){
     Route::controller(HomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
+        Route::post('/merchant/change_password', 'change_password')->name('merchant.change_password');
     });
     Route::prefix('merchant')->group(function() {
         Route::controller(MerchantProfileController::class)->group(function(){
@@ -111,6 +113,9 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
     Route::controller(DashboardController::class)->group(function () {
         Route::get('/', 'index')->name('dashboard');
         Route::put('/change_password', 'change_password')->name('dashboard.change_password');
+        Route::post('/filter_year', 'filter_transaction_year')->name('dashboard.filter_year');
+        Route::post('/filter_date_merchant', 'filter_date_merchant')->name('dashboard.filter_date_merchant');
+        Route::post('/filter_month_transasction', 'filter_month_transaction')->name('dashboard.filter_month_transaction');
     });
     // roles
     Route::resource('/roles', RolesController::class);
@@ -134,7 +139,7 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
         Route::post('merchant/import_excel', 'import_excel')->name('merchant.import_excel');
     });
 
-    
+
     Route::resource('merchant', MerchantController::class);
     Route::resource('merchant.optime', MerchantOpTimeController::class);
     Route::resource('otp', OTPController::class);

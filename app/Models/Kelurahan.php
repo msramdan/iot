@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Province extends Model
+class Kelurahan extends Model
 {
     use HasFactory;
-    protected $table = 'tbl_provinsi';
+    protected $table = 'tbl_kelurahan';
     protected $guarded = ['id'];
-    public $timestamps = false;
-
 }

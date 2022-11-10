@@ -11,6 +11,10 @@ use App\Models\ApprovalLogMerchant;
 use App\Models\MdrLog;
 use App\Models\Transaction;
 use App\Models\MerchantApprove;
+use App\Models\Province;
+use App\Models\City;
+use App\Models\Kabkot;
+use App\Models\Kelurahan;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -28,6 +32,7 @@ use App\Exports\MerchantExport;
 use Maatwebsite\Excel\Validators\ValidationException as ExcelException;
 use App\Imports\MerchantImport;
 use App\Http\Controllers\Controller;
+use App\Models\Kecamatan;
 
 class MerchantController extends Controller
 {
@@ -63,6 +68,9 @@ class MerchantController extends Controller
                 ->addColumn('mid', function ($row) {
                     return $row->mid ? $row->mid : '-';
                 })
+                ->addColumn('nmid', function($row) {
+                    return $row->nmid ? $row->nmid : '-';
+                })
                 ->addColumn('merchant_category', function ($row) {
                     if ($row->merchant_category) {
                         $merchant_category = $row->merchant_category->first()->merchants_category_name;
@@ -73,7 +81,7 @@ class MerchantController extends Controller
                     return $merchant_category;
                 })
                 ->addColumn('bussiness', function ($row) {
-                    if ($row->bussiness->first()) {
+                    if ($row->bussiness) {
                         $bussiness = $row->bussiness->first()->bussiness_name;
                     } else {
                         $bussiness = '-';
@@ -82,7 +90,7 @@ class MerchantController extends Controller
                     return $bussiness;
                 })
                 ->addColumn('bank', function ($row) {
-                    if ($row->bank->first()) {
+                    if ($row->bank) {
                         $bank = $row->bank->first()->bank_name;
                     } else {
                         $bank = '-';
@@ -91,7 +99,7 @@ class MerchantController extends Controller
                     return $bank;
                 })
                 ->addColumn('rek_pooling', function ($row) {
-                    if ($row->rek_pooling->first()) {
+                    if ($row->rek_pooling) {
                         $rek_pooling = $row->rek_pooling->first()->rek_pooling_code;
                     } else {
                         $rek_pooling = '-';
@@ -115,7 +123,6 @@ class MerchantController extends Controller
         $merchant_category = MerchantsCategory::all();
         $bussiness = Bussiness::all();
         $rek_pooling = RekPooling::all();
-
         $provinces = DB::table('tbl_provinsi')->get();
 
 
@@ -411,7 +418,11 @@ class MerchantController extends Controller
         $merchant_category = MerchantsCategory::all();
         $bussiness = Bussiness::all();
         $rek_pooling = RekPooling::all();
-        return view('admin.merchant.edit', compact('merchant', 'bank', 'merchant_category', 'bussiness', 'rek_pooling'));
+        $provinces = Province::all();
+        $kabkot = Kabkot::where('id', $merchant->kabkot_id)->get();
+        $kelurahans = Kelurahan::where('id', $merchant->kelurahan_id)->get();
+        $kecamatans = Kecamatan::where('id', $merchant->kecamatan_id)->get();
+        return view('admin.merchant.edit', compact('merchant', 'bank', 'merchant_category', 'bussiness', 'rek_pooling', 'provinces', 'kabkot', 'kelurahans', 'kecamatans'));
     }
 
     /**
@@ -423,6 +434,16 @@ class MerchantController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $merchant = Merchant::findOrFail($id);
+
+        $merchant_approve = MerchantApprove::where('merchant_id', $merchant->id)->first();
+
+        if (!$merchant_approve) {
+            $file_rules = 'required|image|mimes:jpeg,png,jpg|max:2048';
+        } else {
+            $file_rules = 'image|mimes:jpeg,png,jpg|max:2048';
+        }
+
         $rules = [
             'nmid' => 'required|string|max:50',
             'merchant_name' => 'required|string|max:200',
@@ -439,15 +460,18 @@ class MerchantController extends Controller
             'phone' => 'required|string|max:100|min:11|regex:/[0-9]+/im',
             'address1' => 'required|string',
             'address2' => 'required|string',
-            'city' => 'required|string|max:100',
+            'provinsi_id' => 'required',
+            'kabkot_id' => 'required',
+            'kecamatan_id' => 'required',
+            'kelurahan_id' => 'required',
             'zip_code' => 'required|string|max:10',
             'note' => 'string|nullable',
-            'identity_card_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
-            'npwp_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
-            'owner_outlet_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
-            'selfie_ktp_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
-            'outlet_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
-            'in_outlet_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'identity_card_photo' => $file_rules,
+            'npwp_photo' => $file_rules,
+            'owner_outlet_photo' => $file_rules,
+            'selfie_ktp_photo' => $file_rules,
+            'outlet_photo' => $file_rules,
+            'in_outlet_photo' => $file_rules,
             'password' => [
                 'nullable',Password::min(8)
                     ->letters()
@@ -459,15 +483,15 @@ class MerchantController extends Controller
         ];
 
         if ($request->merchant_type == 'personal') {
-            $rules['copy_proof_ownership'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
+            $rules['copy_proof_ownership'] = $file_rules;
         }
 
         if ($request->merchant_type == 'bussiness') {
-            $rules['siup_photo'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
-            $rules['tdp_photo'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
-            $rules['copy_corporation_deed'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
-            $rules['copy_management_deed'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
-            $rules['copy_sk_menkeh'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
+            $rules['siup_photo'] = $file_rules;
+            $rules['tdp_photo'] = $file_rules;
+            $rules['copy_corporation_deed'] = $file_rules;
+            $rules['copy_management_deed'] = $file_rules;
+            $rules['copy_sk_menkeh'] = $file_rules;
         }
 
         $validator = validator::make(
@@ -478,8 +502,6 @@ class MerchantController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
-
-        $merchant = Merchant::findOrFail($id);
 
         DB::beginTransaction();
 
@@ -502,13 +524,16 @@ class MerchantController extends Controller
                 'mdr' => $request->mdr,
                 'number_account' => $request->number_account,
                 'rek_pooling_id' => $request->rek_pooling_id,
+                'provinsi_id' => $request->provinsi_id,
+                'kabkot_id' => $request->kabkot_id,
+                'kecamatan_id' => $request->kecamatan_id,
+                'kelurahan_id' => $request->kelurahan_id,
                 'pic' => null,
                 'phone' => $request->phone,
                 'address1' => $request->address1,
                 'address2' => $request->address2,
                 'approved1' => 'need_approved',
                 'approved2' => 'need_approved',
-                'city' => $request->city,
                 'zip_code' => $request->zip_code,
                 'is_active' => 0,
                 'note' => $request->note,
@@ -541,12 +566,6 @@ class MerchantController extends Controller
             ]);
 
             $data_merchant_approve = [];
-            $merchant_approve = MerchantApprove::where('merchant_id', $merchant->id)->first();
-
-            if (!$merchant_approve) {
-                Alert::toast('Merchant Approve data not found', 'error');
-                return redirect()->route('merchant.approval');
-            }
 
             //================= Identity Card Photo ======================
             if ($request->hasFile('identity_card_photo')) {
@@ -557,7 +576,9 @@ class MerchantController extends Controller
 
                 $identity_card_file->storeAs('public/backend/images/identity_card', $identity_card_name);
 
-                Storage::disk('local')->delete('public/backend/images/identity_card/' . $merchant_approve->identity_card);
+                if ($merchant_approve && $merchant_approve->identity_card) {
+                     Storage::disk('local')->delete('public/backend/images/identity_card/' . $merchant_approve->identity_card);
+                }
             }
             //============== End Indentity Card Photo ====================
             //======================= NPWP Photo =========================
@@ -568,7 +589,9 @@ class MerchantController extends Controller
                 $data_merchant_approve['npwp_photo'] = $npwp_photo_name;
                 $npwp_file->storeAs('public/backend/images/npwp', $npwp_photo_name);
 
-                Storage::disk('local')->delete('public/backend/images/npwp/' . $merchant_approve->npwp_photo);
+                if ($merchant_approve && $merchant_approve->npwp_photo) {
+                     Storage::disk('local')->delete('public/backend/images/npwp/' . $merchant_approve->npwp_photo);
+                }
             }
             //==================== End NPWP Photo ========================
             //================== Owner Outlet Photo ======================
@@ -579,7 +602,9 @@ class MerchantController extends Controller
                 $data_merchant_approve['owner_outlet_photo'] = $owner_outlet_name;
                 $owner_outlet_file->storeAs('public/backend/images/owner_outlet', $owner_outlet_name);
 
-                Storage::disk('local')->delete('public/backend/images/owner_outlet/' . $merchant_approve->owner_outlet_photo);
+                if ($merchant_approve && $merchant_approve->owner_outlet_photo) {
+                    Storage::disk('local')->delete('public/backend/images/owner_outlet/' . $merchant_approve->owner_outlet_photo);
+                }
             }
             //================ End Owner Outlet Photo ====================
             //================== Selfie KTP Photo ========================
@@ -590,7 +615,9 @@ class MerchantController extends Controller
                 $data_merchant_approve['selfie_ktp_photo'] = $selfie_ktp_name;
                 $selfie_ktp_file->storeAs('public/backend/images/selfie_ktp', $selfie_ktp_name);
 
-                Storage::disk('local')->delete('public/backend/images/selfie_ktp/' . $merchant_approve->selfie_ktp_photo);
+                if ($merchant_approve && $merchant_approve->selfie_ktp_photo) {
+                    Storage::disk('local')->delete('public/backend/images/selfie_ktp/' . $merchant_approve->selfie_ktp_photo);
+                }
             }
             //================ End Selfie KTP Photo ======================
             //================== Outlet Photo ============================
@@ -601,7 +628,9 @@ class MerchantController extends Controller
                 $data_merchant_approve['outlet_photo'] = $outlet_name;
                 $outlet_file->storeAs('public/backend/images/outlet', $outlet_name);
 
-                Storage::disk('local')->delete('public/backend/images/outlet/' . $merchant_approve->outlet_photo);
+                if ($merchant_approve && $merchant_approve->outlet_photo) {
+                    Storage::disk('local')->delete('public/backend/images/outlet/' . $merchant_approve->outlet_photo);
+                }
             }
             //================= End Outlet Photo =========================
             //================== In Outlet Photo =========================
@@ -612,7 +641,9 @@ class MerchantController extends Controller
                 $data_merchant_approve['in_outlet_photo'] = $in_outlet_name;
                 $in_outlet_file->storeAs('public/backend/images/in_outlet', $in_outlet_name);
 
-                Storage::disk('local')->delete('public/backend/images/in_outlet/' . $merchant_approve->in_outlet_photo);
+                if ($merchant_approve && $merchant_approve->in_outlet_photo) {
+                    Storage::disk('local')->delete('public/backend/images/in_outlet/' . $merchant_approve->in_outlet_photo);
+                }
             }
             //================= End In Outlet Photo ======================
             //============== Surat Keterangan Domisili ==============
@@ -623,7 +654,9 @@ class MerchantController extends Controller
 
                 $data_merchant_approve['certificate_of_domicile'] = $certificate_of_domicile_name;
 
-                Storage::disk('local')->delete('public/backend/images/certificate_of_domicile/' . $merchant_approve->certificate_of_domicile);
+                if ($merchant_approve && $merchant_approve->certificate_of_domicile) {
+                    Storage::disk('local')->delete('public/backend/images/certificate_of_domicile/' . $merchant_approve->certificate_of_domicile);
+                }
             }
             //============ End Surat Keterangan Domisili ============
 
@@ -635,7 +668,9 @@ class MerchantController extends Controller
 
                 $data_merchant_approve['copy_bank_account_book'] = $copy_bank_account_book_name;
 
-                Storage::disk('local')->delete('public/backend/images/copy_bank_account_book/' . $merchant_approve->copy_bank_account_book);
+                if ($merchant_approve && $merchant_approve->copy_bank_account_book) {
+                    Storage::disk('local')->delete('public/backend/images/copy_bank_account_book/' . $merchant_approve->copy_bank_account_book);
+                }
             }
             //================ End Buku Rekening ==================
 
@@ -647,7 +682,9 @@ class MerchantController extends Controller
 
                 $data_merchant_approve['copy_proof_ownership'] = $copy_proof_ownership_name;
 
-                Storage::disk('local')->delete('public/backend/images/copy_proof_ownership/' . $merchant_approve->copy_proof_ownership);
+                if ($merchant_approve && $merchant_approve->copy_proof_ownership) {
+                     Storage::disk('local')->delete('public/backend/images/copy_proof_ownership/' . $merchant_approve->copy_proof_ownership);
+                }
             }
             //================ End Surat sewa / Bukti Kepemilikan ==================
 
@@ -659,7 +696,9 @@ class MerchantController extends Controller
 
                 $data_merchant_approve['siup_photo'] = $siup_photo_name;
 
-                Storage::disk('local')->delete('public/backend/images/siup_photo/' . $merchant_approve->siup_photo);
+                if ($merchant_approve && $merchant_approve->siup_photo) {
+                     Storage::disk('local')->delete('public/backend/images/siup_photo/' . $merchant_approve->siup_photo);
+                }
             }
             //================ End SIUP / SURAT IJIN USAHA ==================
 
@@ -671,7 +710,9 @@ class MerchantController extends Controller
 
                 $data_merchant_approve['tdp_photo'] = $tdp_photo_name;
 
-                Storage::disk('local')->delete('public/backend/images/tdp_photo/' . $merchant_approve->tdp_photo);
+                if ($merchant_approve && $merchant_approve->tdp_photo) {
+                     Storage::disk('local')->delete('public/backend/images/tdp_photo/' . $merchant_approve->tdp_photo);
+                }
             }
             //================ End TDP ==================
 
@@ -683,7 +724,9 @@ class MerchantController extends Controller
 
                 $data_merchant_approve['copy_corporation_deed'] = $copy_corporation_deed_name;
 
-                Storage::disk('local')->delete('public/backend/images/copy_corporation_deed/' . $merchant_approve->copy_corporation_deed);
+                if ($merchant_approve && $merchant_approve->copy_corporation_deed) {
+                    Storage::disk('local')->delete('public/backend/images/copy_corporation_deed/' . $merchant_approve->copy_corporation_deed);
+                }
             }
             //================ End Akta Pendirian Perusahaan ==================
 
@@ -695,7 +738,9 @@ class MerchantController extends Controller
 
                 $data_merchant_approve['copy_management_deed'] = $copy_corporation_deed_name;
 
-                Storage::disk('local')->delete('public/backend/images/copy_management_deed/' . $merchant_approve->copy_management_deed);
+                if ($merchant_approve && $merchant_approve->copy_management_deed) {
+                    Storage::disk('local')->delete('public/backend/images/copy_management_deed/' . $merchant_approve->copy_management_deed);
+                }
             }
             //================ End Akta Pengurus Perusahaan ==================
 
@@ -707,19 +752,26 @@ class MerchantController extends Controller
 
                 $data_merchant_approve['copy_sk_menkeh'] = $copy_sk_menkeh_name;
 
-                Storage::disk('local')->delete('public/backend/images/copy_sk_menkeh/' . $merchant_approve->copy_sk_menkeh);
+                if ($merchant_approve && $merchant_approve->copy_sk_menkeh) {
+                    Storage::disk('local')->delete('public/backend/images/copy_sk_menkeh/' . $merchant_approve->copy_sk_menkeh);
+                }
             }
             //================ End Copy SK Menkeh ==================
 
             if (count($data_merchant_approve) > 0) {
-                $merchant_approve->update($data_merchant_approve);
+                if ($merchant_approve) {
+                    $merchant_approve->update($data_merchant_approve);
+                } else {
+                    $data_merchant_approve['merchant_id'] = $merchant->id;
+                    $merchant_approve = MerchantApprove::create($data_merchant_approve);
+                }
             }
 
             if ($merchant) {
                 Alert::toast('Data Updated successfully', 'success');
                 return redirect()->route('merchant.approval');
             } else {
-                Alert::toast('Data Updated to save', 'error');
+                Alert::toast('Data gagal diupdate', 'error');
                return redirect()->route('merchant.approval');
             }
         } catch (Exception $e) {
@@ -779,7 +831,11 @@ class MerchantController extends Controller
                     'merchant_category',
                     'bank:id,bank_name',
                     'rek_pooling',
-                    'bussiness'
+                    'bussiness',
+                    'province',
+                    'kecamatan',
+                    'kelurahan',
+                    'kabkot',
                 ])
                 ->where('is_active', 1)
                 ->where('approved1', 'approved')

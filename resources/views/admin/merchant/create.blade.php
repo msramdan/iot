@@ -205,18 +205,6 @@
                                                 </div>
                                                 <div class="col-md-3 col-md-6">
                                                     <div>
-                                                        <label for="city">City</label>
-                                                        <input type="text"
-                                                            class="form-control @error('city') is-invalid @enderror"
-                                                            name="city" id="city" placeholder=""
-                                                            value="{{ old('city') }}" autocomplete="off">
-                                                        @error('city')
-                                                        <span style="color: red;">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 col-md-6">
-                                                    <div>
                                                         <label for="zip_code">Zip Code</label>
                                                         <input type="text"
                                                             class="form-control @error('zip_code') is-invalid @enderror"
@@ -385,7 +373,7 @@
                                                         </div>
                                                         <!-- End Foto Buku Rekening -->
                                                         <!-- Sertifikat Bukti Kepemilikan -->
-                                                        <div class="col-md-3 col-md-6 merchant-personal d-none">
+                                                        <div class="col-md-3 col-md-6">
                                                             <div>
                                                                 <label for="basiInput" class="form-label">Surat Sewa /
                                                                     Bukti Kepemilikan</label>
@@ -593,10 +581,8 @@
         let type = $('select[name=merchant_type] option').filter(':selected').val()
 
         if (type == 'personal') {
-            $('.merchant-personal').removeClass('d-none');
             $('.merchant-bussiness').addClass('d-none');
         } else if(type == 'bussiness') {
-            $('.merchant-personal').addClass('d-none');
             $('.merchant-bussiness').removeClass('d-none');
         }
     }
@@ -618,7 +604,7 @@
         if($(this).val() != ""){
             getKecamatan($(this).val());
         }
-        
+
     })
 
     $('#kecamatan').change(function(){
@@ -635,7 +621,7 @@
             $('#zip_code').val('')
         }
     });
-    
+
 
     function getKabupatenKota (provinsiId){
         let url = '{{ route("api.kota", ":id") }}';
