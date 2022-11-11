@@ -50,6 +50,8 @@ Route::get('/tes', function() {
     dd($tes);
 });
 
+Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::class, 'reloadCaptcha']);
+
 /**
  * Login Admin
  */
