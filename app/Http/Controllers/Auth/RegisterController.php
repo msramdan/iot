@@ -80,6 +80,12 @@ class RegisterController extends Controller
         return $validator;
     }
 
+
+    public function reloadCaptcha()
+    {
+        return response()->json(['captcha'=> captcha_img()]);
+    }
+
     public function showRegistrationForm()
     {
         $banks = Bank::all();

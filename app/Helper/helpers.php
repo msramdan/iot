@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 if (!function_exists('set_active')) {
     function set_active($uri)
@@ -18,6 +19,12 @@ if (!function_exists('set_active')) {
         }
     }
 }
+
+function setting_web()
+    {
+        $setting = DB::table('setting_app')->first();
+    return $setting->app_name;
+    }
 
 function set_show($uri)
     {
