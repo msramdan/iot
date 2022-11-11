@@ -39,6 +39,7 @@ class VillageController extends Controller
         $attr = request()->validate([
             'kecamatan_id' => 'required',
             'kelurahan' => 'required',
+            'kd_pos' => 'required'
         ]);
 
         try {
@@ -66,6 +67,7 @@ class VillageController extends Controller
         $attr = request()->validate([
             'kecamatan_id' => 'required',
             'kelurahan' => 'required',
+            'kd_pos' => 'required'
         ]);
 
         $village = Village::findOrFail($id);

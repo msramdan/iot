@@ -41,8 +41,16 @@
                             </div>
                             <div class="mb-3">
                                 <label for="kelurahan">Kelurahan</label>
-                                <input type="text" class="form-control @error('kelurahan') is-invalid @enderror" name="kelurahan" id="kelurahan" placeholder="" value="{{ old('kelurahan') ? old('kelurahan') : $village->kelurahan }}" autocomplete="off">
+                                <input type="text" class="form-control @error('kelurahan') is-invalid @enderror" name="kelurahan" id="kelurahan" placeholder="" value="{{ old('kelurahan') ?? $village->kelurahan }}" autocomplete="off">
                                 @error('kelurahan')
+                                <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="kd_pos">Kode Pos</label>
+                                <input type="number" class="form-control @error('kd_pos') is-invalid @enderror" name="kd_pos" id="kd_pos"
+                                    placeholder="" value="{{ old('kd_pos') ?? $village->kd_pos }}" autocomplete="off">
+                                @error('kd_pos')
                                 <span style="color: red;">{{ $message }}</span>
                                 @enderror
                             </div>

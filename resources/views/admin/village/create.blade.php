@@ -44,6 +44,13 @@
                                     <span style="color: red;">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div class="mb-3">
+                                <label for="kd_pos">Kode Pos</label>
+                                <input type="number" class="form-control @error('kd_pos') is-invalid @enderror" name="kd_pos" id="kd_pos" placeholder="" value="{{ old('kd_pos') }}" autocomplete="off">
+                                @error('kd_pos')
+                                    <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </div>
                             <div class="form-group">
                                 <a href="{{ route('village.index') }}" class="btn btn-warning"><i class="mdi mdi-arrow-left-thin"></i> Back</a>
                                 <button type="submit" class="btn btn-primary" ><i class="mdi mdi-content-save"></i> SIMPAN</button>

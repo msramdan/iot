@@ -34,6 +34,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Kelurahan</th>
+                                        <th>Kode POS</th>
                                         @canany(['village_update', 'village_delete'])
                                         <th>Action</th>
                                         @endcanany
@@ -62,6 +63,10 @@
             {
                 data: 'kelurahan',
                 name: 'kelurahan'
+            },
+            {
+                data: 'kd_pos',
+                name: 'kd_pos'
             },
         ]
 
