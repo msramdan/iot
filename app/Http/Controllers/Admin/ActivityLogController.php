@@ -18,7 +18,12 @@ class ActivityLogController extends Controller
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('causer', function ($row) {
-                    return $row->user->name;
+                    if ($row->user) {
+                        return $row->user->name;
+                    } else {
+                        return '-';
+                    }
+
                 })
                 ->addColumn('new_value', function ($row) {
                     $array =  json_decode($row->properties);

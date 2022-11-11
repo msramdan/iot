@@ -88,6 +88,11 @@ class MerchantRegisterController extends Controller
         );
 
         if ($validator->fails()) {
+
+            if ($request->ajax()) {
+                return response()->json($validator, 422);
+            }
+
             Alert::toast('Data failed to save', 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }

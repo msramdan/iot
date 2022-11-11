@@ -4,7 +4,8 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="merchant-name">Merchant Name</label>
-                <input type="text" name="merchant_name" class="form-control @error('merchant_name') is-invalid @enderror" id="merchant-name" placeholder="Merchant Name" value="{{ old('merchant_name') }}">
+                <input type="text" name="merchant_name" class="form-control @error('merchant_name') is-invalid @enderror" placeholder="Merchant Name" value="{{ old('merchant_name') }}" id="merchant_name">
+                <span class="d-none" style="color: red;" id="error-merchant-name"></span>
                 @error('merchant_name')
                     <span style="color: red;">{{ $message }}</span>
                 @enderror
@@ -14,6 +15,7 @@
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="Email" value="{{ old('email') }}">
+                <span class="d-none" style="color: red;" id="error-email"></span>
                 @error('email')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
@@ -22,7 +24,8 @@
     </div>
     <div class="form-group">
         <label for="phone">Phone</label>
-        <input type="text" name="phone" name="phone" value="{{ old('phone') }}" id="phone" placeholder="Phone" class="form-control @error('phone') is-invalid @enderror">
+        <input type="text" name="phone" name="phone" value="{{ old('phone') }}" minlength="10" maxlength="13" id="phone" placeholder="Phone" class="form-control @error('phone') is-invalid @enderror">
+        <span class="d-none" style="color: red;" id="error-phone"></span>
         @error('phone')
         <span style="color: red;">{{ $message }}</span>
         @enderror
@@ -37,6 +40,7 @@
                         <option value="{{ $province->id }}">{{ $province->provinsi }}</option>
                     @endforeach
                 </select>
+                <span class="d-none" style="color: red;" id="error-provinsi"></span>
                 @error('provinsi_id')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
@@ -48,6 +52,7 @@
                 <select name="kabkot_id" id="kota" class="form-control @error('kabkot_id') is-invalid @enderror">
                     <option value="">-- Select --</option>
                 </select>
+                <span class="d-none" style="color: red;" id="error-kota"></span>
                 @error('kabkot_id')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
@@ -61,6 +66,7 @@
                 <select name="kecamatan_id" id="kecamatan" class="form-control @error('kecamatan_id') is-invalid @enderror">
                     <option value="">-- Select --</option>
                 </select>
+                <span class="d-none" style="color: red;" id="error-kecamatan"></span>
                 @error('provinsi_id')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
@@ -72,6 +78,7 @@
                 <select name="kelurahan_id" id="kelurahan" class="form-control @error('kelurahan_id') is-invalid @enderror">
                     <option value="">-- Select --</option>
                 </select>
+                <span class="d-none" style="color: red;" id="error-kelurahan"></span>
                 @error('kabkot_id')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
@@ -81,6 +88,7 @@
     <div class="form-group">
         <label for="zip_code">Zip Code</label>
         <input type="text" name="zip_code" id="zip_code" value="{{ old('zip_code') }}" placeholder="Zip Code" class="form-control @error('zip_code') is-invalid @enderror">
+        <span class="d-none" style="color: red;" id="error-zip_code"></span>
         @error('zip_code')
         <span style="color: red;">{{ $message }}</span>
         @enderror
@@ -88,6 +96,7 @@
     <div class="form-group">
         <label for="address1">Address Line 1</label>
         <input type="text" name="address1" class="form-control @error('address1') is-invalid @enderror" id="address1" placeholder="Address 1" value="{{ old('address1') }}">
+        <span class="d-none" style="color: red;" id="error-address1"></span>
         @error('address1')
         <span style="color: red;">{{ $message }}</span>
         @enderror
@@ -95,6 +104,7 @@
     <div class="form-group">
         <label for="address2">Address Line 2</label>
         <input type="text" name="address2" class="form-control @error('address2') is-invalid @enderror" id="address2" placeholder="Address 2" value="{{ old('address2') }}">
+        <span class="d-none" style="color: red;" id="error-address2"></span>
         @error('address2')
         <span style="color: red;">{{ $message }}</span>
         @enderror
@@ -109,6 +119,7 @@
                         <option value="{{ $merchant_category->id }}" {{ old('merchant_category_id') == $merchant_category->id  ? 'selected' : '' }} >{{ $merchant_category->merchants_category_name }}</option>
                     @endforeach
                 </select>
+                <span class="d-none" style="color: red;" id="error-merchant-category"></span>
                 @error('merchant_category_id')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
@@ -123,6 +134,7 @@
                         <option value="{{ $bussiness->id }}" {{ old('bussiness_id') == $bussiness->id ? 'selected' : ''  }}>{{ $bussiness->bussiness_name }}</option>
                     @endforeach
                 </select>
+                <span class="d-none" style="color: red;" id="error-bussiness"></span>
                 @error('bussiness_id')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
@@ -137,6 +149,7 @@
                         <option value="{{ $bank->id }}" {{ old('bank_id') == $bank->id ? 'selected' : '' }}>{{ $bank->bank_name }}</option>
                     @endforeach
                 </select>
+                <span class="d-none" style="color: red;" id="error-bank"></span>
                 @error('bank_id')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
@@ -146,6 +159,7 @@
             <div class="form-group">
                 <label for="city">Number Account</label>
                 <input type="text" name="number_account" value="{{ old('number_account') }}" class="form-control @error('number_account') is-invalid @enderror" id="number_account" placeholder="Number Account">
+                <span class="d-none" style="color: red;" id="error-number-account"></span>
                 @error('number_account')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
@@ -155,6 +169,7 @@
             <div class="form-group">
                 <label for="zip">Account Name</label>
                 <input type="text" name="account_name" value="{{ old('account_name') }}" class="form-control @error('account_name') is-invalid @enderror" id="account_name" placeholder="Account Name">
+                <span class="d-none" style="color: red;" id="error-account-name"></span>
                 @error('account_name')
                 <span style="color: red;">{{ $message }}</span>
                 @enderror
@@ -163,7 +178,8 @@
     </div>
     <div class="form-group">
         <label for="zip">Password</label>
-        <input type="password" name="password" class="form-control @error('account_name') is-invalid @enderror" id="password" placeholder="Password">
+        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="Password">
+        <span class="d-none" style="color: red;" id="error-password"></span>
         @error('password')
         <span style="color: red;">{{ $message }}</span>
         @enderror

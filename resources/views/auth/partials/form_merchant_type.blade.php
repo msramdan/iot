@@ -2,7 +2,7 @@
     <h4>Select Type Account</h4>
     <div class="row ml-2 mb-2">
         <label class="merchant-type-label">
-            <input type="radio" name="merchant_type" value="bussiness" class="card-input-element" />
+            <input type="radio" id="merchant_type" name="merchant_type" value="bussiness" class="card-input-element" />
             <div class="card card-merchant-type px-5 py-5">
                 <img class="merchant-type-icons mx-auto my-auto" src="{{ asset('frontend/images/company.png') }}" alt="">
                 <h6 class="text-center mt-1">Bussiness</h6>
@@ -10,7 +10,7 @@
         </label>
 
         <label class="merchant-type-label">
-            <input type="radio" name="merchant_type" value="personal" class="card-input-element" />
+            <input type="radio" id="merchant_type" name="merchant_type" value="personal" class="card-input-element" />
             <div class="card card-merchant-type px-5 py-5">
                 <img class="merchant-type-icons mx-auto my-auto" src="{{ asset('frontend/images/personal.png') }}" alt="">
                 <h6 class="text-center mt-1">Personal</h6>
