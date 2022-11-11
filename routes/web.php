@@ -86,6 +86,7 @@ Route::controller(ForgotPasswordController::class)->group(function() {
 Route::middleware(['auth:merchant', 'merchant_auth'])->group(function(){
     Route::controller(HomeController::class)->group(function(){
         Route::get('/', 'index')->name('home');
+        Route::get('/filter_transaction_month', 'filter_month_transaction')->name('home.filter_month_transaction');
         Route::post('/merchant/change_password', 'change_password')->name('merchant.change_password');
     });
     Route::prefix('merchant')->group(function() {
