@@ -66,7 +66,10 @@ Route::controller(LoginController::class)->group(function() {
  */
 Route::controller(MerchantLoginController::class)->group(function() {
     Route::get('/login', 'showLoginForm')->name('login');
+    Route::get('/login_otp', 'showOTPForm')->name('login.otp');
     Route::post('/login/store', 'handleLogin')->name('login.store');
+    Route::post('/login/otp_store', 'handleOTP')->name('login.otp_store');
+    Route::post('/login/otp_regenerate', 'regenerate_otp')->name('login.otp_regenerate');
     Route::post('/logout', 'logout')->name('logout');
 });
 Route::controller(MerchantRegisterController::class)->group(function() {
@@ -181,3 +184,4 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
         Route::get('/activity_log', 'index')->name('activity_log.index');
     });
 });
+

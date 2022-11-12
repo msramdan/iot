@@ -47,7 +47,7 @@ return [
         'merchant' => [
             'driver' => 'session',
             'provider' => 'merchant'
-        ],
+        ]
     ],
 
     /*

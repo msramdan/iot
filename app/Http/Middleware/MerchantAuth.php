@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 class MerchantAuth
 {
     /**
@@ -16,7 +17,7 @@ class MerchantAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::guard('merchant')->user()) {
+        if (Auth::guard('merchant')->check() && Session::has('is_valid_otp')) {
             $merchant = Auth::guard('merchant')->user();
             return $next($request);
         }

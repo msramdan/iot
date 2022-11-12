@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Merchant;
 use App\Models\OTP;
 use Exception;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
@@ -36,15 +37,22 @@ class OTPController extends Controller
         $attr = request()->validate([
             'merchant_id'   => 'required',
             'email'         => 'required',
-            'otp_number'    => 'numeric',
-            'expired_date'   => 'required|date'
+            'otp_number'    => 'numeric|digits:6',
         ]);
 
         try{
-            OTP::create($attr);
+             $otp = OTP::create([
+                'merchant_id' => $attr['merchant_id'],
+                'email' => $attr['email'],
+                'otp_number' => $attr['otp_number'],
+                'is_used' => 0,
+                'expired_date' => Carbon::now()->addMinute(5),
+                'regenerate_time' => Carbon::now()->addMinutes(2),
+            ]);
+
             Alert::toast('Otp successfully created', 'success');
             return redirect()->route('otp.index');
-            
+
         }catch(Exception $err){
 
             Alert::toast('Data failed to save', 'error');
@@ -54,12 +62,11 @@ class OTPController extends Controller
 
     public function edit ($id)
     {
-
         return view('admin.otp.edit', [
             'otp' => OTP::whereId($id)->firstOrFail(),
             'merchants' => Merchant::all()
         ]);
-        
+
     }
 
     public function update ($id)
@@ -67,12 +74,20 @@ class OTPController extends Controller
         $attr = request()->validate([
             'merchant_id'   => 'required',
             'email'         => 'required',
-            'otp_number'    => 'numeric',
-            'expired_date'   => 'required|date'
+            'otp_number'    => 'numeric|digits:6',
         ]);
 
         try {
-            OTP::whereId($id)->update($attr);
+            OTP::whereId($id)->update(
+                [
+                    'merchant_id' => $attr['merchant_id'],
+                    'email' => $attr['email'],
+                    'otp_number' => $attr['otp_number'],
+                    'is_used' => 0,
+                    'expired_date' => Carbon::now()->addMinute(5),
+                    'regenerate_time' => Carbon::now()->addMinutes(2),
+                ]
+            );
             Alert::toast('Otp successfully updated', 'success');
         } catch (Exception $err) {
 

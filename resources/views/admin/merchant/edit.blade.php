@@ -23,7 +23,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('merchant.update', $merchant->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('merchant.update', $merchant->id) }}" method="POST" enctype="multipart/form-data" id="form-merchant">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="ci_csrf_token" value="">
@@ -39,6 +39,7 @@
                                                     <div>
                                                         <label for="nmid">National MID</label>
                                                         <input type="text" class="form-control @error('nmid') is-invalid @enderror" name="nmid" id="nmid" placeholder="" value="{{ (old('nmid') ? old('nmid') : $merchant->nmid) }}" autocomplete="off">
+                                                        <span class="d-none" style="color: red;" id="error-nmid"></span>
                                                         @error('nmid')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -49,6 +50,7 @@
                                                     <div>
                                                         <label for="merchant_name">Merchant Name</label>
                                                         <input type="text" class="form-control @error('merchant_name') is-invalid @enderror" name="merchant_name" id="merchant_name" placeholder="" value="{{ (old('merchant_name') ? old('merchant_name') : $merchant->merchant_name) }}" autocomplete="off">
+                                                        <span class="d-none" style="color: red;" id="error-merchant_name"></span>
                                                         @error('merchant_name')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -58,6 +60,7 @@
                                                     <div>
                                                         <label for="merchant_email">Merchant Email</label>
                                                         <input type="text" class="form-control @error('merchant_email') is-invalid @enderror" name="merchant_email" id="merchant_email" placeholder="" value="{{ old('merchant_email') ? old('merchant_email') : $merchant->email  }}" autocomplete="off">
+                                                        <span class="d-none" style="color: red;" id="error-merchant_email"></span>
                                                         @error('merchant_email')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -72,6 +75,7 @@
                                                             <option value="{{ $item->id }}" {{ (old('merchant_category_id') ? old('merchant_category_id') : $merchant->merchant_category_id) == $item->id ? 'selected' : ''}}>{{ $item->merchants_category_name }}</option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="d-none" style="color: red;" id="error-merchant_category"></span>
                                                         @error('merchant_category_id')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -85,6 +89,7 @@
                                                             <option value="bussiness" {{ $merchant->type == 'bussiness' ? 'selected' : ''  }}>Bussiness</option>
                                                             <option value="personal" {{ $merchant->type == 'personal' ? 'selected' : ''  }}>Personal</option>
                                                         </select>
+                                                        <span class="d-none" style="color: red;" id="error-merchant_type"></span>
                                                         @error('merchant_type')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -99,6 +104,7 @@
                                                             <option value="{{ $busines->id }}" {{ (old('busines_id') ? old('busines_id') : $merchant->bussiness_id) == $busines->id ? 'selected' : ''}}>{{ $busines->bussiness_name }}</option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="d-none" style="color: red;" id="error-bussiness"></span>
                                                         @error('bussiness_id')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -108,6 +114,7 @@
                                                     <div>
                                                         <label for="mdr">Mdr</label>
                                                         <input type="number" step="0.01" class="form-control @error('mdr') is-invalid @enderror" name="mdr" id="mdr" placeholder="" value="{{ old('mdr') ? old('mdr') : $merchant->mdr }}" autocomplete="off">
+                                                        <span class="d-none" style="color: red;" id="error-mdr"></span>
                                                         @error('mdr')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -117,6 +124,7 @@
                                                     <div>
                                                         <label for="phone">Phone</label>
                                                         <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" placeholder="" value="{{ old('phone') ? old('phone') : $merchant->phone }}" autocomplete="off">
+                                                        <span class="d-none" style="color: red;" id="error-phone"></span>
                                                         @error('phone')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -132,6 +140,10 @@
                                                                 }}</option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="d-none" style="color: red;" id="error-provinsi"></span>
+                                                        @error('provinsi')
+                                                        <span style="color: red;">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-md-6">
@@ -143,6 +155,10 @@
                                                             <option value="{{ $item->id }}" {{ $item->id == $merchant->kabkot_id ? 'selected' : '' }}>{{ $item->kabupaten_kota }}</option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="d-none" style="color: red;" id="error-kota"></span>
+                                                        @error('kota')
+                                                        <span style="color: red;">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-md-6">
@@ -154,6 +170,10 @@
                                                             <option value="{{ $kecamatan->id }}" {{ $kecamatan->id == $merchant->kecamatan_id ? 'selected' : '' }}>{{ $kecamatan->kecamatan }}</option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="d-none" style="color: red;" id="error-kecamatan"></span>
+                                                        @error('kecamatan')
+                                                        <span style="color: red;">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-md-6">
@@ -165,12 +185,17 @@
                                                             <option value="{{ $kelurahan->id }}" {{ $kelurahan->id == $merchant->kelurahan_id ? 'selected' : '' }}>{{ $kelurahan->kelurahan }}</option>
                                                             @endforeach
                                                         </select>
+                                                        <span class="d-none" style="color: red;" id="error-kelurahan"></span>
+                                                        @error('kelurahan')
+                                                        <span style="color: red;">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-md-6">
                                                     <div>
                                                         <label for="address1">Address1</label>
                                                         <textarea name="address1" id="address1" rows="3" class="form-control @error('address1') is-invalid @enderror" placeholder="" value="{{ old('address1') }}" autocomplete="off">{{ old('address1') ?  old('address1') : $merchant->address1 }}</textarea>
+                                                        <span class="d-none" style="color: red;" id="error-address1"></span>
                                                         @error('address1')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -180,6 +205,7 @@
                                                     <div>
                                                         <label for="address2">Address2</label>
                                                         <textarea name="address2" id="address2" rows="3" class="form-control @error('address2') is-invalid @enderror" placeholder="" value="{{ old('address2') }}" autocomplete="off">{{ old('address2') ?  old('address2') : $merchant->address2 }}</textarea>
+                                                        <span class="d-none" style="color: red;" id="error-address2"></span>
                                                         @error('address2')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -189,6 +215,7 @@
                                                     <div>
                                                         <label for="zip_code">Zip Code</label>
                                                         <input type="text" class="form-control @error('zip_code') is-invalid @enderror" name="zip_code" id="zip_code" placeholder="" value="{{ old('zip_code') ? old('zip_code') : $merchant->zip_code }}" autocomplete="off">
+                                                        <span class="d-none" style="color: red;" id="error-zip_code"></span>
                                                         @error('zip_code')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -199,6 +226,7 @@
                                                     <div>
                                                         <label for="note">Note</label>
                                                         <textarea name="note" id="note" rows="3" class="form-control @error('note') is-invalid @enderror" placeholder="" value="{{ old('note') }}" autocomplete="off">{{ old('note') ?  old('note') : $merchant->note }}</textarea>
+                                                        <span class="d-none" style="color: red;" id="error-note"></span>
                                                         @error('note')
                                                         <span style="color: red;">{{ $message }}</span>
                                                         @enderror
@@ -207,6 +235,7 @@
                                                 <div class="col-md-3 col-md-6">
                                                     <label for="password">Password</label>
                                                     <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" placeholder="" value="{{ old('password') }}" autocomplete="off">
+                                                    <span class="d-none" style="color: red;" id="error-password"></span>
                                                     @error('password')
                                                     <span style="color: red;">{{ $message }}</span>
                                                     @enderror
@@ -235,8 +264,9 @@
                                                         <!-- Foto KTP -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">Foto KTP</label>
-                                                                <input type="file" name="identity_card_photo" class="form-control @error('identity_card_photo') is-invalid @enderror" id="basiInput">
+                                                                <label for="identity_card_photo" class="form-label">Foto KTP</label>
+                                                                <input type="file" name="identity_card_photo" class="form-control @error('identity_card_photo') is-invalid @enderror" id="identity_card_photo">
+                                                                <span class="d-none" style="color: red;" id="error-identity_card_photo"></span>
                                                                 @error('identity_card_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -249,8 +279,9 @@
                                                         <!-- Foto Selfie KTP -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">Foto Selfie KTP</label>
-                                                                <input type="file" name="selfie_ktp_photo" class="form-control @error('selfie_ktp_photo') is-invalid @enderror" id="basiInput">
+                                                                <label for="selfie_ktp_photo" class="form-label">Foto Selfie KTP</label>
+                                                                <input type="file" name="selfie_ktp_photo" class="form-control @error('selfie_ktp_photo') is-invalid @enderror" id="selfie_ktp_photo">
+                                                                <span class="d-none" style="color: red;" id="error-selfie_ktp_photo"></span>
                                                                 @error('selfie_ktp_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -263,8 +294,9 @@
                                                         <!-- NPWP -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">Foto NPWP</label>
-                                                                <input type="file" name="npwp_photo" class="form-control  @error('npwp_photo') is-invalid @enderror" id="basiInput">
+                                                                <label for="npwp_photo" class="form-label">Foto NPWP</label>
+                                                                <input type="file" name="npwp_photo" class="form-control  @error('npwp_photo') is-invalid @enderror" id="npwp_photo">
+                                                                <span class="d-none" style="color: red;" id="error-npwp_photo"></span>
                                                                 @error('npwp_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -277,8 +309,9 @@
                                                         <!-- Outlet -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">Foto Outlet</label>
-                                                                <input type="file" name="outlet_photo" class="form-control @error('outlet_photo') is-invalid @enderror" id="basiInput">
+                                                                <label for="outlet_photo" class="form-label">Foto Outlet</label>
+                                                                <input type="file" name="outlet_photo" class="form-control @error('outlet_photo') is-invalid @enderror" id="outlet_photo">
+                                                                <span class="d-none" style="color: red;" id="error-outlet_photo"></span>
                                                                 @error('outlet_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -291,8 +324,9 @@
                                                         <!-- Owner + Outlet -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">Foto Owner + Outlet</label>
-                                                                <input type="file" name="owner_outlet_photo" class="form-control @error('owner_outlet_photo') is-invalid @enderror" id="basiInput">
+                                                                <label for="owner_outlet_photo" class="form-label">Foto Owner + Outlet</label>
+                                                                <input type="file" name="owner_outlet_photo" class="form-control @error('owner_outlet_photo') is-invalid @enderror" id="owner_outlet_photo">
+                                                                <span class="d-none" style="color: red;" id="error-owner_outlet_photo"></span>
                                                                 @error('owner_outlet_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -305,8 +339,9 @@
                                                         <!-- In Outlet -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">Foto Dalam Outlet</label>
-                                                                <input type="file" name="in_outlet_photo" class="form-control @error('in_outlet_photo') is-invalid @enderror" id="basiInput">
+                                                                <label for="in_outlet_photo" class="form-label">Foto Dalam Outlet</label>
+                                                                <input type="file" name="in_outlet_photo" class="form-control @error('in_outlet_photo') is-invalid @enderror" id="in_outlet_photo">
+                                                                <span class="d-none" style="color: red;" id="error-in_outlet_photo"></span>
                                                                 @error('in_outlet_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -319,8 +354,9 @@
                                                         <!-- Sertifikat domisili -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">Sertifikat Domisili (SKD / SITU)</label>
-                                                                <input type="file" name="certificate_of_domicile" class="form-control @error('certificate_of_domicile') is-invalid @enderror" id="basiInput">
+                                                                <label for="certificate_of_domicile" class="form-label">Sertifikat Domisili (SKD / SITU)</label>
+                                                                <input type="file" name="certificate_of_domicile" class="form-control @error('certificate_of_domicile') is-invalid @enderror" id="certificate_of_domicile">
+                                                                <span class="d-none" style="color: red;" id="error-certificate_of_domicile"></span>
                                                                 @error('certificate_of_domicile')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -333,8 +369,9 @@
                                                         <!-- Foto Buku Rekening -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">Foto Buku Rekening</label>
-                                                                <input type="file" name="copy_bank_account_book" class="form-control @error('copy_bank_account_book') is-invalid @enderror" id="basiInput">
+                                                                <label for="copy_bank_account_book" class="form-label">Foto Buku Rekening</label>
+                                                                <input type="file" name="copy_bank_account_book" class="form-control @error('copy_bank_account_book') is-invalid @enderror" id="copy_bank_account_book">
+                                                                <span class="d-none" style="color: red;" id="error-copy_bank_account_book"></span>
                                                                 @error('copy_bank_account_book')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -347,8 +384,9 @@
                                                         <!-- Sertifikat Bukti Kepemilikan -->
                                                         <div class="col-md-3 col-md-6">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">Surat Sewa / Bukti Kepemilikan</label>
+                                                                <label for="copy_proof_ownership" class="form-label">Surat Sewa / Bukti Kepemilikan</label>
                                                                 <input type="file" name="copy_proof_ownership" class="form-control @error('copy_proof_ownership') is-invalid @enderror" id="basiInput">
+                                                                <span class="d-none" style="color: red;" id="error-copy_proof_ownership"></span>
                                                                 @error('copy_proof_ownership')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -361,8 +399,9 @@
                                                         <!-- SIUP / Surat Ijin Usaha -->
                                                         <div class="col-md-3 col-md-6 merchant-bussiness d-none">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">SIUP / Surat Ijin Usaha</label>
-                                                                <input type="file" name="siup_photo" class="form-control @error('siup_photo') is-invalid @enderror" id="basiInput">
+                                                                <label for="siup_photo" class="form-label">SIUP / Surat Ijin Usaha</label>
+                                                                <input type="file" name="siup_photo" class="form-control @error('siup_photo') is-invalid @enderror" id="siup_photo">
+                                                                <span class="d-none" style="color: red;" id="error-siup_photo"></span>
                                                                 @error('siup_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -375,8 +414,9 @@
                                                         <!-- TDP -->
                                                         <div class="col-md-3 col-md-6 merchant-bussiness d-none">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">TDP</label>
-                                                                <input type="file" name="tdp_photo" class="form-control @error('tdp_photo') is-invalid @enderror" id="basiInput">
+                                                                <label for="tdp_photo" class="form-label">TDP</label>
+                                                                <input type="file" name="tdp_photo" class="form-control @error('tdp_photo') is-invalid @enderror" id="tdp_photo">
+                                                                <span class="d-none" style="color: red;" id="error-tdp_photo"></span>
                                                                 @error('tdp_photo')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -389,8 +429,9 @@
                                                         <!-- Akta Pendirian Perusahaan -->
                                                         <div class="col-md-3 col-md-6 merchant-bussiness d-none">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">Akta Pendirian Perusahaan</label>
+                                                                <label for="copy_corporation_deed" class="form-label">Akta Pendirian Perusahaan</label>
                                                                 <input type="file" name="copy_corporation_deed" class="form-control @error('copy_corporation_deed') is-invalid @enderror" id="basiInput">
+                                                                <span class="d-none" style="color: red;" id="error-copy_corporation_deed"></span>
                                                                 @error('copy_corporation_deed')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -403,8 +444,9 @@
                                                         <!-- Akta Pengurus Perusahaan -->
                                                         <div class="col-md-3 col-md-6 merchant-bussiness d-none">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">Akta Pengurus Perusahaan</label>
-                                                                <input type="file" name="copy_management_deed" class="form-control @error('copy_management_deed') is-invalid @enderror" id="basiInput">
+                                                                <label for="copy_management_deed" class="form-label">Akta Pengurus Perusahaan</label>
+                                                                <input type="file" name="copy_management_deed" class="form-control @error('copy_management_deed') is-invalid @enderror" id="copy_management_deed">
+                                                                <span class="d-none" style="color: red;" id="error-copy_management_deed"></span>
                                                                 @error('copy_management_deed')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -417,8 +459,9 @@
                                                         <!-- Akta Pengurus Perusahaan -->
                                                         <div class="col-md-3 col-md-6 merchant-bussiness d-none">
                                                             <div>
-                                                                <label for="basiInput" class="form-label">SK Menkeh / Depkumham</label>
-                                                                <input type="file" name="copy_sk_menkeh" class="form-control @error('copy_sk_menkeh') is-invalid @enderror" id="basiInput">
+                                                                <label for="copy_sk_menkeh" class="form-label">SK Menkeh / Depkumham</label>
+                                                                <input type="file" name="copy_sk_menkeh" class="form-control @error('copy_sk_menkeh') is-invalid @enderror" id="copy_sk_menkeh">
+                                                                <span class="d-none" style="color: red;" id="error-copy_sk_menkeh"></span>
                                                                 @error('copy_sk_menkeh')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -450,6 +493,7 @@
                                                                     <option value="{{ $rekening->id }}" {{ (old('rek_pooling_id') ? old('rek_pooling_id') : $merchant->rek_pooling_id) == $rekening->id ? 'selected' : ''}}>{{ $rekening->rek_pooling_code }} - {{ $rekening->account_name }}</option>
                                                                     @endforeach
                                                                 </select>
+                                                                <span class="d-none" style="color: red;" id="error-rek_pooling_id"></span>
                                                                 @error('rek_pooling_id')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -464,6 +508,7 @@
                                                                     <option value="{{ $data->id }}" {{ (old('bank_id') ? old('bank_id') : $merchant->bank_id) == $data->id ? 'selected' : ''}}>{{ $data->bank_name }}</option>
                                                                     @endforeach
                                                                 </select>
+                                                                <span class="d-none" style="color: red;" id="error-bank_id"></span>
                                                                 @error('bank_id')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -473,6 +518,7 @@
                                                             <div>
                                                                 <label for="account_name">Account Name</label>
                                                                 <input type="text" class="form-control @error('account_name') is-invalid @enderror" name="account_name" id="account_name" placeholder=""value="{{ old('account_name') ? old('account_name') : $merchant->account_name }}" autocomplete="off">
+                                                                <span class="d-none" style="color: red;" id="error-account_name"></span>
                                                                 @error('account_name')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -482,6 +528,7 @@
                                                             <div>
                                                                 <label for="number_account">Settlement Number Account</label>
                                                                 <input type="text" class="form-control @error('number_account') is-invalid @enderror" name="number_account" id="number_account" placeholder="" value="{{ old('number_account') ? old('number_account') : $merchant->number_account }}" autocomplete="off">
+                                                                <span class="d-none" style="color: red;" id="error-number_account"></span>
                                                                 @error('number_account')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -494,7 +541,7 @@
                                     </div>
                                     <div class="form-group">
                                         <a href="{{ route('merchant.index') }}" class="btn btn-warning"><i class="mdi mdi-arrow-left-thin"></i> Back</a>
-                                        <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i> SIMPAN</button>
+                                        <button type="button" class="btn btn-primary" id="submit-merchant"><i class="mdi mdi-content-save"></i> SIMPAN</button>
                                     </div>
                                 </div>
                             </div>
@@ -509,6 +556,7 @@
 
 @endsection
 @push('js')
+<script src="{{ asset('/backend/assets/js/validation-merchant.js') }}"></script>
 <script>
     function form_change() {
         let type = $('select[name=merchant_type] option').filter(':selected').val()
