@@ -14,14 +14,14 @@ class RedirectIfAuthenticated
     {
         $guards = empty($guards) ? [null] : $guards;
 
-        if ($request->segment(1) == 'panel') {
-            foreach ($guards as $guard) {
-                if (Auth::guard($guard)->check()) {
-                    return redirect(RouteServiceProvider::PANEL);
-                }
+        // dd(Auth::check());
+
+        if (Auth::check()){
+            if (!Auth::guard('merchant')->check()) {
+                return redirect(RouteServiceProvider::PANEL);
+            } else {
+                return redirect('/');
             }
-        } else {
-            return redirect('/');
         }
 
 
