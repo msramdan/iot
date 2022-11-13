@@ -41,11 +41,16 @@ class MerchantRejectController extends Controller
                 ->addColumn('bussiness', function ($row) {
                     return $row->bussiness->first()->bussiness_name;
                 })
-                ->addColumn('bank', function ($row) {
-                    return $row->bank->first()->bank_name;
+                ->addColumn('created_at', function ($row) {
+                    if ($row->created_at) {
+                        $created_at = date('d F Y H:i:s', strtotime($row->created_at));
+                    } else {
+                        $created_at = '-';
+                    }
+                    return $created_at;
                 })
-                ->addColumn('rek_pooling', function ($row) {
-                    return $row->rek_pooling->first()->rek_pooling_code;
+                ->addColumn('city', function($row) {
+                    return $row->city ? $row->city->kabupaten_kota : '-';
                 })
                 ->addColumn('action', 'admin.merchant._action')
                 ->toJson();

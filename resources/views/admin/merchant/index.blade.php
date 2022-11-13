@@ -83,13 +83,12 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>MID</th>
-                                            <th>National MID</th>
+                                            <th>Merchant ID</th>
                                             <th>Merchant Name</th>
-                                            <th>Email</th>
-                                            <th>Merchant Category</th>
-                                            <th>Phone</th>
-                                            <th>Bussiness</th>
+                                            <th>Address</th>
+                                            <th>Region</th>
+                                            <th>Registered Date</th>
+                                            <th>MCC</th>
                                             @canany(['merchant_show', 'merchant_update', 'merchant_delete',
                                                 'approved_step_1', 'approved_step_2'])
                                                 <th>Action</th>
@@ -159,29 +158,25 @@
                 }
             },
             {
-                data: 'nmid',
-                name: 'nmid'
-            },
-            {
                 data: 'merchant_name',
                 name: 'merchant_name'
             },
             {
-                data: 'email',
-                name: 'email'
+                data: 'address1',
+                name: 'address1'
+            },
+            {
+                data: 'city',
+                name: 'city'
+            },
+            {
+                data: 'created_at',
+                name: 'created_at',
             },
             {
                 data: 'merchant_category',
                 name: 'merchant_category'
             },
-            {
-                data: 'phone',
-                name: 'phone'
-            },
-            {
-                data: 'bussiness',
-                name: 'bussiness',
-            }
         ]
 
         if (action) {

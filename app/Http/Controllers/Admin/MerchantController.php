@@ -68,8 +68,8 @@ class MerchantController extends Controller
                 ->addColumn('mid', function ($row) {
                     return $row->mid ? $row->mid : '-';
                 })
-                ->addColumn('nmid', function($row) {
-                    return $row->nmid ? $row->nmid : '-';
+                ->addColumn('city', function($row) {
+                    return $row->city ? $row->city->kabupaten_kota : '-';
                 })
                 ->addColumn('merchant_category', function ($row) {
                     if ($row->merchant_category) {
@@ -89,14 +89,14 @@ class MerchantController extends Controller
 
                     return $bussiness;
                 })
-                ->addColumn('bank', function ($row) {
-                    if ($row->bank) {
-                        $bank = $row->bank->first()->bank_name;
+                ->addColumn('created_at', function ($row) {
+                    if ($row->created_at) {
+                        $created_at = date('d F Y H:i:s', strtotime($row->created_at));
                     } else {
-                        $bank = '-';
+                        $created_at = '-';
                     }
 
-                    return $bank;
+                    return $created_at;
                 })
                 ->addColumn('rek_pooling', function ($row) {
                     if ($row->rek_pooling) {

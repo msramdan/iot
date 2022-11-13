@@ -49,6 +49,18 @@ class MerchantApproveController extends Controller
 
                     return $merchant_category;
                 })
+                ->addColumn('created_at', function ($row) {
+                    if ($row->created_at) {
+                        $created_at = date('d F Y H:i:s', strtotime($row->created_at));
+                    } else {
+                        $created_at = '-';
+                    }
+
+                    return $created_at;
+                })
+                ->addColumn('city', function($row) {
+                    return $row->city ? $row->city->kabupaten_kota : '-';
+                })
                 ->addColumn('bussiness', function ($row) {
                     if ($row->bussiness) {
                         $bussiness = $row->bussiness->first()->bussiness_name;
@@ -57,23 +69,6 @@ class MerchantApproveController extends Controller
                     }
 
                     return $bussiness;
-                })
-                ->addColumn('bank', function ($row) {
-                    if ($row->bank) {
-                        $bank = $row->bank->first()->bank_name;
-                    } else {
-                        $bank = '-';
-                    }
-
-                    return $bank;
-                })
-                ->addColumn('rek_pooling', function ($row) {
-                    if ($row->rek_pooling) {
-                        $rek_pooling = $row->rek_pooling->first()->rek_pooling_code;
-                    } else {
-                        $rek_pooling = '-';
-                    }
-                    return $rek_pooling;
                 })
                 ->addColumn('action', 'admin.merchant._action')
                 ->toJson();
