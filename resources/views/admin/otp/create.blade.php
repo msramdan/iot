@@ -50,18 +50,12 @@
                                 <label for="otp_number">OTP Number</label>
                                 <input type="number" class="form-control @error('otp_number') is-invalid @enderror"
                                     name="otp_number" id="otp_number" placeholder=""
-                                    value="{{ old('otp_number') }}" autocomplete="off">
+                                    value="{{ old('otp_number') }}" autocomplete="off" maxlength="6" minlength="6">
                                 @error('otp_number')
                                 <span style="color: red;">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="mb-3">
-                                <label for="expired_date">Expire Date</label>
-                                <input type="date" name="expired_date" id="expired_date" class="form-control @error('expired_date') is-invalid @enderror" >
-                                @error('expired_date')
-                                <span style="color: red;">{{ $message }}</span>
-                                @enderror
-                            </div>
+
                             <div class="form-group">
                                 <a href="{{ route('merchants_c.index') }}" class="btn btn-warning"><i class="mdi mdi-arrow-left-thin"></i> Back</a>
                                 <button type="submit" class="btn btn-primary" ><i class="mdi mdi-content-save"></i> SIMPAN</button>

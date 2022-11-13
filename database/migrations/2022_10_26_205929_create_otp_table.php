@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('otp_number');
             $table->integer('is_used')->default(0);
             $table->date('expired_date');
+            $table->timestamp('regenerate_time')->nullable();
             $table->timestamps();
         });
     }
