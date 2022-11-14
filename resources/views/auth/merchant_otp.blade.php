@@ -1,8 +1,8 @@
 @extends('layouts.password_reset')
+@section('title', 'OTP Login')
 @section('content')
 <div class="col-md-8 col-lg-6 col-xl-5">
     <div class="card mt-4">
-
         <div class="card-body p-4">
             <div class="text-center mt-2">
                 <h5 class="text-primary">OTP Login</h5>

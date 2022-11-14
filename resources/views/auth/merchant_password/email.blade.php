@@ -1,4 +1,5 @@
 @extends('layouts.password_reset')
+@section('title', 'Reset Password')
 @section('content')
 <div class="col-md-8 col-lg-6 col-xl-5">
     <div class="card mt-4">
