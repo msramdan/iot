@@ -12,7 +12,6 @@ use App\Models\MdrLog;
 use App\Models\Transaction;
 use App\Models\MerchantApprove;
 use App\Models\Province;
-use App\Models\City;
 use App\Models\Kabkot;
 use App\Models\Kelurahan;
 use Illuminate\Http\Request;
@@ -48,10 +47,13 @@ class MerchantController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $merchant_categories = MerchantsCategory::all();
+        $cities = Kabkot::all();
+
         if (request()->ajax()) {
-            $query = Merchant::with([
+            $merchant = Merchant::with([
                 'merchant_category',
                 'bank:id,bank_name',
                 'rek_pooling',
@@ -59,11 +61,30 @@ class MerchantController extends Controller
             ])
                 ->where('is_active', 1)
                 ->where('approved1', 'approved')
-                ->where('approved2', 'approved')
-                ->orderBy('id', 'desc')
-                ->get();
+                ->where('approved2', 'approved');
 
-            return DataTables::of($query)
+            if ($request->has('date') && !empty($request->date)) {
+                $dates = explode(' to ', $request->date);
+                $start = str_replace(',', '', $dates[0])." 00:00:00";
+                $end = str_replace(',', '', $dates[1])." 23:59:59";
+
+                $start_dates = date('Y-m-d H:i:s', strtotime($start));
+                $end_dates = date('Y-m-d H:i:s', strtotime($end));
+
+                $merchant = $merchant->whereBetween('created_at', [$start_dates, $end_dates]);
+            }
+
+            if ($request->has('city') && !empty($request->city)) {
+                $merchant = $merchant->where('kabkot_id', $request->city);
+            }
+
+            if ($request->has('merchant_category') && !empty($request->merchant_category)) {
+                $merchant = $merchant->where('merchant_category_id', $request->merchant_category);
+            }
+
+            $merchant = $merchant->orderBy('id', 'desc')->get();
+
+            return DataTables::of($merchant)
                 ->addIndexColumn()
                 ->addColumn('mid', function ($row) {
                     return $row->mid ? $row->mid : '-';
@@ -109,7 +130,7 @@ class MerchantController extends Controller
                 ->addColumn('action', 'admin.merchant._action')
                 ->toJson();
         }
-        return view('admin.merchant.index');
+        return view('admin.merchant.index', compact('merchant_categories', 'cities'));
     }
 
     /**
