@@ -20,6 +20,13 @@
         $('#ajaxModelEditPassword').modal('show');
     });
 </script>
+<script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+</script>
 @stack('js')
 @include('sweetalert::alert')
 

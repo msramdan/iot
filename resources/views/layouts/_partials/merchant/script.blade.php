@@ -19,7 +19,6 @@
 
     $(document).ready(function() {
         let is_force_pass = "{{ auth()->guard('merchant')->user()->is_force_pass }}";
-        console.log(is_force_pass);
         if (!is_force_pass || is_force_pass == 0) {
             $('#ajaxModelEditForcePassword').modal('show');
         }

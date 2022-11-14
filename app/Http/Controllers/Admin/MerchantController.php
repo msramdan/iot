@@ -194,8 +194,17 @@ class MerchantController extends Controller
         );
 
         if ($validator->fails()) {
+
+            if ($request->ajax()) {
+                return response()->json(['message' => $validator->errors()->first()], 422);
+            }
+
             Alert::toast('Data failed to save', 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        if ($request->ajax()) {
+            return response()->json(['message' => $validator->errors()->first()], 422);
         }
 
         try {
@@ -500,7 +509,14 @@ class MerchantController extends Controller
         );
 
         if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json(['message' => $validator->errors()->first()], 422);
+            }
             return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true]);
         }
 
         DB::beginTransaction();

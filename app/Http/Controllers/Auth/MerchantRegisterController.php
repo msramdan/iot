@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Exception;
@@ -31,70 +32,162 @@ class MerchantRegisterController extends Controller
         return view('auth.register', compact('banks', 'bussinesses', 'merchantCategories', 'provinces'));
     }
 
-    public function register(Request $request)
+    public function validation(Request $request)
     {
-        $rules = [
-            'merchant_name' => 'required|string|max:200',
-            'email' => 'required|string|max:100|unique:merchants,email',
-            'merchant_category_id' => 'required|numeric|exists:merchants_category,id',
-            'bussiness_id' => 'required|numeric|exists:bussinesses,id',
-            'bank_id' => 'required|numeric|exists:banks,id',
-            'merchant_type' => 'required|string|in:bussiness,personal',
-            'account_name' => 'required|string|max:200',
-            'number_account' => 'required|string|max:100|regex:/[0-9]+/im',
-            'phone' => 'required|string|max:100|min:11|regex:/[0-9]+/im',
-            'address1' => 'required|string',
-            'address2' => 'required|string',
-            'provinsi_id' => 'required|numeric',
-            'kabkot_id'=> 'required|numeric',
-            'kecamatan_id' => 'required|numeric',
-            'kelurahan_id' => 'required|numeric',
-            'zip_code' => 'required|string|max:10',
-            'note' => 'string|nullable',
-            'identity_card_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'npwp_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'owner_outlet_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'selfie_ktp_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'outlet_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'in_outlet_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'certificate_of_domicile' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'copy_bank_account_book' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'password' => [
-                'required', Password::min(8)
+        $rules = [];
+
+        if ($request->has('merchant_name')) {
+            $rules['merchant_name'] = 'required|string|max:200';
+        }
+
+        if ($request->has('email')) {
+            $rules['email'] = 'required|string|max:100|unique:merchants,email';
+        }
+
+        if ($request->has('merchant_category_id')) {
+            $rules['merchant_category_id'] = 'required|numeric|exists:merchants_category,id';
+        }
+
+        if ($request->has('bussiness_id')) {
+            $rules['bussiness_id'] = 'required|numeric|exists:bussinesses,id';
+        }
+
+        if ($request->has('bank_id')) {
+            $rules['bank_id'] = 'required|numeric|exists:banks,id';
+        }
+
+        if ($request->has('merchant_type')) {
+            $rules['merchant_type'] = 'required|string|in:bussiness,personal';
+        }
+
+        if ($request->has('account_name'))  {
+            $rules['account_name'] = 'required|string|max:200';
+        }
+
+        if ($request->has('number_account')) {
+            $rules['number_account'] = 'required|string|max:100|regex:/[0-9]+/im';
+        }
+
+        if ($request->has('phone')) {
+            $rules['phone'] = 'required|string|max:100|min:11|regex:/[0-9]+/im';
+        }
+
+        if ($request->has('address1')) {
+            $rules['address1'] = 'required|string';
+        }
+
+        if ($request->has('address2')) {
+            $rules['address2'] = 'required|string';
+        }
+
+        if ($request->has('provisi_id')) {
+            $rules['provinsi_id'] = 'required|numeric';
+        }
+
+        if ($request->has('kabkot_id')) {
+            $rules['kabkot_id'] = 'required|numeric';
+        }
+
+        if ($request->has('kelurahan_id')) {
+            $rules['kelurahan_id'] = 'required|numeric';
+        }
+
+        if ($request->has('zip_code')) {
+            $rules['zip_code'] = 'required|string|max:10';
+        }
+
+        if ($request->has('note')) {
+            $rules['note'] = 'string|nullable';
+        }
+
+        if ($request->has('identity_card_photo')) {
+            $rules['identity_card_photo'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
+        }
+
+        if ($request->has('npwp_photo')) {
+            $rules['npwp_photo'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
+        }
+
+        if ($request->has('owner_outlet_photo')) {
+            $rules['owner_outlet_photo'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
+        }
+
+        if ($request->has('selfie_ktp_photo')) {
+            $rules['selfie_ktp_photo'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
+        }
+
+        if ($request->has('outlet_photo')) {
+            $rules['outlet_photo'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
+        }
+
+        if ($request->has('in_outlet_photo')) {
+            $rules['in_outlet_photo'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
+        }
+
+        if ($request->has('certificate_of_domicile')) {
+            $rules['certificate_of_domicile'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
+        }
+
+        if ($request->has('copy_bank_account_book')) {
+            $rules['copy_bank_account_book'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
+        }
+
+        if ($request->has('password')) {
+            $rules['password'] =  ['required', Password::min(8)
                     ->letters()
                     ->mixedCase()
                     ->numbers()
                     ->symbols()
-                    ->uncompromised()
-            ],
-        ];
+                    ->uncompromised()];
+        }
 
-
-        if ($request->merchant_type == 'personal') {
+        if ($request->has('copy_proof_ownership')) {
             $rules['copy_proof_ownership'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
         }
 
-        if ($request->merchant_type == 'bussiness') {
+        if ($request->has('siup_photo')) {
             $rules['siup_photo'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
+        }
+
+        if ($request->has('tdp_photo')) {
             $rules['tdp_photo'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
+        }
+
+        if ($request->has('copy_corporation_deed')) {
             $rules['copy_corporation_deed'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
+        }
+
+        if($request->has('copy_management_deed')) {
             $rules['copy_management_deed'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
+        }
+
+        if ($request->has('copy_sk_menkeh')) {
             $rules['copy_sk_menkeh'] = 'required|image|mimes:jpeg,jpg,png|max:2048';
         }
 
-        $validator = Validator::make(
-            $request->all(),
-            $rules
-        );
+        $validator = Validator::make($request->all(), $rules);
+
+
+
+        return $validator;
+    }
+
+    public function register(Request $request)
+    {
+        $validator = $this->validation($request);
 
         if ($validator->fails()) {
 
             if ($request->ajax()) {
-                return response()->json($validator, 422);
+                return response()->json(['message' => $validator->errors()->first()], 422);
             }
 
             Alert::toast('Data failed to save', 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true]);
         }
 
         try {
@@ -268,11 +361,8 @@ class MerchantRegisterController extends Controller
             }
 
             if ($merchant) {
-               $merchants = Merchant::find($merchant->id);
-
-               auth()->guard('merchant')->login($merchant);
-
-               return redirect()->route('home');
+               Alert::toast('Successfully registration account!!, Login using your registration data', 'success');
+               return redirect()->route('login');
             } else {
                 Alert::toast('Data failed to save', 'error');
                 return redirect()->back();
