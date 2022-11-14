@@ -14,31 +14,6 @@ return [
             'role_update',
             'role_delete',
         ],
-        'merchants_category' => [
-            'merchants_category_show',
-            'merchants_category_create',
-            'merchants_category_update',
-            'merchants_category_delete',
-        ],
-
-        'bank' => [
-            'bank_show',
-            'bank_create',
-            'bank_update',
-            'bank_delete',
-        ],
-        'bussiness' => [
-            'bussiness_show',
-            'bussiness_create',
-            'bussiness_update',
-            'bussiness_delete',
-        ],
-        'rek_pooling' => [
-            'rek_pooling_show',
-            'rek_pooling_create',
-            'rek_pooling_update',
-            'rek_pooling_delete',
-        ],
         'otp' => [
             'otp_show',
             'otp_create',
@@ -52,20 +27,7 @@ return [
         'activity_log' =>[
             'activity_log_show',
         ],
-        'transaction' =>[
-            'transaction_show',
-        ],
-        'merchant' => [
-            'merchant_show',
-            'merchant_create',
-            'merchant_update',
-            'merchant_delete',
-            'approved_step_1',
-            'approved_step_2',
-            'bulk_upload',
-            'bulk_download',
-            'operational_time',
-        ],
+
         'wilayah' => [
             'province_show',
             'province_create',
