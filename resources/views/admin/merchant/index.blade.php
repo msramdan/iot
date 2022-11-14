@@ -38,14 +38,14 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <form method="get">
                                         @csrf
                                         <div class="input-group mb-4">
                                             <input type="text" class="form-control border-0 dash-filter-picker shadow"
                                                 data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y"
-                                                data-deafult-date="01 Jan 2022 to 31 Jan 2022" value=""
-                                                id="filter_date_merchant" />
+                                                data-deafult-date="" value=""
+                                                id="filter_date_merchant" placeholder="Filter by registered date"/>
                                             <div class="input-group-text bg-primary border-primary text-white">
                                                 <i class="ri-calendar-2-line"></i>
                                             </div>
@@ -57,9 +57,11 @@
                                     <form method="get">
                                         @csrf
                                         <div class="input-group mb-4">
-                                            <select name="kabkot_id" id="kota" class="form-control">
+                                            <select name="city" id="kota" class="form-control">
                                                 <option value="">-- Filter By City --</option>
-
+                                                @foreach($cities as $city)
+                                                <option value="{{ $city->id }}">{{ $city->kabupaten_kota }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <!--end row-->
@@ -69,9 +71,11 @@
                                     <form method="get">
                                         @csrf
                                         <div class="input-group mb-4">
-                                            <select name="kabkot_id" id="kota" class="form-control">
+                                            <select name="merchant_category" id="merchant_category" class="form-control">
                                                 <option value="">-- Filter By MCC --</option>
-
+                                                @foreach ($merchant_categories as $merchant_category)
+                                                <option value="{{ $merchant_category->id }}">{{ $merchant_category->merchants_category_name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <!--end row-->
@@ -140,6 +144,9 @@
 @endsection
 @push('js')
     <script>
+        $(document).ready(function() {
+            $('#kota').select2();
+        });
         let base_url = "{{ url('/') }}";
 
         const action =
@@ -153,7 +160,6 @@
             {
                 data: null,
                 render: function(data, dataType, row) {
-                    console.log(row);
                     return `<a href="{{ route('merchant.index') }}/${row.id}">${row.mid}</a>`
                 }
             },
@@ -188,11 +194,34 @@
             })
         }
 
-        $('#dataTable').DataTable({
+        var table = $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('merchant.index') }}",
+            ajax: {
+                url: "{{ route('merchant.index') }}",
+                data: function (s) {
+                    s.date = $('#filter_date_merchant').val(),
+                    s.city = $('select[name=city] option').filter(':selected').val()
+                    s.merchant_category = $('select[name=merchant_category] option').filter(':selected').val()
+                }
+            },
             columns: columns
         });
+
+        $('#filter_date_merchant').change(function() {
+            var dates = $(this).val();
+            var split_dates = dates.split(" to ");
+            if ( split_dates.length >= 2 ) {
+                table.draw();
+            }
+        });
+
+        $('#kota').change(function() {
+            table.draw();
+        })
+
+        $('#merchant_category').change(function() {
+            table.draw();
+        })
     </script>
 @endpush

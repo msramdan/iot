@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\MerchantApprove;
 use Illuminate\Http\Request;
 use App\Models\Merchant;
+use App\Models\MerchantsCategory;
+use App\Models\Kabkot;
 use App\Models\ApprovalLogMerchant;
 use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -21,10 +23,13 @@ class MerchantApproveController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $merchant_categories = MerchantsCategory::all();
+        $cities = Kabkot::all();
+
         if (request()->ajax()) {
-            $query = Merchant::with([
+            $merchant = Merchant::with([
                 'merchant_category',
                 'bank:id,bank_name',
                 'rek_pooling',
@@ -32,10 +37,32 @@ class MerchantApproveController extends Controller
             ])
                 ->where('is_active', 0)
                 ->whereIn('approved1',['need_approved', 'rejected', 'approved'])
-                ->where('approved2', 'need_approved')
-                ->orderBy('id', 'desc')
-                ->get();
-           return DataTables::of($query)
+                ->where('approved2', 'need_approved');
+
+
+                if ($request->has('date') && !empty($request->date)) {
+                    $dates = explode(' to ', $request->date);
+                    $start = str_replace(',', '', $dates[0])." 00:00:00";
+                    $end = str_replace(',', '', $dates[1])." 23:59:59";
+
+                    $start_dates = date('Y-m-d H:i:s', strtotime($start));
+                    $end_dates = date('Y-m-d H:i:s', strtotime($end));
+
+                    $merchant = $merchant->whereBetween('created_at', [$start_dates, $end_dates]);
+                }
+
+                if ($request->has('city') && !empty($request->city)) {
+                    $merchant = $merchant->where('kabkot_id', $request->city);
+                }
+
+                if ($request->has('merchant_category') && !empty($request->merchant_category)) {
+                    $merchant = $merchant->where('merchant_category_id', $request->merchant_category);
+                }
+
+                $merchant = $merchant->orderBy('id', 'desc')->get();
+
+
+           return DataTables::of($merchant)
                 ->addIndexColumn()
                 ->addColumn('mid', function ($row) {
                     return $row->mid ? $row->mid : '-';
@@ -73,7 +100,7 @@ class MerchantApproveController extends Controller
                 ->addColumn('action', 'admin.merchant._action')
                 ->toJson();
         }
-        return view('admin.merchant.need_approved');
+        return view('admin.merchant.need_approved', compact('merchant_categories', 'cities'));
     }
 
     public function approve(Request $request)
