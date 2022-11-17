@@ -10,6 +10,74 @@
                     <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards">Dashboard</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link {{ set_active('dashboard') }}" href="{{ route('dashboard') }}"
+                    role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                    <i class="mdi mdi-bank"></i> <span data-key="t-dashboards">Instances</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link {{ set_active('dashboard') }}" href="{{ route('dashboard') }}"
+                    role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                    <i class="mdi mdi-devices"></i> <span data-key="t-dashboards">Device</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link {{ set_active('dashboard') }}" href="{{ route('dashboard') }}"
+                    role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                    <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards">Gateway</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link {{ set_active('dashboard') }}" href="{{ route('dashboard') }}"
+                    role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                    <i class="mdi mdi-book"></i> <span data-key="t-dashboards">Tickets</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link {{ set_active('dashboard') }}" href="{{ route('dashboard') }}"
+                    role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                    <i class="mdi mdi-book-information-variant"></i> <span data-key="t-dashboards">Invoices</span>
+                </a>
+            </li>
+
+            @canany(['province_show', 'city_show', 'district_show', 'village_show'])
+                <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#sidebarMasterWilayah" data-bs-toggle="collapse"
+                        role="button" aria-expanded="false" aria-controls="sidebarMasterWilayah">
+                        <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Master Wilayah</span>
+                    </a>
+                    <div class="collapse menu-dropdown {{ set_show(['province*', 'city*', 'district*', 'village*']) }}"
+                        id="sidebarMasterWilayah">
+                        <ul class="nav nav-sm flex-column">
+                            @can('province_show')
+                                <li class="nav-item">
+                                    <a href="{{ route('province.index') }}" class="nav-link {{ set_active(['province*']) }}"
+                                        data-key="t-boxicons">Provinsi</a>
+                                </li>
+                            @endcan
+                            @can('city_show')
+                                <li class="nav-item">
+                                    <a href="{{ route('city.index') }}" class="nav-link {{ set_active(['city*']) }}"
+                                        data-key="t-remix">Kabupaten / Kota</a>
+                                </li>
+                            @endcan
+                            @can('district_show')
+                                <li class="nav-item">
+                                    <a href="{{ route('district.index') }}" class="nav-link {{ set_active(['district*']) }}"
+                                        data-key="t-remix">Kecamatan</a>
+                                </li>
+                            @endcan
+                            @can('village_show')
+                                <li class="nav-item">
+                                    <a href="{{ route('village.index') }}" class="nav-link {{ set_active(['village*']) }}"
+                                        data-key="t-remix">Kelurahan / Desa</a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </li>
+            @endcanany
             @canany(['activity_log_show'])
                 <li class="nav-item">
                     <a class="nav-link menu-link collapsed" href="#sidebarAdvanceUI" data-bs-toggle="collapse"
@@ -35,7 +103,8 @@
                         aria-expanded="false" aria-controls="sidebarApps">
                         <i class="mdi mdi-cog"></i> <span data-key="t-apps">Utilities</span>
                     </a>
-                    <div class="collapse menu-dropdown {{ set_show(['user*', 'roles*', 'settingApp*']) }}" id="sidebarApps">
+                    <div class="collapse menu-dropdown {{ set_show(['user*', 'roles*', 'settingApp*']) }}"
+                        id="sidebarApps">
                         <ul class="nav nav-sm flex-column">
                             @can('user_show')
                                 <li class="nav-item ">

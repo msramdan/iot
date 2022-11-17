@@ -8,6 +8,10 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SettingAppController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Partner\HomeController;
+use App\Http\Controllers\Admin\ProvinceController;
+use App\Http\Controllers\Admin\CityController;
+use App\Http\Controllers\Admin\VillageController;
+use App\Http\Controllers\Admin\DistrictController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
 
@@ -76,6 +80,11 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
     Route::resource('/roles', RolesController::class);
     // user
     Route::resource('/user', UserController::class);
+    // MASTER WILAYAH
+    Route::resource('province', ProvinceController::class);
+    Route::resource('city', CityController::class);
+    Route::resource('district', DistrictController::class);
+    Route::resource('village', VillageController::class);
     // setting app
     Route::controller(SettingAppController::class)->group(function () {
         Route::get('/settingApp/{id}', 'index')->name('settingApp.index');
