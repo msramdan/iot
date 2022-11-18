@@ -8,10 +8,13 @@ use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SettingAppController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Partner\HomeController;
-use App\Http\Controllers\Admin\ProvinceController;
-use App\Http\Controllers\Admin\CityController;
-use App\Http\Controllers\Admin\VillageController;
-use App\Http\Controllers\Admin\DistrictController;
+// use App\Http\Controllers\Admin\ProvinceController;
+// use App\Http\Controllers\Admin\CityController;
+// use App\Http\Controllers\Admin\VillageController;
+// use App\Http\Controllers\Admin\DistrictController;
+use App\Http\Controllers\Admin\TicketController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\MerchantLoginController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
 
@@ -46,14 +49,14 @@ Route::middleware(['auth:merchant', 'merchant_auth'])->group(function(){
     });
 
     Route::prefix('partner')->group(function() {
-        Route::controller(MerchantProfileController::class)->group(function(){
-            Route::get('/profile', 'index')->name('merchants.profile');
-            Route::post('/profile/update_personal', 'update_personal')->name('merchants.update_personal');
-            Route::post('/profile/update_password', 'update_password')->name('merchants.update_password');
-            Route::post('/profile/update_bank', 'update_bank')->name('merchants.update_bank');
-            Route::post('/profile/update_document', 'update_document')->name('merchants.update_document');
-            Route::post('/profile/update_pic', 'update_pic')->name('merchants.update_pic');
-        });
+        // Route::controller(MerchantProfileController::class)->group(function(){
+        //     Route::get('/profile', 'index')->name('merchants.profile');
+        //     Route::post('/profile/update_personal', 'update_personal')->name('merchants.update_personal');
+        //     Route::post('/profile/update_password', 'update_password')->name('merchants.update_password');
+        //     Route::post('/profile/update_bank', 'update_bank')->name('merchants.update_bank');
+        //     Route::post('/profile/update_document', 'update_document')->name('merchants.update_document');
+        //     Route::post('/profile/update_pic', 'update_pic')->name('merchants.update_pic');
+        // });
     });
 });
 
@@ -76,15 +79,17 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
         Route::get('/', 'index')->name('dashboard');
         Route::put('/change_password', 'change_password')->name('dashboard.change_password');
     });
+
+    Route::resource('tickets', TicketController::class);
     // roles
     Route::resource('/roles', RolesController::class);
     // user
     Route::resource('/user', UserController::class);
     // MASTER WILAYAH
-    Route::resource('province', ProvinceController::class);
-    Route::resource('city', CityController::class);
-    Route::resource('district', DistrictController::class);
-    Route::resource('village', VillageController::class);
+    // Route::resource('province', ProvinceController::class);
+    // Route::resource('city', CityController::class);
+    // Route::resource('district', DistrictController::class);
+    // Route::resource('village', VillageController::class);
     // setting app
     Route::controller(SettingAppController::class)->group(function () {
         Route::get('/settingApp/{id}', 'index')->name('settingApp.index');
