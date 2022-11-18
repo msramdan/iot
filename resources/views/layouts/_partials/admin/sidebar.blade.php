@@ -11,7 +11,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('dashboard') }}" href="{{ route('dashboard') }}"
+                <a class="nav-link menu-link {{ set_active('instance') }}" href="{{ route('instance.index') }}"
                     role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                     <i class="mdi mdi-bank"></i> <span data-key="t-dashboards">Instances</span>
                 </a>
@@ -40,7 +40,22 @@
                     <i class="mdi mdi-book-information-variant"></i> <span data-key="t-dashboards">Invoices</span>
                 </a>
             </li>
-
+            @canany(['bussiness_show'])
+            <li class="nav-item">
+                <a class="nav-link menu-link collapsed" href="#sidebarIcons" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
+                    <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Master Data</span>
+                </a>
+                <div class="collapse menu-dropdown {{ set_show(['bussiness*']) }}" id="sidebarIcons">
+                    <ul class="nav nav-sm flex-column">
+                        @can('bussiness_show')
+                        <li class="nav-item">
+                            <a href="{{ route('bussiness.index') }}" class="nav-link {{ set_active(['bussiness*']) }}" data-key="t-remix">Business Type</a>
+                        </li>
+                        @endcan
+                    </ul>
+                </div>
+            </li>
+            @endcanany
             @canany(['province_show', 'city_show', 'district_show', 'village_show'])
                 <li class="nav-item">
                     <a class="nav-link menu-link collapsed" href="#sidebarMasterWilayah" data-bs-toggle="collapse"
