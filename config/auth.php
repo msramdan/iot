@@ -40,13 +40,9 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'merchant-api' => [
-            'driver' => 'jwt',
-            'provider' => 'merchant',
-        ],
-        'merchant' => [
+        'instances' => [
             'driver' => 'session',
-            'provider' => 'merchant'
+            'provider' => 'instances'
         ]
     ],
 
@@ -72,9 +68,9 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'merchant' => [
+        'instances' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Merchant::class,
+            'model' => App\Models\Instance::class,
         ],
         // 'users' => [
         //     'driver' => 'database',
@@ -104,8 +100,8 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-        'merchant' => [
-            'provider' => 'merchant',
+        'instances' => [
+            'provider' => 'instances',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

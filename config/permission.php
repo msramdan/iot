@@ -46,6 +46,19 @@ return [
             'village_update',
             'village_delete',
         ],
+        'bussiness' => [
+            'bussiness_show',
+            'bussiness_create',
+            'bussiness_edit',
+            'bussiness_update',
+            'bussiness_delete'
+        ],
+        'instance' => [
+            'instance_show',
+            'instance_create',
+            'instance_update',
+            'instance_delete'
+        ]
     ],
 
     'models' => [

@@ -24,14 +24,7 @@ Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::cla
 /**
  * Login Merchant
  */
-Route::controller(MerchantLoginController::class)->group(function() {
-    Route::get('/login', 'showLoginForm')->name('login');
-    Route::get('/login_otp', 'showOTPForm')->name('login.otp');
-    Route::post('/login/store', 'handleLogin')->name('login.store');
-    Route::post('/login/otp_store', 'handleOTP')->name('login.otp_store');
-    Route::post('/login/otp_regenerate', 'regenerate_otp')->name('login.otp_regenerate');
-    Route::post('/logout', 'logout')->name('logout');
-});
+
 Route::controller(ForgotPasswordController::class)->group(function() {
     Route::get('/forgot_password', 'showForgetPasswordForm')->name('merchants.forgot_password');
     Route::get('/reset_password/{token}', 'showResetPasswordForm')->name('merchants.reset_password');
@@ -41,12 +34,6 @@ Route::controller(ForgotPasswordController::class)->group(function() {
 /**
  * Route Merchant
  */
-Route::middleware(['auth:merchant', 'merchant_auth'])->group(function(){
-    Route::controller(HomeController::class)->group(function(){
-        Route::get('/', 'index')->name('home');
-        Route::get('/filter_transaction_month', 'filter_month_transaction')->name('home.filter_month_transaction');
-        Route::post('/merchant/change_password', 'change_password')->name('merchant.change_password');
-    });
 
     Route::prefix('partner')->group(function() {
         // Route::controller(MerchantProfileController::class)->group(function(){
@@ -58,7 +45,6 @@ Route::middleware(['auth:merchant', 'merchant_auth'])->group(function(){
         //     Route::post('/profile/update_pic', 'update_pic')->name('merchants.update_pic');
         // });
     });
-});
 
 
 
