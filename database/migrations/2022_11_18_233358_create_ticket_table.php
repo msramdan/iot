@@ -17,11 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('subject');
             $table->text('description');
-            $table->string('image_1');
-            $table->string('image_2');
+            $table->string('image_1')->nullable();
+            $table->string('image_2')->nullable();
             $table->integer('author_id');
             $table->integer('is_device');
-            $table->integer('status');
+            $table->enum('status', [
+                'open', 'acknowlodge', 'closed', 'cancelled', 'need confirmation', 'alert'
+            ]);
             $table->timestamps();
         });
     }

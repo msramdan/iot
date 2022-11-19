@@ -21,6 +21,12 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
+                        <div class="card-header">
+                            @can('ticket_create')
+                            <a href="{{ route('tickets.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i>  Create
+                            </a>
+                            @endcan
+                        </div>
                         <div class="card-body">
                             {{-- <div class="row">
                                 <div class="col-md-3">
@@ -100,13 +106,16 @@
                 searchable: false
             },
             {
-                data: 'judul',
+                data: 'subject',
             },
             {
                 data: 'description',
             },
             {
                 data: 'created_at',
+                render: function(data, type, row, meta){
+                    return moment(data).format('DD MMM YYYY')
+                }
             },
         ]
 

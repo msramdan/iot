@@ -1,9 +1,9 @@
 <td>
     @can('ticket_update')
-    <a href="{{ route('ticket.edit', $model->id) }}" class="btn btn-sm  btn-success"><i class="mdi mdi-pencil"></i> </a>
+    <a href="{{ route('tickets.edit', $model->id) }}" class="btn btn-sm  btn-success"><i class="mdi mdi-pencil"></i> </a>
     @endcan
     @can('ticket_delete')
-    <form onsubmit="return confirm('Are you sure?');" action="{{ route('ticket.destroy', $model->id) }}" method="POST"
+    <form onsubmit="return confirm('Are you sure?');" action="{{ route('tickets.destroy', $model->id) }}" method="POST"
         class="d-inline">
         @csrf
         @method('DELETE')
