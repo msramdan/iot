@@ -58,6 +58,12 @@ return [
             'instance_create',
             'instance_update',
             'instance_delete'
+        ],
+        'ticket' => [
+            'ticket_show',
+            'ticket_create',
+            'ticket_update',
+            'ticket_delete'
         ]
     ],
 
