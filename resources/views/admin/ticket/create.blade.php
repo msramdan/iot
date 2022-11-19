@@ -56,7 +56,7 @@
                             <div class="mb-3">
                                 <label for="status_ticket">Status</label>
                                 <select name="status" id="status_ticket" class="form-select @error('status') is-invalid @enderror">
-                                    <option value="" {{ old('status') ? '' : 'selected' }} disabled>==PILIH==</option>
+                                    <option value="" selected disabled>==PILIH==</option>
                                     <option value="open" {{ old('status') == 'open' ? 'selected' : '' }}>Open</option>
                                     <option value="acknowlodge" {{ old('status') == 'acknowledge' ? 'selected' : '' }}>Acknowlodge</option>
                                     <option value="closed" {{ old('status') == 'closed' ? 'selected' : '' }}>Closed</option>

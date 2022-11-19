@@ -93,9 +93,9 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Ticket $ticket)
     {
-        //
+       return view('admin.ticket.edit', compact('ticket'));
     }
 
     /**
@@ -105,9 +105,32 @@ class TicketController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Ticket $ticket)
     {
-        //
+        $attr = request()->validate([
+            'subject' => 'required',
+            'description' => 'required',
+            'image_1' => 'mimes:jpg,jpeg,png',
+            'image_2' => 'mimes:jpg,jpeg,png',
+            'status' => 'required',
+        ]);
+
+        if (request()->has('image_1')) {
+            $attr['image_1'] = request('image_1')->store('image');
+        }
+
+        if (request()->has('image_2')) {
+            $attr['image_2'] = request('image_2')->store('image');
+        }
+
+        try {
+            $ticket->update($attr);
+            Alert::toast('Ticket successfully updated', 'success');
+        } catch (Exception $err) {
+            Alert::toast('Failed to update records', 'error');
+        }
+
+        return redirect()->route('tickets.index');
     }
 
     /**
