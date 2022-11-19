@@ -15,7 +15,7 @@ class RedirectIfAuthenticated
         $guards = empty($guards) ? [null] : $guards;
 
         if (Auth::check()){
-            if (!Auth::guard('merchant')->check()) {
+            if (!Auth::guard('instances')->check()) {
                 return redirect(RouteServiceProvider::PANEL);
             } else {
                 return redirect('/');

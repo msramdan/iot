@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('instance_name', 255);
             $table->text('address1');
             $table->text('address2');
-            $table->integer('provinces_id')->nullable();
+            $table->integer('province_id')->nullable();
             $table->integer('city_id')->nullable();
             $table->integer('district_id')->nullable();
             $table->integer('village_id')->nullable();
@@ -29,8 +29,8 @@ return new class extends Migration
             $table->foreignId('bussiness_id')->nullable();
             $table->string('username', 255)->unique();
             $table->string('password');
-            $table->text('longitude');
-            $table->text('latitude');
+            $table->text('longitude')->nullable();
+            $table->text('latitude')->nullable();
             $table->timestamps();
         });
     }
