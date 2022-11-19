@@ -40,10 +40,6 @@
                     <i class="mdi mdi-book-information-variant"></i> <span data-key="t-dashboards">Invoices</span>
                 </a>
             </li>
-<<<<<<< HEAD
-
-            {{-- @canany(['province_show', 'city_show', 'district_show', 'village_show'])
-=======
             @canany(['bussiness_show'])
             <li class="nav-item">
                 <a class="nav-link menu-link collapsed" href="#sidebarIcons" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
@@ -61,7 +57,6 @@
             </li>
             @endcanany
             @canany(['province_show', 'city_show', 'district_show', 'village_show'])
->>>>>>> d4c5f5b57882b72a91d960012b42e229b5c57cc7
                 <li class="nav-item">
                     <a class="nav-link menu-link collapsed" href="#sidebarMasterWilayah" data-bs-toggle="collapse"
                         role="button" aria-expanded="false" aria-controls="sidebarMasterWilayah">
@@ -97,7 +92,7 @@
                         </ul>
                     </div>
                 </li>
-            @endcanany --}}
+            @endcanany
             @canany(['activity_log_show'])
                 <li class="nav-item">
                     <a class="nav-link menu-link collapsed" href="#sidebarAdvanceUI" data-bs-toggle="collapse"

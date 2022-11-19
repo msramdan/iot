@@ -6,7 +6,7 @@ use App\Models\Instance;
 use App\Models\Bussiness;
 use App\Models\District;
 use App\Models\Province;
-use App\Models\Regency;
+use App\Models\City;
 use App\Models\Village;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -35,40 +35,48 @@ class InstanceController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $query = Instance::query();
+            $query = Instance::with([
+                'province',
+                'city',
+                'district',
+                'village',
+                'bussiness'
+            ])
+            ->orderBy('id', 'desc')
+            ->get();
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('province', function($row){
                     if ($row->province) {
-                        return $row->province->first()->provinsi;
+                        return $row->province->provinsi;
                     }
 
                     return '-';
                 })
                 ->addColumn('city', function($row) {
                     if ($row->city) {
-                        return $row->city->first()->kabupaten_kota;
+                        return $row->city->kabupaten_kota;
                     }
 
                     return '-';
                 })
                 ->addColumn('district', function($row) {
                     if ($row->district) {
-                        return $row->district->first()->kecamatan;
+                        return $row->district->kecamatan;
                     }
 
                     return '-';
                 })
                 ->addColumn('village', function($row) {
                     if ($row->village) {
-                        return $row->village->first()->kelurahan;
+                        return $row->village->kelurahan;
                     }
 
                     return '-';
                 })
                 ->addColumn('bussiness', function($row) {
                     if ($row->bussiness) {
-                        return $row->bussiness->first()->bussiness_name;
+                        return $row->bussiness->bussiness_name;
                     }
                 })
                 ->addColumn('action', 'admin.instance._action')
@@ -85,9 +93,9 @@ class InstanceController extends Controller
     public function create()
     {
         $bussinesses = Bussiness::all();
-        $province = Province::all();
+        $provinces = Province::all();
 
-        return view('admin.instance', compact('bussiness', 'province'));
+        return view('admin.instance.create', compact('bussinesses', 'provinces'));
     }
 
     /**
@@ -106,10 +114,10 @@ class InstanceController extends Controller
                 'address1' => 'required|string',
                 'address2' => 'required|string',
                 'province_id' => 'required|numeric|exists:tbl_provinsi,id',
-                'city_id' => 'required|numeric|exists:tbl_kabkot, id',
+                'city_id' => 'required|numeric|exists:tbl_kabkot,id',
                 'district_id' => 'required|numeric|exists:tbl_kecamatan,id',
                 'village_id' => 'required|numeric|exists:tbl_kelurahan,id',
-                'zip_code' => 'required|string|exists:tbl_kelurahan,zip_code',
+                'zip_code' => 'required|string|exists:tbl_kelurahan,kd_pos',
                 'email' => 'required|string|email|unique:instances,email',
                 'phone' => 'required|string|regex:/[0-9]+/im|unique:instances,phone',
                 'bussiness_id' => 'required|numeric|exists:bussinesses,id',
@@ -122,9 +130,8 @@ class InstanceController extends Controller
                         ->symbols()
                         ->uncompromised()
                 ],
-                'longitude' => 'required|string',
-                'latitude' => 'required|string',
-
+                //'longitude' => 'required|string',
+                //'latitude' => 'required|string',
             ]
         );
 
@@ -141,14 +148,15 @@ class InstanceController extends Controller
 
             if ($instances) {
                 Alert::toast('Data success saved', 'success');
-                return redirect()->route('instances.index');
+                return redirect()->route('instance.index');
             } else {
                 Alert::toast('Data failed to save', 'error');
-                return redirect()->route('instances.index');
+                return redirect()->route('instance.index');
             }
         } catch (Exception $e) {
+            \Log::error($e);
             Alert::toast('Data failed to save', 'error');
-            return redirect()->route('instances.index');
+            return redirect()->route('instance.index');
         }
     }
 
@@ -174,8 +182,10 @@ class InstanceController extends Controller
         $instance = Instance::findOrFail($id);
         $provinces = Province::all();
         $bussinesses = Bussiness::all();
-
-        return view('admin.instance.edit', compact('instance', 'provinces', 'bussinesses'));
+        $city = City::where('id', $instance->city_id)->get();
+        $village = Village::where('id', $instance->village_id)->get();
+        $district = District::where('id', $instance->district_id)->get();
+        return view('admin.instance.edit', compact('instance', 'provinces', 'bussinesses', 'city', 'village', 'district'));
     }
 
     /**
@@ -190,29 +200,29 @@ class InstanceController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'instance_code' => 'required|string|unique:instances,instance_code',
+                'instance_code' => 'required|string|unique:instances,instance_code,'.$id,
                 'instance_name' => 'required|string',
                 'address1' => 'required|string',
                 'address2' => 'required|string',
                 'province_id' => 'required|numeric|exists:tbl_provinsi,id',
-                'city_id' => 'required|numeric|exists:tbl_kabkot, id',
+                'city_id' => 'required|numeric|exists:tbl_kabkot,id',
                 'district_id' => 'required|numeric|exists:tbl_kecamatan,id',
                 'village_id' => 'required|numeric|exists:tbl_kelurahan,id',
-                'zip_code' => 'required|string|exists:tbl_kelurahan,zip_code',
-                'email' => 'required|string|email|unique:instances,email',
-                'phone' => 'required|string|regex:/[0-9]+/im|unique:instances,phone',
+                'zip_code' => 'required|string|exists:tbl_kelurahan,kd_pos',
+                'email' => 'required|string|email|unique:instances,email,'.$id,
+                'phone' => 'required|string|regex:/[0-9]+/im|unique:instances,phone,'.$id,
                 'bussiness_id' => 'required|numeric|exists:bussinesses,id',
-                'username' => 'required|string|unique:instances,username',
+                'username' => 'required|string|unique:instances,username,'.$id,
                 'password' => [
-                    'required', Password::min(8)
+                    'nullable', Password::min(8)
                         ->letters()
                         ->mixedCase()
                         ->numbers()
                         ->symbols()
                         ->uncompromised()
                 ],
-                'longitude' => 'required|string',
-                'latitude' => 'required|string',
+                //'longitude' => 'required|string',
+                //'latitude' => 'required|string',
             ]
         );
 
