@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
 
@@ -117,6 +118,16 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try{
+            $ticket = Ticket::find($id);
+            if(!empty($ticket->image_1)) Storage::delete($ticket->image_1);
+            if(!empty($ticket->image_2)) Storage::delete($ticket->image_2);
+            $ticket->delete();
+            Alert::toast('Ticket successfully deleted', 'success');
+        } catch (Exception $err) {
+            Alert::toast('Failed to delete records', 'error');
+        }
+
+        return redirect()->route('tickets.index');
     }
 }
