@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\VillageController;
 use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\InstanceController;
 use App\Http\Controllers\Admin\BussinessController;
+use App\Http\Controllers\Admin\TicketController;
 
 /**
  * Route Admin Panel
@@ -49,6 +50,8 @@ Route::controller(SettingAppController::class)->group(function () {
     Route::get('/settingApp/{id}', 'index')->name('settingApp.index');
     Route::put('/settingApp/update/{id}', 'update')->name('settingApp.update');
 });
+//ticket
+Route::resource('tickets', TicketController::class);
 // activity log
 Route::controller(ActivityLogController::class)->group(function () {
     Route::get('/activity_log', 'index')->name('activity_log.index');

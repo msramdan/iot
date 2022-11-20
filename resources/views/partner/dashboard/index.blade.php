@@ -1,5 +1,5 @@
-@extends('layouts.master_merchant')
-@section('title', 'Dashboard Merchant')
+@extends('layouts.master_partner')
+@section('title', 'Dashboard Partner')
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
@@ -29,7 +29,7 @@
                         <div class="col-12">
                             <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                                 <div class="flex-grow-1">
-                                    <h4 class="fs-16 mb-1">Good Morning, {{ Auth::guard('merchant')->user()->merchant_name }}</h4>
+                                    <h4 class="fs-16 mb-1">Good Morning, {{ Auth::guard('instances')->user()->instance_name }}</h4>
                                 </div>
                             </div><!-- end card header -->
                         </div>
@@ -37,7 +37,7 @@
                     </div>
                     <!--end row-->
 
-                    <div class="row">
+                    {{-- <div class="row">
                         <!-- Transaksi Per day by month -->
                         <div class="col-xl-6">
                             <div class="card">
@@ -65,7 +65,7 @@
                         </div><!-- end col -->
                         <!-- End Transaksi Top 10 by City -->
 
-                    </div>
+                    </div> --}}
 
                 </div> <!-- end .h-100-->
             </div> <!-- end col -->
@@ -76,65 +76,5 @@
 @endsection
 
 @push('js')
-<script>
-      //Total Transaction Perday By month
-    var options_transaction = {
-        chart: {
-            type: 'bar',
-            animations: {
-                enabled: true,
-                easing: 'easeinout',
-                speed: 800,
-                animateGradually: {
-                    enabled: true,
-                    delay: 150
-                },
-                dynamicAnimation: {
-                    enabled: true,
-                    speed: 350
-                }
-            }
-        },
-        dataLabels: {
-            enable: false,
-        },
-        legend: {
-            show: false,
-        },
-        series: [{
-            data: [
-                @foreach ($transaction_current_month as $transaction)
-                {
-                    x: "{{ $transaction->hari }}",
-                    y: "{{ $transaction->total_transaction }}"
-                },
-                @endforeach
-            ]
-        }]
-    }
-    var chart_transaction = new ApexCharts(document.querySelector("#transaction_day"), options_transaction);
-    chart_transaction.render();
 
-$('#filter_month_transaction').change(function() {
-    var dates = $(this).val();
-       var split_dates = dates.split(" to ");
-       if ( split_dates.length >= 2 ) {
-            var start_date = split_dates[0];
-            var end_date = split_dates[1];
-
-            $.ajax({
-                type: 'post',
-                url: "{{ route('home.filter_month_transaction') }}",
-                data: {
-                    start_date: start_date,
-                    end_date: end_date,
-                }, success:function(result) {
-                    chart_transaction.updateSeries([{
-                        data:result
-                    }])
-                }
-            })
-       }
-})
-</script>
 @endpush

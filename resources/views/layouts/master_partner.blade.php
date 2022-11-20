@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
 {{-- style --}}
-@include('layouts._partials.merchant.style')
+@include('layouts._partials.partner.style')
 <body>
     <div class="modal fade" id="ajaxModelEditPassword"  >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('merchant.change_password') }}">
+                    <form method="POST" action="{{ route('instances.change_password') }}">
                         @csrf
                         <div class="modal-header">
                             <h4 class="modal-title">Update Password <span id="attr_sku_kode"></span> </h4>
@@ -51,7 +51,7 @@
                     <div class="alert alert-warning" role="alert">
                         Please Change your password!
                     </div>
-                    <form method="POST" action="{{ route('merchant.change_password') }}">
+                    <form method="POST" action="{{ route('instances.change_password') }}">
                         @csrf
                         <div class="modal-header">
                             <h4 class="modal-title">Update Password <span id="attr_sku_kode"></span> </h4>
@@ -91,7 +91,7 @@
 
     <div id="layout-wrapper">
         {{-- header --}}
-        @include('layouts._partials.merchant.header')
+        @include('layouts._partials.partner.header')
         <div class="app-menu navbar-menu">
             <div class="navbar-brand-box">
                 <a href="index.html" class="logo logo-dark">
@@ -115,21 +115,21 @@
                 </button>
             </div>
             {{-- sidebar --}}
-            @include('layouts._partials.merchant.sidebar')
+            @include('layouts._partials.partner.sidebar')
         </div>
         <div class="vertical-overlay"></div>
         <div class="main-content">
             {{-- contents --}}
             @yield('content')
             {{-- footer --}}
-            @include('layouts._partials.merchant.footer')
+            @include('layouts._partials.partner.footer')
         </div>
 
     </div>
     <button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
         <i class="ri-arrow-up-line"></i>
     </button>
-    @include('layouts._partials.merchant.script')
+    @include('layouts._partials.partner.script')
 
 </body>
 </html>

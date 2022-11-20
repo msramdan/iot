@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use App\Models\Merchant;
+use App\Models\Instance;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +31,7 @@ class ForgotPasswordController extends Controller
 
     public function showForgetPasswordForm()
     {
-        return view('auth.merchant_password.email');
+        return view('auth.instance_password.email');
     }
 
     public function submitForgetPasswordForm(Request $request)
@@ -47,7 +47,7 @@ class ForgotPasswordController extends Controller
             return redirect()->back()->withErrors($validator);
         }
 
-        $merchant = Merchant::where('email', $request->email)->first();
+        $merchant = Instance::where('email', $request->email)->first();
 
         if (!$merchant) {
             return redirect()->back()->withErrors(['email' => 'email account doesn`t exists!']);
@@ -96,7 +96,7 @@ class ForgotPasswordController extends Controller
             return back()->withErrors('error', 'Invalid token!');
         }
 
-        $user = Merchant::where('email', $request->email)
+        $user = Instance::where('email', $request->email)
                     ->update(['password' => Hash::make($request->password)]);
 
         DB::table('password_resets')->where(['email'=> $request->email])->delete();
