@@ -64,6 +64,12 @@ return [
             'ticket_create',
             'ticket_update',
             'ticket_delete'
+        ],
+        'invoice' => [
+            'invoice_show',
+            'invoice_create',
+            'invoice_update',
+            'invoice_delete'
         ]
     ],
 

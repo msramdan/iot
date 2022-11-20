@@ -35,15 +35,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('dashboard') }}" href="{{ route('dashboard') }}"
+                <a class="nav-link menu-link {{ set_active('invoice.*') }}" href="{{ route('invoice.index') }}"
                     role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                     <i class="mdi mdi-book-information-variant"></i> <span data-key="t-dashboards">Invoices</span>
                 </a>
             </li>
-<<<<<<< HEAD
-
-            {{-- @canany(['province_show', 'city_show', 'district_show', 'village_show'])
-=======
             @canany(['bussiness_show'])
             <li class="nav-item">
                 <a class="nav-link menu-link collapsed" href="#sidebarIcons" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
@@ -61,7 +57,6 @@
             </li>
             @endcanany
             @canany(['province_show', 'city_show', 'district_show', 'village_show'])
->>>>>>> d4c5f5b57882b72a91d960012b42e229b5c57cc7
                 <li class="nav-item">
                     <a class="nav-link menu-link collapsed" href="#sidebarMasterWilayah" data-bs-toggle="collapse"
                         role="button" aria-expanded="false" aria-controls="sidebarMasterWilayah">

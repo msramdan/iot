@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SettingAppController;
 use App\Http\Controllers\Admin\UserController;
@@ -67,6 +68,10 @@ Route::prefix('panel')->middleware('auth:web')->group(function () {
     });
 
     Route::resource('tickets', TicketController::class);
+    Route::resource('invoice', InvoiceController::class);
+
+
+
     // roles
     Route::resource('/roles', RolesController::class);
     // user
