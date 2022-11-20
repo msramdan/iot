@@ -92,7 +92,7 @@
                         </ul>
                     </div>
                 </li>
-            @endcanany --}}
+            @endcanany
             @canany(['activity_log_show'])
                 <li class="nav-item">
                     <a class="nav-link menu-link collapsed" href="#sidebarAdvanceUI" data-bs-toggle="collapse"

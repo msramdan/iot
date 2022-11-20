@@ -19,15 +19,15 @@
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(auth('merchant')->user()->email))) }}&s=30" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(auth('instances')->user()->email))) }}&s=30" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user('merchant')->merchant_name }}</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user('instances')->instance_name }}</span>
                             </span>
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <h6 class="dropdown-header">Welcome {{ Auth::guard('merchant')->user()->merchant_name }}</h6>
-                        <a class="dropdown-item" href="{{ route('merchants.profile') }}"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
+                        <h6 class="dropdown-header">Welcome {{ Auth::guard('instances')->user()->instance_name }}</h6>
+                        <a class="dropdown-item" href="#"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
                         <button class="dropdown-item" id="ubahPassword" data-bs-toggle="modal" data-bs-target="#ajaxModelEditPassword"><i class="mdi mdi-key text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Change Password</span></button>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
                             <span class="align-middle" data-key="t-logout">{{ __('Logout') }}</span>

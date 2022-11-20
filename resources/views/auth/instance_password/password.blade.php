@@ -10,7 +10,7 @@
             </div>
 
             <div class="p-2">
-                <form action="{{ route('merchants.reset_passsword_store') }}" method="POST">
+                <form action="{{ route('instances.reset_passsword_store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <input type="hidden" name="token" value="{{ $token }}">
