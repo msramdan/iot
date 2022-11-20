@@ -16,7 +16,7 @@
                 Enter your email and instructions will be sent to you!
             </div>
             <div class="p-2">
-                <form action="{{ route('merchants.forgot_password_store') }}" method="POST">
+                <form action="{{ route('instances.forgot_password_store') }}" method="POST">
                     @csrf
                     <div class="mb-4">
                         <label class="form-label">Email</label>
