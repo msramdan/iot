@@ -131,8 +131,8 @@ class InstanceController extends Controller
                         ->symbols()
                         ->uncompromised()
                 ],
-                //'longitude' => 'required|string',
-                //'latitude' => 'required|string',
+                'longitude' => 'required|string',
+                'latitude' => 'required|string',
             ]
         );
 
@@ -222,8 +222,8 @@ class InstanceController extends Controller
                         ->symbols()
                         ->uncompromised()
                 ],
-                //'longitude' => 'required|string',
-                //'latitude' => 'required|string',
+                'longitude' => 'required|string',
+                'latitude' => 'required|string',
             ]
         );
 

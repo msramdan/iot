@@ -21,5 +21,7 @@
     <link href="{{ asset('backend/assets/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/assets/css/custom.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('backend/assets/css/custom.css') }}" rel="stylesheet" type="text/css" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2C2Pu928d5fXhDBBpozZY4ZKkWLbmrTY&callback=initMap&libraries=places&v=weekly" defer></script>
     @stack('style')
 </head>

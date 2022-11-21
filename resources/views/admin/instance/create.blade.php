@@ -96,7 +96,6 @@
                                                     class="mdi mdi-eye"></i></button>
                                         </div>
                                     </div>
-                                    <div class="" id="map"></div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -186,6 +185,47 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="mb-3">
+                                        <div>
+                                            <label for="latitude">Latitude</label>
+                                            <input type="text"
+                                                class="form-control @error('latitude') is-invalid @enderror"
+                                                name="latitude" id="latitude" placeholder=""
+                                                value="{{ old('latitude') }}" autocomplete="off">
+                                            <span class="d-none" style="color: red;" id="error-latitude"></span>
+                                            @error('latitude')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                     <div class="mb-3">
+                                        <div>
+                                            <label for="longitude">Longitude</label>
+                                            <input type="text"
+                                                class="form-control @error('longitude') is-invalid @enderror"
+                                                name="longitude" id="longitude" placeholder=""
+                                                value="{{ old('longitude') }}" autocomplete="off">
+                                            <span class="d-none" style="color: red;" id="error-longitude"></span>
+                                            @error('longitude')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                     <div>
+                                        <div class="card px-2 py-1">
+                                            <div class="mb-3">
+                                            <input type="text"
+                                                class="form-control @error('place') is-invalid @enderror"
+                                                name="place" id="place" placeholder="Cari Lokasi"
+                                                value="{{ old('place') }}" autocomplete="off">
+                                            <span class="d-none" style="color: red;" id="error-place"></span>
+                                            @error('place')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                            </div>
+                                            <div class="" id="map" style="position:unset;height:400px;width:100%;overflow:visible;"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -203,8 +243,8 @@
 
 @endsection
 @push('js')
-<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAfknwL60X9eEIt8HIVeRQpqD5gfdrjSU&callback=initMap&libraries=&v=weekly" defer></script>
+
+<div id="map"></div>
 <script>
     const options_temp = '<option value="" selected disabled>-- Select --</option>';
 
@@ -367,6 +407,9 @@
     }
 </script>
 <script>
+let map;
+let markers = [];
+
 async function initMap() {
   const position = await new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -377,15 +420,62 @@ async function initMap() {
     lng: position.coords.longitude,
   };
 
-  const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 12,
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 15,
     center: myLocation,
   });
+  map.addListener("click", (event) => {
+    addMarker(event.latLng);
+  });
 
-  const infoWindow = new google.maps.InfoWindow({
-    content: `Latitude: ${myLocation.lat}, Longitude: ${myLocation.lng}`,
-    position: myLocation,
-  }).open(map);
+  addMarker(myLocation);
 }
+
+function addMarker(position) {
+  const marker = new google.maps.Marker({
+    position,
+    map,
+  });
+
+
+  if (markers.length >= 0) {
+    setMapOnAll(null);
+    markers = [];
+  }
+
+  markers.push(marker);
+
+  document.getElementById('latitude').value = markers[0].position.lng();
+  document.getElementById('longitude').value = markers[0].position.lat();
+}
+
+function setMapOnAll(map) {
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
+
+$('#place').on('keyup', function() {
+    var text = $(this).val();
+
+    const params =  new URLSearchParams({
+        input: text,
+        inputtype:'textquery',
+        key: 'AIzaSyA2C2Pu928d5fXhDBBpozZY4ZKkWLbmrTY',
+    });
+
+    $.ajax({
+        type: 'GET',
+        cache: false,
+        url: `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?${params.toString()}`,
+        success:function(result) {
+            console.log(result);
+        },error:function(err) {
+            console.log(err);
+        }
+    })
+})
+
+
 </script>
 @endpush
