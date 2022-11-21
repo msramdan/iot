@@ -10,6 +10,6 @@
             <button type="submit" class="btn btn-sm  btn-danger"><i class="mdi mdi-trash-can-outline"></i> </button>
         </form>
     @endcan
-    <a href="" class="btn btn-sm  btn-warning"><i class="mdi mdi-format-list-bulleted"></i>
+    <a href="{{ route('instance.subinstance.create', $model->id) }}" class="btn btn-sm  btn-warning"><i class="mdi mdi-format-list-bulleted"></i>
     </a>
 </td>
