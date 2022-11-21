@@ -20,7 +20,7 @@ use Exception;
 
 class InstanceController extends Controller
 {
-   public function __construct()
+    public function __construct()
     {
         $this->middleware('permission:instance_show')->only('index');
         $this->middleware('permission:instance_create')->only('create', 'store');
@@ -40,41 +40,42 @@ class InstanceController extends Controller
                 'city',
                 'district',
                 'village',
-                'bussiness'
+                'bussiness',
+                'subinstance'
             ])
-            ->orderBy('id', 'desc')
-            ->get();
+                ->orderBy('id', 'desc')
+                ->get();
             return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('province', function($row){
+                ->addColumn('province', function ($row) {
                     if ($row->province) {
                         return $row->province->provinsi;
                     }
 
                     return '-';
                 })
-                ->addColumn('city', function($row) {
+                ->addColumn('city', function ($row) {
                     if ($row->city) {
                         return $row->city->kabupaten_kota;
                     }
 
                     return '-';
                 })
-                ->addColumn('district', function($row) {
+                ->addColumn('district', function ($row) {
                     if ($row->district) {
                         return $row->district->kecamatan;
                     }
 
                     return '-';
                 })
-                ->addColumn('village', function($row) {
+                ->addColumn('village', function ($row) {
                     if ($row->village) {
                         return $row->village->kelurahan;
                     }
 
                     return '-';
                 })
-                ->addColumn('bussiness', function($row) {
+                ->addColumn('bussiness', function ($row) {
                     if ($row->bussiness) {
                         return $row->bussiness->bussiness_name;
                     }
@@ -120,7 +121,7 @@ class InstanceController extends Controller
                 'zip_code' => 'required|string|exists:tbl_kelurahan,kd_pos',
                 'email' => 'required|string|email|unique:instances,email',
                 'phone' => 'required|string|regex:/[0-9]+/im|unique:instances,phone',
-                'bussiness_id' => 'required|numeric|exists:bussinesses,id',
+                // 'bussiness_id' => 'required|numeric|exists:bussinesses,id',
                 'username' => 'required|string|unique:instances,username',
                 'password' => [
                     'required', Password::min(8)
@@ -136,7 +137,7 @@ class InstanceController extends Controller
         );
 
         if ($validator->fails()) {
-            Alert::toast('Data failed to save. '.$validator->errors()->first(), 'error');
+            Alert::toast('Data failed to save. ' . $validator->errors()->first(), 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
 
@@ -200,7 +201,7 @@ class InstanceController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'instance_code' => 'required|string|unique:instances,instance_code,'.$id,
+                'instance_code' => 'required|string|unique:instances,instance_code,' . $id,
                 'instance_name' => 'required|string',
                 'address1' => 'required|string',
                 'address2' => 'required|string',
@@ -209,10 +210,10 @@ class InstanceController extends Controller
                 'district_id' => 'required|numeric|exists:tbl_kecamatan,id',
                 'village_id' => 'required|numeric|exists:tbl_kelurahan,id',
                 'zip_code' => 'required|string|exists:tbl_kelurahan,kd_pos',
-                'email' => 'required|string|email|unique:instances,email,'.$id,
-                'phone' => 'required|string|regex:/[0-9]+/im|unique:instances,phone,'.$id,
+                'email' => 'required|string|email|unique:instances,email,' . $id,
+                'phone' => 'required|string|regex:/[0-9]+/im|unique:instances,phone,' . $id,
                 'bussiness_id' => 'required|numeric|exists:bussinesses,id',
-                'username' => 'required|string|unique:instances,username,'.$id,
+                'username' => 'required|string|unique:instances,username,' . $id,
                 'password' => [
                     'nullable', Password::min(8)
                         ->letters()
@@ -227,7 +228,7 @@ class InstanceController extends Controller
         );
 
         if ($validator->fails()) {
-            Alert::toast('Data failed to save. '.$validator->errors()->first(), 'error');
+            Alert::toast('Data failed to save. ' . $validator->errors()->first(), 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
 
@@ -238,7 +239,7 @@ class InstanceController extends Controller
         try {
             $data = $request->except('_token');
 
-            if ( isset($data['password']) || $request->has('password')) {
+            if (isset($data['password']) || $request->has('password')) {
                 $data['password'] = Hash::make($data['password']);
             }
 

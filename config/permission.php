@@ -59,6 +59,12 @@ return [
             'instance_update',
             'instance_delete'
         ],
+        'subinstance' => [
+            'subinstance_show',
+            'subinstance_create',
+            'subinstance_update',
+            'subinstance_delete'
+        ],
         'ticket' => [
             'ticket_show',
             'ticket_create',

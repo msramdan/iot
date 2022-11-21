@@ -46,6 +46,11 @@ class Instance extends Authenticatable
         return $this->belongsTo(Bussiness::class);
     }
 
+    public function subinstance()
+    {
+        return $this->hasMany(Subinstance::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
