@@ -121,7 +121,7 @@ class InstanceController extends Controller
                 'zip_code' => 'required|string|exists:tbl_kelurahan,kd_pos',
                 'email' => 'required|string|email|unique:instances,email',
                 'phone' => 'required|string|regex:/[0-9]+/im|unique:instances,phone',
-                // 'bussiness_id' => 'required|numeric|exists:bussinesses,id',
+                'bussiness_id' => 'required|numeric|exists:bussinesses,id',
                 'username' => 'required|string|unique:instances,username',
                 'password' => [
                     'required', Password::min(8)
