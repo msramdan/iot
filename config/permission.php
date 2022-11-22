@@ -76,7 +76,14 @@ return [
             'invoice_create',
             'invoice_update',
             'invoice_delete'
-        ]
+        ], 
+        'cluster' => [
+            'cluster_show',
+            'cluster_create',
+            'cluster_update',
+            'cluster_delete'
+        ], 
+        
     ],
 
     'models' => [

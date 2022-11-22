@@ -142,6 +142,7 @@
             const url = '{{ url("/panel") }}' + `/instance/${data.instance_id}/subinstance/${data.id}`
 
             return button = `
+                <a href="${'{{ url("/panel") }}' + `/subinstance/${data.id}`}/cluster" class="btn btn-sm  btn-warning"><i class="mdi mdi-pencil"></i> </a>
                 @can('subinstance_update')
                     <a href="${url+'/edit'}" class="btn btn-sm  btn-success"><i class="mdi mdi-pencil"></i> </a>
                 @endcan
