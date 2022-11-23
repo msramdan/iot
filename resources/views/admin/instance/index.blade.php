@@ -7,7 +7,7 @@
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Instance</h4>
-
+                    
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
@@ -142,7 +142,7 @@
             const url = '{{ url("/panel") }}' + `/instance/${data.instance_id}/subinstance/${data.id}`
 
             return button = `
-                <a href="${'{{ url("/panel") }}' + `/subinstance/${data.id}`}/cluster" class="btn btn-sm  btn-warning"><i class="mdi mdi-pencil"></i> </a>
+                <a href="${'{{ url("/panel") }}' + `/subinstance/${data.id}`}/cluster" class="btn btn-sm  btn-warning" title="cluster"><i class="mdi mdi-bank"></i></a>
                 @can('subinstance_update')
                     <a href="${url+'/edit'}" class="btn btn-sm  btn-success"><i class="mdi mdi-pencil"></i> </a>
                 @endcan

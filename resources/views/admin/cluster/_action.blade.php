@@ -52,7 +52,7 @@
 <script>
     $(document).ready(function(){
 
-        const modal = new bootstrap.Modal(document.getElementById('edit{{ $model->id }}'));
+        const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('edit{{ $model->id }}'));
 
         $('form#edit{{ $model->id }}').submit(function(){
             event.preventDefault();
