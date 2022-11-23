@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\ClusterController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\SubInstanceController;
 use App\Http\Controllers\Admin\TicketController;
+use App\Http\Controllers\CallbackController;
 
 /**
  * Route Admin Panel
@@ -62,3 +63,5 @@ Route::resource('subinstance.cluster', ClusterController::class);
 Route::controller(ActivityLogController::class)->group(function () {
     Route::get('/activity_log', 'index')->name('activity_log.index');
 });
+
+

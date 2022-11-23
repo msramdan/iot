@@ -34,7 +34,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="">Name</label>
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Nama Cluster">
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Nama Cluster" >
                             </div>
                            <div class="form-group">
                             <a href="{{ route('instance.index') }}" class="btn btn-warning"><i class="mdi mdi-arrow-left-thin"></i> Back</a>
@@ -203,9 +203,8 @@
                     $('#save-btn').prop('disabled', false)
                 },
                 error: function(err){
-                    console.log(err)
                     toastMixin.fire({
-                        title: 'Failed to save cluster',
+                        title: err.responseJSON.message,
                         icon: 'error'
                     });
                     $('form#create')[0].reset();
@@ -214,5 +213,7 @@
                 }
             })
         })
+
+        
 </script>
 @endpush

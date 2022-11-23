@@ -42,4 +42,8 @@ Route::middleware(['auth:instances'])->group(function() {
     });
 });
 
+Route::controller(CallbackController::class)->group(function () {
+    Route::get('/app/callback', 'index')->name('callback.index');
+});
+
 

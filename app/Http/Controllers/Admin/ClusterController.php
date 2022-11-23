@@ -38,10 +38,11 @@ class ClusterController extends Controller
     public function store (Subinstance $subinstance)
     {
         $attr = request()->validate([
-            'subinstance_id' => 'required',
             'kode' => 'required',
             'name' => 'required'
         ]);
+
+        $attr['subinstance_id'] = $subinstance->id;
 
         try {
             Cluster::create($attr);
@@ -55,10 +56,27 @@ class ClusterController extends Controller
                 'data' => ''
             ]);
         } catch (Exception $err) {
+            return $err;
+        }
+    }
+
+    public function update ($subinstanceId, $id)
+    {
+        $attr = request()->validate([
+            'kode' => 'required',
+            'name' => 'required'
+        ]);
+
+        try{
+            Cluster::where(['subinstance_id' => $subinstanceId, 'id' => $id])->update($attr);
+
             return response()->json([
-                'message' => 'Failed to save records',
-                'type' => 'error',
+                'message' => 'Cluster successfully updated',
+                'type' => 'success',
+                'data' => ''
             ]);
+        }catch(Exception $err){
+            return $err;
         }
     }
 
