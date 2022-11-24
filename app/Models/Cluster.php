@@ -10,4 +10,9 @@ class Cluster extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function subinstance()
+    {
+        return $this->belongsTo(Subinstance::class);
+    }
 }

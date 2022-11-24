@@ -8,14 +8,15 @@ use App\Http\Controllers\Partner\HomeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\InstanceLoginController;
+use App\Http\Controllers\CallbackController;
 use App\Models\Subinstance;
 use Illuminate\Support\Facades\Hash;
 
-Route::get('/tes', function(){
-    dd(Hash::make('12345678'));
-});
-
 Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::class, 'reloadCaptcha']);
+
+Route::controller(CallbackController::class)->group(function () {
+    Route::post('/callback/gateway', 'index')->name('callback.index');
+});
 /**
  * Login Partner
  */

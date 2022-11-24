@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\RawdataController;
 use App\Http\Controllers\Admin\SubInstanceController;
 use App\Http\Controllers\Admin\TicketController;
+use App\Http\Controllers\Admin\GatewayController;
 use App\Http\Controllers\CallbackController;
 
 /**
@@ -70,4 +71,8 @@ Route::controller(RawdataController::class)->group(function () {
 
 
 
+//Route Gateway
+Route::controller(GatewayController::class)->group(function() {
+    Route::get('/gateway', 'index')->name('gateway.index');
+});
 
