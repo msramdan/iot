@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('fcnt', 10);
             $table->string('fport', 10);
             $table->string('confirmed', 10);
-            $table->string('data', 100);
+            $table->text('data');
             $table->text('gws');
             $table->json('payload_data');
             $table->timestamps();

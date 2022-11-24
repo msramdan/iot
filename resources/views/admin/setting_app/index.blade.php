@@ -95,6 +95,16 @@
                                                 <p style="color: red;">{{ $message }}</p>
                                             @enderror
                                         </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="token_callbacck">Token Callback</label>
+                                            <input class="form-control @error('token_callback') is-invalid @enderror" id="token_callback"
+                                                type="text"
+                                                value="{{ old('token_callback') ? old('token_callback') : $setting_app->token_callback }}"
+                                                placeholder="" name="token_callback" autocomplete="off">
+                                            @error('token_callback')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                         @can('setting_app_update')
                                             <button type="submit" class="btn btn-primary"><i class="mdi mdi-content-save"></i>
                                                 Update</button>

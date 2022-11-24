@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Transaction;
-use App\Models\Merchant;
-use App\Models\Kabkot;
+use App\Models\Instance;
+use App\Models\Subinstance;
+use App\Models\Cluster;
+use App\Models\Rawdata;
 use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +26,12 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
-        return view('admin.dashbaord.index');
+        $total_instance = Instance::count();
+        $total_subinstance = SubInstance::count();
+        $total_cluster = Cluster::count();
+        $total_gateway = count(Rawdata::groupBy('gwid')->get());
+
+        return view('admin.dashbaord.index', compact('total_instance', 'total_subinstance', 'total_cluster', 'total_gateway'));
     }
 
     public function change_password(Request $request)

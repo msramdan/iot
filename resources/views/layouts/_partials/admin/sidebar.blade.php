@@ -23,7 +23,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('dashboard') }}" href="{{ route('dashboard') }}"
+                <a class="nav-link menu-link {{ set_active('gateway') }}" href="{{ route('gateway.index') }}"
                     role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                     <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards">Gateway</span>
                 </a>
