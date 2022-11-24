@@ -38,7 +38,7 @@
                             </div>
                            <div class="form-group">
                             <a href="{{ route('instance.index') }}" class="btn btn-warning"><i class="mdi mdi-arrow-left-thin"></i> Back</a>
-                            <button type="submit" class="btn btn-primary" id="save-btn"><i class="mdi mdi-content-save"></i>
+                            <button type="submit"  class="btn btn-primary" id="save-btn"><i class="mdi mdi-content-save"></i>
                                 SIMPAN</button>
                         </div>
                         </form>

@@ -107,6 +107,11 @@
                                     class="nav-link {{ set_active(['activity_log*']) }}" data-key="t-chat"> Activity
                                     Log</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('rawdata.index') }}"
+                                    class="nav-link {{ set_active(['rawdata*']) }}" data-key="t-chat"> Rawdata
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

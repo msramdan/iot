@@ -29,8 +29,8 @@
                         </div>
                     </div>
                     <div class="modal-footer text-end">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary edit-btn"><i class="mdi mdi-content-save"></i>
+                        <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" data-bs-dismiss="modal" class="btn btn-primary edit-btn"><i class="mdi mdi-content-save"></i>
                             SIMPAN</button>
                     </div>
                 </form>
