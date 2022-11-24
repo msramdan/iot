@@ -18,6 +18,3 @@ use App\Http\Controllers\CallbackController;
 Route::get('kota/{provinsiId}', [WilayahController::class, 'kota'])->name('api.kota');
 Route::get('kecamatan/{kotaId}', [WilayahController::class, 'kecamatan'])->name('api.kecamatan');
 Route::get('kelurahan/{kecamatanId}', [WilayahController::class, 'kelurahan'])->name('api.kelurahan');
-Route::controller(CallbackController::class)->group(function () {
-    Route::post('/app/callback', 'index')->name('callback.index');
-});

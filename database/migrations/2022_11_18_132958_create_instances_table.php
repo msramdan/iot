@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('city_id')->nullable();
             $table->integer('district_id')->nullable();
             $table->integer('village_id')->nullable();
-            $table->string('zip_code', 20);
+            $table->string('zip_code', 20)->nullable();
             $table->string('email', 255)->unique();
             $table->string('phone', 15)->unique();
             $table->foreignId('bussiness_id')->nullable();

@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             RoleSeeder::class,
             SettingAppSeeder::class,
-            BussinessSeeder::class
+            BussinessSeeder::class,
+            InstanceSeeder::class,
         ]);
     }
 }
