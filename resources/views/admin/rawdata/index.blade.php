@@ -118,7 +118,7 @@
         function format(d) {
             return (
                 `<div class="mb-4">
-                    <label for="form-label">Old Value</label>
+                    <label for="form-label">Data</label>
                     <textarea name="" id="" cols="30" class="form-control" style="height: 100%;" disabled>${d.payload}</textarea>
                 </div>`
             );
