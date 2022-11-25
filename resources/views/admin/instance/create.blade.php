@@ -183,7 +183,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="instance_code">Instance Code</label>
-                                        <input type="text" class="form-control @error('instance_code') is-invalid @enderror" name="instance_code" id="instance_code" placeholder="" value="{{ old('instance_code') }}" autocomplete="off">
+                                        <input type="text" readonly class="form-control @error('instance_code') is-invalid @enderror" name="instance_code" id="instance_code" placeholder="" value="{{ old('instance_code') ? old('instance_code') : $instance_code}}" autocomplete="off">
                                         @error('instance_code')
                                         <span style="color: red;">{{ $message }}</span>
                                         @enderror

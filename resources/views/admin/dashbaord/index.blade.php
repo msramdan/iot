@@ -333,94 +333,44 @@
 		// render map
 
 		getLocationMap.scrollWheelZoom.disable()
+
         @foreach($instances as $instance)
-        getLocationMap.setView(new L.LatLng("{{ $instance->latitude }}", "{{ $instance->longitude }}"), 14);
+            getLocationMap.setView(new L.LatLng("{{ $instance->latitude }}", "{{ $instance->longitude }}"), 14);
         @endforeach
+
 		getLocationMap.addLayer(osm)
 		// initial hidden marker, and update on click
+
+		let list_of_location_html = ''
+        let marker = '';
+
         @foreach($instances as $instance)
-		L.marker(["{{ $instance->latitude }}", "{{ $instance->longitude }}"]).addTo(getLocationMap);
+		const location = getToLoc("{{ $instance->latitude }}", "{{ $instance->longitude }}", getLocationMap, "{{ $instance->id }}");
         @endforeach
 
+        const getLocationMapMarker = L.marker([0, 0]).addTo(getLocationMap);
 
-		// function getToLoc(lat, lng, displayname = null) {
-		// 	const zoom = 17;
 
-		// 	$.ajax({
-		// 		url: `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
-		// 		dataType: 'json',
-		// 		success: function(data) {
-		// 			$('#latitude').val(lat)
-		// 			$('#longitude').val(lng)
-		// 			if(displayname == null) {
-		// 				$('#search_place').val(data.display_name)
-		// 			} else {
-		// 				$('#search_place').val(displayname)
-		// 			}
-		// 		}
-		// 	});
-		// 	getLocationMap.setView(new L.LatLng(lat, lng), zoom);
-		// 	getLocationMapMarker.setLatLng([lat, lng])
-		// 	$('.results').hide();
-		// 	checkKosongLatLong()
+		function getToLoc(lat, lng, getLocationMap, id) {
+			const zoom = 17;
+            var url_edit = "{{ url('/panel/instance/')}}/"+id+"/edit";
 
-		// }
+			$.ajax({
+				url: `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+				dataType: 'json',
+				success: function(result) {
+                    let marker = L.marker(["{{ $instance->latitude }}", "{{ $instance->longitude }}"]).addTo(getLocationMap);
 
-		// listen click on map
-		// getLocationMap.on('click', function(e) {
-		// 	// set default lat and lng to 0,0
-		// 	const {lat = 0, lng = 0} = e.latlng;
-		// 	// update text DOM
-		// 	// update marker position
-		// 	getToLoc(lat, lng)
-		// 	checkKosongLatLong()
-
-		// });
-
-		// $(document).on('click', '.resultnya', function() {
-
-		// 	const {lat = 0, lng = 0, dispname = ''} = $(this).data();
-		// 	getToLoc(lat,lng, dispname)
-		// })
-
-		// function doSearching(elem) {
-		// 	$('.results').html('<li style="text-align: center;padding: 50% 0; max-height: 25hv;">Mengetik...</li>');
-		// 	const search = elem.val()
-		// 	delay(function () {
-		// 		if(search.length >= 3) {
-		// 			$('.results').html('<li style="text-align: center;padding: 50% 0; max-height: 25hv;"><i class="fa fa-refresh fa-spin"></i> Mencari...</li>');
-		// 			const url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + search;
-		// 			$.ajax({
-		// 				url: url,
-		// 				dataType: 'json',
-		// 				success: function(data) {
-		// 					$('.results').empty();
-		// 					if(data.length > 0) {
-		// 						$.each(data, function(i, item) {
-		// 							$('.results').append('<li><a class="resultnya" href="#" data-lat="' + item.lat + '" data-lng="' + item.lon + '" data-dispname="' + item.display_name + '">' + item.display_name + '<br/><i class="fa fa-map-marker"></i><span style="margin-left: 7px;">'+ item.lat + ','+ item.lon +'</span></a></li>');
-		// 						})
-		// 					} else {
-		// 						$('.results').html('<li style="text-align: center;padding: 50% 0; max-height: 25hv;">Tidak ditemukan (Mungkin ada yang salah dengan ejaan, typo, atau kesalahan ketik)</li>');
-		// 					}
-		// 				}
-		// 			});
-		// 		} else {
-		// 			$('.results').html('<li style="text-align: center;padding: 50% 0; max-height: 25hv;">Masukan Pencarian (Min. 3 Karakter)</li>');
-		// 		}
-		// 	}, 1000);
-		// }
-
-		// $('#search_place').focus(function(){
-		// 	$('.results').show();
-		// }).keyup(function() {
-		// 	doSearching($(this))
-		// }).blur(function() {
-		// 	setTimeout(function() {
-		// 		$('.results').hide();
-		// 	}, 1000);
-		// })
-		// $('#search_place').on('paste', doSearching($(this)))
-
+                    list_of_location_html += '<div>';
+                        list_of_location_html += `<b>${result.display_name}</b><br>`;
+                        list_of_location_html += `<span>latitude : ${result.lat}</span><br>`;
+                        list_of_location_html += `<span>longitude: ${result.lon}</span><br>`;
+                        list_of_location_html += `<a href="${url_edit}" target="_blank" class="btn btn-primary" style="color: white; margin-top: 1rem;">Edit</a>`;
+                    list_of_location_html += '</div>';
+                    marker.bindPopup(list_of_location_html);
+				}
+			});
+		}
 	});
 </script>
 @endpush

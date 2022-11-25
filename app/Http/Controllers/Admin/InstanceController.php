@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Exception;
 
 class InstanceController extends Controller
@@ -95,8 +96,9 @@ class InstanceController extends Controller
     {
         $bussinesses = Bussiness::all();
         $provinces = Province::all();
+        $instance_code = IdGenerator::generate(['table' => 'instances', 'field' => 'instance_code', 'length' => 16, 'prefix' => 'ISC-' . date('Ymd')]);
 
-        return view('admin.instance.create', compact('bussinesses', 'provinces'));
+        return view('admin.instance.create', compact('bussinesses', 'provinces', 'instance_code'));
     }
 
     /**
@@ -155,7 +157,7 @@ class InstanceController extends Controller
                 return redirect()->route('instance.index');
             }
         } catch (Exception $e) {
-            \Log::error($e);
+            // \Log::error($e);
             Alert::toast('Data failed to save', 'error');
             return redirect()->route('instance.index');
         }
