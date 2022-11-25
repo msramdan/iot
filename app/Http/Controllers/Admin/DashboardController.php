@@ -26,12 +26,13 @@ class DashboardController extends Controller
 
     public function index(Request $request)
     {
+        $instances = Instance::get();
         $total_instance = Instance::count();
         $total_subinstance = SubInstance::count();
         $total_cluster = Cluster::count();
         $total_gateway = count(Rawdata::groupBy('gwid')->get());
 
-        return view('admin.dashbaord.index', compact('total_instance', 'total_subinstance', 'total_cluster', 'total_gateway'));
+        return view('admin.dashbaord.index', compact('instances', 'total_instance', 'total_subinstance', 'total_cluster', 'total_gateway'));
     }
 
     public function change_password(Request $request)
