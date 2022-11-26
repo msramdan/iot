@@ -305,7 +305,6 @@
 <script>
 	$(document).ready(function() {
 		var i = 1;
-
 		function checkKosongLatLong() {
 			if($('#latitude').val() == '' || $('#longitude').val() == '') {
 				$('.alert-choose-loc').show();
@@ -313,7 +312,6 @@
 				$('.alert-choose-loc').hide();
 			}
 		}
-
 		var delay = (function () {
 			var timer = 0;
 			return function (callback, ms) {
@@ -321,47 +319,38 @@
 				timer = setTimeout(callback, ms);
 			};
 		})()
-
-
 		// initialize map
 		const getLocationMap = L.map('map');
-
 		// initialize OSM
 		const osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 		const osmAttrib='Leaflet © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
 		const osm = new L.TileLayer(osmUrl, {minZoom: 8, maxZoom: 50, attribution: osmAttrib});
 		// render map
-
 		getLocationMap.scrollWheelZoom.disable()
-
-        @foreach($instances as $instance)
-            getLocationMap.setView(new L.LatLng("{{ $instance->latitude }}", "{{ $instance->longitude }}"), 14);
+        @foreach($instances as $ins)
+            getLocationMap.setView(new L.LatLng("{{ $ins->latitude }}", "{{ $ins->longitude }}"), 7);
         @endforeach
-
 		getLocationMap.addLayer(osm)
 		// initial hidden marker, and update on click
-
-		let list_of_location_html = ''
-        let marker = '';
+        let location = '';
 
         @foreach($instances as $instance)
-		const location = getToLoc("{{ $instance->latitude }}", "{{ $instance->longitude }}", getLocationMap, "{{ $instance->id }}");
+		getToLoc("{{ $instance->latitude }}", "{{ $instance->longitude }}", getLocationMap, "{{ $instance->id }}", "{{ $instance->instance_name }}");
         @endforeach
 
         const getLocationMapMarker = L.marker([0, 0]).addTo(getLocationMap);
 
-
-		function getToLoc(lat, lng, getLocationMap, id) {
+		function getToLoc(lat, lng, getLocationMap, id, instance_name) {
 			const zoom = 17;
             var url_edit = "{{ url('/panel/instance/')}}/"+id+"/edit";
-
 			$.ajax({
 				url: `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
 				dataType: 'json',
 				success: function(result) {
-                    let marker = L.marker(["{{ $instance->latitude }}", "{{ $instance->longitude }}"]).addTo(getLocationMap);
-
-                    list_of_location_html += '<div>';
+                    let marker = L.marker([lat, lng]).addTo(getLocationMap);
+                    let list_of_location_html = '';
+                        list_of_location_html += '<div>';
+                        list_of_location_html += `<b>${instance_name}</b><br>`;
                         list_of_location_html += `<b>${result.display_name}</b><br>`;
                         list_of_location_html += `<span>latitude : ${result.lat}</span><br>`;
                         list_of_location_html += `<span>longitude: ${result.lon}</span><br>`;
