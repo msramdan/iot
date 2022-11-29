@@ -40,7 +40,7 @@
                     <i class="mdi mdi-book-information-variant"></i> <span data-key="t-dashboards">Invoices</span>
                 </a>
             </li>
-            @canany(['bussiness_show'])
+            @canany(['bussiness_show', 'subnet_show'])
             <li class="nav-item">
                 <a class="nav-link menu-link collapsed" href="#sidebarIcons" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
                     <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Master Data</span>
@@ -50,6 +50,11 @@
                         @can('bussiness_show')
                         <li class="nav-item">
                             <a href="{{ route('bussiness.index') }}" class="nav-link {{ set_active(['bussiness*']) }}" data-key="t-remix">Business Type</a>
+                        </li>
+                        @endcan
+                        @can('subnet_show')
+                        <li class="nav-item">
+                            <a href="{{ route('subnet.index') }}" class="nav-link {{ set_active(['subnet*']) }}" data-key="t-remix">Subnet</a>
                         </li>
                         @endcan
                     </ul>

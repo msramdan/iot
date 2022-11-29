@@ -678,6 +678,8 @@
 		})
 		$('#search_place').on('paste', doSearching($(this)))
 
+
+
 	});
 </script>
 @endpush

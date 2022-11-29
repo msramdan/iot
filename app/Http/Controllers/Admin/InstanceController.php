@@ -18,6 +18,8 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Exception;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class InstanceController extends Controller
 {
@@ -109,6 +111,7 @@ class InstanceController extends Controller
      */
     public function store(Request $request)
     {
+
         $validator = Validator::make(
             $request->all(),
             [
@@ -144,9 +147,16 @@ class InstanceController extends Controller
         }
 
         try {
+            $response = Http::withOptions([
+                'verify' => false,
+            ])->post('https://wspiot.xyz/openapi/app/create', [
+                "appName" =>  Str::slug(request('instance_name', '_')),
+                "pushURL" => "",
+                "enableMQTT" => false
+            ]);
             $data = $request->except(['_token']);
             $data['password'] = Hash::make($data['password']);
-
+            $data['appID'] = $response['appID'];
             $instances = Instance::create($data);
 
             if ($instances) {

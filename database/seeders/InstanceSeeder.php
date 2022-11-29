@@ -24,6 +24,7 @@ class InstanceSeeder extends Seeder
         $instance = Instance::create([
             'instance_code' => $instance_code,
             'instance_name' => 'Arta Kencana',
+            'appID' => 1,
             'address1' => 'Jl. buana',
             'address2' => 'Jl. buntu',
             'zip_code' => '666666',

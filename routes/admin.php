@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\RawdataController;
 use App\Http\Controllers\Admin\SubInstanceController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\GatewayController;
+use App\Http\Controllers\Admin\SubnetController;
 use App\Http\Controllers\CallbackController;
 
 /**
@@ -61,6 +62,8 @@ Route::resource('tickets', TicketController::class);
 Route::resource('invoice', InvoiceController::class);
 Route::resource('instance.subinstance', SubInstanceController::class);
 Route::resource('subinstance.cluster', ClusterController::class);
+Route::resource('subnet', SubnetController::class);
+
 // activity log
 Route::controller(ActivityLogController::class)->group(function () {
     Route::get('/activity_log', 'index')->name('activity_log.index');
