@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('instances', function (Blueprint $table) {
             $table->id();
             $table->integer('appID');
+            $table->string('appName', 255)->nullable();
             $table->string('instance_code', 255)->nullable();
             $table->string('instance_name', 255);
             $table->text('address1');

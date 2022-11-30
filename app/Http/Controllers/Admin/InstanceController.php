@@ -147,16 +147,17 @@ class InstanceController extends Controller
         }
 
         try {
-            $response = Http::withOptions([
-                'verify' => false,
-            ])->post('https://wspiot.xyz/openapi/app/create', [
-                "appName" =>  Str::slug(request('instance_name', '_')),
-                "pushURL" => "",
-                "enableMQTT" => false
-            ]);
+            $response = Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+                ->withOptions(['verify' => false])
+                ->post('https://wspiot.xyz/openapi/app/create', [
+                    "appName" =>  Str::slug(request('instance_name', '_')),
+                    "pushURL" => "",
+                    "enableMQTT" => false
+                ]);
             $data = $request->except(['_token']);
             $data['password'] = Hash::make($data['password']);
             $data['appID'] = $response['appID'];
+            $data['appName'] = Str::slug(request('instance_name', '_'));
             $instances = Instance::create($data);
 
             if ($instances) {
@@ -276,11 +277,23 @@ class InstanceController extends Controller
     public function destroy($id)
     {
         $instance = Instance::findOrFail($id);
+        try {
+            $response = Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+                ->withOptions(['verify' => false])
+                ->post('https://wspiot.xyz/openapi/app/delete', [
+                    "appIDs" => [$instance->appID],
+                ]);
 
-        if ($instance->delete()) {
-            Alert::toast('Data deleted successfully', 'success');
-            return redirect()->back();
-        } else {
+            
+
+            if ($instance->delete()) {
+                Alert::toast('Data deleted successfully', 'success');
+                return redirect()->back();
+            } else {
+                Alert::toast('Data Failed to delete', 'error');
+                return redirect()->back();
+            }
+        } catch (Exception $e) {
             Alert::toast('Data Failed to delete', 'error');
             return redirect()->back();
         }
