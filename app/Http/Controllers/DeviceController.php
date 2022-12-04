@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
+use Exception;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
+use Yajra\DataTables\DataTables;
 
 class DeviceController extends Controller
 {
@@ -14,7 +17,14 @@ class DeviceController extends Controller
      */
     public function index()
     {
-        //
+        if (request()->ajax()) {
+            return DataTables::of(Device::query())
+                ->addIndexColumn()
+                ->addColumn('action', 'admin.device._action')
+                ->toJson();
+        }
+
+        return view('admin.device.index');
     }
 
     /**
@@ -24,7 +34,7 @@ class DeviceController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.device.create');
     }
 
     /**
@@ -35,7 +45,38 @@ class DeviceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [
+            'appID'         => 'required',
+            'appEUI'        => 'required',
+            'appKey'        => 'required',
+            'devType'       => 'required',
+            'devName'       => 'required',
+            'devEUI'        => 'required',
+            'region'        => 'required',
+            'subnet'        => 'required',
+            'supportClassB' => 'required',
+            'supportClassC' => 'required',
+            'macVersion'    => 'required',
+            'authType'      => 'required',
+        ];
+
+        if(request('authType') == 'abp'){
+            $rules['appSKey'] = 'required';
+            $rules['nwkSKey'] = 'required';
+            $rules['devAddr'] = 'required';
+        }
+
+        $attr = request()->validate($rules);
+
+        try {
+            Device::create($attr);
+            Alert::toast('Device successfully created', 'success');
+        } catch (Exception $err) {
+            Alert::toast('Failed to save records', 'error');
+        }
+
+        return redirect()->route('device.index');
+
     }
 
     /**
@@ -57,7 +98,7 @@ class DeviceController extends Controller
      */
     public function edit(Device $device)
     {
-        //
+        return view('admin.device.edit', compact('device'));
     }
 
     /**
@@ -69,7 +110,36 @@ class DeviceController extends Controller
      */
     public function update(Request $request, Device $device)
     {
-        //
+        $rules = [
+            'appID'         => 'required',
+            'appEUI'        => 'required',
+            'appKey'        => 'required',
+            'devType'       => 'required',
+            'devName'       => 'required',
+            'devEUI'        => 'required',
+            'region'        => 'required',
+            'subnet'        => 'required',
+            'supportClassB' => 'required',
+            'supportClassC' => 'required',
+            'macVersion'    => 'required',
+        ];
+
+        if (request('authType') == 'abp') {
+            $rules['appSKey'] = 'required';
+            $rules['nwkSKey'] = 'required';
+            $rules['devAddr'] = 'required';
+        }
+
+        $attr = request()->validate($rules);
+
+        try {
+            $device->update($attr);
+            Alert::toast('Device successfully updated', 'success');
+        } catch (Exception $err) {
+            Alert::toast('Failed to update records', 'error');
+        }
+
+        return redirect()->route('device.index');
     }
 
     /**
@@ -80,6 +150,13 @@ class DeviceController extends Controller
      */
     public function destroy(Device $device)
     {
-        //
+        try {
+            $device->delete();
+            Alert::toast('Device successfully deleted', 'success');
+        } catch (Exception $err) {
+            Alert::toast('Failed to delete records', 'error');
+        }
+
+        return redirect()->route('device.index');
     }
 }

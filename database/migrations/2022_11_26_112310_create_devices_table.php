@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('devEUI', 255)->nullable();
             $table->string('devName', 255)->nullable();
             $table->string('devAddr', 255)->nullable();
+            $table->string('devType', 255)->nullable();
             $table->string('region')->nullable();
             $table->string('subnet')->nullable();
             $table->string('authType')->nullable();
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->string('fPort')->nullable();
             $table->string('lastSeen')->nullable();
             $table->string('appID')->nullable();
+            $table->string('appEUI')->nullable();
             $table->string('appKey')->nullable();
             $table->string('appSKey')->nullable();
             $table->string('nwkSKey')->nullable();

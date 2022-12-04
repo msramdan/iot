@@ -83,11 +83,17 @@ return [
             'cluster_update',
             'cluster_delete'
         ],
-        'cluster' => [
+        'subnet' => [
             'subnet_show',
             'subnet_create',
             'subnet_update',
             'subnet_delete'
+        ],
+        'device' => [
+            'device_show',
+            'device_create',
+            'device_update',
+            'device_delete'
         ],
         'gateway' => [
             'gateway_show'
