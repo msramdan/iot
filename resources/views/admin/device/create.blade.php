@@ -47,8 +47,11 @@
                         <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="devType">Dev Type</label>
-                                <input type="text" name="devType" id="devType" value="{{ old('devType') }}"
-                                    class="form-control @error('devType') is-invalid @enderror ">
+                                <select name="devType" id="devType" class="form-control" @error('devType') @enderror>
+                                    <option value="" selected disabled>==Pilih==</option>
+                                    <option value="abp-type" @selected(old('devType') == 'abp-type')>Abp</option>
+                                    <option value="otaa-type" @selected(old('devType') == 'otaa-type')>Otaa</option>
+                                </select>
                                 @error('devType')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -87,8 +90,12 @@
                         <div class="col-12 col-md-6">
                             <div class="mb-3">
                                 <label for="subnet">Subnet</label>
-                                <input type="text" name="subnet" id="subnet" value="{{ old('subnet') }}"
-                                    class="form-control @error('subnet') is-invalid @enderror ">
+                                <select name="subnet_id" id="subnet" class="form-control" @error('subnet') @enderror>
+                                    <option value="" selected disabled>==Pilih==</option>
+                                    @foreach ($subnets as $subnet)
+                                        <option value="{{ $subnet->id }}" @selected(old('subnet_id') == $subnet->id)>{{ $subnet->subnet }}</option>
+                                    @endforeach
+                                </select>
                                 @error('subnet')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -96,9 +103,12 @@
                         </div>
                         <div class="col-12 col-md-4">
                             <div class="mb-3">
-                                <label for="supportClassB">Support Class B</label>
-                                <input type="text" name="supportClassB" id="supportClassB" value="{{ old('supportClassB') }}"
-                                    class="form-control @error('supportClassB') is-invalid @enderror ">
+                               <label for="supportClassB">Support Class B</label>
+                               <select name="supportClassB" id="supportClassB" class="form-control" @error('supportClassB') @enderror>
+                                    <option value="" selected disabled>==Pilih==</option>
+                                    <option value="true" @selected(old('supportClassB') == true)>True</option>
+                                    <option value="false" @selected(old('supportClassB') == false)>False</option>
+                                </select>
                                 @error('supportClassB')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -106,9 +116,12 @@
                         </div>
                         <div class="col-12 col-md-4">
                             <div class="mb-3">
-                                <label for="supportClassC">Support Class C</label>
-                                <input type="text" name="supportClassC" id="supportClassC" value="{{ old('supportClassC') }}"
-                                    class="form-control @error('supportClassC') is-invalid @enderror ">
+                               <label for="supportClassC">Support Class C</label>
+                               <select name="supportClassC" id="supportClassC" class="form-control" @error('supportClassC') @enderror>
+                                    <option value="" selected disabled>==Pilih==</option>
+                                    <option value="true" @selected(old('supportClassC') == true)>True</option>
+                                    <option value="false" @selected(old('supportClassC') == false)>False</option>
+                                </select>
                                 @error('supportClassC')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -147,7 +160,7 @@
                                 @enderror
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="row" id="type-condition">
                         @if (old('authType') == 'abp')
@@ -198,6 +211,7 @@
 
 @push('js')
     <script>
+        $('#subnet').select2();
         const html = `<div class="col-12 col-md-4">
             <div class="mb-3">
                 <label for="appSKey">App SKey</label>
@@ -229,11 +243,13 @@
             </div>
         </div>`;
 
-        $('#authType').change(function(){
-            if(this.value == 'abp'){
+        $('#devType').change(function(){
+            if(this.value == 'abp-type'){
                 $('#type-condition').html(html)
+                $('#authType').val('abp');
             }else{
                 $('#type-condition').html('')
+                $('#authType').val('otaa');
             }
         })
 

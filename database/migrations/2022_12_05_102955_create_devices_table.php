@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('devAddr', 255)->nullable();
             $table->string('devType', 255)->nullable();
             $table->string('region')->nullable();
-            $table->string('subnet')->nullable();
+            $table->foreignId('subnet_id')->nullable();
             $table->string('authType')->nullable();
             $table->string('fCnt')->nullable();
             $table->string('fPort')->nullable();
@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('supportClassC')->nullable();
             $table->string('macVersion')->nullable();
             $table->timestamps();
+            $table->foreign('subnet_id')->references('id')->on('subnets');
         });
     }
 

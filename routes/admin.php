@@ -21,7 +21,7 @@ use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\GatewayController;
 use App\Http\Controllers\Admin\SubnetController;
 use App\Http\Controllers\CallbackController;
-use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\Admin\DeviceController;
 
 /**
  * Route Admin Panel
