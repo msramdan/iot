@@ -16,8 +16,8 @@ class SubnetSeeder extends Seeder
     public function run()
     {
         $subnet = [
-            'CH_00-07',
-            'CH_08-15',
+            'ch_00-07',
+            'ch_08-15',
         ];
 
         foreach ($subnet as $i => $sub) {

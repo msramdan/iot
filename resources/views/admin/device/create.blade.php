@@ -27,7 +27,7 @@
                         <div class="col-12 col-md-6">
                             <div class="mb-3">
                                 <label for="appID">App ID</label>
-                                <input type="text" name="appID" id="appID" value="{{ old('appID') }}"
+                                <input type="number" name="appID" id="appID" value="{{ old('appID') }}"
                                     class="form-control @error('appID') is-invalid @enderror ">
                                 @error('appID')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -101,7 +101,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-6">
                             <div class="mb-3">
                                <label for="supportClassB">Support Class B</label>
                                <select name="supportClassB" id="supportClassB" class="form-control" @error('supportClassB') @enderror>
@@ -114,7 +114,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-6">
                             <div class="mb-3">
                                <label for="supportClassC">Support Class C</label>
                                <select name="supportClassC" id="supportClassC" class="form-control" @error('supportClassC') @enderror>
@@ -123,16 +123,6 @@
                                     <option value="false" @selected(old('supportClassC') == false)>False</option>
                                 </select>
                                 @error('supportClassC')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <div class="mb-3">
-                                <label for="macVersion">Mac Version</label>
-                                <input type="text" name="macVersion" id="macVersion" value="{{ old('macVersion') }}"
-                                    class="form-control @error('macVersion') is-invalid @enderror ">
-                                @error('macVersion')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -194,6 +184,17 @@
                                     @enderror
                                 </div>
                             </div>
+                        @elseif (old('authType') == 'otaa')
+                            <div class="col-12 col-md-4">
+                                <div class="mb-3">
+                                    <label for="macVersion">Mac Version</label>
+                                    <input type="text" name="macVersion" id="macVersion" value="{{ old('macVersion') }}"
+                                        class="form-control @error('macVersion') is-invalid @enderror ">
+                                    @error('macVersion')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                         @endif
                     </div>
                     <div class="text-end">
@@ -212,6 +213,7 @@
 @push('js')
     <script>
         $('#subnet').select2();
+
         const html = `<div class="col-12 col-md-4">
             <div class="mb-3">
                 <label for="appSKey">App SKey</label>
@@ -243,16 +245,40 @@
             </div>
         </div>`;
 
+        const html_otaa = `<div class="col-12 col-md-4">
+                            <div class="mb-3">
+                                <label for="macVersion">Mac Version</label>
+                                <input type="text" name="macVersion" id="macVersion" value="{{ old('macVersion') }}"
+                                    class="form-control @error('macVersion') is-invalid @enderror ">
+                                @error('macVersion')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>`;
+
         $('#devType').change(function(){
             if(this.value == 'abp-type'){
+                $('#type-condition').html('')
                 $('#type-condition').html(html)
                 $('#authType').val('abp');
             }else{
                 $('#type-condition').html('')
+                $('#type-condition').html(html_otaa)
                 $('#authType').val('otaa');
             }
         })
 
+        $('#authType').change(function(){
+            if(this.value == 'abp'){
+                $('#type-condition').html('')
+                $('#type-condition').html(html)
+                $('#devType').val('abp-type');
+            }else{
+                $('#type-condition').html('')
+                $('#type-condition').html(html_otaa)
+                $('#devType').val('otaa-type');
+            }
+        })
 
     </script>
 @endpush
