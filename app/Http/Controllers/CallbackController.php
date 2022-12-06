@@ -11,6 +11,9 @@ class CallbackController extends Controller
 {
     public function index (Request $request)
     {
+        print_r($_POST);
+        print_r($_SERVER);
+        exit;
         $header = $request->header('Authorization');
 
         if (!$header) {

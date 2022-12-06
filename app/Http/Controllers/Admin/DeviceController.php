@@ -14,6 +14,9 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Tymon\JWTAuth\Payload;
+
+use function GuzzleHttp\json_decode;
 
 class DeviceController extends Controller
 {
@@ -85,74 +88,62 @@ class DeviceController extends Controller
         }
 
         $attr = request()->validate($rules);
-
         try {
-
+            $subnet = Subnet::Where('id', $request->subnet_id)->first();
 
             $url_endpoint = 'https://wspiot.xyz/openapi/device/create';
+
             $api_token   = env('APITOKEN', 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c=');
 
-            // $client = new Client;
+            $payload = [
+                "devEUI" => $request->devEUI,
+                "appEUI" =>  $request->appEUI,
+                "devType" =>  $request->devType,
+                "devName" => $request->devName,
+                "region"=> $request->region,
+                "subnet"=> $subnet->subnet,
+                "authType"=> $request->authType,
+                "appID"=> intval($request->appID),
+                "appKey"=> $request->appKey,
+                "supportClassB"=>  $request->supportClassB == 'false' ? false : true ,
+                "supportClassC"=>  $request->supportClassC == 'false' ? false : true,
+                "macVersion"=> $request->macVersion
+            ];
 
-            // $headers = [
-            //     'Content-Type'          => 'application/json',
-            //     'x-access-token' => $api_token,
-            // ];
+            $client = new Client;
 
-            // dd($attr);
+            $headers = [
+                'Content-Type'          => 'application/json',
+                'x-access-token' => $api_token,
+            ];
 
-            // $res= $client->post($url_endpoint, [
-	        //         'headers'           => $headers,
-	        //         'json'              => $attr,
-	        //         'force_ip_resolve'  => 'v4',
-	        //         'http_errors'       => false,
-	        //         'timeout'           => 120,
-	        //         'connect_timeout'   => 10,
-	        //         'allow_redirects'   => false,
-	        //         'verify'			=> false,
-	        //     ]);
+            $res= $client->post($url_endpoint, [
+	                'headers'           => $headers,
+	                'json'              => $payload,
+	                'force_ip_resolve'  => 'v4',
+	                'http_errors'       => false,
+	                'timeout'           => 120,
+	                'connect_timeout'   => 10,
+	                'allow_redirects'   => false,
+	                'verify'			=> false,
+	            ]);
 
-            // $curlOptions = [
-            //     CURLOPT_SSL_VERIFYPEER => 0,
-            //     CURLOPT_SSL_VERIFYHOST => 0
-            // ];
+            $response = $res->getBody()->getContents();
 
-            // $res = Http::withOptions([
-            //     'curl' => $curlOptions,
-            // ])->withHeaders([
-            //     'x-access-token' => $api_token,
-            //     'Authorization' => 'Bearer '.$api_token,
-            // ])->post($url_endpoint, $attr);
+            $response = json_decode($response);
 
-           // $response = $res->getBody()->getContents();
 
-            //dd($response);
+            if ($response->code != 0) {
+                $errorMessage = errorMessage($response->code);
 
-        $header = [
-            'Authorization: Bearer '.$api_token,
-            'Content-Type: application/json',
-            'x-access-token: '.$api_token
-        ];
+                if (!empty($errorMessage)) {
+                    Alert::toast('Failed to create device. '.$errorMessage['message'], 'error');
+                } else {
+                    Alert::toast('Failed to create device. ', 'error');
+                }
 
-        $curl = curl_init();
-        curl_setopt($curl,CURLOPT_FRESH_CONNECT,true);
-        curl_setopt($curl,CURLOPT_URL,$url_endpoint);
-        curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($curl,CURLOPT_HEADER,false);
-        curl_setopt($curl,CURLOPT_HTTPHEADER,$header);
-        curl_setopt($curl,CURLOPT_FAILONERROR,false);
-        curl_setopt($curl,CURLOPT_POST,true);
-        curl_setopt($curl,CURLOPT_POSTFIELDS, json_encode($attr));
-        curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,0);
-        curl_setopt($curl,CURLOPT_SSL_VERIFYHOST,0);
-
-        $result = curl_exec($curl);
-        $error  = curl_error($curl);
-        $errno  = curl_errno($curl);
-        curl_close($curl);
-            dd($result);
-
-            $result = json_decode($result);
+                return redirect()->route('device.index');
+            }
 
             Device::create($attr);
 
@@ -221,9 +212,81 @@ class DeviceController extends Controller
         $attr = request()->validate($rules);
 
         try {
+            $url_update = 'https://wspiot.xyz/openapi/device/update';
+            $url_check_device = 'https://wspiot.xyz/openapi/device/status?devEUI='.$device->devEUI;
+
+            $api_token   = env('APITOKEN', 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c=');
+
+            $curlOptions = [
+                CURLOPT_SSL_VERIFYPEER => 0,
+                CURLOPT_SSL_VERIFYHOST => 0
+            ];
+
+            $device_check = Http::withOptions([
+                'curl' => $curlOptions,
+            ])->withHeaders([
+                'x-access-token' => $api_token
+            ])->get($url_check_device);
+
+            $response_check = $device_check->getBody()->getContents();
+            $response_check = json_decode($response_check);
+
+            if ($response_check->code != 0) {
+                $errorMessage = errorMessage($response_check->code);
+
+                if (!empty($errorMessage)) {
+                    Alert::toast('Failed to update device! '.$errorMessage['message'], 'error');
+                } else {
+                    Alert::toast('Failed to update device!', 'error');
+                }
+
+                return redirect()->route('device.index');
+            }
+
+            $payload = [
+                "devEUI" => $request->devEUI,
+                "devName" => $request->devName,
+            ];
+
+            $client = new Client;
+
+            $headers = [
+                'Content-Type'          => 'application/json',
+                'x-access-token' => $api_token,
+            ];
+
+            $res = $client->post($url_update, [
+	                'headers'           => $headers,
+	                'json'              => $payload,
+	                'force_ip_resolve'  => 'v4',
+	                'http_errors'       => false,
+	                'timeout'           => 120,
+	                'connect_timeout'   => 10,
+	                'allow_redirects'   => false,
+	                'verify'			=> false,
+	            ]);
+
+            $response = $res->getBody()->getContents();
+
+            $response = json_decode($response);
+
+            if ($response_check->code != 0) {
+                $errorMessage = errorMessage($response_check->code);
+
+                if (!empty($errorMessage)) {
+                    Alert::toast('Failed to update device! '.$errorMessage['message'], 'error');
+                } else {
+                    Alert::toast('Failed to update device!', 'error');
+                }
+
+                return redirect()->route('device.index');
+            }
+
             $device->update($attr);
+
             Alert::toast('Device successfully updated', 'success');
         } catch (Exception $err) {
+            \Log::error($err);
             Alert::toast('Failed to update records', 'error');
         }
 
@@ -239,9 +302,53 @@ class DeviceController extends Controller
     public function destroy(Device $device)
     {
         try {
+            $url_endpoint = 'https://wspiot.xyz/openapi/device/delete';
+
+            $api_token   = env('APITOKEN', 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c=');
+
+            $payload = [
+                "devEUIs" => [$device->devEUI],
+            ];
+
+            $client = new Client;
+
+            $headers = [
+                'Content-Type'          => 'application/json',
+                'x-access-token' => $api_token,
+            ];
+
+            $res= $client->post($url_endpoint, [
+	                'headers'           => $headers,
+	                'json'              => $payload,
+	                'force_ip_resolve'  => 'v4',
+	                'http_errors'       => false,
+	                'timeout'           => 120,
+	                'connect_timeout'   => 10,
+	                'allow_redirects'   => false,
+	                'verify'			=> false,
+	            ]);
+
+            $response = $res->getBody()->getContents();
+
+            $response = json_decode($response);
+
+
+            if ($response->code != 0) {
+                $errorMessage = errorMessage($response->code);
+
+                if (!empty($errorMessage)) {
+                    Alert::toast('Failed to Delete device. '.$errorMessage['message'], 'error');
+                } else {
+                    Alert::toast('Failed to delete device. ', 'error');
+                }
+
+                return redirect()->back();
+            }
+
             $device->delete();
             Alert::toast('Device successfully deleted', 'success');
         } catch (Exception $err) {
+            \Log::error($err);
             Alert::toast('Failed to delete records', 'error');
         }
 
