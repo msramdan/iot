@@ -10,4 +10,9 @@ class Subnet extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function device()
+    {
+        return $this->hasMany(Device::class);
+    }
 }
