@@ -93,7 +93,8 @@ return [
             'device_show',
             'device_create',
             'device_update',
-            'device_delete'
+            'device_delete',
+            'device_sign'
         ],
         'gateway' => [
             'gateway_show'

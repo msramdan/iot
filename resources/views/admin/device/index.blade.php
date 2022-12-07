@@ -83,6 +83,7 @@
                                             <th>Region</th>
                                             <th>Subnet</th>
                                             <th>Auth Type</th>
+                                            <th>Cluster</th>
                                             @canany(['device_show', 'device_update', 'device_delete'])
                                                 <th>Action</th>
                                             @endcanany
@@ -146,6 +147,10 @@
             {
                 data: 'authType',
                 name: 'authType'
+            },
+            {
+                data: 'cluster_id',
+                name: 'cluster_id'
             },
         ]
 

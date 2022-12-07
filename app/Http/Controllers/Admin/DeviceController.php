@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Device;
 use App\Models\Subnet;
+use App\Models\Instance;
 use Exception;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -54,8 +55,12 @@ class DeviceController extends Controller
     public function create()
     {
         $subnets = Subnet::all();
+        $intances = Instance::all();
 
-        return view('admin.device.create', compact('subnets'));
+        return view('admin.device.create', [
+            'subnets' => $subnets,
+            'appID' => $intances,
+        ]);
     }
 
     /**

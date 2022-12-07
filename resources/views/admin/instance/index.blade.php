@@ -7,7 +7,7 @@
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Instance</h4>
-                    
+
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
@@ -34,6 +34,8 @@
                                     <tr>
                                         <th></th>
                                         <th>#</th>
+                                        <th>App ID</th>
+                                        <th>App Name</th>
                                         <th>Instance Code</th>
                                         <th>Instance Name</th>
                                         <th>Bussiness</th>
@@ -73,6 +75,14 @@
                 searchable: false
             },
             {
+                data: 'appID',
+                name: 'appID'
+            },
+            {
+                data: 'appName',
+                name: 'appName'
+            },
+            {
                 data: 'instance_code',
                 name: 'instance_code'
             },
@@ -98,7 +108,7 @@
             }
         ];
 
-        
+
 
 
         if (action) {
@@ -155,7 +165,7 @@
                 </form>
                 @endcan('subinstance_delete')
                 `
-            
+
         }
 </script>
 @endpush

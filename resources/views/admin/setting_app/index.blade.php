@@ -96,7 +96,7 @@
                                             @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label" for="token_callbacck">Token Callback</label>
+                                            <label class="form-label" for="token_callbacck">Token</label>
                                             <input class="form-control @error('token_callback') is-invalid @enderror" id="token_callback"
                                                 type="text"
                                                 value="{{ old('token_callback') ? old('token_callback') : $setting_app->token_callback }}"

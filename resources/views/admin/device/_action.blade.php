@@ -1,6 +1,11 @@
 <td>
+    @can('device_sign')
+    <a href="{{ route('device.edit', $model->id) }}" class="btn btn-sm  btn-warning" title="Sign Cluster"><i class="mdi mdi-cog"></i>
+    </a>
+    @endcan
+
     @can('device_update')
-    <a href="{{ route('device.edit', $model->id) }}" class="btn btn-sm  btn-success"><i class="mdi mdi-pencil"></i>
+    <a href="{{ route('device.edit', $model->id) }}" class="btn btn-sm  btn-success" title="Edit Device"><i class="mdi mdi-pencil"></i>
     </a>
     @endcan
     @can('device_delete')

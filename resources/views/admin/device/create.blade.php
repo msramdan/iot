@@ -27,11 +27,16 @@
                         <div class="col-12 col-md-6">
                             <div class="mb-3">
                                 <label for="appID">App ID</label>
-                                <input type="number" name="appID" id="appID" value="{{ old('appID') }}"
-                                    class="form-control @error('appID') is-invalid @enderror ">
+                                <select name="appID" id="appID" class="form-control selectClass  @error('appID') is-invalid @enderror">
+                                    <option value="" selected disabled>-- Pilih --</option>
+                                    @foreach ($appID as $data)
+                                        <option value="{{ $data->appID }}" @selected(old('appID') == $data->appID)>{{ $data->appID }} - {{ $data->instance_name }} </option>
+                                    @endforeach
+                                </select>
                                 @error('appID')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                    <span style="color:#f06548;font-size: .875em;margin-top: 0.25rem;">{{ $message }}</span>
                                 @enderror
+
                             </div>
                         </div>
                         <div class="col-12 col-md-6">
@@ -48,7 +53,7 @@
                             <div class="mb-3">
                                 <label for="devType">Dev Type</label>
                                 <select name="devType" id="devType" class="form-control" @error('devType') @enderror>
-                                    <option value="" selected disabled>==Pilih==</option>
+                                    <option value="" selected disabled>-- Pilih --</option>
                                     <option value="abp-type" @selected(old('devType') == 'abp-type')>Abp</option>
                                     <option value="otaa-type" @selected(old('devType') == 'otaa-type')>Otaa</option>
                                 </select>
@@ -90,8 +95,8 @@
                         <div class="col-12 col-md-6">
                             <div class="mb-3">
                                 <label for="subnet">Subnet</label>
-                                <select name="subnet_id" id="subnet" class="form-control" @error('subnet') @enderror>
-                                    <option value="" selected disabled>==Pilih==</option>
+                                <select name="subnet_id" id="subnet" class="form-control selectClass" @error('subnet') @enderror>
+                                    <option value="" selected disabled>-- Pilih --</option>
                                     @foreach ($subnets as $subnet)
                                         <option value="{{ $subnet->id }}" @selected(old('subnet_id') == $subnet->id)>{{ $subnet->subnet }}</option>
                                     @endforeach
@@ -105,7 +110,7 @@
                             <div class="mb-3">
                                <label for="supportClassB">Support Class B</label>
                                <select name="supportClassB" id="supportClassB" class="form-control" @error('supportClassB') @enderror>
-                                    <option value="" selected disabled>==Pilih==</option>
+                                    <option value="" selected disabled>-- Pilih --</option>
                                     <option value="true" @selected(old('supportClassB') == true)>True</option>
                                     <option value="false" @selected(old('supportClassB') == false)>False</option>
                                 </select>
@@ -118,7 +123,7 @@
                             <div class="mb-3">
                                <label for="supportClassC">Support Class C</label>
                                <select name="supportClassC" id="supportClassC" class="form-control" @error('supportClassC') @enderror>
-                                    <option value="" selected disabled>==Pilih==</option>
+                                    <option value="" selected disabled>-- Pilih --</option>
                                     <option value="true" @selected(old('supportClassC') == true)>True</option>
                                     <option value="false" @selected(old('supportClassC') == false)>False</option>
                                 </select>
@@ -141,7 +146,7 @@
                             <div class="mb-3">
                                 <label for="authType">Auth Type</label>
                                 <select name="authType" id="authType" class="form-control" @error('authType') @enderror>
-                                    <option value="" selected disabled>==Pilih==</option>
+                                    <option value="" selected disabled>-- Pilih --</option>
                                     <option value="abp" @selected(old('authType') == 'abp')>Abp</option>
                                     <option value="otaa" @selected(old('authType') == 'otaa')>Otaa</option>
                                 </select>
@@ -166,7 +171,7 @@
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="mb-3">
-                                    <label for="nwkSKey">NWK SKEY</label>
+                                    <label for="nwkSKey">Nwk Skey</label>
                                     <input type="text" name="nwkSKey" id="nwkSKey" value="{{ old('nwkSKey') }}"
                                         class="form-control @error('nwkSKey') is-invalid @enderror ">
                                     @error('nwkSKey')
@@ -212,7 +217,7 @@
 
 @push('js')
     <script>
-        $('#subnet').select2();
+        $('.selectClass').select2();
 
         const html = `<div class="col-12 col-md-4">
             <div class="mb-3">

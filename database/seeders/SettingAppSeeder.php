@@ -23,7 +23,7 @@ class SettingAppSeeder extends Seeder
             'phone' => '083874731480',
             'email' => 'saepulramdan244@gmail.com',
             'address' => 'Perumahan SAI Residance Blok E6 , Tajur halang, Kabupaten Bogor',
-            'token_callback' => 'aebIuxa+Dg0/ClXJ9vdpYw==',
+            'token_callback' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c=',
         ]);
     }
 }

@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('supportClassB')->nullable();
             $table->string('supportClassC')->nullable();
             $table->string('macVersion')->nullable();
+            $table->string('cluster_id',11)->nullable();
             $table->timestamps();
             $table->foreign('subnet_id')->references('id')->on('subnets');
         });
