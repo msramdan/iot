@@ -28,6 +28,7 @@
                         <form action="{{ route('subinstance.cluster.store', $subinstance->id) }}" method="post" id="create">
                             @csrf
                             <input type="hidden" name="subinstance_id" value="{{ $subinstance->id }}">
+                            <input type="hidden" name="instance_id" value="{{ $subinstance->instance_id }}">
                             <div class="mb-3">
                                 <label for="">Kode</label>
                                 <input type="text" name="kode" class="form-control" id="kode" placeholder="Nama Cluster" value="{{ $kode }}" readonly>
@@ -118,7 +119,7 @@
 @push('js')
 <script>
     let base_url = "{{ url('/') }}";
-    
+
         const action =
             '{{ auth()->user()->can('cluster_update') || auth()->user()->can('cluster_delete')? 'yes yes yes': '' }}'
         let columns = [{
@@ -134,7 +135,7 @@
                 data: 'name',
             },
         ]
-        
+
 
         if (action) {
             columns.push({
@@ -198,9 +199,11 @@
                         icon: res.type
                     });
                     table.ajax.reload()
+
                     $('form#create')[0].reset();
                     $('#save-btn').html('<i class="mdi mdi-content-save"></i>SIMPAN')
                     $('#save-btn').prop('disabled', false)
+                    $('#kode').val(res.kode);
                 },
                 error: function(err){
                     toastMixin.fire({
@@ -214,6 +217,6 @@
             })
         })
 
-        
+
 </script>
 @endpush

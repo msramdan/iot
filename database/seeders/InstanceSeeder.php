@@ -52,6 +52,7 @@ class InstanceSeeder extends Seeder
                 ]);
 
                 $cluster = Cluster::create([
+                    'instance_id' => $instance->id,
                     'subinstance_id' => $sub_instance->id,
                     'kode' => $kode,
                     'name' => 'Cluster '.$a,

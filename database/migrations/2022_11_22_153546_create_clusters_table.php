@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('clusters', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('instance_id');
             $table->foreignId('subinstance_id');
             $table->string('kode');
             $table->string('name');

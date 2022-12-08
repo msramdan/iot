@@ -31,7 +31,7 @@ class ClusterController extends Controller
 
     public function create (Subinstance $subinstance)
     {
-        
+
         return view('admin.cluster.create', compact('subinstance'));
     }
 
@@ -39,7 +39,8 @@ class ClusterController extends Controller
     {
         $attr = request()->validate([
             'kode' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'instance_id' => 'required'
         ]);
 
         $attr['subinstance_id'] = $subinstance->id;
@@ -49,11 +50,12 @@ class ClusterController extends Controller
             $kode = IdGenerator::generate([
                 'table' => 'clusters', 'field' => 'kode', 'length' => 16, 'prefix' => 'CLU-' . date('Ymd')
             ]);
-            
+
             return response()->json([
                 'message' => 'Cluster successfully created',
                 'type' => 'success',
-                'data' => ''
+                'data' => '',
+                'kode' => $kode,
             ]);
         } catch (Exception $err) {
             return $err;
@@ -82,9 +84,9 @@ class ClusterController extends Controller
 
     public function destroy ($subinstanceId, $id)
     {
-        
+
         $cluster = Cluster::where(['subinstance_id' => $subinstanceId, 'id' => $id])->delete();
-        
+
         return response()->json(['success' => true, 'message' => 'Cluster successfully deleted', 'type' => 'success']);
     }
 }

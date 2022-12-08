@@ -149,8 +149,8 @@
                 name: 'authType'
             },
             {
-                data: 'cluster_id',
-                name: 'cluster_id'
+                data: 'cluster',
+                name: 'cluster'
             },
         ]
 

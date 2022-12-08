@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Device;
 use App\Models\Subnet;
 use App\Models\Instance;
+use App\Models\Cluster;
 use Exception;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -15,7 +16,9 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Payload;
+use Illuminate\Support\Facades\DB;
 
 use function GuzzleHttp\json_decode;
 
@@ -29,16 +32,23 @@ class DeviceController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $device = Device::with('subnet')->get();
+            $device = Device::with(['subnet', 'cluster'])->get();
 
             return DataTables::of($device)
                 ->addIndexColumn()
                 ->addColumn('subnet', function($row) {
-                    if ($row->subnet) {
-                        return $row->subnet->subnet;
-                    } else {
+                    if (!$row->subnet) {
                         return '-';
                     }
+
+                    return $row->subnet->subnet;
+                })
+                ->addColumn('cluster', function($row) {
+                    if (!$row->cluster){
+                        return '-';
+                    }
+
+                    return $row->cluster->name;
                 })
                 ->addColumn('action', 'admin.device._action')
                 ->toJson();
@@ -82,9 +92,12 @@ class DeviceController extends Controller
             'subnet_id'     => 'required',
             'supportClassB' => 'required',
             'supportClassC' => 'required',
-            'macVersion'    => 'required',
             'authType'      => 'required',
         ];
+
+        if ($request->devType == 'otaa-type') {
+            $rules['macVersion'] = 'required';
+        }
 
         if(request('authType') == 'abp'){
             $rules['appSKey'] = 'required';
@@ -92,7 +105,16 @@ class DeviceController extends Controller
             $rules['devAddr'] = 'required';
         }
 
-        $attr = request()->validate($rules);
+        $validator = Validator::make(
+            $request->all(),
+            $rules,
+        );
+
+        if ($validator->fails()) {
+            Alert::toast($validator->errors()->first(), 'error');
+            return redirect()->back();
+        }
+
         try {
             $subnet = Subnet::Where('id', $request->subnet_id)->first();
 
@@ -112,8 +134,19 @@ class DeviceController extends Controller
                 "appKey"=> $request->appKey,
                 "supportClassB"=>  $request->supportClassB == 'false' ? false : true ,
                 "supportClassC"=>  $request->supportClassC == 'false' ? false : true,
-                "macVersion"=> $request->macVersion
             ];
+
+            if ($request->devType == 'otaa-type') {
+                $payload['macVersion'] = $request->macVersion;
+            }
+
+            if ($request->devType == 'abp-type') {
+                $payload['appSKey'] = $request->appSKey;
+                $payload['nwkSKey'] = $request->nwkSKey;
+                $payload['devAddr'] = $request->devAddr;
+            }
+
+            //dd($payload);
 
             $client = new Client;
 
@@ -150,7 +183,9 @@ class DeviceController extends Controller
                 return redirect()->route('device.index');
             }
 
-            Device::create($attr);
+            $data = $request->except('_token');
+
+            Device::create($data);
 
             Alert::toast('Device successfully created', 'success');
         } catch (Exception $err) {
@@ -358,5 +393,62 @@ class DeviceController extends Controller
         }
 
         return redirect()->route('device.index');
+    }
+
+    public function get_cluster(Request $request)
+    {
+        $device = Device::where('id', $request->device_id)->first();
+
+        if (!$device) {
+            return response()->json(['success' => false, 'message' => 'Device Not Found'], 404);
+        }
+
+        $instance = Instance::where('appID', $device->appID)->first();
+
+        if (!$instance) {
+            return response()->json(['success' => false, 'message' => 'Instance Not Found'], 404);
+        }
+
+        $cluster = Cluster::where('instance_id', $instance->id)->get();
+
+        return response()->json($cluster);
+    }
+
+    public function sign_cluster(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'device_id' => 'required|numeric|exists:devices,id',
+                'cluster_id' => 'required|numeric|exists:clusters,id'
+            ]
+        );
+
+        if ($validator->fails()) {
+            Alert::toast($validator->errors()->first(), 'error');
+            return redirect()->back();
+        }
+
+        $device = Device::where('id', $request->device_id)->first();
+
+        if (!$device) {
+            Alert::toast('Device not found', 'error');
+            return redirect()->back();
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $device->update([
+             'cluster_id' => $request->cluster_id
+            ]);
+            DB::commit();
+
+            Alert::toast('Successfully assign cluster device', 'success');
+            return redirect()->back();
+        } catch (\Exception $e) {
+            Alert::toast('Failed assign cluster device', 'error');
+            return redirect()->back();
+        }
     }
 }
