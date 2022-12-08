@@ -15,4 +15,9 @@ class Device extends Model
     {
         return $this->belongsTo(Subnet::class);
     }
+
+    public function cluster()
+    {
+        return $this->belongsTo(Cluster::class);
+    }
 }

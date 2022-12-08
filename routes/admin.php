@@ -66,6 +66,12 @@ Route::resource('subinstance.cluster', ClusterController::class);
 Route::resource('subnet', SubnetController::class);
 Route::resource('device', DeviceController::class);
 
+Route::controller(DeviceController::class)->group(function() {
+    Route::post('device/get_cluster', 'get_cluster')->name('device.get_cluster');
+    Route::post('device/sign_cluster', 'sign_cluster')->name('device.sign_cluster');
+});
+
+
 // activity log
 Route::controller(ActivityLogController::class)->group(function () {
     Route::get('/activity_log', 'index')->name('activity_log.index');
@@ -73,8 +79,6 @@ Route::controller(ActivityLogController::class)->group(function () {
 Route::controller(RawdataController::class)->group(function () {
     Route::get('/rawdata', 'index')->name('rawdata.index');
 });
-
-
 
 //Route Gateway
 Route::controller(GatewayController::class)->group(function() {
