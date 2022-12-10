@@ -36,7 +36,7 @@ return new class extends Migration
             $table->foreignId('cluster_id')->nullable();
             $table->timestamps();
             $table->foreign('subnet_id')->references('id')->on('subnets');
-            $table->foreign('cluster_id')->references('id')->on('cluster');
+            $table->foreign('cluster_id')->references('id')->on('clusters');
         });
     }
 
