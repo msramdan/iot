@@ -9,4 +9,10 @@ class Ticket extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+
+    public function created_by()
+    {
+        return $this->belongsTo(Instance::class, 'author_id', 'id');
+    }
 }

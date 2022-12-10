@@ -8,11 +8,11 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Spatie\Permission\Traits\HasRoles;
 class Instance extends Authenticatable
 {
     use LogsActivity;
-    use HasFactory;
+    use HasFactory, HasRoles;
     protected static $logUnguarded = true;
 
     protected $guarded = ['id'];
