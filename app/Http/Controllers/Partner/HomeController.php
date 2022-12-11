@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Partner;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Cluster;
+use App\Models\Device;
 use App\Models\Instance;
+use App\Models\Subinstance;
 use Carbon\Carbon;
 use Illuminate\Validation\Rules\Password;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -15,7 +18,13 @@ class HomeController extends Controller
 {
     public function index()
     {
-       return view('partner.dashboard.index');
+        $total_subinstance = Subinstance::whereInstanceId(auth()->id())->count();
+        $cluster = Cluster::whereInstanceId(auth()->id())->get();
+        $total_device = Device::whereIn('cluster_id', $cluster->pluck('id'))->count();
+        $total_cluster = $cluster->count();
+
+
+       return view('partner.dashboard.index', compact('total_subinstance', 'total_cluster', 'total_device'));
     }
 
     public function change_password(Request $request)

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('image_1')->nullable();
             $table->string('image_2')->nullable();
-            $table->integer('author_id');
+            $table->integer('author_id')->nullable();
             $table->integer('is_device');
             $table->enum('status', [
                 'open', 'acknowlodge', 'closed', 'cancelled', 'need confirmation', 'alert'

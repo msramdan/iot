@@ -1,21 +1,18 @@
 <?php
 
-use App\Http\Controllers\Admin\ActivityLogController;
-use App\Http\Controllers\Admin\RolesController;
-use App\Http\Controllers\Admin\SettingAppController;
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Partner\SubInstanceController;
+use App\Http\Controllers\Partner\TicketController;
 use App\Http\Controllers\Partner\HomeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\InstanceLoginController;
 use App\Http\Controllers\CallbackController;
-use App\Models\Subinstance;
-use Illuminate\Support\Facades\Hash;
+
 
 Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::class, 'reloadCaptcha']);
 
 Route::controller(CallbackController::class)->group(function () {
-    Route::post('/callback/gateway', 'index')->name('callback.index');
+    Route::post('/callback/gateway/uplink', 'index')->name('callback.index');
 });
 /**
  * Login Partner
@@ -36,12 +33,17 @@ Route::controller(ForgotPasswordController::class)->group(function() {
 /**
  * Route Partner / Instance
  */
-Route::middleware(['auth:instances'])->group(function() {
+Route::middleware(['auth:instances'])->name('instances.')->group(function() {
     Route::controller(HomeController::class)->group(function() {
-        Route::get('/', 'index')->name('instances.dashboard');
-        Route::post('/instance/change_password', 'change_password')->name('instances.change_password');
+        Route::get('/', 'index')->name('dashboard');
+        Route::post('/instance/change_password', 'change_password')->name('change_password');
+    });
+    Route::resources(['tickets' => TicketController::class]);
+    Route::controller(SubInstanceController::class)->group(function() {
+        Route::get('/subinstance', 'index')->name('subinstance.index');
     });
 });
+
 
 
 
