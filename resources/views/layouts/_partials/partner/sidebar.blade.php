@@ -11,7 +11,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('home') }}" href="{{ route('instances.dashboard') }}" role="button"
+                <a class="nav-link menu-link {{ set_active('instances.subinstance') }}" href="{{ route('instances.subinstance.index') }}" role="button"
                     aria-expanded="false" aria-controls="sidebarDashboards">
                     <i class="mdi mdi-bank"></i> <span data-key="t-dashboards">Sub Instance</span>
                 </a>
