@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
+            $table->string('category', 255);
             $table->string('devEUI', 255)->nullable();
             $table->string('devName', 255)->nullable();
             $table->string('devAddr', 255)->nullable();

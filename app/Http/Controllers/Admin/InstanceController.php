@@ -142,7 +142,7 @@ class InstanceController extends Controller
         );
 
         if ($validator->fails()) {
-            Alert::toast('Data failed to save. ' . $validator->errors()->first(), 'error');
+            // Alert::toast('Data failed to save. ' . $validator->errors()->first(), 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
 
@@ -241,7 +241,7 @@ class InstanceController extends Controller
         );
 
         if ($validator->fails()) {
-            Alert::toast('Data failed to save. ' . $validator->errors()->first(), 'error');
+            // Alert::toast('Data failed to save. ' . $validator->errors()->first(), 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
 
@@ -284,7 +284,7 @@ class InstanceController extends Controller
                     "appIDs" => [$instance->appID],
                 ]);
 
-            
+
 
             if ($instance->delete()) {
                 Alert::toast('Data deleted successfully', 'success');

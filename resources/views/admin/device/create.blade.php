@@ -24,22 +24,38 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
+                            <div class="mb-3">
+                                <label for="kategori">Category Device</label>
+                                <select name="kategori" id="kategori" class="form-control @error('kategori') is-invalid @enderror">
+                                    <option value="" selected disabled>-- Pilih --</option>
+                                    <option value="Water Meter" {{  old('kategori') == 'Water Meter' ? 'selected' : '' }} >Water Meter</option>
+                                    <option value="Power Meter" {{  old('kategori') == 'Power Meter' ? 'selected' : '' }} >Power Meter</option>
+                                    <option value="Gas Meter" {{  old('kategori') == 'Gas Meter' ? 'selected' : '' }} >Gas Meter</option>
+                                </select>
+                                @error('kategori')
+                                    {{-- <span style="color:#f06548;font-size: .875em;margin-top: 0.25rem;">{{ $message }}</span> --}}
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="appID">App ID</label>
-                                <select name="appID" id="appID" class="form-control selectClass  @error('appID') is-invalid @enderror">
+                                <select name="appID" id="appID" class="form-control @error('appID') is-invalid @enderror">
                                     <option value="" selected disabled>-- Pilih --</option>
                                     @foreach ($appID as $data)
                                         <option value="{{ $data->appID }}" @selected(old('appID') == $data->appID)>{{ $data->appID }} - {{ $data->instance_name }} </option>
                                     @endforeach
                                 </select>
                                 @error('appID')
-                                    <span style="color:#f06548;font-size: .875em;margin-top: 0.25rem;">{{ $message }}</span>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="appEUI">App EUI</label>
                                 <input type="text" name="appEUI" id="appEUI" value="{{ old('appEUI') }}"
@@ -52,16 +68,18 @@
                         <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="devType">Dev Type</label>
-                                <select name="devType" id="devType" class="form-control" @error('devType') @enderror>
+                                <select name="devType" id="devType" class="form-control @error('devType') is-invalid @enderror">
                                     <option value="" selected disabled>-- Pilih --</option>
                                     <option value="abp-type" @selected(old('devType') == 'abp-type')>Abp</option>
                                     <option value="otaa-type" @selected(old('devType') == 'otaa-type')>Otaa</option>
                                 </select>
                                 @error('devType')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
+
+
                         <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="devName">Dev Name</label>
@@ -94,14 +112,14 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="mb-3">
-                                <label for="subnet">Subnet</label>
-                                <select name="subnet_id" id="subnet" class="form-control selectClass" @error('subnet') @enderror>
+                                <label for="subnet_id">Subnet</label>
+                                <select name="subnet_id" id="subnet_id" class="form-control @error('subnet_id') is-invalid @enderror" >
                                     <option value="" selected disabled>-- Pilih --</option>
                                     @foreach ($subnets as $subnet)
                                         <option value="{{ $subnet->id }}" @selected(old('subnet_id') == $subnet->id)>{{ $subnet->subnet }}</option>
                                     @endforeach
                                 </select>
-                                @error('subnet')
+                                @error('subnet_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -109,10 +127,10 @@
                         <div class="col-12 col-md-6">
                             <div class="mb-3">
                                <label for="supportClassB">Support Class B</label>
-                               <select name="supportClassB" id="supportClassB" class="form-control" @error('supportClassB') @enderror>
+                               <select name="supportClassB" id="supportClassB" class="form-control @error('supportClassB') is-invalid @enderror" >
                                     <option value="" selected disabled>-- Pilih --</option>
-                                    <option value="true" @selected(old('supportClassB') == true)>True</option>
-                                    <option value="false" @selected(old('supportClassB') == false)>False</option>
+                                    <option value="True" {{  old('supportClassB') == 'True' ? 'selected' : '' }} >True</option>
+                                    <option value="False" {{  old('supportClassB') == 'False' ? 'selected' : '' }} >False</option>
                                 </select>
                                 @error('supportClassB')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -122,10 +140,10 @@
                         <div class="col-12 col-md-6">
                             <div class="mb-3">
                                <label for="supportClassC">Support Class C</label>
-                               <select name="supportClassC" id="supportClassC" class="form-control" @error('supportClassC') @enderror>
+                               <select name="supportClassC" id="supportClassC" class="form-control @error('supportClassC') is-invalid @enderror" >
                                     <option value="" selected disabled>-- Pilih --</option>
-                                    <option value="true" @selected(old('supportClassC') == true)>True</option>
-                                    <option value="false" @selected(old('supportClassC') == false)>False</option>
+                                    <option value="True" {{  old('supportClassC') == 'True' ? 'selected' : '' }} >True</option>
+                                    <option value="False" {{  old('supportClassC') == 'False' ? 'selected' : '' }} >False</option>
                                 </select>
                                 @error('supportClassC')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -145,7 +163,7 @@
                         <div class="col-12 col-md-6">
                             <div class="mb-3">
                                 <label for="authType">Auth Type</label>
-                                <select name="authType" id="authType" class="form-control" @error('authType') @enderror>
+                                <select name="authType" id="authType" class="form-control @error('authType') is-invalid @enderror" >
                                     <option value="" selected disabled>-- Pilih --</option>
                                     <option value="abp" @selected(old('authType') == 'abp')>Abp</option>
                                     <option value="otaa" @selected(old('authType') == 'otaa')>Otaa</option>

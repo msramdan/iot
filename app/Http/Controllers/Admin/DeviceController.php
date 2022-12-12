@@ -82,6 +82,7 @@ class DeviceController extends Controller
     public function store(Request $request)
     {
         $rules = [
+            'kategori'      => 'required',
             'appID'         => 'required',
             'appEUI'        => 'required',
             'appKey'        => 'required',
@@ -111,8 +112,7 @@ class DeviceController extends Controller
         );
 
         if ($validator->fails()) {
-            Alert::toast($validator->errors()->first(), 'error');
-            return redirect()->back();
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
 
         try {

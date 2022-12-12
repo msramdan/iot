@@ -218,16 +218,16 @@
                                     </div>
                                     <div class="mb-3">
                                         <div>
-                                            <label for="bussiness">Bussiness</label>
-                                            <select name="bussiness_id" id="bussiness"
-                                                class="form-control">
+                                            <label for="bussiness_id">Bussiness</label>
+                                            <select name="bussiness_id" id="bussiness_id"
+                                                class="form-control @error('bussiness_id') is-invalid @enderror">
                                                 <option value="">-- Select --</option>
                                                 @foreach ($bussinesses as $bussiness)
-                                                    <option value="{{ $bussiness->id }}">
+                                                    <option value="{{ $bussiness->id }}" {{ old('bussiness_id') == $bussiness->id ? 'selected' : '' }}>
                                                         {{ $bussiness->bussiness_name }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('provinsi_id')
+                                            @error('bussiness_id')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -256,14 +256,14 @@
                                         <div>
                                             <label for="provinsi">Provinsi</label>
                                             <select name="province_id" id="provinsi"
-                                                class="form-control">
+                                                class="form-control  @error('province_id') is-invalid @enderror">
                                                 <option value="">-- Select --</option>
                                                 @foreach ($provinces as $province)
                                                     <option value="{{ $province->id }}">
                                                         {{ $province->provinsi }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('provinsi_id')
+                                            @error('province_id')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -271,11 +271,11 @@
                                     <div class="mb-3">
                                         <div>
                                             <label for="kota">Kab/Kota</label>
-                                            <select name="city_id" id="kota" class="form-control">
+                                            <select name="city_id" id="kota" class="form-control  @error('city_id') is-invalid @enderror">
                                                 <option value="">-- Select --</option>
 
                                             </select>
-                                            @error('kabkot_id')
+                                            @error('city_id')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -284,7 +284,7 @@
                                         <div>
                                             <label for="kecamatan">Kecamatan</label>
                                             <select name="district_id" id="kecamatan"
-                                                class="form-control">
+                                                class="form-control  @error('district_id') is-invalid @enderror">
                                                 <option value="">-- Select --</option>
                                             </select>
                                             @error('district_id')
@@ -296,7 +296,7 @@
                                         <div>
                                             <label for="kelurahan">Kelurahan</label>
                                             <select name="village_id" id="kelurahan"
-                                                class="form-control">
+                                                class="form-control  @error('village_id') is-invalid @enderror">
                                                 <option value="">-- Select --</option>
                                             </select>
                                             @error('village_id')

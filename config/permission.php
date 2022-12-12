@@ -102,8 +102,14 @@ return [
         'raw_data' => [
             'raw_data_show'
         ],
-        'parsed_data' => [
-            'parsed_data_show'
+        'parsed_wm' => [
+            'parsed_wm_show'
+        ],
+        'parsed_gm' => [
+            'parsed_gm_show'
+        ],
+        'parsed_pm' => [
+            'parsed_pm_show'
         ]
     ],
 

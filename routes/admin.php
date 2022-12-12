@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\GatewayController;
 use App\Http\Controllers\Admin\SubnetController;
 use App\Http\Controllers\CallbackController;
 use App\Http\Controllers\Admin\DeviceController;
+use App\Http\Controllers\Admin\ParsedWaterMaterController;
 
 /**
  * Route Admin Panel
@@ -79,6 +80,13 @@ Route::controller(ActivityLogController::class)->group(function () {
 Route::controller(RawdataController::class)->group(function () {
     Route::get('/rawdata', 'index')->name('rawdata.index');
 });
+Route::controller(ParsedWaterMaterController::class)->group(function () {
+    Route::get('/parsed-wm', 'index')->name('parsed-wm.index');
+});
+
+
+
+
 
 //Route Gateway
 Route::controller(GatewayController::class)->group(function() {
