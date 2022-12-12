@@ -64,6 +64,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Cluster</th>
+                                            <th>Category</th>
                                             <th>App ID</th>
                                             <th>App EUI</th>
                                             <th>App Key</th>
@@ -105,7 +106,11 @@
             },
             {
                 data: 'cluster',
-                name: 'cluster'
+                name: 'cluster',
+            },
+            {
+                data: 'category',
+                name: 'category'
             },
             {
                 data: 'appID',
