@@ -124,7 +124,7 @@
                             @can('parsed_data_show')
                             <li class="nav-item">
                                 <a href=""
-                                    class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-chat"> Parsed Log Data
+                                    class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-chat"> Parsed Rawdata
                                 </a>
                             </li>
                             @endcan
