@@ -98,6 +98,12 @@ return [
         ],
         'gateway' => [
             'gateway_show'
+        ],
+        'raw_data' => [
+            'raw_data_show'
+        ],
+        'parsed_data' => [
+            'parsed_data_show'
         ]
     ],
 

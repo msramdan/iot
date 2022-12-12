@@ -104,19 +104,30 @@
                         role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                         <i class="mdi mdi-math-log"></i> <span data-key="t-advance-ui">System Log</span>
                     </a>
-                    <div class="menu-dropdown collapse {{ set_show(['activity_log*', 'approved_log_merchant*', 'mdr_log*']) }}"
+                    <div class="menu-dropdown collapse {{ set_show(['activity_log*', 'raw_data*', 'parsed_data*']) }}"
                         id="sidebarAdvanceUI" style="">
                         <ul class="nav nav-sm flex-column">
+                            @can('activity_log')
                             <li class="nav-item">
                                 <a href="{{ route('activity_log.index') }}"
                                     class="nav-link {{ set_active(['activity_log*']) }}" data-key="t-chat"> Activity
                                     Log</a>
                             </li>
+                            @endcan
+                            @can('raw_data_show')
                             <li class="nav-item">
                                 <a href="{{ route('rawdata.index') }}"
                                     class="nav-link {{ set_active(['rawdata*']) }}" data-key="t-chat"> Rawdata
                                 </a>
                             </li>
+                            @endcan
+                            @can('parsed_data_show')
+                            <li class="nav-item">
+                                <a href="{{ route('parseddata.index') }}"
+                                    class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-chat"> Parsed Log Data
+                                </a>
+                            </li>
+                            @endcan
                         </ul>
                     </div>
                 </li>
