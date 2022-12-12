@@ -41,6 +41,7 @@ Route::middleware(['auth:instances'])->name('instances.')->group(function() {
     Route::resources(['tickets' => TicketController::class]);
     Route::controller(SubInstanceController::class)->group(function() {
         Route::get('/subinstance', 'index')->name('subinstance.index');
+        Route::get('/subinstance/cluster/{id}', 'cluster')->name('subinstance.cluster');
     });
 });
 

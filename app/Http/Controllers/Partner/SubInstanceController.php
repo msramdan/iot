@@ -18,7 +18,10 @@ class SubInstanceController extends Controller
         $subinstance = Subinstance::where('instance_id', $instance->id)->get();
         $cluster = Cluster::where('instance_id', $instance->id)->get();
         $device = Device::where('appID', $instance->appID)->get();
-
         return view('partner.subinstance.index', compact('instance', 'subinstance', 'cluster', 'device'));
+    }
+
+    public function cluster(){
+        return "cluster";
     }
 }

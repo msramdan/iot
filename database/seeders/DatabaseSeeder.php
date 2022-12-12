@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             SettingAppSeeder::class,
             BussinessSeeder::class,
-            InstanceSeeder::class,
+            // InstanceSeeder::class,
             SubnetSeeder::class
         ]);
     }
