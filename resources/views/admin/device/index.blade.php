@@ -28,29 +28,16 @@
                             @endcan
                         </div>
                         <div class="card-body">
-                            {{-- <div class="row">
+                            <div class="row">
                                 <div class="col-md-3">
                                     <form method="get">
                                         @csrf
                                         <div class="input-group mb-4">
-                                            <input type="text" class="form-control border-0 dash-filter-picker shadow"
-                                                data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y"
-                                                data-deafult-date="01 Jan 2022 to 31 Jan 2022" value=""
-                                                id="filter_date_merchant" />
-                                            <div class="input-group-text bg-primary border-primary text-white">
-                                                <i class="ri-calendar-2-line"></i>
-                                            </div>
-                                        </div>
-                                        <!--end row-->
-                                    </form>
-                                </div>
-                                <div class="col-md-3">
-                                    <form method="get">
-                                        @csrf
-                                        <div class="input-group mb-4">
-                                            <select name="kabkot_id" id="kota" class="form-control">
-                                                <option value="">-- Filter By City --</option>
-
+                                            <select name="category_device" id="category_device" class="form-control">
+                                                <option value="">-- Filter By Category Device --</option>
+                                                <option value="Water Meter">Water Meter</option>
+                                                <option value="Power Meter">Power Meter</option>
+                                                <option value="Gas Meterr">Gas Meter</option>
                                             </select>
                                         </div>
                                         <!--end row-->
@@ -60,20 +47,23 @@
                                     <form method="get">
                                         @csrf
                                         <div class="input-group mb-4">
-                                            <select name="kabkot_id" id="kota" class="form-control">
-                                                <option value="">-- Filter By MCC --</option>
-
+                                            <select name="instance" id="instance" class="form-control">
+                                                <option value="">-- Filter By Instance --</option>
+                                                @foreach ($instances as $instance)
+                                                <option value="{{ $instance->appID }}">{{ $instance->instance_name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <!--end row-->
                                     </form>
                                 </div>
-                            </div> --}}
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-sm" id="dataTable">
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Cluster</th>
                                             <th>App ID</th>
                                             <th>App EUI</th>
                                             <th>App Key</th>
@@ -83,7 +73,6 @@
                                             <th>Region</th>
                                             <th>Subnet</th>
                                             <th>Auth Type</th>
-                                            <th>Cluster</th>
                                             @canany(['device_show', 'device_update', 'device_delete'])
                                                 <th>Action</th>
                                             @endcanany
@@ -102,6 +91,8 @@
 @endsection
 @push('js')
     <script>
+        $('#instance').select2();
+
         let base_url = "{{ url('/') }}";
 
         const action =
@@ -111,6 +102,10 @@
                 name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
+            },
+            {
+                data: 'cluster',
+                name: 'cluster'
             },
             {
                 data: 'appID',
@@ -147,11 +142,7 @@
             {
                 data: 'authType',
                 name: 'authType'
-            },
-            {
-                data: 'cluster',
-                name: 'cluster'
-            },
+            }
         ]
 
         if (action) {
@@ -163,11 +154,25 @@
             })
         }
 
-        $('#dataTable').DataTable({
+       var table = $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('device.index') }}",
+            ajax: {
+                url: "{{ route('device.index') }}",
+                data: function (s) {
+                    s.instance = $('select[name=instance] option').filter(':selected').val()
+                    s.category_device = $('select[name=category_device] option').filter(':selected').val()
+                }
+            },
             columns: columns
         });
+
+        $('#instance').change(function() {
+            table.draw();
+        })
+
+        $('#category_device').change(function() {
+            table.draw();
+        })
     </script>
 @endpush

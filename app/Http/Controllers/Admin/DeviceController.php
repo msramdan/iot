@@ -29,10 +29,22 @@ class DeviceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $instances = Instance::all();
+
         if (request()->ajax()) {
-            $device = Device::with(['subnet', 'cluster'])->get();
+            $device = Device::with(['subnet', 'cluster']);
+
+            if ($request->has('category_device') && !empty($request->category_device)) {
+                $device = $device->where('category', $request->category_device);
+            }
+
+            if ($request->has('instance') && !empty($request->instance)) {
+                $device = $device->where('appID', $request->instance);
+            }
+
+            $device = $device->orderBy('id', 'desc')->get();
 
             return DataTables::of($device)
                 ->addIndexColumn()
@@ -54,7 +66,7 @@ class DeviceController extends Controller
                 ->toJson();
         }
 
-        return view('admin.device.index');
+        return view('admin.device.index', compact('instances'));
     }
 
     /**
@@ -82,7 +94,7 @@ class DeviceController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'kategori'      => 'required',
+            'category'      => 'required',
             'appID'         => 'required',
             'appEUI'        => 'required',
             'appKey'        => 'required',
@@ -145,8 +157,6 @@ class DeviceController extends Controller
                 $payload['nwkSKey'] = $request->nwkSKey;
                 $payload['devAddr'] = $request->devAddr;
             }
-
-            //dd($payload);
 
             $client = new Client;
 
@@ -230,6 +240,7 @@ class DeviceController extends Controller
     public function update(Request $request, Device $device)
     {
         $rules = [
+            'category'      => 'required',
             'appID'         => 'required',
             'appEUI'        => 'required',
             'appKey'        => 'required',

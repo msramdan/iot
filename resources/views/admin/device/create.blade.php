@@ -27,13 +27,13 @@
                         <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="kategori">Category Device</label>
-                                <select name="kategori" id="kategori" class="form-control @error('kategori') is-invalid @enderror">
+                                <select name="category" id="category" class="form-control @error('category') is-invalid @enderror">
                                     <option value="" selected disabled>-- Pilih --</option>
-                                    <option value="Water Meter" {{  old('kategori') == 'Water Meter' ? 'selected' : '' }} >Water Meter</option>
-                                    <option value="Power Meter" {{  old('kategori') == 'Power Meter' ? 'selected' : '' }} >Power Meter</option>
-                                    <option value="Gas Meter" {{  old('kategori') == 'Gas Meter' ? 'selected' : '' }} >Gas Meter</option>
+                                    <option value="Water Meter" {{  old('category') == 'Water Meter' ? 'selected' : '' }} >Water Meter</option>
+                                    <option value="Power Meter" {{  old('category') == 'Power Meter' ? 'selected' : '' }} >Power Meter</option>
+                                    <option value="Gas Meter" {{  old('category') == 'Gas Meter' ? 'selected' : '' }} >Gas Meter</option>
                                 </select>
-                                @error('kategori')
+                                @error('category')
                                     {{-- <span style="color:#f06548;font-size: .875em;margin-top: 0.25rem;">{{ $message }}</span> --}}
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -129,8 +129,8 @@
                                <label for="supportClassB">Support Class B</label>
                                <select name="supportClassB" id="supportClassB" class="form-control @error('supportClassB') is-invalid @enderror" >
                                     <option value="" selected disabled>-- Pilih --</option>
-                                    <option value="True" {{  old('supportClassB') == 'True' ? 'selected' : '' }} >True</option>
-                                    <option value="False" {{  old('supportClassB') == 'False' ? 'selected' : '' }} >False</option>
+                                    <option value="true" {{  old('supportClassB') == 'true' ? 'selected' : '' }} >True</option>
+                                    <option value="false" {{  old('supportClassB') == 'false' ? 'selected' : '' }} >False</option>
                                 </select>
                                 @error('supportClassB')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -142,8 +142,8 @@
                                <label for="supportClassC">Support Class C</label>
                                <select name="supportClassC" id="supportClassC" class="form-control @error('supportClassC') is-invalid @enderror" >
                                     <option value="" selected disabled>-- Pilih --</option>
-                                    <option value="True" {{  old('supportClassC') == 'True' ? 'selected' : '' }} >True</option>
-                                    <option value="False" {{  old('supportClassC') == 'False' ? 'selected' : '' }} >False</option>
+                                    <option value="true" {{  old('supportClassC') == 'true' ? 'selected' : '' }} >True</option>
+                                    <option value="false" {{  old('supportClassC') == 'false' ? 'selected' : '' }} >False</option>
                                 </select>
                                 @error('supportClassC')
                                 <div class="invalid-feedback">{{ $message }}</div>
