@@ -132,8 +132,8 @@ class DeviceController extends Controller
                 "authType"=> $request->authType,
                 "appID"=> intval($request->appID),
                 "appKey"=> $request->appKey,
-                "supportClassB"=>  $request->supportClassB == 'false' ? false : true ,
-                "supportClassC"=>  $request->supportClassC == 'false' ? false : true,
+                "supportClassB"=>  $request->supportClassB == 'False' ? false : true ,
+                "supportClassC"=>  $request->supportClassC == 'False' ? false : true,
             ];
 
             if ($request->devType == 'otaa-type') {
@@ -146,7 +146,7 @@ class DeviceController extends Controller
                 $payload['devAddr'] = $request->devAddr;
             }
 
-            //dd($payload);
+            // dd($payload);
 
             $client = new Client;
 

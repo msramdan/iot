@@ -74,6 +74,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Category</th>
                                             <th>App ID</th>
                                             <th>App EUI</th>
                                             <th>App Key</th>
@@ -111,6 +112,10 @@
                 name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
+            },
+            {
+                data: 'kategori',
+                name: 'kategori'
             },
             {
                 data: 'appID',
