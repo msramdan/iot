@@ -11,7 +11,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('instance') }}" href="{{ route('instance.index') }}"
+                <a class="nav-link menu-link {{ set_active('instance.*') }}" href="{{ route('instance.index') }}"
                     role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                     <i class="mdi mdi-bank"></i> <span data-key="t-dashboards">Instances</span>
                 </a>
@@ -23,7 +23,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('gateway') }}" href="{{ route('gateway.index') }}"
+                <a class="nav-link menu-link {{ set_active('gateway.*') }}" href="{{ route('gateway.index') }}"
                     role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                     <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards">Gateway</span>
                 </a>
@@ -45,7 +45,7 @@
                 <a class="nav-link menu-link collapsed" href="#sidebarIcons" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
                     <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Master Data</span>
                 </a>
-                <div class="collapse menu-dropdown {{ set_show(['bussiness*']) }}" id="sidebarIcons">
+                <div class="collapse menu-dropdown {{ set_show(['bussiness*','subnet.*']) }}" id="sidebarIcons">
                     <ul class="nav nav-sm flex-column">
                         @can('bussiness_show')
                         <li class="nav-item">
@@ -104,7 +104,7 @@
                         role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                         <i class="mdi mdi-math-log"></i> <span data-key="t-advance-ui">System Log</span>
                     </a>
-                    <div class="menu-dropdown collapse {{ set_show(['activity_log*', 'raw_data*', 'parsed-wm*']) }}"
+                    <div class="menu-dropdown collapse {{ set_show(['activity_log*', 'rawdata*', 'parsed-wm*']) }}"
                         id="sidebarAdvanceUI" style="">
                         <ul class="nav nav-sm flex-column">
                             @can('activity_log_show')
@@ -122,7 +122,7 @@
                             </li>
                             @endcan
                             <li class="nav-item">
-                                        <a href="#sidebarAccount" class="nav-link collapsed" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Parsed Raw Data
+                                        <a href="#sidebarAccount" class="nav-link collapsed" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Parsed Rawdata
                                         </a>
                                         <div class="menu-dropdown collapse" id="sidebarAccount" style="">
                                             <ul class="nav nav-sm flex-column">

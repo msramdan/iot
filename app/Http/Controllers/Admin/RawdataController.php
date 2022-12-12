@@ -12,7 +12,7 @@ class RawdataController extends Controller
     public function index ()
     {
         if(request()->ajax()){
-            return DataTables::of(Rawdata::query())
+            return DataTables::of(Rawdata::orderBy('id', 'DESC')->get())
                 ->addIndexColumn()
                 ->addColumn('payload', function($row){
                     $payload = json_decode($row->payload_data, true);

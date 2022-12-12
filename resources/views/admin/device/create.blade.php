@@ -100,7 +100,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="region">Region</label>
                                 <input type="text" name="region" id="region" value="{{ old('region') }}"
@@ -110,7 +110,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="subnet_id">Subnet</label>
                                 <select name="subnet_id" id="subnet_id" class="form-control @error('subnet_id') is-invalid @enderror" >
@@ -124,7 +124,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                <label for="supportClassB">Support Class B</label>
                                <select name="supportClassB" id="supportClassB" class="form-control @error('supportClassB') is-invalid @enderror" >
@@ -137,7 +137,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                <label for="supportClassC">Support Class C</label>
                                <select name="supportClassC" id="supportClassC" class="form-control @error('supportClassC') is-invalid @enderror" >
@@ -150,7 +150,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="appKey">App Key</label>
                                 <input type="text" name="appKey" id="appKey" value="{{ old('appKey') }}"
@@ -160,7 +160,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="authType">Auth Type</label>
                                 <select name="authType" id="authType" class="form-control @error('authType') is-invalid @enderror" >

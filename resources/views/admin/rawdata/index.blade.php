@@ -33,7 +33,7 @@
                                         <th>Type</th>
                                         <th>Freq</th>
                                         <th>Fport</th>
-                                        <th>GWS</th>
+                                        <th>Data</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -82,12 +82,12 @@
                 name: 'fport'
             },
             {
-                data: 'gws',
-                name: 'gws'
+                data: 'data',
+                name: 'data'
             },
         ]
 
-        
+
 
         const table = $('#dataTable').DataTable({
             processing: true,
@@ -100,7 +100,7 @@
         $('#dataTable tbody').on('click', 'td.dt-control', function () {
             var tr = $(this).closest('tr');
             var row = table.row(tr);
-            
+
             if (row.child.isShown()) {
                 row.child.hide();
                 tr.removeClass('shown');
@@ -118,7 +118,7 @@
         function format(d) {
             return (
                 `<div class="mb-4">
-                    <label for="form-label">Data</label>
+                    <label for="form-label">Payload</label>
                     <textarea name="" id="" cols="30" class="form-control" style="height: 100%;" disabled>${d.payload}</textarea>
                 </div>`
             );

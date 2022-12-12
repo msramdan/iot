@@ -21,25 +21,25 @@ if (!function_exists('set_active')) {
 }
 
 function setting_web()
-    {
-        $setting = DB::table('setting_app')->first();
+{
+    $setting = DB::table('setting_app')->first();
     return $setting->app_name;
-    }
+}
 
 function set_show($uri)
-    {
-        if (is_array($uri)) {
-            foreach ($uri as $u) {
-                if (Route::is($u)) {
-                    return 'show';
-                }
-            }
-        } else {
-            if (Route::is($uri)) {
+{
+    if (is_array($uri)) {
+        foreach ($uri as $u) {
+            if (Route::is($u)) {
                 return 'show';
             }
         }
+    } else {
+        if (Route::is($uri)) {
+            return 'show';
+        }
     }
+}
 
 
 function rupiah($angka)
@@ -49,7 +49,8 @@ function rupiah($angka)
     echo $hasil_rupiah;
 }
 
-function errorMessage($errorCode) {
+function errorMessage($errorCode)
+{
     $errors = [
         [
             'code' => 1001,
@@ -296,4 +297,62 @@ function errorMessage($errorCode) {
     }
 
     return [];
+}
+
+function base64toHex($string)
+{
+    $binary = base64_decode($string);
+    return bin2hex($binary);
+}
+
+function littleEndian($str)
+{
+    return bin2hex(implode(array_reverse(str_split(hex2bin($str)))));
+}
+
+
+function handleWaterMeter($lastInsertedId,$data)
+{
+    $hex = base64toHex($data);
+    $frameId = substr($hex, 0, 2);
+    if ($frameId == "00") {
+        $uplinkInterval = hexdec(littleEndian(substr($hex, 2, 4)));
+        $batraiStatus = hexdec(littleEndian(substr($hex, 6, 2)));
+        $temperatur = hexdec(littleEndian(substr($hex, 8, 4))) * 0.01;
+        $totalFlow = hexdec(littleEndian(substr($hex, 12, 16))) * 0.1;
+        $params =[
+            'rawdata_id' => $lastInsertedId,
+            'frame_id' => $frameId,
+            'uplink_interval' => $uplinkInterval,
+            'batrai_status' => $batraiStatus,
+            'temperatur' => $temperatur,
+            'total_flow' => $totalFlow,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+    } else if ($frameId == "10") {
+        $temperatur = hexdec(littleEndian(substr($hex, 2, 4))) * 0.01;
+         $params =[
+            'rawdata_id' => $lastInsertedId,
+            'frame_id' => $frameId,
+            'temperatur' => $temperatur,
+            'created_at' => date('Y-m-d H:i:s'),
+         ];
+    } else if ($frameId == "71") {
+        $totalFlow = hexdec(littleEndian(substr($hex, 2, 16))) * 0.01;
+        $params =[
+            'rawdata_id' => $lastInsertedId,
+            'frame_id' => $frameId,
+            'total_flow' => $totalFlow,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+    } else if ($frameId == "95") {
+        $batraiStatus = hexdec(littleEndian(substr($hex, 2, 2)));
+        $params =[
+            'rawdata_id' => $lastInsertedId,
+            'frame_id' => $frameId,
+            'batrai_status' => $batraiStatus,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+    }
+    DB::table('parsed_water_mater')->insert($params);
 }

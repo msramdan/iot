@@ -29,13 +29,13 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        {{-- <th>Dev Name</th> --}}
+                                        {{-- <th>Rawdata</th> --}}
+                                        {{-- <th>Dev EUI</th> --}}
                                         <th>Frame Id</th>
                                         <th>Uplink Interval</th>
                                         <th>Beterai Status</th>
                                         <th>Temperatur</th>
                                         <th>Total Flow</th>
-                                        <th>Rawdata</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -72,10 +72,6 @@
         {
             data: 'temperatur',
             name: 'temperatur'
-        },
-        {
-            data: 'total_flow',
-            name: 'total_flow'
         },
         {
             data: 'total_flow',

@@ -12,7 +12,7 @@ class ParsedWaterMaterController extends Controller
     public function index()
     {
         if(request()->ajax()){
-            return DataTables::of(ParsedWaterMater::query())
+            return DataTables::of(ParsedWaterMater::orderBy('id', 'DESC')->get())
                 ->addIndexColumn()
                 ->addColumn('payload', function($row){
                     $payload = json_decode($row->payload_data, true);

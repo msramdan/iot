@@ -41,7 +41,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="appID">App ID</label>
                                 <input type="text" name="appID" id="appID" value="{{ old('appID') ?? $device->appID }}"
@@ -51,7 +51,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="appEUI">App EUI</label>
                                 <input type="text" name="appEUI" id="appEUI" value="{{ old('appEUI') ?? $device->appEUI }}"
@@ -88,13 +88,13 @@
                             <div class="mb-3">
                                 <label for="devEUI">Dev EUI</label>
                                 <input type="text" name="devEUI" id="devEUI" value="{{ old('devEUI') ?? $device->devEUI }}"
-                                    class="form-control @error('devEUI') is-invalid @enderror " readonly>
+                                    class="form-control @error('devEUI') is-invalid @enderror " readonly >
                                 @error('devEUI')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="region">Region</label>
                                 <input type="text" name="region" id="region" value="{{ old('region') ?? $device->region }}"
@@ -104,7 +104,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="subnet">Subnet</label>
                                 <select name="subnet_id" id="subnet" class="form-control" @error('subnet') @enderror readonly>
@@ -144,6 +144,8 @@
                                 @enderror
                             </div>
                         </div>
+
+                        @if (old('authType') == 'otaa' || $device->authType == 'otaa')
                         <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="macVersion">Mac Version</label>
@@ -154,7 +156,10 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        @endif
+
+
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="appKey">App Key</label>
                                 <input type="text" name="appKey" id="appKey" value="{{ old('appKey') ?? $device->appKey }}"
@@ -164,7 +169,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <div class="mb-3">
                                 <label for="authType">Auth Type</label>
                                 <select name="authType" id="authType" class="form-control" @error('authType') @enderror readonly>
@@ -258,14 +263,6 @@
                 @enderror
             </div>
         </div>`;
-
-        $('#authType').change(function(){
-            if(this.value == 'abp'){
-                $('#type-condition').html(html)
-            }else{
-                $('#type-condition').html('')
-            }
-        })
 
 
     </script>

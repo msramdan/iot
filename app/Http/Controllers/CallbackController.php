@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Device;
 use App\Models\Rawdata;
 use App\Models\SettingApp;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
 class CallbackController extends Controller
 {
-    public function index (Request $request)
+    public function index(Request $request)
     {
         $header = $request->header('Authorization');
 
@@ -40,32 +43,49 @@ class CallbackController extends Controller
             return response()->json(['success' => false, 'message' => $validator->errors()->first()], 422);
         }
 
-        try{
+        try {
+            // cek device tedaftar pada aplikasi atw tidak
+            $device = Device::where('devEUI', $request->devEUI)->first();
+            if($device){
+                $categoryDevice =$device->category;
+                $save = Rawdata::create([
+                    'devEUI' => $request->devEUI,
+                    'appID'  => $request->appID,
+                    'type'   => $request->type,
+                    'time'   => $request->time,
+                    'gwid'   => $request->data['gwid'],
+                    'rssi'   => $request->data['rssi'],
+                    'snr'    => $request->data['snr'],
+                    'freq'   => $request->data['freq'],
+                    'dr'     => $request->data['dr'],
+                    'adr'    => $request->data['adr'],
+                    'class'  => $request->data['class'],
+                    'fcnt'   => $request->data['fCnt'],
+                    'fport'  => $request->data['fPort'],
+                    'confirmed' => $request->data['confirmed'],
+                    'data'  => $request->data['data'],
+                    'gws'   => json_encode($request->data['gws']),
+                    'payload_data' => json_encode($request->all()),
+                ]);
 
-            Rawdata::create([
-                'devEUI' => $request->devEUI,
-                'appID'  => $request->appID,
-                'type'   => $request->type,
-                'time'   => $request->time,
-                'gwid'   => $request->data['gwid'],
-                'rssi'   => $request->data['rssi'],
-                'snr'    => $request->data['snr'],
-                'freq'   => $request->data['freq'],
-                'dr'     => $request->data['dr'],
-                'adr'    => $request->data['adr'],
-                'class'  => $request->data['class'],
-                'fcnt'   => $request->data['fCnt'],
-                'fport'  => $request->data['fPort'],
-                'confirmed' => $request->data['confirmed'],
-                'data'  => json_encode($request->data),
-                'gws'   => json_encode($request->data['gws']),
-                'payload_data' => json_encode($request->all()),
-            ]);
+                $lastInsertedId= $save->id;
+                $dataRequest =$request->data['data'];
+                if($categoryDevice=='Water Meter'){
+                    handleWaterMeter($lastInsertedId,$dataRequest);
+                }
+                return response()->json([
+                    'message' => 'Callback success',
+                ], 201);
 
-            return response()->json([
-                'message' => 'Callback success',
-            ], 201);
-        }catch(Exception $err){
+            }else{
+                return response()->json([
+                    'message' => 'Device Tidak Di Temukan',
+                ], 404);
+            }
+            // parsed data by category
+
+
+        } catch (Exception $err) {
             return response()->json(['success' => false, 'message' => $err->getMessage()], 500);
         }
     }

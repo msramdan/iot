@@ -144,9 +144,11 @@ class DeviceController extends Controller
                 "authType"=> $request->authType,
                 "appID"=> intval($request->appID),
                 "appKey"=> $request->appKey,
-                "supportClassB"=>  $request->supportClassB == 'False' ? false : true ,
-                "supportClassC"=>  $request->supportClassC == 'False' ? false : true,
+                "supportClassB"=>  $request->supportClassB == 'false' ? false : true,
+                "supportClassC"=>  $request->supportClassC == 'false' ? false : true,
             ];
+            // dd($payload);
+
 
             if ($request->devType == 'otaa-type') {
                 $payload['macVersion'] = $request->macVersion;
@@ -192,10 +194,15 @@ class DeviceController extends Controller
 
                 return redirect()->route('device.index');
             }
-
             $data = $request->except('_token');
+            $save = Device::create($data);
+            $lastInsertedId= $save->id;
+            // insert master latest dataa
+            DB::table('master_latest_data')->insert([
+                'device_id' => $lastInsertedId,
+            ]);
 
-            Device::create($data);
+
 
             Alert::toast('Device successfully created', 'success');
         } catch (Exception $err) {
@@ -248,7 +255,7 @@ class DeviceController extends Controller
             'devName'       => 'required',
             'devEUI'        => 'required',
             'region'        => 'required',
-            'subnet_id'        => 'required',
+            'subnet_id'       => 'required',
             'supportClassB' => 'required',
             'supportClassC' => 'required',
             'macVersion'    => 'required',
@@ -344,14 +351,9 @@ class DeviceController extends Controller
         return redirect()->route('device.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Device  $device
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Device $device)
     {
+        // dd($device->devEUI);
         try {
             $url_endpoint = 'https://wspiot.xyz/openapi/device/delete';
 
@@ -395,14 +397,14 @@ class DeviceController extends Controller
 
                 return redirect()->back();
             }
-
+            // hapus raw data dan parsed data
+            $deleted = DB::table('rawdata')->where('devEUI', $device->devEUI)->delete();
             $device->delete();
             Alert::toast('Device successfully deleted', 'success');
         } catch (Exception $err) {
             \Log::error($err);
             Alert::toast('Failed to delete records', 'error');
         }
-
         return redirect()->route('device.index');
     }
 
