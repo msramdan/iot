@@ -198,6 +198,13 @@
                                         @enderror
                                     </div>
                                     <div class="mb-3">
+                                        <label for="push_url">Push Url</label>
+                                        <input type="text" class="form-control @error('inspush_urltance_name') is-invalid @enderror" name="push_url" id="push_url" placeholder="" value="{{ old('push_url') ? old('push_url') : $instance->push_url }}" autocomplete="off">
+                                        @error('push_url')
+                                        <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="username">Username</label>
                                         <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" id="username" placeholder="" value="{{ old('username') ? old('username') : $instance->username }}" autocomplete="off">
                                         @error('username')

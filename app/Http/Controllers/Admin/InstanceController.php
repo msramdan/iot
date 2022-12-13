@@ -111,12 +111,12 @@ class InstanceController extends Controller
      */
     public function store(Request $request)
     {
-
         $validator = Validator::make(
             $request->all(),
             [
                 'instance_code' => 'required|string|unique:instances,instance_code',
                 'instance_name' => 'required|string',
+                'push_url' => 'required|string',
                 'address1' => 'required|string',
                 'address2' => 'required|string',
                 'province_id' => 'required|numeric|exists:tbl_provinsi,id',
@@ -151,7 +151,7 @@ class InstanceController extends Controller
                 ->withOptions(['verify' => false])
                 ->post('https://wspiot.xyz/openapi/app/create', [
                     "appName" =>  Str::slug(request('instance_name', '_')),
-                    "pushURL" => "",
+                    "pushURL" => $request->push_url,
                     "enableMQTT" => false
                 ]);
             $data = $request->except(['_token']);
@@ -216,6 +216,7 @@ class InstanceController extends Controller
             [
                 'instance_code' => 'required|string|unique:instances,instance_code,' . $id,
                 'instance_name' => 'required|string',
+                'push_url' => 'required|string',
                 'address1' => 'required|string',
                 'address2' => 'required|string',
                 'province_id' => 'required|numeric|exists:tbl_provinsi,id',

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('appID');
             $table->string('appName', 255)->nullable();
+            $table->string('push_url', 255)->nullable();
             $table->string('instance_code', 255)->nullable();
             $table->string('instance_name', 255);
             $table->text('address1');
