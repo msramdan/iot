@@ -62,6 +62,12 @@ class DeviceController extends Controller
 
                     return $row->cluster->name;
                 })
+                ->addColumn('instance', function($row) {
+                    if (!$row->instance) {
+                        return '-';
+                    }
+                    return $row->instance->instance_name;
+                })
                 ->addColumn('action', 'admin.device._action')
                 ->toJson();
         }

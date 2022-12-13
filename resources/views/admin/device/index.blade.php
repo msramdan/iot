@@ -65,7 +65,7 @@
                                             <th>#</th>
                                             <th>Cluster</th>
                                             <th>Category</th>
-                                            <th>App ID</th>
+                                            <th>Instance</th>
                                             <th>App EUI</th>
                                             <th>App Key</th>
                                             <th>Dev EUI</th>
@@ -113,8 +113,8 @@
                 name: 'category'
             },
             {
-                data: 'appID',
-                name: 'appID'
+                data: 'instance',
+                name: 'instance'
             },
             {
                 data: 'appEUI',
