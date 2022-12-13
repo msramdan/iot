@@ -20,4 +20,9 @@ class Device extends Model
     {
         return $this->belongsTo(Cluster::class);
     }
+
+    public function instance()
+    {
+        return $this->belongsTo(Instance::class,'appID','appID');
+    }
 }
