@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('master_latest_data', function (Blueprint $table) {
             $table->id();
             $table->foreignId('device_id')->constrained('devices')->cascadeOnDelete();
-            $table->float('batrai_status',11,2)->nullable();
+            $table->string('batrai_status',20)->nullable();
             $table->float('temperatur',11,2)->nullable();
             $table->float('total_flow',11,2)->nullable();
             $table->timestamps();

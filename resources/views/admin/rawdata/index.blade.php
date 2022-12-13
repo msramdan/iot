@@ -28,6 +28,7 @@
                                     <tr>
                                         <th></th>
                                         <th>#</th>
+                                        <th>Parsed Data</th>
                                         <th>devEUI</th>
                                         <th>AppID</th>
                                         <th>Type</th>
@@ -60,6 +61,10 @@
                 name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
+            },
+            {
+                data: 'parsed',
+                name: 'parsed'
             },
             {
                 data: 'devEUI',

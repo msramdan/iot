@@ -18,6 +18,10 @@ class RawdataController extends Controller
                     $payload = json_decode($row->payload_data, true);
                     return json_encode($payload, JSON_PRETTY_PRINT);
                 })
+                ->addColumn('parsed', function ($row) {
+                        return '<a href="" class="btn btn-sm  btn-success"><i class="mdi mdi-eye"></i> Parsed Rawdata </a>';
+                })
+                ->rawColumns(['parsed', 'action'])
                 ->toJson();
         }
 

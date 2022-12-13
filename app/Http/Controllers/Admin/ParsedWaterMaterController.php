@@ -14,13 +14,36 @@ class ParsedWaterMaterController extends Controller
         if(request()->ajax()){
             return DataTables::of(ParsedWaterMater::orderBy('id', 'DESC')->get())
                 ->addIndexColumn()
-                ->addColumn('payload', function($row){
-                    $payload = json_decode($row->payload_data, true);
-                    return json_encode($payload, JSON_PRETTY_PRINT);
+                ->addColumn('uplink_interval', function ($row) {
+                    if ($row->uplink_interval) {
+                        return $row->uplink_interval.' Seconds';
+                    }
+                    return '-';
                 })
+                ->addColumn('temperatur', function ($row) {
+                    if ($row->temperatur) {
+                        return $row->temperatur.'C';
+                    }
+                    return '-';
+                })
+                ->addColumn('total_flow', function ($row) {
+                    if ($row->total_flow) {
+                        return $row->total_flow.'L';
+                    }
+                    return '-';
+                })
+                ->addColumn('batrai_status', function ($row) {
+                    if ($row->batrai_status) {
+                        return $row->batrai_status.' %';
+                    }
+                    return '-';
+                })
+                ->addColumn('rawdata_id', function ($row) {
+                        return '<a href="" class="btn btn-sm  btn-success"><i class="mdi mdi-eye"></i> Rawdata </a>';
+                })
+                ->rawColumns(['rawdata_id', 'action'])
                 ->toJson();
         }
-
         return view('admin.parsed_rawdata.index');
     }
 

@@ -318,13 +318,23 @@ function handleWaterMeter($lastInsertedId,$data)
     if ($frameId == "00") {
         $uplinkInterval = hexdec(littleEndian(substr($hex, 2, 4)));
         $batraiStatus = hexdec(littleEndian(substr($hex, 6, 2)));
+        // return $batraiStatus;
+
+        if($batraiStatus > 254){
+            $batt = 'Unknown';
+        }else if($batraiStatus == 00 || $batraiStatus == '00' ){
+            $batt = 'Power Supply';
+        }else{
+            $batt = $batraiStatus / 2.54;
+        }
+
         $temperatur = hexdec(littleEndian(substr($hex, 8, 4))) * 0.01;
         $totalFlow = hexdec(littleEndian(substr($hex, 12, 16))) * 0.1;
         $params =[
             'rawdata_id' => $lastInsertedId,
             'frame_id' => $frameId,
             'uplink_interval' => $uplinkInterval,
-            'batrai_status' => $batraiStatus,
+            'batrai_status' => $batt,
             'temperatur' => $temperatur,
             'total_flow' => $totalFlow,
             'created_at' => date('Y-m-d H:i:s'),
@@ -347,10 +357,17 @@ function handleWaterMeter($lastInsertedId,$data)
         ];
     } else if ($frameId == "95") {
         $batraiStatus = hexdec(littleEndian(substr($hex, 2, 2)));
+        if($batraiStatus > 254){
+            $batt = 'Unknown';
+        }else if($batraiStatus == 00 || $batraiStatus == '00' ){
+            $batt = 'Power Supply';
+        }else{
+            $batt = $batraiStatus / 2.54;
+        }
         $params =[
             'rawdata_id' => $lastInsertedId,
             'frame_id' => $frameId,
-            'batrai_status' => $batraiStatus,
+            'batrai_status' => $batt,
             'created_at' => date('Y-m-d H:i:s'),
         ];
     }
