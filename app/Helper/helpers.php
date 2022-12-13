@@ -355,4 +355,6 @@ function handleWaterMeter($lastInsertedId,$data)
         ];
     }
     DB::table('parsed_water_mater')->insert($params);
+
+    //update data master_latest_data
 }

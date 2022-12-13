@@ -29,7 +29,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        {{-- <th>Rawdata</th> --}}
+                                        <th>Rawdata</th>
                                         {{-- <th>Dev EUI</th> --}}
                                         <th>Frame Id</th>
                                         <th>Uplink Interval</th>
@@ -56,6 +56,10 @@
             name: 'DT_RowIndex',
             orderable: false,
             searchable: false
+        },
+        {
+            data: 'rawdata_id',
+            name: 'rawdata_id'
         },
         {
             data: 'frame_id',

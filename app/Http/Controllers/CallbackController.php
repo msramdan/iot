@@ -14,19 +14,19 @@ class CallbackController extends Controller
 {
     public function index(Request $request)
     {
-        $header = $request->header('Authorization');
+        // $header = $request->header('Authorization');
 
-        if (!$header) {
-            return response()->json(['message' => 'Invalid bearer Token'], 403);
-        }
+        // if (!$header) {
+        //     return response()->json(['message' => 'Invalid bearer Token'], 403);
+        // }
 
-        $setting = SettingApp::first();
+        // $setting = SettingApp::first();
 
-        $token = substr($header, 7);
+        // $token = substr($header, 7);
 
-        if ($setting->token_callback != $token) {
-            return response()->json(['success' => 'false', 'message' => 'Invalid Bearer Token'], 403);
-        }
+        // if ($setting->token_callback != $token) {
+        //     return response()->json(['success' => 'false', 'message' => 'Invalid Bearer Token'], 403);
+        // }
 
         $validator = Validator::make(
             $request->all(),
