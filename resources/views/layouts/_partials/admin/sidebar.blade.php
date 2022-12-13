@@ -19,7 +19,7 @@
             <li class="nav-item">
                 <a class="nav-link menu-link {{ set_active('device.*') }}" href="{{ route('device.index') }}"
                     role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                    <i class="mdi mdi-devices"></i> <span data-key="t-dashboards">Device</span>
+                    <i class="mdi mdi-devices"></i> <span data-key="t-dashboards">Management Device</span>
                 </a>
             </li>
             <li class="nav-item">
