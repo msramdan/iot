@@ -16,6 +16,32 @@
                     <i class="mdi mdi-bank"></i> <span data-key="t-dashboards">Instances</span>
                 </a>
             </li>
+            @canany(['master_water_meter_show', 'master_power_meter_show', 'master_gas_meter_show'])
+            <li class="nav-item">
+                <a class="nav-link menu-link collapsed" href="#latestData" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
+                    <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Latest Master Data</span>
+                </a>
+                <div class="collapse menu-dropdown {{ set_show(['master_water_meter*', 'master_power_meter*', 'master_gas_meter*']) }}" id="latestData">
+                    <ul class="nav nav-sm flex-column">
+                        @can('master_water_meter_show')
+                        <li class="nav-item">
+                            <a href="{{ route('master_water_meter.index') }}" class="nav-link {{ set_active(['master_water_meter*']) }}" data-key="t-remix">Master Water Meter</a>
+                        </li>
+                        @endcan
+                        @can('master_power_meter_show')
+                        <li class="nav-item">
+                            <a href="#" class="nav-link {{ set_active(['master_power_meter*']) }}" data-key="t-remix">Master Power Meter</a>
+                        </li>
+                        @endcan
+                        @can('master_gas_meter_show')
+                        <li class="nav-item">
+                            <a href="#" class="nav-link {{ set_active(['master_gas_meter*']) }}" data-key="t-remix">Master Gas Meter</a>
+                        </li>
+                        @endcan
+                    </ul>
+                </div>
+            </li>
+            @endcanany
             <li class="nav-item">
                 <a class="nav-link menu-link {{ set_active('device.*') }}" href="{{ route('device.index') }}"
                     role="button" aria-expanded="false" aria-controls="sidebarDashboards">
@@ -55,31 +81,6 @@
                         @can('subnet_show')
                         <li class="nav-item">
                             <a href="{{ route('subnet.index') }}" class="nav-link {{ set_active(['subnet*']) }}" data-key="t-remix">Subnet</a>
-                        </li>
-                        @endcan
-                    </ul>
-                </div>
-            </li>
-            @endcanany @canany(['master_water_meter_show', 'master_power_meter_show', 'master_gas_meter_show'])
-            <li class="nav-item">
-                <a class="nav-link menu-link collapsed" href="#latestData" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
-                    <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Latest Master Data</span>
-                </a>
-                <div class="collapse menu-dropdown {{ set_show(['master_water_meter*', 'master_power_meter*', 'master_gas_meter*']) }}" id="latestData">
-                    <ul class="nav nav-sm flex-column">
-                        @can('master_water_meter_show')
-                        <li class="nav-item">
-                            <a href="{{ route('master_water_meter.index') }}" class="nav-link {{ set_active(['master_water_meter*']) }}" data-key="t-remix">Master Water Meter</a>
-                        </li>
-                        @endcan
-                        @can('master_power_meter_show')
-                        <li class="nav-item">
-                            <a href="#" class="nav-link {{ set_active(['master_power_meter*']) }}" data-key="t-remix">Master Power Meter</a>
-                        </li>
-                        @endcan
-                        @can('master_gas_meter_show')
-                        <li class="nav-item">
-                            <a href="#" class="nav-link {{ set_active(['master_gas_meter*']) }}" data-key="t-remix">Master Gas Meter</a>
                         </li>
                         @endcan
                     </ul>
