@@ -55,6 +55,9 @@ class ParsedWaterMaterController extends Controller
                 ->addColumn('rawdata_id', function ($row) {
                         return '<a href="'.url('panel/rawdata?rawdata='.$row->rawdata_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> Rawdata </a>';
                 })
+                ->addColumn('created_at', function ($row) {
+                    return $row->created_at->format('d M Y H:i:s');
+                })
                 ->rawColumns(['rawdata_id', 'action'])
                 ->toJson();
         }

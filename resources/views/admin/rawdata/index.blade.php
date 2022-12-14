@@ -35,6 +35,7 @@
                                         <th>Freq</th>
                                         <th>Fport</th>
                                         <th>Data</th>
+                                        <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -89,6 +90,10 @@
             {
                 data: 'data',
                 name: 'data'
+            },
+            {
+                data: 'created_at',
+                name: 'created_at'
             },
         ]
 

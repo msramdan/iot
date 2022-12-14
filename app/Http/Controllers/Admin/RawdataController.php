@@ -35,6 +35,9 @@ class RawdataController extends Controller
                     }
 
                 })
+                ->addColumn('created_at', function ($row) {
+                    return $row->created_at->format('d M Y H:i:s');
+                })
                 ->rawColumns(['parsed', 'action'])
                 ->toJson();
         }

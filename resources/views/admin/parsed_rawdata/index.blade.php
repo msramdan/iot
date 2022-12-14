@@ -36,6 +36,7 @@
                                         <th>Beterai Status</th>
                                         <th>Temperatur</th>
                                         <th>Total Flow</th>
+                                        <th>Date</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -80,6 +81,10 @@
         {
             data: 'total_flow',
             name: 'total_flow'
+        },
+        {
+            data: 'created_at',
+            name: 'created_at'
         },
     ];
 
