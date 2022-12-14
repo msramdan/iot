@@ -153,7 +153,6 @@ class DeviceController extends Controller
                 "supportClassB"=>  $request->supportClassB == 'false' ? false : true,
                 "supportClassC"=>  $request->supportClassC == 'false' ? false : true,
             ];
-            // dd($payload);
 
 
             if ($request->devType == 'otaa-type') {
@@ -204,11 +203,9 @@ class DeviceController extends Controller
             $save = Device::create($data);
             $lastInsertedId= $save->id;
             // insert master latest dataa
-            DB::table('master_latest_data')->insert([
+            DB::table('master_latest_datas')->insert([
                 'device_id' => $lastInsertedId,
             ]);
-
-
 
             Alert::toast('Device successfully created', 'success');
         } catch (Exception $err) {
@@ -359,7 +356,6 @@ class DeviceController extends Controller
 
     public function destroy(Device $device)
     {
-        // dd($device->devEUI);
         try {
             $url_endpoint = 'https://wspiot.xyz/openapi/device/delete';
 

@@ -2,32 +2,43 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\ParsedWaterMater;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\MasterLatestData;
+use App\Models\Device;
+use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
 
-class ParsedWaterMaterController extends Controller
+class MasterLastestDataController extends Controller
 {
-    public function index(Request $request)
+    public function waterMeterMaster(Request $request)
     {
-        if(request()->ajax()){
-            $parsed_data = ParsedWaterMater::with(['rawdata' => function($q) {
-                $q->with(['device' => function($k) {
+         if (request()->ajax()) {
+           $parsed_data = MasterLatestData::with(['device' => function($k) {
                     $k->where('devices.category', 'Water Meter');
                 }]);
-            }]);
-
-            $query_parsed = intval($request->query('parsed_data'));
-
-            if (isset($query_parsed) && !empty($query_parsed)) {
-                $parsed_data = $parsed_data->where('rawdata_id', $query_parsed);
-            }
 
             $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
 
             return DataTables::of($parsed_data)
                 ->addIndexColumn()
+                ->addColumn('device', function($row) {
+                    if ($row->device) {
+                        return $row->device->devName;
+                    }
+
+                    return '-';
+                })
+                ->addColumn('devEUI', function($row) {
+                    if ($row->device) {
+                        return $row->device->devEUI;
+                    }
+
+                    return '-';
+                })
+                ->addColumn('frame_id', function($row) {
+                    return $row->frame_id ?? '-' ;
+                })
                 ->addColumn('uplink_interval', function ($row) {
                     if ($row->uplink_interval) {
                         return $row->uplink_interval.' Seconds';
@@ -58,7 +69,7 @@ class ParsedWaterMaterController extends Controller
                 ->rawColumns(['rawdata_id', 'action'])
                 ->toJson();
         }
-        return view('admin.parsed_rawdata.index');
-    }
 
+        return view('admin.device.latest-master-data.water-meter.index');
+    }
 }

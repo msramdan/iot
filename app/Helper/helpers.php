@@ -311,7 +311,7 @@ function littleEndian($str)
 }
 
 
-function handleWaterMeter($lastInsertedId,$data)
+function handleWaterMeter($lastInsertedId, $device_id, $data)
 {
     $hex = base64toHex($data);
     $frameId = substr($hex, 0, 2);
@@ -332,6 +332,7 @@ function handleWaterMeter($lastInsertedId,$data)
         $totalFlow = hexdec(littleEndian(substr($hex, 12, 16))) * 0.1;
         $params =[
             'rawdata_id' => $lastInsertedId,
+            'device_id' => $device_id,
             'frame_id' => $frameId,
             'uplink_interval' => $uplinkInterval,
             'batrai_status' => $batt,
@@ -343,6 +344,7 @@ function handleWaterMeter($lastInsertedId,$data)
         $temperatur = hexdec(littleEndian(substr($hex, 2, 4))) * 0.01;
          $params =[
             'rawdata_id' => $lastInsertedId,
+            'device_id' => $device_id,
             'frame_id' => $frameId,
             'temperatur' => $temperatur,
             'created_at' => date('Y-m-d H:i:s'),
@@ -351,6 +353,7 @@ function handleWaterMeter($lastInsertedId,$data)
         $totalFlow = hexdec(littleEndian(substr($hex, 2, 16))) * 0.01;
         $params =[
             'rawdata_id' => $lastInsertedId,
+            'device_id' => $device_id,
             'frame_id' => $frameId,
             'total_flow' => $totalFlow,
             'created_at' => date('Y-m-d H:i:s'),
@@ -366,6 +369,7 @@ function handleWaterMeter($lastInsertedId,$data)
         }
         $params =[
             'rawdata_id' => $lastInsertedId,
+            'device_id' => $device_id,
             'frame_id' => $frameId,
             'batrai_status' => $batt,
             'created_at' => date('Y-m-d H:i:s'),
@@ -374,4 +378,7 @@ function handleWaterMeter($lastInsertedId,$data)
     DB::table('parsed_water_mater')->insert($params);
 
     //update data master_latest_data
+    DB::table('master_latest_datas')
+    ->where('device_id', $device_id)
+    ->update($params);
 }

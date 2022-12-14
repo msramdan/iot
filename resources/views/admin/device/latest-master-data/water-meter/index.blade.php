@@ -1,12 +1,12 @@
 @extends('layouts.master')
-@section('title', 'Data Gateway')
+@section('title', 'Mater Latest Data Device')
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Parsed Data Water Meter</h4>
+                    <h4 class="mb-sm-0">Master Data Water Meter</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
@@ -30,7 +30,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Rawdata</th>
-                                        {{-- <th>Dev EUI</th> --}}
+                                        <th>Device</th>
+                                        <th>Dev EUI</th>
                                         <th>Frame Id</th>
                                         <th>Uplink Interval</th>
                                         <th>Beterai Status</th>
@@ -62,6 +63,14 @@
             name: 'rawdata_id'
         },
         {
+            data: 'device',
+            name: 'device',
+        },
+        {
+            data: 'devEUI',
+            name: 'devEUI',
+        },
+        {
             data: 'frame_id',
             name: 'frame_id'
         },
@@ -83,21 +92,10 @@
         },
     ];
 
-    const params = new Proxy(new URLSearchParams(window.location.search), {
-        get: (searchParams, prop) => searchParams.get(prop),
-    });
-    // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
-    let query = params.parsed_data; // "some_value"
-
-    var table = $('#dataTable').DataTable({
+    const table = $('#dataTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: {
-            url: "{{ route('parsed-wm.index') }}",
-            data: function (s) {
-                s.parsed_data = query
-            }
-        },
+        ajax: "{{ route('master_water_meter.index') }}",
         columns: columns
     });
 </script>
