@@ -14,14 +14,19 @@ class SubInstanceController extends Controller
 {
     public function index()
     {
+
         $instance = Instance::where('id', auth()->guard('instances')->user()->id)->first();
-        $subinstance = Subinstance::where('instance_id', $instance->id)->get();
+        
+        $subinstance = Subinstance::where('instance_id', $instance->id)
+            ->when(request()->filled('keyword'), function($query){
+                $query->where('name_subinstance', 'like', '%' . request('keyword')  . '%');
+            })
+            ->get();
+
         $cluster = Cluster::where('instance_id', $instance->id)->get();
         $device = Device::where('appID', $instance->appID)->get();
         return view('partner.subinstance.index', compact('instance', 'subinstance', 'cluster', 'device'));
     }
 
-    public function cluster(){
-        return "cluster";
-    }
+    
 }

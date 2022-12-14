@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\InstanceLoginController;
 use App\Http\Controllers\CallbackController;
-
+use App\Http\Controllers\Partner\ClusterController;
 
 Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::class, 'reloadCaptcha']);
 
@@ -41,8 +41,8 @@ Route::middleware(['auth:instances'])->name('instances.')->group(function() {
     Route::resources(['tickets' => TicketController::class]);
     Route::controller(SubInstanceController::class)->group(function() {
         Route::get('/subinstance', 'index')->name('subinstance.index');
-        Route::get('/subinstance/cluster/{id}', 'cluster')->name('subinstance.cluster');
     });
+    Route::resource('subinstance.cluster', ClusterController::class);
 });
 
 
