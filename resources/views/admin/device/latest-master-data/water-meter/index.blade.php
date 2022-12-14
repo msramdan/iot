@@ -29,7 +29,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Rawdata</th>
+                                        <th>History</th>
                                         <th>Device</th>
                                         <th>Dev EUI</th>
                                         <th>Frame Id</th>
