@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ParsedWaterMater extends Model
+class MasterLatestData extends Model
 {
     use HasFactory;
-    use HasFactory;
-    protected $table = 'parsed_water_mater';
-    protected $guarded = ['id'];
 
-    public function rawdata()
+    protected $guarded = ['id'];
+    protected $table = 'master_latest_datas';
+
+    public function device()
     {
-        return $this->belongsTo(Rawdata::class);
+        return $this->belongsTo(Device::class);
     }
 }

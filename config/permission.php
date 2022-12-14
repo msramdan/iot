@@ -110,6 +110,15 @@ return [
         ],
         'parsed_pm' => [
             'parsed_pm_show'
+        ],
+        'master_water_meter' => [
+            'master_water_meter_show',
+        ],
+        'master_power_meter' => [
+            'master_power_meter_show',
+        ],
+        'master_gas_meter' => [
+            'master_gas_meter_show',
         ]
     ],
 

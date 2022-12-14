@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\SubnetController;
 use App\Http\Controllers\CallbackController;
 use App\Http\Controllers\Admin\DeviceController;
 use App\Http\Controllers\Admin\ParsedWaterMaterController;
+use App\Http\Controllers\Admin\MasterLastestDataController;
 
 /**
  * Route Admin Panel
@@ -41,6 +42,11 @@ Route::controller(DashboardController::class)->group(function () {
     Route::get('/', 'index')->name('dashboard');
     Route::put('/change_password', 'change_password')->name('dashboard.change_password');
 });
+
+Route::controller(MasterLastestDataController::class)->group(function() {
+    Route::get('/master-water-meter', 'waterMeterMaster')->name('master_water_meter.index');
+});
+
 // roles
 Route::resource('/roles', RolesController::class);
 // user

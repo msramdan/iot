@@ -69,9 +69,9 @@ class CallbackController extends Controller
                 ]);
 
                 $lastInsertedId= $save->id;
-                $dataRequest =$request->data['data'];
+                $dataRequest = $request->data['data'];
                 if($categoryDevice=='Water Meter'){
-                    handleWaterMeter($lastInsertedId,$dataRequest);
+                    handleWaterMeter($lastInsertedId, $device->id ,$dataRequest);
                 }
                 return response()->json([
                     'message' => 'Callback success',

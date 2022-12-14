@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('parsed_water_mater', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('device_id')->nullable();
             $table->foreignId('rawdata_id')->constrained('rawdata')->cascadeOnDelete();
             $table->string('frame_id',20)->nullable();
             $table->string('uplink_interval',150)->nullable();

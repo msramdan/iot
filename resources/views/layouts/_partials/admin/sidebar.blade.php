@@ -60,6 +60,31 @@
                     </ul>
                 </div>
             </li>
+            @endcanany @canany(['master_water_meter_show', 'master_power_meter_show', 'master_gas_meter_show'])
+            <li class="nav-item">
+                <a class="nav-link menu-link collapsed" href="#latestData" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
+                    <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Latest Master Data</span>
+                </a>
+                <div class="collapse menu-dropdown {{ set_show(['master_water_meter*', 'master_power_meter*', 'master_gas_meter*']) }}" id="latestData">
+                    <ul class="nav nav-sm flex-column">
+                        @can('master_water_meter_show')
+                        <li class="nav-item">
+                            <a href="{{ route('master_water_meter.index') }}" class="nav-link {{ set_active(['master_water_meter*']) }}" data-key="t-remix">Master Water Meter</a>
+                        </li>
+                        @endcan
+                        @can('master_power_meter_show')
+                        <li class="nav-item">
+                            <a href="#" class="nav-link {{ set_active(['master_power_meter*']) }}" data-key="t-remix">Master Power Meter</a>
+                        </li>
+                        @endcan
+                        @can('master_gas_meter_show')
+                        <li class="nav-item">
+                            <a href="#" class="nav-link {{ set_active(['master_gas_meter*']) }}" data-key="t-remix">Master Gas Meter</a>
+                        </li>
+                        @endcan
+                    </ul>
+                </div>
+            </li>
             @endcanany
             @canany(['province_show', 'city_show', 'district_show', 'village_show'])
                 <li class="nav-item">

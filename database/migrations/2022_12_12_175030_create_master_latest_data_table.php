@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('master_latest_data', function (Blueprint $table) {
+        Schema::create('master_latest_datas', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('rawdata_id')->nullable();
             $table->foreignId('device_id')->constrained('devices')->cascadeOnDelete();
+            $table->string('frame_id')->nullable();
+            $table->string('uplink_interval')->nullable();
             $table->string('batrai_status',20)->nullable();
             $table->float('temperatur',11,2)->nullable();
             $table->float('total_flow',11,2)->nullable();
