@@ -64,7 +64,7 @@ class MasterLastestDataController extends Controller
                     return '-';
                 })
                 ->addColumn('rawdata_id', function ($row) {
-                        return '<a href="'.url('panel/rawdata?rawdata='.$row->rawdata_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> History </a>';
+                        return '<a href="'.url('panel/parsed-wm?device_id='.$row->device_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> History </a>';
                 })
                 ->rawColumns(['rawdata_id', 'action'])
                 ->toJson();

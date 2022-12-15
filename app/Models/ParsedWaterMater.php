@@ -16,4 +16,9 @@ class ParsedWaterMater extends Model
     {
         return $this->belongsTo(Rawdata::class);
     }
+
+    public function device()
+    {
+        return $this->belongsTo(Device::class);
+    }
 }
