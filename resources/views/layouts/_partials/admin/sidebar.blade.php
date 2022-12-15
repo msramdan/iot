@@ -30,12 +30,12 @@
                         @endcan
                         @can('master_power_meter_show')
                         <li class="nav-item">
-                            <a href="#" class="nav-link {{ set_active(['master_power_meter*']) }}" data-key="t-remix">Latest Data Power Meter</a>
+                            <a href="{{ route('master_power_meter.index') }}" class="nav-link {{ set_active(['master_power_meter*']) }}" data-key="t-remix">Latest Data Power Meter</a>
                         </li>
                         @endcan
                         @can('master_gas_meter_show')
                         <li class="nav-item">
-                            <a href="#" class="nav-link {{ set_active(['master_gas_meter*']) }}" data-key="t-remix">Latest Data Gas Meter</a>
+                            <a href="{{ route('master_gas_meter.index') }}" class="nav-link {{ set_active(['master_gas_meter*']) }}" data-key="t-remix">Latest Data Gas Meter</a>
                         </li>
                         @endcan
                     </ul>
