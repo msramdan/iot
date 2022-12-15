@@ -29,7 +29,6 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>History</th>
                                         <th>Device</th>
                                         <th>Dev EUI</th>
                                         <th>Frame Id</th>
@@ -37,6 +36,7 @@
                                         <th>Beterai Status</th>
                                         <th>Temperatur</th>
                                         <th>Total Flow</th>
+                                        <th>Detail</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -57,10 +57,6 @@
             name: 'DT_RowIndex',
             orderable: false,
             searchable: false
-        },
-        {
-            data: 'rawdata_id',
-            name: 'rawdata_id'
         },
         {
             data: 'device',
@@ -89,6 +85,10 @@
         {
             data: 'total_flow',
             name: 'total_flow'
+        },
+        {
+            data: 'detail',
+            name: 'detail'
         },
     ];
 

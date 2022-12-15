@@ -63,14 +63,21 @@ class MasterLastestDataController extends Controller
                     }
                     return '-';
                 })
-                ->addColumn('rawdata_id', function ($row) {
-                        return '<a href="'.url('panel/parsed-wm?device_id='.$row->device_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> History </a>';
+                // ->addColumn('rawdata_id', function ($row) {
+                //         return '<a href="'.url('panel/parsed-wm?device_id='.$row->device_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> History </a>';
+                // })
+                ->addColumn('detail', function ($row) {
+                        return '<a href="'.url('panel/master-water-meter/detail?device_id='.$row->device_id).'" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
-                ->rawColumns(['rawdata_id', 'action'])
+                ->rawColumns(['detail', 'action'])
                 ->toJson();
         }
 
         return view('admin.device.latest-master-data.water-meter.index');
+    }
+
+    public function detailWaterMeter(){
+        return view('admin.device.latest-master-data.water-meter.detail');
     }
 
     public function powerMeterMaster(Request $request)
