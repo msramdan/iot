@@ -45,7 +45,27 @@
 
                 <div class="card">
                     <div class="card-header">
-                        Filter range date
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form method="get" action="{{ url('/panel/master-water-meter/detail/'.$device_id) }}" id="form-date">
+                                    <div class="input-group mb-4">
+                                        <input type="text" class="form-control border-0 dash-filter-picker shadow"
+                                            data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y"
+                                            data-deafult-date="" name="date"
+                                            @if(!empty($start_dates) && !empty($end_dates))
+                                            value="{{ date('d M, Y', strtotime($start_dates)) }} to {{ date('d M, Y', strtotime($end_dates)) }}"
+                                            @else
+                                            value=""
+                                            @endif
+                                            id="filter_date_data" placeholder="Filter by date"/>
+                                        <div class="input-group-text bg-primary border-primary text-white">
+                                            <i class="ri-calendar-2-line"></i>
+                                        </div>
+                                    </div>
+                                    <!--end row-->
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -58,133 +78,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($parsed_data as $data)
                                         <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
+                                            <td>{{ $data->batrai_status }} %</td>
+                                            <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
                                         </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-
-
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
                             <div class="col-md-6">
-
+                                <div id="chart-container">FusionCharts XT will load here!</div>
                             </div>
                         </div>
                     </div>
@@ -196,137 +100,22 @@
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Batrai Status</th>
+                                            <th>Temperature</th>
                                             <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach ($parsed_data as $item)
                                         <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
+                                            <td>{{ $item->temperatur }} C</td>
+                                            <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
                                         </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-
-
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
                             <div class="col-md-6">
+                                <div id="chart-container2">FusionCharts XT will load here!</div>
                             </div>
                         </div>
                     </div>
@@ -339,137 +128,22 @@
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Batrai Status</th>
+                                            <th>Total Flow</th>
                                             <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                       @foreach ($parsed_data as $item)
                                         <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
+                                            <td>{{ $item->total_flow }} L</td>
+                                            <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
                                         </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>100 %</td>
-                                            <td>15/12/2022 18:00:00</td>
-                                        </tr>
-
-
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
                             <div class="col-md-6">
+                                <div id="chart-container3">FusionCharts XT will load here!</div>
                             </div>
                         </div>
                     </div>
@@ -481,12 +155,163 @@
 </div>
 @endsection
 @push('js')
+<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
+<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
+<script type="text/javascript">
+	FusionCharts.ready(function(){
+            var chartObj = new FusionCharts({
+            type: 'scrollColumn2d',
+            renderAt: 'chart-container',
+            width: '480',
+            height: '390',
+            dataFormat: 'json',
+            dataSource: {
+                "chart": {
+                    "theme": "fusion",
+                    "caption": "Baterai status",
+                    "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
+                    "xaxisname": "Dates",
+                    "yaxisname": "Baterai",
+                    "showvalues": "1",
+                    "numVisiblePlot": "12",
+                    "scrollheight": "10",
+                    "flatScrollBars": "1",
+                    "scrollShowButtons": "0",
+                    "scrollColor": "#cccccc",
+                    "showHoverEffect": "1"
+                },
+                "categories": [{
+                    "category":
+                    [
+                        @foreach ($parsed_data as $date)
+                            {
+                                "label": "{{ date('d M', strtotime($date->created_at)) }}"
+                            },
+                        @endforeach
+                    ]
+                }],
+                "dataset": [{
+                    "data": [
+                        @foreach ($parsed_data as $data_parsed)
+                            {
+                            "value": "{{ $data_parsed->batrai_status }} %"
+                            },
+                        @endforeach
+                    ]
+                }]
+            }
+        });
+        chartObj.render();
+    });
+</script>
+<script type="text/javascript">
+	FusionCharts.ready(function(){
+            var chartObj = new FusionCharts({
+            type: 'scrollColumn2d',
+            renderAt: 'chart-container2',
+            width: '480',
+            height: '390',
+            dataFormat: 'json',
+            dataSource: {
+                "chart": {
+                    "theme": "fusion",
+                    "caption": "Temperature",
+                    "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
+                    "xaxisname": "Dates",
+                    "yaxisname": "TemperaturE",
+                    "showvalues": "1",
+                    "numVisiblePlot": "12",
+                    "scrollheight": "10",
+                    "flatScrollBars": "1",
+                    "scrollShowButtons": "0",
+                    "scrollColor": "#cccccc",
+                    "showHoverEffect": "1"
+                },
+                "categories": [{
+                    "category":
+                    [
+                        @foreach ($parsed_data as $date)
+                            {
+                                "label": "{{ date('d M', strtotime($date->created_at)) }}"
+                            },
+                        @endforeach
+                    ]
+                }],
+                "dataset": [{
+                    "data": [
+                        @foreach ($parsed_data as $data_parsed)
+                            {
+                            "value": "{{ $data_parsed->temperatur }}"
+                            },
+                        @endforeach
+                    ]
+                }]
+            }
+        });
+        chartObj.render();
+    });
+</script>
+<script type="text/javascript">
+	FusionCharts.ready(function(){
+            var chartObj = new FusionCharts({
+            type: 'scrollColumn2d',
+            renderAt: 'chart-container3',
+            width: '480',
+            height: '390',
+            dataFormat: 'json',
+            dataSource: {
+                "chart": {
+                    "theme": "fusion",
+                    "caption": "Total Flow",
+                    "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
+                    "xaxisname": "Dates",
+                    "yaxisname": "Total Flow",
+                    "showvalues": "1",
+                    "numVisiblePlot": "12",
+                    "scrollheight": "10",
+                    "flatScrollBars": "1",
+                    "scrollShowButtons": "0",
+                    "scrollColor": "#cccccc",
+                    "showHoverEffect": "1"
+                },
+                "categories": [{
+                    "category":
+                    [
+                        @foreach ($parsed_data as $date)
+                            {
+                                "label": "{{ date('d M', strtotime($date->created_at)) }}"
+                            },
+                        @endforeach
+                    ]
+                }],
+                "dataset": [{
+                    "data": [
+                        @foreach ($parsed_data as $data_parsed)
+                            {
+                            "value": "{{ $data_parsed->total_flow }} L"
+                            },
+                        @endforeach
+                    ]
+                }]
+            }
+        });
+        chartObj.render();
+    });
+</script>
 <script>
     $(document).ready(function () {
     $('.example-scroll').DataTable({
         scrollY: '300px',
         scrollCollapse: true,
         paging: false,
+    });
+
+    $('#filter_date_data').change(function() {
+        var dates = $(this).val();
+        var split_dates = dates.split(" to ");
+        if ( split_dates.length >= 2 ) {
+            $('#form-date').submit();
+        }
     });
 });
 </script>

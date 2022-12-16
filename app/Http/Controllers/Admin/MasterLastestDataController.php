@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\MasterLatestData;
 use App\Models\Device;
+use App\Models\ParsedWaterMater;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class MasterLastestDataController extends Controller
 {
@@ -63,11 +65,8 @@ class MasterLastestDataController extends Controller
                     }
                     return '-';
                 })
-                // ->addColumn('rawdata_id', function ($row) {
-                //         return '<a href="'.url('panel/parsed-wm?device_id='.$row->device_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> History </a>';
-                // })
                 ->addColumn('detail', function ($row) {
-                        return '<a href="'.url('panel/master-water-meter/detail?device_id='.$row->device_id).'" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
+                        return '<a href="'.url('panel/master-water-meter/detail/'.$row->device_id).'" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
                 ->rawColumns(['detail', 'action'])
                 ->toJson();
@@ -76,8 +75,29 @@ class MasterLastestDataController extends Controller
         return view('admin.device.latest-master-data.water-meter.index');
     }
 
-    public function detailWaterMeter(){
-        return view('admin.device.latest-master-data.water-meter.detail');
+    public function detailWaterMeter(Request $request, $id){
+        $date = $request->query('date');
+        $parsed_data = ParsedWaterMater::where('device_id', $id);
+
+        $start_dates = Carbon::now()->firstOfMonth();
+        $end_dates = Carbon::now()->endOfMonth();
+
+        if (!empty($date)) {
+            $dates = explode(' to ', $request->date);
+            $start = str_replace(',', '', $dates[0])." 00:00:00";
+            $end = str_replace(',', '', $dates[1])." 23:59:59";
+
+            $start_dates = date('Y-m-d H:i:s', strtotime($start));
+            $end_dates = date('Y-m-d H:i:s', strtotime($end));
+
+            $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates]);
+        }
+
+        $device_id = $id;
+
+        $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
+
+        return view('admin.device.latest-master-data.water-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates'));
     }
 
     public function powerMeterMaster(Request $request)
