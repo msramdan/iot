@@ -317,7 +317,7 @@ function handleWaterMeter($device_id, $request)
     $data = $request->data['data'];
     $hex = base64toHex($data);
     $frameId = substr($hex, 0, 2);
-    if ($frameId == "00" || $frameId == "10" || $frameId == "71" || $frameId == "95") {
+    if ($frameId == "00" || $frameId == "10" || $frameId == "71" || $frameId == "95" || $frameId == "21") {
         $save = Rawdata::create([
             'devEUI' => $request->devEUI,
             'appID'  => $request->appID,
@@ -397,6 +397,21 @@ function handleWaterMeter($device_id, $request)
                 'batrai_status' => $batt,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
+        }else if ($frameId == "21"){
+            if ($hex =='2101'){
+                $status_valve = 'Open';
+            }else if ($hex =='2181'){
+                $status_valve = 'Close';
+            }else{
+                $status_valve = 'Unknown';
+            }
+            $params = [
+                'rawdata_id' => $lastInsertedId,
+                'device_id' => $device_id,
+                'frame_id' => $frameId,
+                'status_valve' => $status_valve,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
         }
         // insert parsed data
         DB::table('parsed_water_mater')->insert($params);
@@ -405,28 +420,7 @@ function handleWaterMeter($device_id, $request)
             ->where('device_id', $device_id)
             ->update($params);
         return "success";
-    } else if ($frameId == "21") {
-        $save = Rawdata::create([
-            'devEUI' => $request->devEUI,
-            'appID'  => $request->appID,
-            'type'   => $request->type,
-            'time'   => $request->time,
-            'gwid'   => $request->data['gwid'],
-            'rssi'   => $request->data['rssi'],
-            'snr'    => $request->data['snr'],
-            'freq'   => $request->data['freq'],
-            'dr'     => $request->data['dr'],
-            'adr'    => $request->data['adr'],
-            'class'  => $request->data['class'],
-            'fcnt'   => $request->data['fCnt'],
-            'fport'  => $request->data['fPort'],
-            'confirmed' => $request->data['confirmed'],
-            'data'  => $request->data['data'],
-            'gws'   => json_encode($request->data['gws']),
-            'payload_data' => json_encode($request->all()),
-        ]);
-        return "success";
-    } else {
+    }else {
         return "Payload Data Tidak Tercover";
     }
 }

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('batrai_status',20)->nullable();
             $table->float('temperatur',11,2)->nullable();
             $table->float('total_flow',11,2)->nullable();
+            $table->string('status_valve',50)->nullable();
             $table->timestamps();
         });
     }

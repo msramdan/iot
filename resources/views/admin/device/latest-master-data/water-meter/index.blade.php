@@ -36,6 +36,7 @@
                                         <th>Beterai Status</th>
                                         <th>Temperatur</th>
                                         <th>Total Flow</th>
+                                        <th>Status Valve</th>
                                         <th>Detail</th>
                                     </tr>
                                 </thead>
@@ -85,6 +86,10 @@
         {
             data: 'total_flow',
             name: 'total_flow'
+        },
+        {
+            data: 'status_valve',
+            name: 'status_valve'
         },
         {
             data: 'detail',
