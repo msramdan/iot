@@ -46,38 +46,22 @@ class CallbackController extends Controller
         try {
             // cek device tedaftar pada aplikasi atw tidak
             $device = Device::where('devEUI', $request->devEUI)->first();
-            if($device){
-                $categoryDevice =$device->category;
-                $save = Rawdata::create([
-                    'devEUI' => $request->devEUI,
-                    'appID'  => $request->appID,
-                    'type'   => $request->type,
-                    'time'   => $request->time,
-                    'gwid'   => $request->data['gwid'],
-                    'rssi'   => $request->data['rssi'],
-                    'snr'    => $request->data['snr'],
-                    'freq'   => $request->data['freq'],
-                    'dr'     => $request->data['dr'],
-                    'adr'    => $request->data['adr'],
-                    'class'  => $request->data['class'],
-                    'fcnt'   => $request->data['fCnt'],
-                    'fport'  => $request->data['fPort'],
-                    'confirmed' => $request->data['confirmed'],
-                    'data'  => $request->data['data'],
-                    'gws'   => json_encode($request->data['gws']),
-                    'payload_data' => json_encode($request->all()),
-                ]);
-
-                $lastInsertedId= $save->id;
-                $dataRequest = $request->data['data'];
-                if($categoryDevice=='Water Meter'){
-                    handleWaterMeter($lastInsertedId, $device->id ,$dataRequest);
+            if ($device) {
+                $categoryDevice = $device->category;
+                if ($categoryDevice == 'Water Meter') {
+                    $respondHandler = handleWaterMeter($device->id, $request);
                 }
-                return response()->json([
-                    'message' => 'Callback success',
-                ], 201);
 
-            }else{
+                if ($respondHandler == 'success') {
+                    return response()->json([
+                        'message' => 'Callback Success',
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'message' => $respondHandler,
+                    ], 400);
+                }
+            } else {
                 return response()->json([
                     'message' => 'Device Tidak Di Temukan',
                 ], 404);

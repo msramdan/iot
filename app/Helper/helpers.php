@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use App\Models\Rawdata;
 
 if (!function_exists('set_active')) {
     function set_active($uri)
@@ -311,74 +312,125 @@ function littleEndian($str)
 }
 
 
-function handleWaterMeter($lastInsertedId, $device_id, $data)
+function handleWaterMeter($device_id, $request)
 {
+    $data = $request->data['data'];
     $hex = base64toHex($data);
     $frameId = substr($hex, 0, 2);
-    if ($frameId == "00") {
-        $uplinkInterval = hexdec(littleEndian(substr($hex, 2, 4)));
-        $batraiStatus = hexdec(littleEndian(substr($hex, 6, 2)));
-        // return $batraiStatus;
+    if ($frameId == "00" || $frameId == "10" || $frameId == "71" || $frameId == "95") {
+        $save = Rawdata::create([
+            'devEUI' => $request->devEUI,
+            'appID'  => $request->appID,
+            'type'   => $request->type,
+            'time'   => $request->time,
+            'gwid'   => $request->data['gwid'],
+            'rssi'   => $request->data['rssi'],
+            'snr'    => $request->data['snr'],
+            'freq'   => $request->data['freq'],
+            'dr'     => $request->data['dr'],
+            'adr'    => $request->data['adr'],
+            'class'  => $request->data['class'],
+            'fcnt'   => $request->data['fCnt'],
+            'fport'  => $request->data['fPort'],
+            'confirmed' => $request->data['confirmed'],
+            'data'  => $request->data['data'],
+            'gws'   => json_encode($request->data['gws']),
+            'payload_data' => json_encode($request->all()),
+        ]);
 
-        if($batraiStatus > 254){
-            $batt = 'Unknown';
-        }else if($batraiStatus == 00 || $batraiStatus == '00' ){
-            $batt = 'Power Supply';
-        }else{
-            $batt = $batraiStatus / 2.54;
-        }
+        $lastInsertedId = $save->id;
+        if ($frameId == "00") {
+            $uplinkInterval = hexdec(littleEndian(substr($hex, 2, 4)));
+            $batraiStatus = hexdec(littleEndian(substr($hex, 6, 2)));
 
-        $temperatur = hexdec(littleEndian(substr($hex, 8, 4))) * 0.01;
-        $totalFlow = hexdec(littleEndian(substr($hex, 12, 16))) * 0.1;
-        $params =[
-            'rawdata_id' => $lastInsertedId,
-            'device_id' => $device_id,
-            'frame_id' => $frameId,
-            'uplink_interval' => $uplinkInterval,
-            'batrai_status' => $batt,
-            'temperatur' => $temperatur,
-            'total_flow' => $totalFlow,
-            'created_at' => date('Y-m-d H:i:s'),
-        ];
-    } else if ($frameId == "10") {
-        $temperatur = hexdec(littleEndian(substr($hex, 2, 4))) * 0.01;
-         $params =[
-            'rawdata_id' => $lastInsertedId,
-            'device_id' => $device_id,
-            'frame_id' => $frameId,
-            'temperatur' => $temperatur,
-            'created_at' => date('Y-m-d H:i:s'),
-         ];
-    } else if ($frameId == "71") {
-        $totalFlow = hexdec(littleEndian(substr($hex, 2, 16))) * 0.01;
-        $params =[
-            'rawdata_id' => $lastInsertedId,
-            'device_id' => $device_id,
-            'frame_id' => $frameId,
-            'total_flow' => $totalFlow,
-            'created_at' => date('Y-m-d H:i:s'),
-        ];
-    } else if ($frameId == "95") {
-        $batraiStatus = hexdec(littleEndian(substr($hex, 2, 2)));
-        if($batraiStatus > 254){
-            $batt = 'Unknown';
-        }else if($batraiStatus == 00 || $batraiStatus == '00' ){
-            $batt = 'Power Supply';
-        }else{
-            $batt = $batraiStatus / 2.54;
+            if ($batraiStatus > 254) {
+                $batt = 'Unknown';
+            } else if ($batraiStatus == 00 || $batraiStatus == '00') {
+                $batt = 'Power Supply';
+            } else {
+                $batt = $batraiStatus / 2.54;
+            }
+
+            $temperatur = hexdec(littleEndian(substr($hex, 8, 4))) * 0.01;
+            $totalFlow = hexdec(littleEndian(substr($hex, 12, 16))) * 0.1;
+            $params = [
+                'rawdata_id' => $lastInsertedId,
+                'device_id' => $device_id,
+                'frame_id' => $frameId,
+                'uplink_interval' => $uplinkInterval,
+                'batrai_status' => $batt,
+                'temperatur' => $temperatur,
+                'total_flow' => $totalFlow,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+        } else if ($frameId == "10") {
+            $temperatur = hexdec(littleEndian(substr($hex, 2, 4))) * 0.01;
+            $params = [
+                'rawdata_id' => $lastInsertedId,
+                'device_id' => $device_id,
+                'frame_id' => $frameId,
+                'temperatur' => $temperatur,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+        } else if ($frameId == "71") {
+            $totalFlow = hexdec(littleEndian(substr($hex, 2, 16))) * 0.01;
+            $params = [
+                'rawdata_id' => $lastInsertedId,
+                'device_id' => $device_id,
+                'frame_id' => $frameId,
+                'total_flow' => $totalFlow,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+        } else if ($frameId == "95") {
+            $batraiStatus = hexdec(littleEndian(substr($hex, 2, 2)));
+            if ($batraiStatus > 254) {
+                $batt = 'Unknown';
+            } else if ($batraiStatus == 00 || $batraiStatus == '00') {
+                $batt = 'Power Supply';
+            } else {
+                $batt = $batraiStatus / 2.54;
+            }
+            $params = [
+                'rawdata_id' => $lastInsertedId,
+                'device_id' => $device_id,
+                'frame_id' => $frameId,
+                'batrai_status' => $batt,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
         }
-        $params =[
-            'rawdata_id' => $lastInsertedId,
-            'device_id' => $device_id,
-            'frame_id' => $frameId,
-            'batrai_status' => $batt,
-            'created_at' => date('Y-m-d H:i:s'),
-        ];
+        // insert parsed data
+        DB::table('parsed_water_mater')->insert($params);
+        //update data master_latest_data
+        DB::table('master_latest_datas')
+            ->where('device_id', $device_id)
+            ->update($params);
+        return "success";
+    } else if ($frameId == "21") {
+        $save = Rawdata::create([
+            'devEUI' => $request->devEUI,
+            'appID'  => $request->appID,
+            'type'   => $request->type,
+            'time'   => $request->time,
+            'gwid'   => $request->data['gwid'],
+            'rssi'   => $request->data['rssi'],
+            'snr'    => $request->data['snr'],
+            'freq'   => $request->data['freq'],
+            'dr'     => $request->data['dr'],
+            'adr'    => $request->data['adr'],
+            'class'  => $request->data['class'],
+            'fcnt'   => $request->data['fCnt'],
+            'fport'  => $request->data['fPort'],
+            'confirmed' => $request->data['confirmed'],
+            'data'  => $request->data['data'],
+            'gws'   => json_encode($request->data['gws']),
+            'payload_data' => json_encode($request->all()),
+        ]);
+        return "success";
+    } else {
+        return "Payload Data Tidak Tercover";
     }
-    DB::table('parsed_water_mater')->insert($params);
+}
 
-    //update data master_latest_data
-    DB::table('master_latest_datas')
-    ->where('device_id', $device_id)
-    ->update($params);
+function handleRawDataWaterMeter()
+{
 }
