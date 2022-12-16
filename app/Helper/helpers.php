@@ -431,6 +431,76 @@ function handleWaterMeter($device_id, $request)
     }
 }
 
-function handleRawDataWaterMeter()
+function handlePowerMeter($device_id, $request)
 {
+    $data = $request->data['data'];
+    $hex = base64toHex($data);
+    $frameId = substr($hex, 0, 2);
+    if ($frameId == "91") {
+        $save = Rawdata::create([
+            'devEUI' => $request->devEUI,
+            'appID'  => $request->appID,
+            'type'   => $request->type,
+            'time'   => $request->time,
+            'gwid'   => $request->data['gwid'],
+            'rssi'   => $request->data['rssi'],
+            'snr'    => $request->data['snr'],
+            'freq'   => $request->data['freq'],
+            'dr'     => $request->data['dr'],
+            'adr'    => $request->data['adr'],
+            'class'  => $request->data['class'],
+            'fcnt'   => $request->data['fCnt'],
+            'fport'  => $request->data['fPort'],
+            'confirmed' => $request->data['confirmed'],
+            'data'  => $request->data['data'],
+            'gws'   => json_encode($request->data['gws']),
+            'payload_data' => json_encode($request->all()),
+        ]);
+
+        $lastInsertedId = $save->id;
+        if ($frameId == "91") {
+            $params = [
+                'rawdata_id' => $lastInsertedId,
+                'device_id' => $device_id,
+                'frame_id' => $frameId,
+                'tegangan' => '',
+                'arus' => '',
+                'frekuensi_pln' => '',
+                'active_power' => '',
+                'power_factor' => '',
+                'total_engergy' => '',
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+        }
+        // insert parsed data
+        DB::table('parsed_power_mater')->insert($params);
+        //update data master_latest_data
+        DB::table('master_latest_data_power_meter')
+            ->where('device_id', $device_id)
+            ->update($params);
+        return "success";
+    } else if ($frameId == "1C") {
+        $save = Rawdata::create([
+            'devEUI' => $request->devEUI,
+            'appID'  => $request->appID,
+            'type'   => $request->type,
+            'time'   => $request->time,
+            'gwid'   => $request->data['gwid'],
+            'rssi'   => $request->data['rssi'],
+            'snr'    => $request->data['snr'],
+            'freq'   => $request->data['freq'],
+            'dr'     => $request->data['dr'],
+            'adr'    => $request->data['adr'],
+            'class'  => $request->data['class'],
+            'fcnt'   => $request->data['fCnt'],
+            'fport'  => $request->data['fPort'],
+            'confirmed' => $request->data['confirmed'],
+            'data'  => $request->data['data'],
+            'gws'   => json_encode($request->data['gws']),
+            'payload_data' => json_encode($request->all()),
+        ]);
+        return "success";
+    } else {
+        return "Payload Data Tidak Tercover";
+    }
 }
