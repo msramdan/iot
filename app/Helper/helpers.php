@@ -397,12 +397,12 @@ function handleWaterMeter($device_id, $request)
                 'batrai_status' => $batt,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
-        }else if ($frameId == "21"){
-            if ($hex =='2101'){
+        } else if ($frameId == "21") {
+            if ($hex == '2101') {
                 $status_valve = 'Open';
-            }else if ($hex =='2181'){
+            } else if ($hex == '2181') {
                 $status_valve = 'Close';
-            }else{
+            } else {
                 $status_valve = 'Unknown';
             }
             $params = [
@@ -420,7 +420,7 @@ function handleWaterMeter($device_id, $request)
             ->where('device_id', $device_id)
             ->update($params);
         return "success";
-    }else {
+    } else {
         return "Payload Data Tidak Tercover";
     }
 }
@@ -453,18 +453,84 @@ function handlePowerMeter($device_id, $request)
 
         $lastInsertedId = $save->id;
         if ($frameId == "91") {
-            $params = [
-                'rawdata_id' => $lastInsertedId,
-                'device_id' => $device_id,
-                'frame_id' => $frameId,
-                'tegangan' => '',
-                'arus' => '',
-                'frekuensi_pln' => '',
-                'active_power' => '',
-                'power_factor' => '',
-                'total_engergy' => '',
-                'created_at' => date('Y-m-d H:i:s'),
-            ];
+            $idenfikasi = substr($hex, 4, 8);
+            // big frame
+            if ($idenfikasi == "02000006") {
+                $tegangan = littleEndian(substr($hex, 28, 4)) * 0.1;
+                $arus = littleEndian(substr($hex, 40, 6)) / 1000;
+                $frekuensi_pln = littleEndian(substr($hex, 58, 4)) / 100;
+                $active_power = littleEndian(substr($hex, 64, 6)) / 1000;
+                $power_factor = littleEndian(substr($hex, 114, 4)) / 1000;
+                $total_engergy = littleEndian(substr($hex, 132, 4)) / 100;
+                $params = [
+                    'rawdata_id' => $lastInsertedId,
+                    'device_id' => $device_id,
+                    'frame_id' => $frameId,
+                    'tegangan' => $tegangan,
+                    'arus' => $arus,
+                    'frekuensi_pln' => $frekuensi_pln,
+                    'active_power' => $active_power,
+                    'power_factor' => $power_factor,
+                    'total_engergy' => $total_engergy,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+                // mini frame 1
+            } else if ($idenfikasi == "02000106") {
+                $params = [
+                    'rawdata_id' => $lastInsertedId,
+                    'device_id' => $device_id,
+                    'frame_id' => $frameId,
+                    'tegangan' => $tegangan,
+                    'arus' => $arus,
+                    'frekuensi_pln' => $frekuensi_pln,
+                    'active_power' => $active_power,
+                    'power_factor' => $power_factor,
+                    'total_engergy' => $total_engergy,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+                // mini frame 2
+            } else if ($idenfikasi == "02000206") {
+                $params = [
+                    'rawdata_id' => $lastInsertedId,
+                    'device_id' => $device_id,
+                    'frame_id' => $frameId,
+                    'tegangan' => $tegangan,
+                    'arus' => $arus,
+                    'frekuensi_pln' => $frekuensi_pln,
+                    'active_power' => $active_power,
+                    'power_factor' => $power_factor,
+                    'total_engergy' => $total_engergy,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+                // mini frame 3
+            } else if ($idenfikasi == "02000306") {
+                $params = [
+                    'rawdata_id' => $lastInsertedId,
+                    'device_id' => $device_id,
+                    'frame_id' => $frameId,
+                    'tegangan' => $tegangan,
+                    'arus' => $arus,
+                    'frekuensi_pln' => $frekuensi_pln,
+                    'active_power' => $active_power,
+                    'power_factor' => $power_factor,
+                    'total_engergy' => $total_engergy,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+                // mini frame 4
+            } else if ($idenfikasi == "02000406") {
+                $params = [
+                    'rawdata_id' => $lastInsertedId,
+                    'device_id' => $device_id,
+                    'frame_id' => $frameId,
+                    'tegangan' => $tegangan,
+                    'arus' => $arus,
+                    'frekuensi_pln' => $frekuensi_pln,
+                    'active_power' => $active_power,
+                    'power_factor' => $power_factor,
+                    'total_engergy' => $total_engergy,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+            }
         }
         // insert parsed data
         DB::table('parsed_power_mater')->insert($params);
@@ -473,28 +539,11 @@ function handlePowerMeter($device_id, $request)
             ->where('device_id', $device_id)
             ->update($params);
         return "success";
-    } else if ($frameId == "1C") {
-        $save = Rawdata::create([
-            'devEUI' => $request->devEUI,
-            'appID'  => $request->appID,
-            'type'   => $request->type,
-            'time'   => $request->time,
-            'gwid'   => $request->data['gwid'],
-            'rssi'   => $request->data['rssi'],
-            'snr'    => $request->data['snr'],
-            'freq'   => $request->data['freq'],
-            'dr'     => $request->data['dr'],
-            'adr'    => $request->data['adr'],
-            'class'  => $request->data['class'],
-            'fcnt'   => $request->data['fCnt'],
-            'fport'  => $request->data['fPort'],
-            'confirmed' => $request->data['confirmed'],
-            'data'  => $request->data['data'],
-            'gws'   => json_encode($request->data['gws']),
-            'payload_data' => json_encode($request->all()),
-        ]);
-        return "success";
     } else {
         return "Payload Data Tidak Tercover";
     }
+}
+
+function handleGasMeter($device_id, $request){
+
 }

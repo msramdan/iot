@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('master_latest_data_power_meter', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('device_id')->nullable();
-            $table->foreignId('rawdata_id')->constrained('rawdata')->cascadeOnDelete();
+            $table->foreignId('rawdata_id')->nullable();
+            $table->foreignId('device_id')->constrained('devices')->cascadeOnDelete();
             $table->string('frame_id',20)->nullable();
             $table->string('tegangan',20)->nullable();
             $table->string('arus',20)->nullable();
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('active_power',20)->nullable();
             $table->string('power_factor',20)->nullable();
             $table->string('total_engergy',20)->nullable();
+            $table->string('status_switch',50)->nullable();
             $table->timestamps();
         });
     }

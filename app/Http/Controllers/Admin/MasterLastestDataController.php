@@ -63,6 +63,12 @@ class MasterLastestDataController extends Controller
                     }
                     return '-';
                 })
+                ->addColumn('status_valve', function ($row) {
+                    if ($row->status_valve) {
+                        return $row->status_valve;
+                    }
+                    return '-';
+                })
                 // ->addColumn('rawdata_id', function ($row) {
                 //         return '<a href="'.url('panel/parsed-wm?device_id='.$row->device_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> History </a>';
                 // })
