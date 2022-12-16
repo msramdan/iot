@@ -30,8 +30,10 @@ class RawdataController extends Controller
                 ->addColumn('parsed', function ($row) {
                     if ($row->device->category == 'Water Meter') {
                         return '<a href="'.url('/panel/parsed-wm?parsed_data='.$row->id).'" target="_blank" class="btn btn-sm  btn-success"><i class="mdi mdi-eye"></i> Parsed Rawdata </a>';
-                    } else {
+                    } else if($row->device->category == 'Power Meter') {
                         return  '<a disabled href="" class="btn btn-sm  btn-success"><i class="mdi mdi-eye"></i> Parsed Rawdata </a>';
+                    }else{
+                        return  '<a disabled href="'.url('/panel/parsed-pm?parsed_data='.$row->id).'" class="btn btn-sm  btn-success"><i class="mdi mdi-eye"></i> Parsed Rawdata </a>';
                     }
 
                 })
