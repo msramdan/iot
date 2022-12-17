@@ -212,9 +212,11 @@ class DeviceController extends Controller
                 DB::table('master_latest_data_power_meter')->insert([
                     'device_id' => $lastInsertedId,
                 ]);
+            }else if ($request->category == 'Gas Meter'){
+                DB::table('master_latest_data_gas_meter')->insert([
+                    'device_id' => $lastInsertedId,
+                ]);
             }
-
-
             Alert::toast('Device successfully created', 'success');
         } catch (Exception $err) {
             \Log::error($err);

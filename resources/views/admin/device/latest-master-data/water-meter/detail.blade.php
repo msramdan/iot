@@ -88,7 +88,7 @@
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <div id="chart-container">FusionCharts XT will load here!</div>
+                                <div  id="chart-container">FusionCharts XT will load here!</div>
                             </div>
                         </div>
                     </div>
