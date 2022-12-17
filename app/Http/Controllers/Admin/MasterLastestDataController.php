@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\MasterLatestData;
+use App\Models\MasterLatestDataPowerMeter;
 use App\Models\Device;
+use App\Models\ParsedWaterMater;
+use App\Models\ParsedPowerMater;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class MasterLastestDataController extends Controller
 {
@@ -69,11 +73,8 @@ class MasterLastestDataController extends Controller
                     }
                     return '-';
                 })
-                // ->addColumn('rawdata_id', function ($row) {
-                //         return '<a href="'.url('panel/parsed-wm?device_id='.$row->device_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> History </a>';
-                // })
                 ->addColumn('detail', function ($row) {
-                        return '<a href="'.url('panel/master-water-meter/detail?device_id='.$row->device_id).'" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
+                        return '<a href="'.url('panel/master-water-meter/detail/'.$row->device_id).'" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
                 ->rawColumns(['detail', 'action'])
                 ->toJson();
@@ -82,15 +83,36 @@ class MasterLastestDataController extends Controller
         return view('admin.device.latest-master-data.water-meter.index');
     }
 
-    public function detailWaterMeter(){
-        return view('admin.device.latest-master-data.water-meter.detail');
+    public function detailWaterMeter(Request $request, $id){
+        $date = $request->query('date');
+        $parsed_data = ParsedWaterMater::where('device_id', $id);
+
+        $start_dates = Carbon::now()->firstOfMonth();
+        $end_dates = Carbon::now()->endOfMonth();
+
+        if (!empty($date)) {
+            $dates = explode(' to ', $request->date);
+            $start = str_replace(',', '', $dates[0])." 00:00:00";
+            $end = str_replace(',', '', $dates[1])." 23:59:59";
+
+            $start_dates = date('Y-m-d H:i:s', strtotime($start));
+            $end_dates = date('Y-m-d H:i:s', strtotime($end));
+
+            $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates]);
+        }
+
+        $device_id = $id;
+
+        $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
+
+        return view('admin.device.latest-master-data.water-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates'));
     }
 
     public function powerMeterMaster(Request $request)
     {
          if (request()->ajax()) {
-           $parsed_data = MasterLatestData::with(['device' => function($k) {
-                    $k->where('devices.category', 'Water Meter');
+           $parsed_data = MasterLatestDataPowerMeter::with(['device' => function($k) {
+                    $k->where('devices.category', 'Power Meter');
                 }]);
 
             $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
@@ -114,38 +136,75 @@ class MasterLastestDataController extends Controller
                 ->addColumn('frame_id', function($row) {
                     return $row->frame_id ?? '-' ;
                 })
-                ->addColumn('uplink_interval', function ($row) {
-                    if ($row->uplink_interval) {
-                        return $row->uplink_interval.' Seconds';
+                ->addColumn('tegangan', function ($row) {
+                    if ($row->tegangan) {
+                        return $row->tegangan;
                     }
                     return '-';
                 })
-                ->addColumn('temperatur', function ($row) {
-                    if ($row->temperatur) {
-                        return $row->temperatur.'C';
+                ->addColumn('arus', function ($row) {
+                    if ($row->arus) {
+                        return $row->arus;
                     }
                     return '-';
                 })
-                ->addColumn('total_flow', function ($row) {
-                    if ($row->total_flow) {
-                        return $row->total_flow.'L';
+                ->addColumn('frekuensi_pln', function ($row) {
+                    if ($row->frekuensi_pln) {
+                        return $row->frekuensi_pln;
                     }
                     return '-';
                 })
-                ->addColumn('batrai_status', function ($row) {
-                    if ($row->batrai_status) {
-                        return $row->batrai_status.' %';
+                ->addColumn('active_power', function ($row) {
+                    if ($row->active_power) {
+                        return $row->active_power;
                     }
                     return '-';
                 })
-                ->addColumn('rawdata_id', function ($row) {
-                        return '<a href="'.url('panel/rawdata?rawdata='.$row->rawdata_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> History </a>';
+                ->addColumn('power_factor', function ($row) {
+                    if ($row->power_factor) {
+                        return $row->power_factor;
+                    }
+                    return '-';
                 })
-                ->rawColumns(['rawdata_id', 'action'])
+                ->addColumn('total_energy', function ($row) {
+                    if ($row->total_energy) {
+                        return $row->total_energy;
+                    }
+                    return '-';
+                })
+                ->addColumn('detail', function ($row) {
+                        return '<a href="'.url('panel/master-power-meter/detail/'.$row->device_id).'" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
+                })
+                ->rawColumns(['detail', 'action'])
                 ->toJson();
         }
 
         return view('admin.device.latest-master-data.power-meter.index');
+    }
+
+    public function detailPowerMeter(Request $request, $id){
+        $date = $request->query('date');
+        $parsed_data = ParsedPowerMater::where('device_id', $id);
+
+        $start_dates = Carbon::now()->firstOfMonth();
+        $end_dates = Carbon::now()->endOfMonth();
+
+        if (!empty($date)) {
+            $dates = explode(' to ', $request->date);
+            $start = str_replace(',', '', $dates[0])." 00:00:00";
+            $end = str_replace(',', '', $dates[1])." 23:59:59";
+
+            $start_dates = date('Y-m-d H:i:s', strtotime($start));
+            $end_dates = date('Y-m-d H:i:s', strtotime($end));
+
+            $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates]);
+        }
+
+        $device_id = $id;
+
+        $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
+
+        return view('admin.device.latest-master-data.power-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates'));
     }
 
     public function gasMeterMaster(Request $request)

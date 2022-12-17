@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ParsedWaterMater extends Model
+class ParsedPowerMater extends Model
 {
     use HasFactory;
 
-    protected $table = 'parsed_water_mater';
+    protected $table = 'parsed_power_mater';
     protected $guarded = ['id'];
 
     public function rawdata()

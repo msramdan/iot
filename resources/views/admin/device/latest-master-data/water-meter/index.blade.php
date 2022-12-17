@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Mater Latest Data Device')
+@section('title', 'Mater Latest Data Water Meter')
 @section('content')
 <div class="page-content">
     <div class="container-fluid">

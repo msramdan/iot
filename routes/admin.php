@@ -24,6 +24,8 @@ use App\Http\Controllers\CallbackController;
 use App\Http\Controllers\Admin\DeviceController;
 use App\Http\Controllers\Admin\ParsedWaterMaterController;
 use App\Http\Controllers\Admin\MasterLastestDataController;
+use App\Http\Controllers\Admin\ParsedGasMeterController;
+use App\Http\Controllers\Admin\ParsedPowerMeterController;
 
 /**
  * Route Admin Panel
@@ -44,13 +46,14 @@ Route::controller(DashboardController::class)->group(function () {
 });
 
 Route::controller(MasterLastestDataController::class)->group(function() {
+    //Water meter
     Route::get('/master-water-meter', 'waterMeterMaster')->name('master_water_meter.index');
-    Route::get('/master-water-meter/detail', 'detailWaterMeter')->name('master_water_meter.detail');
-
-
+    Route::get('/master-water-meter/detail/{id}', 'detailWaterMeter')->name('master_water_meter.detail');
+    //Power Meter
     Route::get('/master-power-meter', 'powerMeterMaster')->name('master_power_meter.index');
+    Route::get('/master-power-meter/detail/{id}', 'detailPowerMeter')->name('master_power_meter.detail');
+    //Gas Meter
     Route::get('/master-gas-meter', 'gasMeterMaster')->name('master_gas_meter.index');
-
 });
 
 // roles
@@ -95,9 +98,9 @@ Route::controller(RawdataController::class)->group(function () {
 Route::controller(ParsedWaterMaterController::class)->group(function () {
     Route::get('/parsed-wm', 'index')->name('parsed-wm.index');
 });
-
-
-
+Route::controller(ParsedPowerMeterController::class)->group(function() {
+    Route::get('/parsed-pm', 'index')->name('parsed-pm.index');
+});
 
 
 

@@ -1,12 +1,12 @@
 @extends('layouts.master')
-@section('title', 'Mater Latest Data Power Meter')
+@section('title', 'Parsed Data Power Meter')
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Master Data Power Meter</h4>
+                    <h4 class="mb-sm-0">Parsed Data Power Meter</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
@@ -24,13 +24,29 @@
                     <div class="card-header">
                     </div>
                     <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <form method="get">
+                                    @csrf
+                                    <div class="input-group mb-4">
+                                        <select name="device" id="device" class="form-control">
+                                            <option value="">--Device Name--</option>
+                                            @foreach ($devices as $device)
+                                                <option value="{{ $device->id }}">{{ $device->devName }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <!--end row-->
+                                </form>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-bordered table-sm" id="dataTable" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Device</th>
-                                        <th>Dev EUI</th>
+                                        <th>Rawdata</th>
+                                        <th>Device Name</th>
                                         <th>Frame Id</th>
                                         <th>Tegangan</th>
                                         <th>Arus</th>
@@ -38,7 +54,7 @@
                                         <th>Active Power</th>
                                         <th>Power Factor</th>
                                         <th>Total Energy</th>
-                                        <th>Detail</th>
+                                        <th>Date</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -53,6 +69,8 @@
 @endsection
 @push('js')
 <script>
+    $('#device').select2();
+
     let columns = [
         {
             data: 'DT_RowIndex',
@@ -61,12 +79,12 @@
             searchable: false
         },
         {
-            data: 'device',
-            name: 'device',
+            data: 'rawdata_id',
+            name: 'rawdata_id'
         },
         {
-            data: 'devEUI',
-            name: 'devEUI',
+            data: 'device_name',
+            name: 'device_name'
         },
         {
             data: 'frame_id',
@@ -97,16 +115,34 @@
             name: 'total_energy',
         },
         {
-            data: 'detail',
-            name: 'detail'
+            data: 'created_at',
+            name: 'created_at'
         },
     ];
 
-    const table = $('#dataTable').DataTable({
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    });
+    // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+    let query = params.parsed_data; // "some_value"
+    let device_id = params.device_id;
+    var table = $('#dataTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('master_power_meter.index') }}",
+        ajax: {
+            url: "{{ route('parsed-pm.index') }}",
+            data: function (s) {
+                s.device = $('select[name=device] option').filter(':selected').val()
+                s.device_id = device_id;
+                s.parsed_data = query
+            }
+        },
         columns: columns
     });
+
+    $('#device').change(function() {
+        table.draw();
+    })
+
 </script>
 @endpush
