@@ -32,12 +32,12 @@
                     </div>
                     <div class="card-body">
                         <center>
-                            @if ($lastData->status_valve=='open')
+                            @if ($lastData->status_valve=='Open')
                                 <h4>Status Valve : <span class="badge rounded-pill badge-outline-success">{{ $lastData->status_valve  }}</span>  </h4>
-                            @elseif($lastData->status_valve=='close')
+                            @elseif($lastData->status_valve=='Close')
                                 <h4>Status Valve : <span class="badge rounded-pill badge-outline-danger">{{ $lastData->status_valve  }}</span>  </h4>
                             @else
-                                <h4>Status Valve : - </h4>
+                                <h4>Status Valve : <span class="badge rounded-pill badge-outline-dark">{{ $lastData->status_valve  }}</span></h4>
                             @endif
                             <h4>Last Updated : <span class="badge rounded-pill badge-outline-success">{{ $lastData->updated_at  }}</span>  </h4>
                         </center> <br>
