@@ -48,21 +48,21 @@ class DeviceController extends Controller
 
             return DataTables::of($device)
                 ->addIndexColumn()
-                ->addColumn('subnet', function($row) {
+                ->addColumn('subnet', function ($row) {
                     if (!$row->subnet) {
                         return '-';
                     }
 
                     return $row->subnet->subnet;
                 })
-                ->addColumn('cluster', function($row) {
-                    if (!$row->cluster){
+                ->addColumn('cluster', function ($row) {
+                    if (!$row->cluster) {
                         return '-';
                     }
 
                     return $row->cluster->name;
                 })
-                ->addColumn('instance', function($row) {
+                ->addColumn('instance', function ($row) {
                     if (!$row->instance) {
                         return '-';
                     }
@@ -118,7 +118,7 @@ class DeviceController extends Controller
             $rules['macVersion'] = 'required';
         }
 
-        if(request('authType') == 'abp'){
+        if (request('authType') == 'abp') {
             $rules['appSKey'] = 'required';
             $rules['nwkSKey'] = 'required';
             $rules['devAddr'] = 'required';
@@ -145,13 +145,13 @@ class DeviceController extends Controller
                 "appEUI" =>  $request->appEUI,
                 "devType" =>  $request->devType,
                 "devName" => $request->devName,
-                "region"=> $request->region,
-                "subnet"=> $subnet->subnet,
-                "authType"=> $request->authType,
-                "appID"=> intval($request->appID),
-                "appKey"=> $request->appKey,
-                "supportClassB"=>  $request->supportClassB == 'false' ? false : true,
-                "supportClassC"=>  $request->supportClassC == 'false' ? false : true,
+                "region" => $request->region,
+                "subnet" => $subnet->subnet,
+                "authType" => $request->authType,
+                "appID" => intval($request->appID),
+                "appKey" => $request->appKey,
+                "supportClassB" =>  $request->supportClassB == 'false' ? false : true,
+                "supportClassC" =>  $request->supportClassC == 'false' ? false : true,
             ];
 
 
@@ -172,16 +172,16 @@ class DeviceController extends Controller
                 'x-access-token' => $api_token,
             ];
 
-            $res= $client->post($url_endpoint, [
-	                'headers'           => $headers,
-	                'json'              => $payload,
-	                'force_ip_resolve'  => 'v4',
-	                'http_errors'       => false,
-	                'timeout'           => 120,
-	                'connect_timeout'   => 10,
-	                'allow_redirects'   => false,
-	                'verify'			=> false,
-	            ]);
+            $res = $client->post($url_endpoint, [
+                'headers'           => $headers,
+                'json'              => $payload,
+                'force_ip_resolve'  => 'v4',
+                'http_errors'       => false,
+                'timeout'           => 120,
+                'connect_timeout'   => 10,
+                'allow_redirects'   => false,
+                'verify'            => false,
+            ]);
 
             $response = $res->getBody()->getContents();
 
@@ -192,7 +192,7 @@ class DeviceController extends Controller
                 $errorMessage = errorMessage($response->code);
 
                 if (!empty($errorMessage)) {
-                    Alert::toast('Failed to create device. '.$errorMessage['message'], 'error');
+                    Alert::toast('Failed to create device. ' . $errorMessage['message'], 'error');
                 } else {
                     Alert::toast('Failed to create device. ', 'error');
                 }
@@ -201,11 +201,19 @@ class DeviceController extends Controller
             }
             $data = $request->except('_token');
             $save = Device::create($data);
-            $lastInsertedId= $save->id;
+            $lastInsertedId = $save->id;
             // insert master latest dataa
-            DB::table('master_latest_datas')->insert([
-                'device_id' => $lastInsertedId,
-            ]);
+
+            if ($request->category == 'Water Meter') {
+                DB::table('master_latest_datas')->insert([
+                    'device_id' => $lastInsertedId,
+                ]);
+            } else if ($request->category == 'Power Meter') {
+                DB::table('master_latest_data_power_meter')->insert([
+                    'device_id' => $lastInsertedId,
+                ]);
+            }
+
 
             Alert::toast('Device successfully created', 'success');
         } catch (Exception $err) {
@@ -214,7 +222,6 @@ class DeviceController extends Controller
         }
 
         return redirect()->route('device.index');
-
     }
 
     /**
@@ -274,7 +281,7 @@ class DeviceController extends Controller
 
         try {
             $url_update = 'https://wspiot.xyz/openapi/device/update';
-            $url_check_device = 'https://wspiot.xyz/openapi/device/status?devEUI='.$device->devEUI;
+            $url_check_device = 'https://wspiot.xyz/openapi/device/status?devEUI=' . $device->devEUI;
 
             $api_token   = env('APITOKEN', 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c=');
 
@@ -296,7 +303,7 @@ class DeviceController extends Controller
                 $errorMessage = errorMessage($response_check->code);
 
                 if (!empty($errorMessage)) {
-                    Alert::toast('Failed to update device! '.$errorMessage['message'], 'error');
+                    Alert::toast('Failed to update device! ' . $errorMessage['message'], 'error');
                 } else {
                     Alert::toast('Failed to update device!', 'error');
                 }
@@ -317,15 +324,15 @@ class DeviceController extends Controller
             ];
 
             $res = $client->post($url_update, [
-	                'headers'           => $headers,
-	                'json'              => $payload,
-	                'force_ip_resolve'  => 'v4',
-	                'http_errors'       => false,
-	                'timeout'           => 120,
-	                'connect_timeout'   => 10,
-	                'allow_redirects'   => false,
-	                'verify'			=> false,
-	            ]);
+                'headers'           => $headers,
+                'json'              => $payload,
+                'force_ip_resolve'  => 'v4',
+                'http_errors'       => false,
+                'timeout'           => 120,
+                'connect_timeout'   => 10,
+                'allow_redirects'   => false,
+                'verify'            => false,
+            ]);
 
             $response = $res->getBody()->getContents();
 
@@ -335,7 +342,7 @@ class DeviceController extends Controller
                 $errorMessage = errorMessage($response_check->code);
 
                 if (!empty($errorMessage)) {
-                    Alert::toast('Failed to update device! '.$errorMessage['message'], 'error');
+                    Alert::toast('Failed to update device! ' . $errorMessage['message'], 'error');
                 } else {
                     Alert::toast('Failed to update device!', 'error');
                 }
@@ -372,16 +379,16 @@ class DeviceController extends Controller
                 'x-access-token' => $api_token,
             ];
 
-            $res= $client->post($url_endpoint, [
-	                'headers'           => $headers,
-	                'json'              => $payload,
-	                'force_ip_resolve'  => 'v4',
-	                'http_errors'       => false,
-	                'timeout'           => 120,
-	                'connect_timeout'   => 10,
-	                'allow_redirects'   => false,
-	                'verify'			=> false,
-	            ]);
+            $res = $client->post($url_endpoint, [
+                'headers'           => $headers,
+                'json'              => $payload,
+                'force_ip_resolve'  => 'v4',
+                'http_errors'       => false,
+                'timeout'           => 120,
+                'connect_timeout'   => 10,
+                'allow_redirects'   => false,
+                'verify'            => false,
+            ]);
 
             $response = $res->getBody()->getContents();
 
@@ -392,7 +399,7 @@ class DeviceController extends Controller
                 $errorMessage = errorMessage($response->code);
 
                 if (!empty($errorMessage)) {
-                    Alert::toast('Failed to Delete device. '.$errorMessage['message'], 'error');
+                    Alert::toast('Failed to Delete device. ' . $errorMessage['message'], 'error');
                 } else {
                     Alert::toast('Failed to delete device. ', 'error');
                 }
@@ -455,7 +462,7 @@ class DeviceController extends Controller
 
         try {
             $device->update([
-             'cluster_id' => $request->cluster_id
+                'cluster_id' => $request->cluster_id
             ]);
             DB::commit();
 

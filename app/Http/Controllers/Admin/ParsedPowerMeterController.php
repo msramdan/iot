@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\ParsedWaterMater;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
 use App\Models\Device;
+use App\Models\ParsedPowerMater;
+use Yajra\DataTables\DataTables;
 
-class ParsedWaterMaterController extends Controller
+class ParsedPowerMeterController extends Controller
 {
-    public function index(Request $request)
+     public function index(Request $request)
     {
         $devices = Device::all();
 
         if(request()->ajax()){
-            $parsed_data = ParsedWaterMater::with('rawdata')->with(['device' => function($q){
-                $q->where('devices.category', 'Water Meter');
+            $parsed_data = ParsedPowerMater::with('rawdata')->with(['device' => function($q){
+                $q->where('devices.category', 'Power Meter');
             }]);
 
             $query_parsed = intval($request->query('parsed_data'));
@@ -45,27 +45,39 @@ class ParsedWaterMaterController extends Controller
 
                     return '-';
                 })
-                ->addColumn('uplink_interval', function ($row) {
-                    if ($row->uplink_interval) {
-                        return $row->uplink_interval.' Seconds';
+                ->addColumn('tegangan', function ($row) {
+                    if ($row->tegangan) {
+                        return $row->tegangan;
                     }
                     return '-';
                 })
-                ->addColumn('temperatur', function ($row) {
-                    if ($row->temperatur) {
-                        return $row->temperatur.'C';
+                ->addColumn('arus', function ($row) {
+                    if ($row->arus) {
+                        return $row->arus;
                     }
                     return '-';
                 })
-                ->addColumn('total_flow', function ($row) {
-                    if ($row->total_flow) {
-                        return $row->total_flow.'L';
+                ->addColumn('frekuensi_pln', function ($row) {
+                    if ($row->frekuensi_pln) {
+                        return $row->frekuensi_pln;
                     }
                     return '-';
                 })
-                ->addColumn('batrai_status', function ($row) {
-                    if ($row->batrai_status) {
-                        return $row->batrai_status.' %';
+                ->addColumn('active_power', function ($row) {
+                    if ($row->active_power) {
+                        return $row->active_power;
+                    }
+                    return '-';
+                })
+                ->addColumn('power_factor', function ($row) {
+                    if ($row->power_factor) {
+                        return $row->power_factor;
+                    }
+                    return '-';
+                })
+                ->addColumn('total_energy', function ($row) {
+                    if ($row->total_energy) {
+                        return $row->total_energy;
                     }
                     return '-';
                 })
@@ -78,7 +90,6 @@ class ParsedWaterMaterController extends Controller
                 ->rawColumns(['rawdata_id', 'action'])
                 ->toJson();
         }
-        return view('admin.parsed_rawdata.parsed_water_meter.index', compact('devices'));
+        return view('admin.parsed_rawdata.parsed_power_meter.index', compact('devices'));
     }
-
 }

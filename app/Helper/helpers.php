@@ -317,7 +317,7 @@ function handleWaterMeter($device_id, $request)
     $data = $request->data['data'];
     $hex = base64toHex($data);
     $frameId = substr($hex, 0, 2);
-    if ($frameId == "00" || $frameId == "10" || $frameId == "71" || $frameId == "95") {
+    if ($frameId == "00" || $frameId == "10" || $frameId == "71" || $frameId == "95" || $frameId == "21") {
         $save = Rawdata::create([
             'devEUI' => $request->devEUI,
             'appID'  => $request->appID,
@@ -397,6 +397,21 @@ function handleWaterMeter($device_id, $request)
                 'batrai_status' => $batt,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
+        } else if ($frameId == "21") {
+            if ($hex == '2101') {
+                $status_valve = 'Open';
+            } else if ($hex == '2181') {
+                $status_valve = 'Close';
+            } else {
+                $status_valve = 'Unknown';
+            }
+            $params = [
+                'rawdata_id' => $lastInsertedId,
+                'device_id' => $device_id,
+                'frame_id' => $frameId,
+                'status_valve' => $status_valve,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
         }
         // insert parsed data
         DB::table('parsed_water_mater')->insert($params);
@@ -404,27 +419,6 @@ function handleWaterMeter($device_id, $request)
         DB::table('master_latest_datas')
             ->where('device_id', $device_id)
             ->update($params);
-        return "success";
-    } else if ($frameId == "21") {
-        $save = Rawdata::create([
-            'devEUI' => $request->devEUI,
-            'appID'  => $request->appID,
-            'type'   => $request->type,
-            'time'   => $request->time,
-            'gwid'   => $request->data['gwid'],
-            'rssi'   => $request->data['rssi'],
-            'snr'    => $request->data['snr'],
-            'freq'   => $request->data['freq'],
-            'dr'     => $request->data['dr'],
-            'adr'    => $request->data['adr'],
-            'class'  => $request->data['class'],
-            'fcnt'   => $request->data['fCnt'],
-            'fport'  => $request->data['fPort'],
-            'confirmed' => $request->data['confirmed'],
-            'data'  => $request->data['data'],
-            'gws'   => json_encode($request->data['gws']),
-            'payload_data' => json_encode($request->all()),
-        ]);
         return "success";
     } else {
         return "Payload Data Tidak Tercover";
@@ -459,18 +453,72 @@ function handlePowerMeter($device_id, $request)
 
         $lastInsertedId = $save->id;
         if ($frameId == "91") {
-            $params = [
-                'rawdata_id' => $lastInsertedId,
-                'device_id' => $device_id,
-                'frame_id' => $frameId,
-                'tegangan' => '',
-                'arus' => '',
-                'frekuensi_pln' => '',
-                'active_power' => '',
-                'power_factor' => '',
-                'total_engergy' => '',
-                'created_at' => date('Y-m-d H:i:s'),
-            ];
+            $idenfikasi = substr($hex, 4, 8);
+            // big frame
+            if ($idenfikasi == "02000006") {
+                $tegangan = littleEndian(substr($hex, 28, 4)) * 0.1;
+                $arus = littleEndian(substr($hex, 40, 6)) / 1000;
+                $frekuensi_pln = littleEndian(substr($hex, 58, 4)) / 100;
+                $active_power = littleEndian(substr($hex, 64, 6)) / 10000;
+                $power_factor = littleEndian(substr($hex, 114, 4)) / 1000;
+                $total_engergy = littleEndian(substr($hex, 132, 4)) / 100;
+                $params = [
+                    'rawdata_id' => $lastInsertedId,
+                    'device_id' => $device_id,
+                    'frame_id' => $frameId,
+                    'tegangan' => $tegangan,
+                    'arus' => $arus,
+                    'frekuensi_pln' => $frekuensi_pln,
+                    'active_power' => $active_power,
+                    'power_factor' => $power_factor,
+                    'total_engergy' => $total_engergy,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+                // mini frame 1
+            } else if ($idenfikasi == "02000106") {
+                $tegangan = littleEndian(substr($hex, 22, 4)) * 0.1;
+                $arus = littleEndian(substr($hex, 34, 6)) / 1000;
+                $frekuensi_pln = littleEndian(substr($hex, 52, 4)) / 100;
+                $params = [
+                    'rawdata_id' => $lastInsertedId,
+                    'device_id' => $device_id,
+                    'frame_id' => $frameId,
+                    'tegangan' => $tegangan,
+                    'arus' => $arus,
+                    'frekuensi_pln' => $frekuensi_pln,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+                // mini frame 2
+            } else if ($idenfikasi == "02000206") {
+                $active_power = littleEndian(substr($hex, 22, 6)) / 10000;
+                $params = [
+                    'rawdata_id' => $lastInsertedId,
+                    'device_id' => $device_id,
+                    'frame_id' => $frameId,
+                    'active_power' => $active_power,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+                // mini frame 3
+            } else if ($idenfikasi == "02000306") {
+                $power_factor = littleEndian(substr($hex, 22, 4)) / 1000;
+                $params = [
+                    'rawdata_id' => $lastInsertedId,
+                    'device_id' => $device_id,
+                    'frame_id' => $frameId,
+                    'power_factor' => $power_factor,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+                // mini frame 4
+            } else if ($idenfikasi == "02000406") {
+                $total_engergy = littleEndian(substr($hex, 22, 4)) / 100;
+                $params = [
+                    'rawdata_id' => $lastInsertedId,
+                    'device_id' => $device_id,
+                    'frame_id' => $frameId,
+                    'total_engergy' => $total_engergy,
+                    'created_at' => date('Y-m-d H:i:s'),
+                ];
+            }
         }
         // insert parsed data
         DB::table('parsed_power_mater')->insert($params);
@@ -479,28 +527,11 @@ function handlePowerMeter($device_id, $request)
             ->where('device_id', $device_id)
             ->update($params);
         return "success";
-    } else if ($frameId == "1C") {
-        $save = Rawdata::create([
-            'devEUI' => $request->devEUI,
-            'appID'  => $request->appID,
-            'type'   => $request->type,
-            'time'   => $request->time,
-            'gwid'   => $request->data['gwid'],
-            'rssi'   => $request->data['rssi'],
-            'snr'    => $request->data['snr'],
-            'freq'   => $request->data['freq'],
-            'dr'     => $request->data['dr'],
-            'adr'    => $request->data['adr'],
-            'class'  => $request->data['class'],
-            'fcnt'   => $request->data['fCnt'],
-            'fport'  => $request->data['fPort'],
-            'confirmed' => $request->data['confirmed'],
-            'data'  => $request->data['data'],
-            'gws'   => json_encode($request->data['gws']),
-            'payload_data' => json_encode($request->all()),
-        ]);
-        return "success";
     } else {
         return "Payload Data Tidak Tercover";
     }
+}
+
+function handleGasMeter($device_id, $request){
+
 }

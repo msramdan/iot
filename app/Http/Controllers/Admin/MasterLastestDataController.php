@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\MasterLatestData;
+use App\Models\MasterLatestDataPowerMeter;
 use App\Models\Device;
 use App\Models\ParsedWaterMater;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -65,6 +66,12 @@ class MasterLastestDataController extends Controller
                     }
                     return '-';
                 })
+                ->addColumn('status_valve', function ($row) {
+                    if ($row->status_valve) {
+                        return $row->status_valve;
+                    }
+                    return '-';
+                })
                 ->addColumn('detail', function ($row) {
                         return '<a href="'.url('panel/master-water-meter/detail/'.$row->device_id).'" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
@@ -103,8 +110,8 @@ class MasterLastestDataController extends Controller
     public function powerMeterMaster(Request $request)
     {
          if (request()->ajax()) {
-           $parsed_data = MasterLatestData::with(['device' => function($k) {
-                    $k->where('devices.category', 'Water Meter');
+           $parsed_data = MasterLatestDataPowerMeter::with(['device' => function($k) {
+                    $k->where('devices.category', 'Power Meter');
                 }]);
 
             $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
@@ -128,27 +135,39 @@ class MasterLastestDataController extends Controller
                 ->addColumn('frame_id', function($row) {
                     return $row->frame_id ?? '-' ;
                 })
-                ->addColumn('uplink_interval', function ($row) {
-                    if ($row->uplink_interval) {
-                        return $row->uplink_interval.' Seconds';
+                ->addColumn('tegangan', function ($row) {
+                    if ($row->tegangan) {
+                        return $row->tegangan;
                     }
                     return '-';
                 })
-                ->addColumn('temperatur', function ($row) {
-                    if ($row->temperatur) {
-                        return $row->temperatur.'C';
+                ->addColumn('arus', function ($row) {
+                    if ($row->arus) {
+                        return $row->arus;
                     }
                     return '-';
                 })
-                ->addColumn('total_flow', function ($row) {
-                    if ($row->total_flow) {
-                        return $row->total_flow.'L';
+                ->addColumn('frekuensi_pln', function ($row) {
+                    if ($row->frekuensi_pln) {
+                        return $row->frekuensi_pln;
                     }
                     return '-';
                 })
-                ->addColumn('batrai_status', function ($row) {
-                    if ($row->batrai_status) {
-                        return $row->batrai_status.' %';
+                ->addColumn('active_power', function ($row) {
+                    if ($row->active_power) {
+                        return $row->active_power;
+                    }
+                    return '-';
+                })
+                ->addColumn('power_factor', function ($row) {
+                    if ($row->power_factor) {
+                        return $row->power_factor;
+                    }
+                    return '-';
+                })
+                ->addColumn('total_energy', function ($row) {
+                    if ($row->total_energy) {
+                        return $row->total_energy;
                     }
                     return '-';
                 })

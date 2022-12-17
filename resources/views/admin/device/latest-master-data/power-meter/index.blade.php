@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Mater Latest Data Device')
+@section('title', 'Mater Latest Data Power Meter')
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
@@ -29,14 +29,15 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>History</th>
                                         <th>Device</th>
                                         <th>Dev EUI</th>
                                         <th>Frame Id</th>
-                                        <th>Uplink Interval</th>
-                                        <th>Beterai Status</th>
-                                        <th>Temperatur</th>
-                                        <th>Total Flow</th>
+                                        <th>Tegangan</th>
+                                        <th>Arus</th>
+                                        <th>Frekuensi PLN</th>
+                                        <th>Active Power</th>
+                                        <th>Power Factor</th>
+                                        <th>Total Energy</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -59,10 +60,6 @@
             searchable: false
         },
         {
-            data: 'rawdata_id',
-            name: 'rawdata_id'
-        },
-        {
             data: 'device',
             name: 'device',
         },
@@ -75,20 +72,28 @@
             name: 'frame_id'
         },
         {
-            data: 'uplink_interval',
-            name: 'uplink_interval'
+            data: 'tegangan',
+            name: 'tegangan'
         },
         {
-            data: 'batrai_status',
-            name: 'batrai_status'
+            data: 'arus',
+            name: 'arus'
         },
         {
-            data: 'temperatur',
-            name: 'temperatur'
+            data: 'frekuensi_pln',
+            name: 'frekuensi_pln'
         },
         {
-            data: 'total_flow',
-            name: 'total_flow'
+            data: 'active_power',
+            name: 'active_power'
+        },
+        {
+            data: 'power_factor',
+            name: 'power_factor',
+        },
+        {
+            data: 'total_energy',
+            name: 'total_energy',
         },
     ];
 

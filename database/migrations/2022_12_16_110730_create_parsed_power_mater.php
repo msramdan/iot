@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('active_power',20)->nullable();
             $table->string('power_factor',20)->nullable();
             $table->string('total_engergy',20)->nullable();
+            $table->string('status_switch',50)->nullable();
             $table->timestamps();
         });
     }

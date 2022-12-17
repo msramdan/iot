@@ -50,8 +50,10 @@ class CallbackController extends Controller
                 $categoryDevice = $device->category;
                 if ($categoryDevice == 'Water Meter') {
                     $respondHandler = handleWaterMeter($device->id, $request);
-                }else if($categoryDevice == 'Power Meter'){
+                } else if ($categoryDevice == 'Power Meter') {
                     $respondHandler = handlePowerMeter($device->id, $request);
+                } else if ($categoryDevice == 'Gas Meter') {
+                    $respondHandler = handleGasMeter($device->id, $request);
                 }
 
                 if ($respondHandler == 'success') {

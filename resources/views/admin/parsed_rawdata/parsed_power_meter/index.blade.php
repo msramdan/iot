@@ -1,17 +1,17 @@
 @extends('layouts.master')
-@section('title', 'Data Gateway')
+@section('title', 'Parsed Data Power Meter')
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Parsed Data Water Meter</h4>
+                    <h4 class="mb-sm-0">Parsed Data Power Meter</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Parsed Data Water Meter</li>
+                            <li class="breadcrumb-item active">Parsed Data Power Meter</li>
                         </ol>
                     </div>
 
@@ -48,10 +48,12 @@
                                         <th>Rawdata</th>
                                         <th>Device Name</th>
                                         <th>Frame Id</th>
-                                        <th>Uplink Interval</th>
-                                        <th>Beterai Status</th>
-                                        <th>Temperatur</th>
-                                        <th>Total Flow</th>
+                                        <th>Tegangan</th>
+                                        <th>Arus</th>
+                                        <th>Frekuensi PLN</th>
+                                        <th>Active Power</th>
+                                        <th>Power Factor</th>
+                                        <th>Total Energy</th>
                                         <th>Date</th>
                                     </tr>
                                 </thead>
@@ -89,20 +91,28 @@
             name: 'frame_id'
         },
         {
-            data: 'uplink_interval',
-            name: 'uplink_interval'
+            data: 'tegangan',
+            name: 'tegangan'
         },
         {
-            data: 'batrai_status',
-            name: 'batrai_status'
+            data: 'arus',
+            name: 'arus'
         },
         {
-            data: 'temperatur',
-            name: 'temperatur'
+            data: 'frekuensi_pln',
+            name: 'frekuensi_pln'
         },
         {
-            data: 'total_flow',
-            name: 'total_flow'
+            data: 'active_power',
+            name: 'active_power'
+        },
+        {
+            data: 'power_factor',
+            name: 'power_factor',
+        },
+        {
+            data: 'total_energy',
+            name: 'total_energy',
         },
         {
             data: 'created_at',
@@ -120,7 +130,7 @@
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('parsed-wm.index') }}",
+            url: "{{ route('parsed-pm.index') }}",
             data: function (s) {
                 s.device = $('select[name=device] option').filter(':selected').val()
                 s.device_id = device_id;

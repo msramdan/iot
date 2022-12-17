@@ -148,28 +148,28 @@
                             </li>
                             @endcan
                             <li class="nav-item">
-                                        <a href="#sidebarAccount" class="nav-link collapsed" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Parsed Rawdata
-                                        </a>
-                                        <div class="menu-dropdown collapse" id="sidebarAccount" style="">
-                                            <ul class="nav nav-sm flex-column">
-                                                @can('parsed_wm_show')
-                                                <li class="nav-item">
-                                                    <a href="{{ route('parsed-wm.index') }}" class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-level-2.1"> Water Meter</a>
-                                                </li>
-                                                @endcan
-                                                @can('parsed_gm_show')
-                                                <li class="nav-item">
-                                                    <a href="#" class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-level-2.1"> Gas Meter </a>
-                                                </li>
-                                                @endcan
-                                                @can('parsed_pm_show')
-                                                <li class="nav-item">
-                                                    <a href="#" class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-level-2.1"> Power Meter </a>
-                                                </li>
-                                                @endcan
-                                            </ul>
-                                        </div>
-                                    </li>
+                                <a href="#sidebarAccount" class="nav-link collapsed" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Parsed Rawdata
+                                </a>
+                                <div class="menu-dropdown collapse" id="sidebarAccount" style="">
+                                    <ul class="nav nav-sm flex-column">
+                                        @can('parsed_wm_show')
+                                        <li class="nav-item">
+                                            <a href="{{ route('parsed-wm.index') }}" class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-level-2.1"> Water Meter</a>
+                                        </li>
+                                        @endcan
+                                        @can('parsed_gm_show')
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-level-2.1"> Gas Meter </a>
+                                        </li>
+                                        @endcan
+                                        @can('parsed_pm_show')
+                                        <li class="nav-item">
+                                            <a href="{{ route('parsed-pm.index') }}" class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-level-2.1"> Power Meter </a>
+                                        </li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </li>

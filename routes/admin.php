@@ -24,6 +24,8 @@ use App\Http\Controllers\CallbackController;
 use App\Http\Controllers\Admin\DeviceController;
 use App\Http\Controllers\Admin\ParsedWaterMaterController;
 use App\Http\Controllers\Admin\MasterLastestDataController;
+use App\Http\Controllers\Admin\ParsedGasMeterController;
+use App\Http\Controllers\Admin\ParsedPowerMeterController;
 
 /**
  * Route Admin Panel
@@ -95,9 +97,9 @@ Route::controller(RawdataController::class)->group(function () {
 Route::controller(ParsedWaterMaterController::class)->group(function () {
     Route::get('/parsed-wm', 'index')->name('parsed-wm.index');
 });
-
-
-
+Route::controller(ParsedPowerMeterController::class)->group(function() {
+    Route::get('/parsed-pm', 'index')->name('parsed-pm.index');
+});
 
 
 
