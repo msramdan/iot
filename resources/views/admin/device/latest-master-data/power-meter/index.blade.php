@@ -38,6 +38,7 @@
                                         <th>Active Power</th>
                                         <th>Power Factor</th>
                                         <th>Total Energy</th>
+                                        <th>Detail</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -94,6 +95,10 @@
         {
             data: 'total_energy',
             name: 'total_energy',
+        },
+        {
+            data: 'detail',
+            name: 'detail'
         },
     ];
 
