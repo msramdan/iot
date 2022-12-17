@@ -49,6 +49,9 @@ Route::controller(MasterLastestDataController::class)->group(function() {
     //Water meter
     Route::get('/master-water-meter', 'waterMeterMaster')->name('master_water_meter.index');
     Route::get('/master-water-meter/detail/{id}', 'detailWaterMeter')->name('master_water_meter.detail');
+    Route::post('/checkValve', 'checkValve')->name('checkValve');
+    Route::post('/openValve', 'openValve')->name('openValve');
+    Route::post('/closeValve', 'closeValve')->name('closeValve');
     //Power Meter
     Route::get('/master-power-meter', 'powerMeterMaster')->name('master_power_meter.index');
     Route::get('/master-power-meter/detail/{id}', 'detailPowerMeter')->name('master_power_meter.detail');

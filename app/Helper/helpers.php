@@ -362,6 +362,7 @@ function handleWaterMeter($device_id, $request)
                 'temperatur' => $temperatur,
                 'total_flow' => $totalFlow,
                 'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ];
         } else if ($frameId == "10") {
             $temperatur = hexdec(littleEndian(substr($hex, 2, 4))) * 0.01;
@@ -371,6 +372,7 @@ function handleWaterMeter($device_id, $request)
                 'frame_id' => $frameId,
                 'temperatur' => $temperatur,
                 'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ];
         } else if ($frameId == "71") {
             $totalFlow = hexdec(littleEndian(substr($hex, 2, 16))) * 0.01;
@@ -380,6 +382,7 @@ function handleWaterMeter($device_id, $request)
                 'frame_id' => $frameId,
                 'total_flow' => $totalFlow,
                 'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ];
         } else if ($frameId == "95") {
             $batraiStatus = hexdec(littleEndian(substr($hex, 2, 2)));
@@ -396,6 +399,7 @@ function handleWaterMeter($device_id, $request)
                 'frame_id' => $frameId,
                 'batrai_status' => $batt,
                 'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ];
         } else if ($frameId == "21") {
             if ($hex == '2101') {
@@ -411,6 +415,7 @@ function handleWaterMeter($device_id, $request)
                 'frame_id' => $frameId,
                 'status_valve' => $status_valve,
                 'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ];
         }
         // insert parsed data
@@ -473,6 +478,7 @@ function handlePowerMeter($device_id, $request)
                     'power_factor' => $power_factor,
                     'total_energy' => $total_energy,
                     'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ];
                 // mini frame 1
             } else if ($idenfikasi == "02000106") {
@@ -487,6 +493,7 @@ function handlePowerMeter($device_id, $request)
                     'arus' => $arus,
                     'frekuensi_pln' => $frekuensi_pln,
                     'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ];
                 // mini frame 2
             } else if ($idenfikasi == "02000206") {
@@ -497,6 +504,7 @@ function handlePowerMeter($device_id, $request)
                     'frame_id' => $frameId,
                     'active_power' => $active_power,
                     'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ];
                 // mini frame 3
             } else if ($idenfikasi == "02000306") {
@@ -507,6 +515,8 @@ function handlePowerMeter($device_id, $request)
                     'frame_id' => $frameId,
                     'power_factor' => $power_factor,
                     'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
+
                 ];
                 // mini frame 4
             } else if ($idenfikasi == "02000406") {
@@ -517,6 +527,7 @@ function handlePowerMeter($device_id, $request)
                     'frame_id' => $frameId,
                     'total_energy' => $total_energy,
                     'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ];
             }
         }

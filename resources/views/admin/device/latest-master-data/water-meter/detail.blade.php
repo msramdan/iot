@@ -32,13 +32,20 @@
                     </div>
                     <div class="card-body">
                         <center>
-                            <h4>Status Valve : </h4>
-                            <h4>Updated : </h4>
-                        </center>
+                            @if ($lastData->status_valve=='open')
+                                <h4>Status Valve : <span class="badge rounded-pill badge-outline-success">{{ $lastData->status_valve  }}</span>  </h4>
+                            @elseif($lastData->status_valve=='close')
+                                <h4>Status Valve : <span class="badge rounded-pill badge-outline-danger">{{ $lastData->status_valve  }}</span>  </h4>
+                            @else
+                                -
+                            @endif
+                            <h4>Last Updated : <span class="badge rounded-pill badge-outline-success">{{ $lastData->updated_at  }}</span>  </h4>
+                        </center> <br>
                         <center>
-							<a href="" target="_blank" class="btn btn-primary" style="margin-top:5px;">Read Valve Status</a>
-							<a href="" target="_blank" class="btn btn-success" style="margin-top:5px;">Open Valve</a>
-							<a href="" target="_blank" class="btn btn-danger" style="margin-top:5px;">Close Valve</a>
+                            <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}" hidden>
+							<button type="submit" id="cek_status"  class="btn btn-primary" style="margin-top:5px;">Read Valve Status</button>
+							<button type="submit" id="open_valve" class="btn btn-success" style="margin-top:5px;"> Open Valve</button>
+							<button type="submit" id="close_valve" class="btn btn-danger" style="margin-top:5px;">Close Valve</button>
 						</center>
                     </div>
                 </div>
@@ -314,5 +321,110 @@
         }
     });
 });
+</script>
+<script>
+        $('#cek_status').click(function(e) {
+            const devEUI = $('#devEUI').val();
+            let data = {
+                devEUI: devEUI,
+            }
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Are You Sure to Read Valve Status ?',
+                    showCancelButton: true,
+                    confirmButtonText: `Yes`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                            type: 'POST',
+                            url: '{{ route('checkValve') }}',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            data: data,
+                            success: function(res) {
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Please Waiting Response From Server',
+                                        text: 'In progress to Read Valve Status',
+                                        allowOutsideClick: false,
+                                    }).then(function() {
+                                        location.reload();
+                                    })
+                            },
+                        })
+                        }
+                    });
+        })
+</script>
+<script>
+        $('#open_valve').click(function(e) {
+            const devEUI = $('#devEUI').val();
+            let data = {
+                devEUI: devEUI,
+            }
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Are You Sure to Open Valve ?',
+                    showCancelButton: true,
+                    confirmButtonText: `Yes`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                            type: 'POST',
+                            url: '{{ route('openValve') }}',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            data: data,
+                            success: function(res) {
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Please Waiting Response From Server',
+                                        text: 'In progress to Open Valve',
+                                        allowOutsideClick: false,
+                                    }).then(function() {
+                                        location.reload();
+                                    })
+                            },
+                        })
+                        }
+                    });
+        })
+</script>
+<script>
+        $('#close_valve').click(function(e) {
+            const devEUI = $('#devEUI').val();
+            let data = {
+                devEUI: devEUI,
+            }
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Are You Sure to Close Valve ?',
+                    showCancelButton: true,
+                    confirmButtonText: `Yes`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                            type: 'POST',
+                            url: '{{ route('closeValve') }}',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            data: data,
+                            success: function(res) {
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Please Waiting Response From Server',
+                                        text: 'In progress to Close Valve',
+                                        allowOutsideClick: false,
+                                    }).then(function() {
+                                        location.reload();
+                                    })
+                            },
+                        })
+                        }
+                    });
+        })
 </script>
 @endpush
