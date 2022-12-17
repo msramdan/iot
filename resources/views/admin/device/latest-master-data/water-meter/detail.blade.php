@@ -37,7 +37,7 @@
                             @elseif($lastData->status_valve=='close')
                                 <h4>Status Valve : <span class="badge rounded-pill badge-outline-danger">{{ $lastData->status_valve  }}</span>  </h4>
                             @else
-                                -
+                                <h4>Status Valve : - </h4>
                             @endif
                             <h4>Last Updated : <span class="badge rounded-pill badge-outline-success">{{ $lastData->updated_at  }}</span>  </h4>
                         </center> <br>
