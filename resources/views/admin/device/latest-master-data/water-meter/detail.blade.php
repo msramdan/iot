@@ -115,7 +115,7 @@
                                         @foreach ($parsed_data as $item)
                                         <tr>
                                             <td>{{ $item->temperatur }} C</td>
-                                            <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
+                                            <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -143,7 +143,7 @@
                                        @foreach ($parsed_data as $item)
                                         <tr>
                                             <td>{{ $item->total_flow }} L</td>
-                                            <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
+                                            <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
