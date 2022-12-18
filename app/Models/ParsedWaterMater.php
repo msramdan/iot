@@ -9,7 +9,7 @@ class ParsedWaterMater extends Model
 {
     use HasFactory;
 
-    protected $table = 'parsed_water_mater';
+    protected $table = 'parsed_water_meter';
     protected $guarded = ['id'];
 
     public function rawdata()

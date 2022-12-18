@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('parsed_power_mater', function (Blueprint $table) {
+        Schema::create('parsed_power_meter', function (Blueprint $table) {
             $table->id();
             $table->foreignId('device_id')->nullable();
             $table->foreignId('rawdata_id')->constrained('rawdata')->cascadeOnDelete();

@@ -10,7 +10,7 @@ use Yajra\DataTables\DataTables;
 
 class ParsedPowerMeterController extends Controller
 {
-     public function index(Request $request)
+    public function index(Request $request)
     {
         $devices = Device::all();
 

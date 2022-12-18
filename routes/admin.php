@@ -57,6 +57,7 @@ Route::controller(MasterLastestDataController::class)->group(function() {
     Route::get('/master-power-meter/detail/{id}', 'detailPowerMeter')->name('master_power_meter.detail');
     //Gas Meter
     Route::get('/master-gas-meter', 'gasMeterMaster')->name('master_gas_meter.index');
+    Route::get('/master-gas-meter/detail/{id}', 'detailGasMeter')->name('master_gas_meter.detail');
 });
 
 // roles
@@ -104,7 +105,9 @@ Route::controller(ParsedWaterMaterController::class)->group(function () {
 Route::controller(ParsedPowerMeterController::class)->group(function() {
     Route::get('/parsed-pm', 'index')->name('parsed-pm.index');
 });
-
+Route::controller(ParsedGasMeterController::class)->group(function() {
+    Route::get('/parsed-gm', 'index')->name('parsed-gm.index');
+});
 
 
 //Route Gateway

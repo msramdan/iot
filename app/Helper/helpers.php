@@ -419,7 +419,7 @@ function handleWaterMeter($device_id, $request)
             ];
         }
         // insert parsed data
-        DB::table('parsed_water_mater')->insert($params);
+        DB::table('parsed_water_meter')->insert($params);
         //update data master_latest_data
         DB::table('master_latest_datas')
             ->where('device_id', $device_id)
@@ -532,7 +532,7 @@ function handlePowerMeter($device_id, $request)
             }
         }
         // insert parsed data
-        DB::table('parsed_power_mater')->insert($params);
+        DB::table('parsed_power_meter')->insert($params);
         //update data master_latest_data
         DB::table('master_latest_data_power_meter')
             ->where('device_id', $device_id)

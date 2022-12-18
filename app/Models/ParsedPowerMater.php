@@ -9,7 +9,7 @@ class ParsedPowerMater extends Model
 {
     use HasFactory;
 
-    protected $table = 'parsed_power_mater';
+    protected $table = 'parsed_power_meter';
     protected $guarded = ['id'];
 
     public function rawdata()
