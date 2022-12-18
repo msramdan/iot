@@ -154,6 +154,7 @@ class InstanceController extends Controller
                     "pushURL" => $request->push_url,
                     "enableMQTT" => false
                 ]);
+
             $data = $request->except(['_token']);
             $data['password'] = Hash::make($data['password']);
             $data['appID'] = $response['appID'];
@@ -168,7 +169,7 @@ class InstanceController extends Controller
                 return redirect()->route('instance.index');
             }
         } catch (Exception $e) {
-            // \Log::error($e);
+             \Log::error($e);
             Alert::toast('Data failed to save', 'error');
             return redirect()->route('instance.index');
         }

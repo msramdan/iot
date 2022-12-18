@@ -9,7 +9,7 @@ class ParsedGasMater extends Model
 {
     use HasFactory;
 
-    protected $table = 'parsed_gas_mater';
+    protected $table = 'parsed_gas_meter';
     protected $guarded = ['id'];
 
     public function rawdata()

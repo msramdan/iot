@@ -159,7 +159,7 @@
                                         @endcan
                                         @can('parsed_gm_show')
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-level-2.1"> Gas Meter </a>
+                                            <a href="{{ route('parsed-gm.index') }}" class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-level-2.1"> Gas Meter </a>
                                         </li>
                                         @endcan
                                         @can('parsed_pm_show')
