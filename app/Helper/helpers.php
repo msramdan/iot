@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use App\Models\Rawdata;
+use App\Models\Ticket;
 
 if (!function_exists('set_active')) {
     function set_active($uri)
@@ -446,6 +447,15 @@ function handleWaterMeter($device_id, $request)
             'type_payload'  => 'Alert',
         ]);
         $lastInsertedId = $save->id;
+
+        // get list alert
+        $convert = base64toHex($request->data['data']);
+
+        Ticket::create([
+            'subject' => "Alert dari Device " .$request->devEUI,
+            'description'  => "Abnormal indications on : ",
+            'is_device'   => 1,
+        ]);
         return "Alert Data Water Meter Success";
     }else{
         return "Payload Data Tidak Tercover";
