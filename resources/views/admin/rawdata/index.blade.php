@@ -34,7 +34,6 @@
                                         <th>Type</th>
                                         <th>Freq</th>
                                         <th>Fport</th>
-                                        <th>Data</th>
                                         <th>Date</th>
                                     </tr>
                                 </thead>
@@ -88,10 +87,6 @@
                 name: 'fport'
             },
             {
-                data: 'data',
-                name: 'data'
-            },
-            {
                 data: 'created_at',
                 name: 'created_at'
             },
@@ -137,6 +132,14 @@
         function format(d) {
             return (
                 `<div class="mb-4">
+                    <label for="form-label">Base64</label>
+                    <textarea name="" id="" cols="30" class="form-control" style="height: 100%;" disabled>${d.data}</textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="form-label">Base64 To Hex</label>
+                    <textarea name="" id="" cols="30" class="form-control" style="height: 100%;" disabled>${d.convert}</textarea>
+                </div>
+                <div class="mb-4">
                     <label for="form-label">Payload</label>
                     <textarea name="" id="" cols="30" class="form-control" style="height: 100%;" disabled>${d.payload}</textarea>
                 </div>`

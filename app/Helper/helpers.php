@@ -334,10 +334,10 @@ function handleWaterMeter($device_id, $request)
             'fport'  => $request->data['fPort'],
             'confirmed' => $request->data['confirmed'],
             'data'  => $request->data['data'],
+            'convert'  => base64toHex($request->data['data']),
             'gws'   => json_encode($request->data['gws']),
             'payload_data' => json_encode($request->all()),
         ]);
-
         $lastInsertedId = $save->id;
         if ($frameId == "00") {
             $uplinkInterval = hexdec(littleEndian(substr($hex, 2, 4)));
@@ -418,14 +418,36 @@ function handleWaterMeter($device_id, $request)
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
         }
-        // insert parsed data
         DB::table('parsed_water_meter')->insert($params);
-        //update data master_latest_data
         DB::table('master_latest_datas')
             ->where('device_id', $device_id)
             ->update($params);
         return "success";
-    } else {
+    } else if($frameId == "0f"){
+        $save = Rawdata::create([
+            'devEUI' => $request->devEUI,
+            'appID'  => $request->appID,
+            'type'   => $request->type,
+            'time'   => $request->time,
+            'gwid'   => $request->data['gwid'],
+            'rssi'   => $request->data['rssi'],
+            'snr'    => $request->data['snr'],
+            'freq'   => $request->data['freq'],
+            'dr'     => $request->data['dr'],
+            'adr'    => $request->data['adr'],
+            'class'  => $request->data['class'],
+            'fcnt'   => $request->data['fCnt'],
+            'fport'  => $request->data['fPort'],
+            'confirmed' => $request->data['confirmed'],
+            'data'  => $request->data['data'],
+            'convert'  => base64toHex($request->data['data']),
+            'gws'   => json_encode($request->data['gws']),
+            'payload_data' => json_encode($request->all()),
+            'type_payload'  => 'Alert',
+        ]);
+        $lastInsertedId = $save->id;
+        return "Alert Data Water Meter Success";
+    }else{
         return "Payload Data Tidak Tercover";
     }
 }
@@ -452,6 +474,7 @@ function handlePowerMeter($device_id, $request)
             'fport'  => $request->data['fPort'],
             'confirmed' => $request->data['confirmed'],
             'data'  => $request->data['data'],
+            'convert'  => base64toHex($request->data['data']),
             'gws'   => json_encode($request->data['gws']),
             'payload_data' => json_encode($request->all()),
         ]);
@@ -564,6 +587,7 @@ function handleGasMeter($device_id, $request){
             'fport'  => $request->data['fPort'],
             'confirmed' => $request->data['confirmed'],
             'data'  => $request->data['data'],
+            'convert'  => base64toHex($request->data['data']),
             'gws'   => json_encode($request->data['gws']),
             'payload_data' => json_encode($request->all()),
         ]);

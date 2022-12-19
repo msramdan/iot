@@ -32,6 +32,8 @@ return new class extends Migration
             $table->text('data');
             $table->text('gws');
             $table->json('payload_data');
+            $table->text('convert')->nullable();
+            $table->string('type_payload',20)->nullable();
             $table->timestamps();
         });
     }
