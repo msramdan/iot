@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\InstanceLoginController;
 use App\Http\Controllers\CallbackController;
 use App\Http\Controllers\Partner\ClusterController;
+use App\Http\Controllers\Partner\DeviceController;
+use App\Http\Controllers\Partner\ParsedGasMeterController;
+use App\Http\Controllers\Partner\ParsedPowerMeterController;
+use App\Http\Controllers\Partner\ParsedWaterMeterController;
+use App\Models\ParsedGasMater;
 
 Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::class, 'reloadCaptcha']);
 
@@ -43,6 +48,19 @@ Route::middleware(['auth:instances'])->name('instances.')->group(function() {
         Route::get('/subinstance', 'index')->name('subinstance.index');
     });
     Route::resource('subinstance.cluster', ClusterController::class);
+
+    Route::controller(DeviceController::class)->group(function() {
+        Route::get('/device', 'index')->name('device.index');
+    });
+    Route::controller(ParsedWaterMaterController::class)->group(function () {
+        Route::get('/parsed-wm', 'index')->name('parsed-wm.index');
+    });
+    Route::controller(ParsedPowerMeterController::class)->group(function() {
+        Route::get('/parsed-pm', 'index')->name('parsed-pm.index');
+    });
+    Route::controller(ParsedGasMeterController::class)->group(function() {
+        Route::get('/parsed-gm', 'index')->name('parsed-gm.index');
+    });
 });
 
 
