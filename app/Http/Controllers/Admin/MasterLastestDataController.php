@@ -108,7 +108,9 @@ class MasterLastestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
+        $parsed_data = $parsed_data
+                        ->orderBy('parsed_water_meter.id', 'desc')
+                        ->whereNull('status_valve')->get();
 
         return view('admin.device.latest-master-data.water-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI', 'lastData'));
     }
