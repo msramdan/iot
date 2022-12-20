@@ -1,6 +1,19 @@
 @extends('layouts.master')
 @section('title', 'Mater Latest Data Device')
 @section('content')
+
+<style>
+    .my-custom-scrollbar {
+        position: relative;
+        height: 400px;
+        overflow: auto;
+        }
+    .table-wrapper-scroll-y {
+        display: block;
+        }
+</style>
+
+
 <div class="page-content">
     <div class="container-fluid">
         <div class="row">
@@ -75,24 +88,26 @@
                         </div>
                     </div>
                     <div class="card-body" >
-                        <div class="row" style="overflow-x:scroll">
+                        <div class="row">
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Batrai Status</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($parsed_data as $data)
-                                        <tr>
-                                            <td>{{ $data->batrai_status }} %</td>
-                                            <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                    <table id="" class="table table-sm table-bordered ">
+                                        <thead>
+                                            <tr>
+                                                <th>Batrai Status</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($parsed_data as $data)
+                                            <tr>
+                                                <td style="width: 50%">{{ $data->batrai_status }} %</td>
+                                                <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div  id="chart-container"></div>
@@ -102,9 +117,10 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <div class="row" style="overflow-x:scroll">
+                        <div class="row">
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table table-sm table-bordered " style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Temperature</th>
@@ -120,6 +136,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div id="chart-container2"></div>
@@ -130,9 +147,10 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <div class="row" style="overflow-x:scroll">
+                        <div class="row">
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table table-sm table-bordered " style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Total Flow</th>
@@ -148,6 +166,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div id="chart-container3"></div>
@@ -192,7 +211,7 @@
                     [
                         @foreach ($parsed_data as $date)
                             {
-                                "label": "{{ date('d/m/Y H:i:s', strtotime($date->created_at)) }}"
+                                "label": "{{ date('d/m/Y H:i', strtotime($date->created_at)) }}"
                             },
                         @endforeach
                     ]
@@ -239,7 +258,7 @@
                     [
                         @foreach ($parsed_data as $date)
                             {
-                                "label": "{{ date('d/m/Y H:i:s', strtotime($date->created_at)) }}"
+                                "label": "{{ date('d/m/Y H:i', strtotime($date->created_at)) }}"
                             },
                         @endforeach
                     ]
@@ -286,7 +305,7 @@
                     [
                         @foreach ($parsed_data as $date)
                             {
-                                "label": "{{ date('d/m/Y H:i:s', strtotime($date->created_at)) }}"
+                                "label": "{{ date('d/m/Y H:i', strtotime($date->created_at)) }}"
                             },
                         @endforeach
                     ]
@@ -307,11 +326,11 @@
 </script>
 <script>
     $(document).ready(function () {
-    $('.example-scroll').DataTable({
-        scrollY: '300px',
-        scrollCollapse: true,
-        paging: false,
-    });
+    // $('.example-scroll').DataTable({
+    //     scrollY: '300px',
+    //     scrollCollapse: true,
+    //     paging: false,
+    // });
 
     $('#filter_date_data').change(function() {
         var dates = $(this).val();

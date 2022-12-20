@@ -1,13 +1,22 @@
 @extends('layouts.master')
 @section('title', 'Detail Data Power Meter')
 @section('content')
+<style>
+    .my-custom-scrollbar {
+        position: relative;
+        height: 400px;
+        overflow: auto;
+        }
+    .table-wrapper-scroll-y {
+        display: block;
+        }
+</style>
 <div class="page-content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Detail Data Power Meter</h4>
-
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
@@ -70,7 +79,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Tegangan</th>
@@ -86,9 +96,10 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <div id="chart-container">FusionCharts XT will load here!</div>
+                                <div id="chart-container"></div>
                             </div>
                         </div>
                     </div>
@@ -99,7 +110,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Arus</th>
@@ -115,9 +127,10 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <div id="chart-container2">FusionCharts XT will load here!</div>
+                                <div id="chart-container2"></div>
                             </div>
                         </div>
                     </div>
@@ -128,7 +141,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Frekuensi PLN</th>
@@ -144,9 +158,10 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <div id="chart-container3">FusionCharts XT will load here!</div>
+                                <div id="chart-container3"></div>
                             </div>
                         </div>
                     </div>
@@ -157,7 +172,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Active Power</th>
@@ -173,9 +189,10 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <div id="chart-container4">FusionCharts XT will load here!</div>
+                                <div id="chart-container4"></div>
                             </div>
                         </div>
                     </div>
@@ -186,7 +203,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Power Factor</th>
@@ -202,9 +220,10 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <div id="chart-container5">FusionCharts XT will load here!</div>
+                                <div id="chart-container5"></div>
                             </div>
                         </div>
                     </div>
@@ -215,7 +234,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Total Energy</th>
@@ -231,9 +251,10 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <div id="chart-container6">FusionCharts XT will load here!</div>
+                                <div id="chart-container6"></div>
                             </div>
                         </div>
                     </div>
@@ -532,11 +553,6 @@
 </script>
 <script>
     $(document).ready(function () {
-    $('.example-scroll').DataTable({
-        scrollY: '300px',
-        scrollCollapse: true,
-        paging: false,
-    });
 
     $('#filter_date_data').change(function() {
         var dates = $(this).val();
