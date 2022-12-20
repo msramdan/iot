@@ -121,7 +121,7 @@
                                     <tbody>
                                         @foreach ($parsed_data as $item)
                                         <tr>
-                                            <td>{{ $item->arus }}</td>
+                                            <td>{{ $item->arus }} A</td>
                                             <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
                                         </tr>
                                         @endforeach
@@ -152,7 +152,7 @@
                                     <tbody>
                                        @foreach ($parsed_data as $item)
                                         <tr>
-                                            <td>{{ $item->frekuensi_pln }}</td>
+                                            <td>{{ $item->frekuensi_pln }} Hz</td>
                                             <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
                                         </tr>
                                         @endforeach
@@ -183,7 +183,7 @@
                                     <tbody>
                                        @foreach ($parsed_data as $item)
                                         <tr>
-                                            <td>{{ $item->active_power }}</td>
+                                            <td>{{ $item->active_power }} kW</td>
                                             <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
                                         </tr>
                                         @endforeach
@@ -245,7 +245,7 @@
                                     <tbody>
                                        @foreach ($parsed_data as $item)
                                         <tr>
-                                            <td>{{ $item->total_energy }}</td>
+                                            <td>{{ $item->total_energy }} kWh</td>
                                             <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
                                         </tr>
                                         @endforeach

@@ -46,40 +46,22 @@ class ParsedPowerMeterController extends Controller
                     return '-';
                 })
                 ->addColumn('tegangan', function ($row) {
-                    if ($row->tegangan) {
-                        return $row->tegangan;
-                    }
-                    return '-';
+                    return $row->tegangan.' V';
                 })
                 ->addColumn('arus', function ($row) {
-                    if ($row->arus) {
-                        return $row->arus;
-                    }
-                    return '-';
+                    return $row->arus.' A';
                 })
                 ->addColumn('frekuensi_pln', function ($row) {
-                    if ($row->frekuensi_pln) {
-                        return $row->frekuensi_pln;
-                    }
-                    return '-';
+                    return $row->frekuensi_pln. ' Hz';
                 })
                 ->addColumn('active_power', function ($row) {
-                    if ($row->active_power) {
-                        return $row->active_power;
-                    }
-                    return '-';
+                    return $row->active_power.' kW';
                 })
                 ->addColumn('power_factor', function ($row) {
-                    if ($row->power_factor) {
-                        return $row->power_factor;
-                    }
-                    return '-';
+                    return $row->power_factor;
                 })
                 ->addColumn('total_energy', function ($row) {
-                    if ($row->total_energy) {
-                        return $row->total_energy;
-                    }
-                    return '-';
+                    return $row->total_energy .' kWh';
                 })
                 ->addColumn('rawdata_id', function ($row) {
                         return '<a href="'.url('panel/rawdata?rawdata='.$row->rawdata_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> Rawdata </a>';
