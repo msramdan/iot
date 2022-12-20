@@ -449,11 +449,31 @@ function handleWaterMeter($device_id, $request)
         $lastInsertedId = $save->id;
 
         // get list alert
+        $listFixedError = array(
+            '0f1402' => 'Illegal Movement Warning',
+            '0f1202' => 'Quick leak warning',
+            '0f1203' => 'Slow air leak warning',
+            '0f1002' => 'Temperature warning',
+            '0f9501' => 'Low battery alarm',
+            '0f9101' => 'Low voltage alarm',
+            '0f1000' => 'High temperature alarm',
+            '0f1001' => 'Low temperature alarm',
+        );
         $convert = base64toHex($request->data['data']);
+        $dataArr = str_split($convert, 6);
+        $error = [];
+        foreach ($dataArr as $code) {
+            if(array_key_exists($code, $listFixedError)){
+                $getError =$listFixedError[$code];
+                array_push($error,$getError);
+            }else{
+            }
+
+        }
 
         Ticket::create([
             'subject' => "Alert dari Device " . $request->devEUI,
-            'description'  => "Abnormal indications on : ",
+            'description'  => "Abnormal indications on : " . json_encode($error) ,
             'is_device'   => 1,
         ]);
         return "Alert Data Water Meter Success";
@@ -461,6 +481,12 @@ function handleWaterMeter($device_id, $request)
         return "Payload Data Tidak Tercover";
     }
 }
+
+function listArrayFixed($key){
+
+}
+
+
 
 function handlePowerMeter($device_id, $request)
 {
