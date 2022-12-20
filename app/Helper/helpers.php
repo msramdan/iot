@@ -424,7 +424,7 @@ function handleWaterMeter($device_id, $request)
             ->where('device_id', $device_id)
             ->update($params);
         return "success";
-    } else if($frameId == "0f"){
+    } else if ($frameId == "0f") {
         $save = Rawdata::create([
             'devEUI' => $request->devEUI,
             'appID'  => $request->appID,
@@ -452,12 +452,12 @@ function handleWaterMeter($device_id, $request)
         $convert = base64toHex($request->data['data']);
 
         Ticket::create([
-            'subject' => "Alert dari Device " .$request->devEUI,
+            'subject' => "Alert dari Device " . $request->devEUI,
             'description'  => "Abnormal indications on : ",
             'is_device'   => 1,
         ]);
         return "Alert Data Water Meter Success";
-    }else{
+    } else {
         return "Payload Data Tidak Tercover";
     }
 }
@@ -468,28 +468,30 @@ function handlePowerMeter($device_id, $request)
     $hex = base64toHex($data);
     $frameId = substr($hex, 0, 2);
     if ($frameId == "91") {
-        $save = Rawdata::create([
-            'devEUI' => $request->devEUI,
-            'appID'  => $request->appID,
-            'type'   => $request->type,
-            'time'   => $request->time,
-            'gwid'   => $request->data['gwid'],
-            'rssi'   => $request->data['rssi'],
-            'snr'    => $request->data['snr'],
-            'freq'   => $request->data['freq'],
-            'dr'     => $request->data['dr'],
-            'adr'    => $request->data['adr'],
-            'class'  => $request->data['class'],
-            'fcnt'   => $request->data['fCnt'],
-            'fport'  => $request->data['fPort'],
-            'confirmed' => $request->data['confirmed'],
-            'data'  => $request->data['data'],
-            'convert'  => base64toHex($request->data['data']),
-            'gws'   => json_encode($request->data['gws']),
-            'payload_data' => json_encode($request->all()),
-        ]);
-
-        $lastInsertedId = $save->id;
+        $idenfikasi = substr($hex, 4, 8);
+        if ($idenfikasi == "02000006" || $idenfikasi == "02000106" || $idenfikasi == "02000206" || $idenfikasi == "02000306" || $idenfikasi == "02000406") {
+            $save = Rawdata::create([
+                'devEUI' => $request->devEUI,
+                'appID'  => $request->appID,
+                'type'   => $request->type,
+                'time'   => $request->time,
+                'gwid'   => $request->data['gwid'],
+                'rssi'   => $request->data['rssi'],
+                'snr'    => $request->data['snr'],
+                'freq'   => $request->data['freq'],
+                'dr'     => $request->data['dr'],
+                'adr'    => $request->data['adr'],
+                'class'  => $request->data['class'],
+                'fcnt'   => $request->data['fCnt'],
+                'fport'  => $request->data['fPort'],
+                'confirmed' => $request->data['confirmed'],
+                'data'  => $request->data['data'],
+                'convert'  => base64toHex($request->data['data']),
+                'gws'   => json_encode($request->data['gws']),
+                'payload_data' => json_encode($request->all()),
+            ]);
+            $lastInsertedId = $save->id;
+        }
         if ($frameId == "91") {
             $idenfikasi = substr($hex, 4, 8);
             // big frame
@@ -564,9 +566,7 @@ function handlePowerMeter($device_id, $request)
                 ];
             }
         }
-        // insert parsed data
         DB::table('parsed_power_meter')->insert($params);
-        //update data master_latest_data
         DB::table('master_latest_data_power_meter')
             ->where('device_id', $device_id)
             ->update($params);
@@ -576,7 +576,8 @@ function handlePowerMeter($device_id, $request)
     }
 }
 
-function handleGasMeter($device_id, $request){
+function handleGasMeter($device_id, $request)
+{
     $data = $request->data['data'];
     $hex = base64toHex($data);
     $frameId = substr($hex, 0, 2);
