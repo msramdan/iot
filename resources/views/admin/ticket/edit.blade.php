@@ -48,18 +48,12 @@
                                 <select name="status" id="status_ticket"
                                     class="form-select @error('status') is-invalid @enderror">
                                     <option value="" selected disabled>==PILIH==</option>
-                                    <option value="open" {{ (old('status') ?? $ticket->status) == 'open' ? 'selected' :
-                                        '' }}>Open</option>
-                                    <option value="acknowlodge" {{ (old('status') ?? $ticket->status) == 'acknowledge' ?
-                                        'selected' : '' }}>Acknowlodge</option>
-                                    <option value="closed" {{ (old('status') ?? $ticket->status) == 'closed' ?
-                                        'selected' : '' }}>Closed</option>
-                                    <option value="cancelled" {{ (old('status') ?? $ticket->status) == 'cancelled' ?
-                                        'selected' : '' }}>Cancelled</option>
-                                    <option value="need confirmation" {{ (old('status') ?? $ticket->status) == 'need
-                                        confirmation' ? 'selected' : '' }}>Need Confirmation</option>
-                                    <option value="alert" {{ (old('status') ?? $ticket->status) == 'alert' ? 'selected'
-                                        : '' }}>Alert</option>
+                                    <option value="open" {{ (old('status') ?? $ticket->status) == 'open' ? 'selected' :'' }}>Open</option>
+                                    <option value="acknowledge" {{ (old('status') ?? $ticket->status) == 'acknowledge' ? 'selected' : '' }}>Acknowlodge</option>
+                                    <option value="closed" {{ (old('status') ?? $ticket->status) == 'closed' ?'selected' : '' }}>Closed</option>
+                                    <option value="cancelled" {{ (old('status') ?? $ticket->status) == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                    <option value="need confirmation" {{ (old('status') ?? $ticket->status) == 'need confirmation' ? 'selected' : '' }}>Need Confirmation</option>
+                                    <option value="alert" {{ (old('status') ?? $ticket->status) == 'alert' ? 'selected' : '' }}>Alert</option>
                                 </select>
                                 @error('status')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -99,7 +93,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="image_2">Image 2</label>
-                                <input type="file" name="image_2" id="image_2" onchange="loadfile('output2')" 
+                                <input type="file" name="image_2" id="image_2" onchange="loadfile('output2')"
                                     class="form-control @error('image_2') is-invalid @enderror">
                                 @error('image_2')
                                 <div class="invalid-feedback">{{ $message }}</div>

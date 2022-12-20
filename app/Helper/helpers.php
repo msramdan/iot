@@ -459,6 +459,27 @@ function handleWaterMeter($device_id, $request)
             '0f1000' => 'High temperature alarm',
             '0f1001' => 'Low temperature alarm',
         );
+
+        $bitError = array(
+            0 => 'Tube failure (The pipe burst)',
+            1 => 'Leakage failure',
+            2 => 'Sensor failure',
+            3 => 'Reverse installation position',
+            4 => 'bit4',
+            5 => 'bit5',
+            6 => 'bit6',
+            7 => 'bit7',
+            8 => 'Abnormal sensor sound track',
+            9 => 'The battery abnormity',
+            10 => 'The valve abnormity',
+            11 => 'Strong magnetic abnormity',
+            12 => 'Abnormal power switch',
+            13 => 'Hall sensor abnormity',
+            14 => 'Reserve bit14',
+            15 => 'Reserve bit15',
+
+        );
+
         $convert = base64toHex($request->data['data']);
         $dataArr = str_split($convert, 6);
         $error = [];
@@ -467,6 +488,21 @@ function handleWaterMeter($device_id, $request)
                 $getError = $listFixedError[$code];
                 array_push($error, $getError);
             } else {
+                $command = littleEndian(substr($hex, 2, 4));
+                $arrCommand = str_split($command, 1);
+                $index = 15;
+                foreach ($arrCommand as  $value) {
+                    $bin = base_convert($value, 16, 2);
+                    $fix = str_pad($bin, 4, "0", STR_PAD_LEFT);
+                    $dataArr2 = str_split($fix, 1);
+                    foreach ($dataArr2 as $dataBin) {
+                        if ($dataBin == "1") {
+                            $getError = $bitError[$index];
+                            array_push($error, $getError);
+                        }
+                        $index = $index - 1;
+                    }
+                }
             }
         }
 
@@ -474,6 +510,7 @@ function handleWaterMeter($device_id, $request)
             'subject' => "Alert dari Device " . $request->devEUI,
             'description'  => "Abnormal indications on : " . json_encode($error),
             'is_device'   => 1,
+            'status'   => "alert",
         ]);
         return "Alert Data Water Meter Success";
     } else {
@@ -481,9 +518,6 @@ function handleWaterMeter($device_id, $request)
     }
 }
 
-function listArrayFixed($key)
-{
-}
 
 
 

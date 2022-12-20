@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('author_id')->nullable();
             $table->integer('is_device');
             $table->enum('status', [
-                'open', 'acknowlodge', 'closed', 'cancelled', 'need confirmation', 'alert'
+                'open', 'acknowledge', 'closed', 'cancelled', 'need confirmation', 'alert'
             ]);
             $table->timestamps();
         });

@@ -19,10 +19,13 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $ticket = Ticket::with('created_by')->get();
+        $ticket = Ticket::with('created_by')->orderBy('id', 'desc')->get();
         if(request()->ajax()){
             return DataTables::of($ticket)
                 ->addIndexColumn()
+                ->addColumn('created_at', function ($row) {
+                    return $row->created_at->format('d M Y H:i:s');
+                })
                 ->addColumn('action', 'admin.ticket._action')
                 ->toJson();
         }

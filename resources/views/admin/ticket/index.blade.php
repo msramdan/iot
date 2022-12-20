@@ -76,6 +76,7 @@
                                             <th>#</th>
                                             <th>Judul</th>
                                             <th>Description</th>
+                                            <th>Status</th>
                                             <th>Created At</th>
                                             @canany(['ticket_show', 'ticket_update', 'ticket_delete'])
                                                 <th>Action</th>
@@ -112,10 +113,10 @@
                 data: 'description',
             },
             {
+                data: 'status',
+            },
+            {
                 data: 'created_at',
-                render: function(data, type, row, meta){
-                    return moment(data).format('DD MMM YYYY')
-                }
             },
         ]
 
