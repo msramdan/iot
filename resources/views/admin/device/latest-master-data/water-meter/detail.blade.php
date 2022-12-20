@@ -192,7 +192,7 @@
                     [
                         @foreach ($parsed_data as $date)
                             {
-                                "label": "{{ date('d M Y H:i:s', strtotime($date->created_at)) }}"
+                                "label": "{{ date('d/m/Y H:i:s', strtotime($date->created_at)) }}"
                             },
                         @endforeach
                     ]
@@ -239,7 +239,7 @@
                     [
                         @foreach ($parsed_data as $date)
                             {
-                                "label": "{{ date('d M Y H:i:s', strtotime($date->created_at)) }}"
+                                "label": "{{ date('d/m/Y H:i:s', strtotime($date->created_at)) }}"
                             },
                         @endforeach
                     ]
@@ -286,7 +286,7 @@
                     [
                         @foreach ($parsed_data as $date)
                             {
-                                "label": "{{ date('d M Y H:i:s', strtotime($date->created_at)) }}"
+                                "label": "{{ date('d/m/Y H:i:s', strtotime($date->created_at)) }}"
                             },
                         @endforeach
                     ]
