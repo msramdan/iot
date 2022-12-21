@@ -80,17 +80,17 @@
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Batrai Status</th>
+                                            <th>Gas Consumtion</th>
                                             <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        @foreach ($parsed_data as $data)
                                         <tr>
-                                            <td>100 %</td>
+                                            <td>{{ $data->gas_consumtion }}</td>
                                             <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
                                         </tr>
-
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -107,17 +107,17 @@
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Temperature</th>
+                                            <th>Gas total purchase</th>
                                             <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        @foreach ($parsed_data as $item)
                                         <tr>
-                                            <td>100 C</td>
+                                            <td>{{ $item->gas_total_purchase }}</td>
                                             <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
                                         </tr>
-
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -135,17 +135,17 @@
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Total Flow</th>
+                                            <th>Purchase Remain</th>
                                             <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        @foreach ($parsed_data as $res)
                                         <tr>
-                                            <td>100 L</td>
-                                            <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
+                                            <td>{{ $res->purchase_remain }}</td>
+                                            <td>{{ date('d/m/Y H:i:s', strtotime($res->created_at)) }}</td>
                                         </tr>
-
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -155,6 +155,63 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" style="overflow-x:scroll">
+                            <div class="col-md-6">
+                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Balance of Battery</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($parsed_data as $res)
+                                        <tr>
+                                            <td>{{ $res->balance_of_battery }}</td>
+                                            <td>{{ date('d/m/Y H:i:s', strtotime($res->created_at)) }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="chart-container4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row" style="overflow-x:scroll">
+                            <div class="col-md-6">
+                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Meter status Word</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($parsed_data as $res)
+                                        <tr>
+                                            <td>{{ $res->meter_status_word }}</td>
+                                            <td>{{ date('d/m/Y H:i:s', strtotime($res->created_at)) }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="chart-container5"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -164,7 +221,7 @@
 @push('js')
 <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
 <script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
-{{-- <script type="text/javascript">
+<script type="text/javascript">
 	FusionCharts.ready(function(){
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
@@ -175,10 +232,10 @@
             dataSource: {
                 "chart": {
                     "theme": "fusion",
-                    "caption": "Baterai status",
+                    "caption": "Gas Consumtion",
                     "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
                     "xaxisname": "Dates",
-                    "yaxisname": "Baterai",
+                    "yaxisname": "Gas Consumtion",
                     "showvalues": "1",
                     "numVisiblePlot": "12",
                     "scrollheight": "10",
@@ -201,7 +258,7 @@
                     "data": [
                         @foreach ($parsed_data as $data_parsed)
                             {
-                            "value": "{{ $data_parsed->batrai_status }} %"
+                            "value": "{{ $data_parsed->gas_consumtion }}"
                             },
                         @endforeach
                     ]
@@ -222,10 +279,10 @@
             dataSource: {
                 "chart": {
                     "theme": "fusion",
-                    "caption": "Temperature",
+                    "caption": "Gas Total Purchase",
                     "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
                     "xaxisname": "Dates",
-                    "yaxisname": "TemperaturE",
+                    "yaxisname": "Gas total purchase",
                     "showvalues": "1",
                     "numVisiblePlot": "12",
                     "scrollheight": "10",
@@ -248,7 +305,7 @@
                     "data": [
                         @foreach ($parsed_data as $data_parsed)
                             {
-                            "value": "{{ $data_parsed->temperatur }}"
+                            "value": "{{ $data_parsed->gas_total_purchase }}"
                             },
                         @endforeach
                     ]
@@ -269,10 +326,10 @@
             dataSource: {
                 "chart": {
                     "theme": "fusion",
-                    "caption": "Total Flow",
+                    "caption": "Purchase Remain",
                     "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
                     "xaxisname": "Dates",
-                    "yaxisname": "Total Flow",
+                    "yaxisname": "Purchase Remain",
                     "showvalues": "1",
                     "numVisiblePlot": "12",
                     "scrollheight": "10",
@@ -295,7 +352,7 @@
                     "data": [
                         @foreach ($parsed_data as $data_parsed)
                             {
-                            "value": "{{ $data_parsed->total_flow }} L"
+                            "value": "{{ $data_parsed->purchase_remain }} L"
                             },
                         @endforeach
                     ]
@@ -304,7 +361,101 @@
         });
         chartObj.render();
     });
-</script> --}}
+</script>
+<script type="text/javascript">
+	FusionCharts.ready(function(){
+            var chartObj = new FusionCharts({
+            type: 'scrollline2d',
+            renderAt: 'chart-container4',
+            width: '700',
+            height: '450',
+            dataFormat: 'json',
+            dataSource: {
+                "chart": {
+                    "theme": "fusion",
+                    "caption": "Balance Of Battery",
+                    "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
+                    "xaxisname": "Dates",
+                    "yaxisname": "Balance of Battery",
+                    "showvalues": "1",
+                    "numVisiblePlot": "12",
+                    "scrollheight": "10",
+                    "flatScrollBars": "1",
+                    "scrollShowButtons": "0",
+                    "scrollColor": "#cccccc",
+                    "showHoverEffect": "1"
+                },
+                "categories": [{
+                    "category":
+                    [
+                        @foreach ($parsed_data as $date)
+                            {
+                                "label": "{{ date('d M', strtotime($date->created_at)) }}"
+                            },
+                        @endforeach
+                    ]
+                }],
+                "dataset": [{
+                    "data": [
+                        @foreach ($parsed_data as $data_parsed)
+                            {
+                            "value": "{{ $data_parsed->balance_of_battery }}"
+                            },
+                        @endforeach
+                    ]
+                }]
+            }
+        });
+        chartObj.render();
+    });
+</script>
+<script type="text/javascript">
+	FusionCharts.ready(function(){
+            var chartObj = new FusionCharts({
+            type: 'scrollline2d',
+            renderAt: 'chart-container5',
+            width: '700',
+            height: '450',
+            dataFormat: 'json',
+            dataSource: {
+                "chart": {
+                    "theme": "fusion",
+                    "caption": "Meter status word",
+                    "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
+                    "xaxisname": "Dates",
+                    "yaxisname": "Meter status word",
+                    "showvalues": "1",
+                    "numVisiblePlot": "12",
+                    "scrollheight": "10",
+                    "flatScrollBars": "1",
+                    "scrollShowButtons": "0",
+                    "scrollColor": "#cccccc",
+                    "showHoverEffect": "1"
+                },
+                "categories": [{
+                    "category":
+                    [
+                        @foreach ($parsed_data as $date)
+                            {
+                                "label": "{{ date('d M', strtotime($date->created_at)) }}"
+                            },
+                        @endforeach
+                    ]
+                }],
+                "dataset": [{
+                    "data": [
+                        @foreach ($parsed_data as $data_parsed)
+                            {
+                            "value": "{{ $data_parsed->meter_status_word }}"
+                            },
+                        @endforeach
+                    ]
+                }]
+            }
+        });
+        chartObj.render();
+    });
+</script>
 <script>
     $(document).ready(function () {
     $('.example-scroll').DataTable({

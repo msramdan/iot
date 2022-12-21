@@ -265,6 +265,48 @@ class MasterLatestDataController extends Controller
 
                     return '-';
                 })
+                ->addColumn('gas_consumtion', function($row) {
+                    if ($row->gas_consumtion) {
+                        return $row->gas_consumtion;
+                    }
+
+                    return '-';
+                })
+                ->addColumn('gas_total_purchase', function($row) {
+                    if ($row->gas_total_purchase) {
+                        return $row->gas_total_purchase;
+                    }
+
+                    return '-';
+                })
+                ->addColumn('purchase_remain', function($row) {
+                    if ($row->purchase_remain) {
+                        return $row->purchase_remain;
+                    }
+
+                    return '-';
+                })
+                ->addColumn('balance_of_battery', function($row) {
+                    if ($row->balance_of_battery) {
+                        return $row->balance_of_battery;
+                    }
+
+                    return '-';
+                })
+                ->addColumn('meter_status_word', function($row) {
+                    if ($row->meter_status_word) {
+                        return $row->meter_status_word;
+                    }
+
+                    return '-';
+                })
+                ->addColumn('valve_status', function($row) {
+                    if ($row->valve_status) {
+                        return $row->valve_status;
+                    }
+
+                    return '-';
+                })
                 ->addColumn('frame_id', function ($row) {
                     return $row->frame_id ?? '-';
                 })

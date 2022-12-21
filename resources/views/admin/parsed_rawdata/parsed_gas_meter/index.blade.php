@@ -48,6 +48,12 @@
                                         <th>Rawdata</th>
                                         <th>Device Name</th>
                                         <th>Frame Id</th>
+                                        <th>Gas Consumtion</th>
+                                        <th>Gas Total Purchase</th>
+                                        <th>Purchase Remain</th>
+                                        <th>Balance of battery</th>
+                                        <th>Meter status word</th>
+                                        <th>Valve status</th>
                                         <th>Date</th>
                                     </tr>
                                 </thead>
@@ -84,6 +90,30 @@
             data: 'frame_id',
             name: 'frame_id'
         },
+        {
+            data: 'gas_consumtion',
+            name: 'gas_consumtion',
+        },
+        {
+            data: 'gas_total_purchase',
+            name: 'gas_total_purchase',
+        },
+        {
+            data: 'purchase_remain',
+            name: 'purchase_remain',
+        },
+        {
+            data: 'balance_of_battery',
+            name: 'balance_of_battery',
+        },
+        {
+            data: 'meter_status_word',
+            name: 'meter_status_word',
+        },
+        {
+            data: 'valve_status',
+            name: 'valve_status'
+        }
         {
             data: 'created_at',
             name: 'created_at'

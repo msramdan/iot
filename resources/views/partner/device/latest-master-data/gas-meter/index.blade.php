@@ -33,10 +33,12 @@
                                         <th>Device</th>
                                         <th>Dev EUI</th>
                                         <th>Frame Id</th>
-                                        <th>Uplink Interval</th>
-                                        <th>Beterai Status</th>
-                                        <th>Temperatur</th>
-                                        <th>Total Flow</th>
+                                        <th>Gas Consumtion</th>
+                                        <th>Gas Total Purchase</th>
+                                        <th>Purchase Remain</th>
+                                        <th>Balance of battery</th>
+                                        <th>Meter status word</th>
+                                        <th>Valve status</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -75,21 +77,29 @@
             name: 'frame_id'
         },
         {
-            data: 'uplink_interval',
-            name: 'uplink_interval'
+            data: 'gas_consumtion',
+            name: 'gas_consumtion',
         },
         {
-            data: 'batrai_status',
-            name: 'batrai_status'
+            data: 'gas_total_purchase',
+            name: 'gas_total_purchase',
         },
         {
-            data: 'temperatur',
-            name: 'temperatur'
+            data: 'purchase_remain',
+            name: 'purchase_remain',
         },
         {
-            data: 'total_flow',
-            name: 'total_flow'
+            data: 'balance_of_battery',
+            name: 'balance_of_battery',
         },
+        {
+            data: 'meter_status_word',
+            name: 'meter_status_word',
+        },
+        {
+            data: 'valve_status',
+            name: 'valve_status'
+        }
     ];
 
     const table = $('#dataTable').DataTable({
