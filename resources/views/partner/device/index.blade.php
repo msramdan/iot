@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master_partner')
 @section('title', 'Data Device')
 @section('content')
     <div class="page-content">
@@ -145,7 +145,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('device.index') }}",
+                url: "{{ route('instances.device.index') }}",
                 data: function (s) {
                     s.instance = $('select[name=subinstance] option').filter(':selected').val()
                     s.category_device = $('select[name=category_device] option').filter(':selected').val()

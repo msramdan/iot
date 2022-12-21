@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\Device;
 use Illuminate\Support\Facades\Auth;
-class ParsedWaterMaterController extends Controller
+class ParsedWaterMeterController extends Controller
 {
     public function index(Request $request)
     {

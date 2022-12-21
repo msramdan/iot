@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master_partner')
 @section('title', 'Mater Latest Data Device')
 @section('content')
 <div class="page-content">
@@ -95,7 +95,7 @@
     const table = $('#dataTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('master_gas_meter.index') }}",
+        ajax: "{{ route('instances.master_gas_meter.index') }}",
         columns: columns
     });
 </script>
