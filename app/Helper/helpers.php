@@ -662,5 +662,39 @@ function handleGasMeter($device_id, $request)
     ]);
 
     $lastInsertedId = $save->id;
+
+    $bitError = array(
+        0 => 'Valve close',
+        1 => 'Valve error',
+        2 => 'Magnetic alarm',
+        3 => 'Meter cover was opened',
+        4 => 'Battery low',
+        5 => 'Spare',
+        6 => 'Pospaid',
+        7 => 'OverFlow',
+    );
+
+    if ($frameId == "68") {
+        // parsed datanya
+        $gas_consumption = littleEndian(substr($hex, 34, 8));
+        // return $gas_consumption;
+        $params = [
+            'rawdata_id' => $lastInsertedId,
+            'device_id' => $device_id,
+            'frame_id' => $frameId,
+            'gas_consumption' => '',
+            'gas_total_purchase' => '',
+            'purchase_remain' => '',
+            'balance_of_battery' => '',
+            'meter_status_word' => json_encode(''),
+            'valve_status' => '',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
+    }
+    DB::table('parsed_gas_meter')->insert($params);
+    DB::table('master_latest_data_gas_meter')
+        ->where('device_id', $device_id)
+        ->update($params);
     return "success";
 }
