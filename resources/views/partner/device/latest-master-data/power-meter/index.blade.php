@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master_partner')
 @section('title', 'Mater Latest Data Power Meter')
 @section('content')
 <div class="page-content">
@@ -105,7 +105,7 @@
     const table = $('#dataTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('master_power_meter.index') }}",
+        ajax: "{{ route('instances.master_power_meter.index') }}",
         columns: columns
     });
 </script>

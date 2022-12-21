@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master_partner')
 @section('title', 'Mater Latest Data Device')
 @section('content')
 <div class="page-content">
@@ -22,7 +22,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header" >
-                        <a href="{{ route('master_water_meter.index') }}" style="" class="btn btn-md btn-warning"> <i class="mdi mdi-arrow-left-bold"></i>  Back
+                        <a href="{{ route('instances.master_water_meter.index') }}" style="" class="btn btn-md btn-warning"> <i class="mdi mdi-arrow-left-bold"></i>  Back
                             </a>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-4">
-                                <form method="get" action="{{ url('/panel/master-water-meter/detail/'.$device_id) }}" id="form-date">
+                                <form method="get" action="{{ url('/master-water-meter/detail/'.$device_id) }}" id="form-date">
                                     <div class="input-group mb-4">
                                         <input type="text" class="form-control border-0 dash-filter-picker shadow"
                                             data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y"

@@ -17,19 +17,19 @@
                 <div class="collapse menu-dropdown {{ set_show(['master_water_meter*', 'master_power_meter*', 'master_gas_meter*']) }}" id="latestData">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ set_active(['master_water_meter*']) }}" data-key="t-remix">Latest Data Water Meter</a>
+                            <a href="{{ route('instances.master_water_meter.index') }}" class="nav-link {{ set_active(['master_water_meter*']) }}" data-key="t-remix">Latest Data Water Meter</a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ set_active(['master_power_meter*']) }}" data-key="t-remix">Latest Data Power Meter</a>
+                            <a href="{{ route('instances.master_power_meter.index') }}" class="nav-link {{ set_active(['master_power_meter*']) }}" data-key="t-remix">Latest Data Power Meter</a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link {{ set_active(['master_gas_meter*']) }}" data-key="t-remix">Latest Data Gas Meter</a>
+                            <a href="{{ route('instances.master_gas_meter.index') }}" class="nav-link {{ set_active(['master_gas_meter*']) }}" data-key="t-remix">Latest Data Gas Meter</a>
                         </li>
                     </ul>
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('device.*') }}" href=""
+                <a class="nav-link menu-link {{ set_active('device.*') }}" href="{{ route('instances.device.index') }}"
                     role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                     <i class="mdi mdi-devices"></i> <span data-key="t-dashboards">Management Device</span>
                 </a>

@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.master_partner')
 @section('title', 'Mater Latest Data Water Meter')
 @section('content')
 <div class="page-content">
@@ -100,7 +100,7 @@
     const table = $('#dataTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('master_water_meter.index') }}",
+        ajax: "{{ route('instances.master_water_meter.index') }}",
         columns: columns
     });
 </script>

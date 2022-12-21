@@ -12,6 +12,7 @@ use App\Http\Controllers\Partner\DeviceController;
 use App\Http\Controllers\Partner\ParsedGasMeterController;
 use App\Http\Controllers\Partner\ParsedPowerMeterController;
 use App\Http\Controllers\Partner\ParsedWaterMeterController;
+use App\Http\Controllers\Partner\MasterLatestDataController;
 use App\Models\ParsedGasMater;
 
 Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::class, 'reloadCaptcha']);
@@ -52,7 +53,7 @@ Route::middleware(['auth:instances'])->name('instances.')->group(function() {
     Route::controller(DeviceController::class)->group(function() {
         Route::get('/device', 'index')->name('device.index');
     });
-    Route::controller(ParsedWaterMaterController::class)->group(function () {
+    Route::controller(ParsedWaterMeterController::class)->group(function () {
         Route::get('/parsed-wm', 'index')->name('parsed-wm.index');
     });
     Route::controller(ParsedPowerMeterController::class)->group(function() {
@@ -60,6 +61,21 @@ Route::middleware(['auth:instances'])->name('instances.')->group(function() {
     });
     Route::controller(ParsedGasMeterController::class)->group(function() {
         Route::get('/parsed-gm', 'index')->name('parsed-gm.index');
+    });
+
+    Route::controller(MasterLatestDataController::class)->group(function() {
+        //Water meter
+        Route::get('/master-water-meter', 'waterMeterMaster')->name('master_water_meter.index');
+        Route::get('/master-water-meter/detail/{id}', 'detailWaterMeter')->name('master_water_meter.detail');
+        Route::post('/checkValve', 'checkValve')->name('checkValve');
+        Route::post('/openValve', 'openValve')->name('openValve');
+        Route::post('/closeValve', 'closeValve')->name('closeValve');
+        //Power Meter
+        Route::get('/master-power-meter', 'powerMeterMaster')->name('master_power_meter.index');
+        Route::get('/master-power-meter/detail/{id}', 'detailPowerMeter')->name('master_power_meter.detail');
+        //Gas Meter
+        Route::get('/master-gas-meter', 'gasMeterMaster')->name('master_gas_meter.index');
+        Route::get('/master-gas-meter/detail/{id}', 'detailGasMeter')->name('master_gas_meter.detail');
     });
 });
 
