@@ -663,8 +663,8 @@ function handleGasMeter($device_id, $request)
 
     $lastInsertedId = $save->id;
 
-    $bitError = array(
-        0 => 'Valve close',
+    $bitError1 = array(
+        0 => 'Valve Close',
         1 => 'Valve error',
         2 => 'Magnetic alarm',
         3 => 'Meter cover was opened',
@@ -674,20 +674,68 @@ function handleGasMeter($device_id, $request)
         7 => 'OverFlow',
     );
 
+    $bitError0 = array(
+        0 => 'Valve Open',
+        1 => 'Valve No Error',
+        2 => 'Magnetic Alarm Normal',
+        3 => 'Meter Cover Normal',
+        4 => 'Battery Normal',
+        5 => 'Spare',
+        6 => 'Prepaid',
+        7 => 'No OverFlow',
+    );
+
     if ($frameId == "68") {
         // parsed datanya
         $gas_consumption = littleEndian(substr($hex, 34, 8));
-        // return $gas_consumption;
+        $fix_gas = pengurangGasMeter($gas_consumption) * 0.01;
+        $gas_total_purchase = littleEndian(substr($hex, 42, 8));
+        $fix_gas_total_purchase = pengurangGasMeter($gas_total_purchase) * 0.01;
+        $purchase_remain = littleEndian(substr($hex, 50, 8));
+        $fix_purchase_remain = pengurangGasMeter($purchase_remain) * 0.01;
+        $balance_of_battery = littleEndian(substr($hex, 60, 2));
+        $fix_balance_of_battery = hexdec(pengurangGasMeter($balance_of_battery));
+
+        $meter_status_word = littleEndian(substr($hex, 58, 2));
+        $fix_status_word = pengurangGasMeter($meter_status_word);
+
+
+        $arrCommand = str_split($fix_status_word, 1);
+        $index = 7;
+        $error = [];
+        foreach ($arrCommand as  $value) {
+            $bin = base_convert($value, 16, 2);
+            $fix = str_pad($bin, 4, "0", STR_PAD_LEFT);
+            $dataArr2 = str_split($fix, 1);
+            foreach ($dataArr2 as $dataBin) {
+                if ($dataBin == "1") {
+                    $getError = $bitError1[$index];
+                    array_push($error, $getError);
+                    if ($index == 0) {
+                        $status_valve = $getError;
+                    }
+                } else {
+                    $getError = $bitError0[$index];
+                    if ($index == 0) {
+                        $status_valve = $getError;
+                    }
+                    array_push($error, $getError);
+                }
+
+                $index = $index - 1;
+            }
+        }
+
         $params = [
             'rawdata_id' => $lastInsertedId,
             'device_id' => $device_id,
             'frame_id' => $frameId,
-            'gas_consumption' => '',
-            'gas_total_purchase' => '',
-            'purchase_remain' => '',
-            'balance_of_battery' => '',
-            'meter_status_word' => json_encode(''),
-            'valve_status' => '',
+            'gas_consumption' =>  $fix_gas,
+            'gas_total_purchase' => $fix_gas_total_purchase,
+            'purchase_remain' => $fix_purchase_remain,
+            'balance_of_battery' => $fix_balance_of_battery,
+            'meter_status_word' => json_encode($error),
+            'valve_status' =>  $status_valve,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
@@ -697,4 +745,11 @@ function handleGasMeter($device_id, $request)
         ->where('device_id', $device_id)
         ->update($params);
     return "success";
+}
+
+function pengurangGasMeter($data)
+{
+    $lengt_gas_consumption = strlen($data);
+    $pengurang =  str_pad(3, $lengt_gas_consumption, 3, STR_PAD_LEFT);
+    return (int)  $data - (int) $pengurang;
 }
