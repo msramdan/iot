@@ -50,6 +50,11 @@ class ParsedGasMeterController extends Controller
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d M Y H:i:s');
                 })
+                ->addColumn('payload', function ($row) {
+                    $payload = json_decode($row->payload_data, true);
+                    return json_encode($payload, JSON_PRETTY_PRINT);
+                })
+
                 ->rawColumns(['rawdata_id', 'action'])
                 ->toJson();
         }

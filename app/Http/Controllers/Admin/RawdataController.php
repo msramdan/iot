@@ -34,9 +34,9 @@ class RawdataController extends Controller
                         if ($row->device->category == 'Water Meter') {
                             return '<a href="' . url('/panel/parsed-wm?parsed_data=' . $row->id) . '" style="width:120px" target="_blank" class="btn btn-sm  btn-success"> Parsed Rawdata </a>';
                         } else if ($row->device->category == 'Power Meter') {
-                            return  '<a href="' . url('/panel/parsed-pm?parsed_data=' . $row->id) . '" style="width:120px" class="btn btn-sm  btn-success"> Parsed Rawdata </a>';
+                            return  '<a href="' . url('/panel/parsed-pm?parsed_data=' . $row->id) . '" style="width:120px" target="_blank" class="btn btn-sm  btn-success"> Parsed Rawdata </a>';
                         } else {
-                            return  '<a href="" style="width:120px" class="btn btn-sm  btn-success"> Parsed Rawdata </a>';
+                            return  '<a href="' . url('/panel/parsed-gm?parsed_data=' . $row->id) . '" style="width:120px" target="_blank" class="btn btn-sm  btn-success"> Parsed Rawdata </a>';
                         }
                     }
                 })

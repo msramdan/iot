@@ -44,6 +44,7 @@
                             <table class="table table-bordered table-sm" id="dataTable" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>#</th>
                                         <th>Rawdata</th>
                                         <th>Device Name</th>
@@ -52,7 +53,6 @@
                                         <th>Gas Total Purchase</th>
                                         <th>Purchase Remain</th>
                                         <th>Balance of battery</th>
-                                        <th>Meter status word</th>
                                         <th>Valve status</th>
                                         <th>Date</th>
                                     </tr>
@@ -73,6 +73,12 @@
 
     let columns = [
         {
+            className: 'dt-control',
+            orderable: false,
+            data: null,
+            defaultContent: '',
+        },
+        {
             data: 'DT_RowIndex',
             name: 'DT_RowIndex',
             orderable: false,
@@ -91,8 +97,8 @@
             name: 'frame_id'
         },
         {
-            data: 'gas_consumtion',
-            name: 'gas_consumtion',
+            data: 'gas_consumption',
+            name: 'gas_consumption',
         },
         {
             data: 'gas_total_purchase',
@@ -107,13 +113,9 @@
             name: 'balance_of_battery',
         },
         {
-            data: 'meter_status_word',
-            name: 'meter_status_word',
-        },
-        {
             data: 'valve_status',
             name: 'valve_status'
-        }
+        },
         {
             data: 'created_at',
             name: 'created_at'
@@ -142,7 +144,34 @@
 
     $('#device').change(function() {
         table.draw();
-    })
+    });
+
+    $('#dataTable tbody').on('click', 'td.dt-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+            } else {
+                row.child(format(row.data())).show();
+                tr.addClass('shown');
+            }
+            tr.closest('tbody').find('textarea').each(function () {
+                this.setAttribute("style", "height:" + (this.scrollHeight) + "px;overflow-y:hidden;");
+                this.style.height = 0;
+                this.style.height = (this.scrollHeight) + "px";
+            })
+        });
+
+        function format(d) {
+            return (
+                `<div class="mb-4">
+                    <label for="form-label">Meter status word</label>
+                    <textarea name="" id="" cols="30" class="form-control" style="height: 100%;" disabled>${d.meter_status_word}</textarea>
+                </div>`
+            );
+        }
 
 </script>
 @endpush

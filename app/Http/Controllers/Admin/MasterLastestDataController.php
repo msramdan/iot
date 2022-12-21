@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MasterLatestData;
 use App\Models\MasterLatestDataPowerMeter;
 use App\Models\Device;
+use App\Models\MasterLatestDataGasMeter;
 use App\Models\ParsedWaterMater;
 use App\Models\ParsedPowerMater;
 use App\Models\ParsedGasMater;
@@ -200,7 +201,7 @@ class MasterLastestDataController extends Controller
     public function gasMeterMaster(Request $request)
     {
         if (request()->ajax()) {
-            $parsed_data = MasterLatestData::with(['device' => function ($k) {
+            $parsed_data = MasterLatestDataGasMeter::with(['device' => function ($k) {
                 $k->where('devices.category', 'Gas Meter');
             }]);
 
