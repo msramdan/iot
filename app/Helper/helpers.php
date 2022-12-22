@@ -703,6 +703,7 @@ function handleGasMeter($device_id, $request)
         $arrCommand = str_split($fix_status_word, 1);
         $index = 7;
         $error = [];
+        $errorTiket =[];
         foreach ($arrCommand as  $value) {
             $bin = base_convert($value, 16, 2);
             $fix = str_pad($bin, 4, "0", STR_PAD_LEFT);
@@ -711,19 +712,33 @@ function handleGasMeter($device_id, $request)
                 if ($dataBin == "1") {
                     $getError = $bitError1[$index];
                     array_push($error, $getError);
+                    if($index == 7 || $index == 4 || $index == 3 || $index == 2 || $index == 1 ){
+                        array_push($errorTiket, $getError);
+                    }
+                    // get status valve
                     if ($index == 0) {
                         $status_valve = $getError;
                     }
                 } else {
                     $getError = $bitError0[$index];
+                    // get status valve
                     if ($index == 0) {
                         $status_valve = $getError;
                     }
                     array_push($error, $getError);
                 }
-
                 $index = $index - 1;
             }
+        }
+
+        $count =count($errorTiket);
+        if($count > 0){
+            Ticket::create([
+                'subject' => "Alert dari Device " . $request->devEUI,
+                'description'  => "Abnormal indications on : " . json_encode($errorTiket),
+                'is_device'   => 1,
+                'status'   => "alert",
+            ]);
         }
 
         $params = [
