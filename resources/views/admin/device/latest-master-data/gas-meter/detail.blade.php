@@ -1,6 +1,20 @@
 @extends('layouts.master')
 @section('title', 'Mater Latest Data Device')
 @section('content')
+
+
+<style>
+    .my-custom-scrollbar {
+        position: relative;
+        height: 400px;
+        overflow: auto;
+        }
+    .table-wrapper-scroll-y {
+        display: block;
+        }
+</style>
+
+
 <div class="page-content">
     <div class="container-fluid">
         <div class="row">
@@ -30,7 +44,7 @@
                     <div class="card-header">
                         <h4>Command Downlink</h4>
                     </div>
-                    <div class="card-body">
+                    {{-- <div class="card-body">
                         <center>
                             @if ($lastData->status_valve=='Open')
                                 <h4>Status Valve : <span class="badge rounded-pill badge-outline-success">{{ $lastData->status_valve  }}</span>  </h4>
@@ -47,7 +61,7 @@
 							<button type="submit" id="open_valve" class="btn btn-success" style="margin-top:5px;"> Open Valve</button>
 							<button type="submit" id="close_valve" class="btn btn-danger" style="margin-top:5px;">Close Valve</button>
 						</center>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="card">
@@ -75,9 +89,10 @@
                         </div>
                     </div>
                     <div class="card-body" >
-                        <div class="row" style="overflow-x:scroll">
+                        <div class="row" >
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table table-sm table-bordered" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Gas Consumtion</th>
@@ -87,12 +102,13 @@
                                     <tbody>
                                         @foreach ($parsed_data as $data)
                                         <tr>
-                                            <td>{{ $data->gas_consumtion }}</td>
+                                            <td>{{ $data->gas_consumption }} m3</td>
                                             <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div  id="chart-container"></div>
@@ -102,9 +118,10 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <div class="row" style="overflow-x:scroll">
+                        <div class="row" >
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table table-sm table-bordered" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Gas total purchase</th>
@@ -114,12 +131,13 @@
                                     <tbody>
                                         @foreach ($parsed_data as $item)
                                         <tr>
-                                            <td>{{ $item->gas_total_purchase }}</td>
+                                            <td>{{ $item->gas_total_purchase }} m3</td>
                                             <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div id="chart-container2"></div>
@@ -130,9 +148,10 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <div class="row" style="overflow-x:scroll">
+                        <div class="row" >
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table table-sm table-bordered" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Purchase Remain</th>
@@ -142,12 +161,13 @@
                                     <tbody>
                                         @foreach ($parsed_data as $res)
                                         <tr>
-                                            <td>{{ $res->purchase_remain }}</td>
+                                            <td>{{ $res->purchase_remain }} m3</td>
                                             <td>{{ date('d/m/Y H:i:s', strtotime($res->created_at)) }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div id="chart-container3"></div>
@@ -158,9 +178,10 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <div class="row" style="overflow-x:scroll">
+                        <div class="row" >
                             <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
+                                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table id="" class="table table-sm table-bordered" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Balance of Battery</th>
@@ -170,12 +191,13 @@
                                     <tbody>
                                         @foreach ($parsed_data as $res)
                                         <tr>
-                                            <td>{{ $res->balance_of_battery }}</td>
+                                            <td>{{ $res->balance_of_battery }} %</td>
                                             <td>{{ date('d/m/Y H:i:s', strtotime($res->created_at)) }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div id="chart-container4"></div>
@@ -183,35 +205,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row" style="overflow-x:scroll">
-                            <div class="col-md-6">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Meter status Word</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($parsed_data as $res)
-                                        <tr>
-                                            <td>{{ $res->meter_status_word }}</td>
-                                            <td>{{ date('d/m/Y H:i:s', strtotime($res->created_at)) }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-md-6">
-                                <div id="chart-container5"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
@@ -226,7 +219,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container',
-            width: '700',
+            width: '600',
             height: '450',
             dataFormat: 'json',
             dataSource: {
@@ -249,7 +242,7 @@
                     [
                         @foreach ($parsed_data as $date)
                             {
-                                "label": "{{ date('d M', strtotime($date->created_at)) }}"
+                                "label": "{{ date('d/m/Y H:i', strtotime($date->created_at)) }}"
                             },
                         @endforeach
                     ]
@@ -273,7 +266,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container2',
-            width: '700',
+            width: '600',
             height: '450',
             dataFormat: 'json',
             dataSource: {
@@ -296,7 +289,7 @@
                     [
                         @foreach ($parsed_data as $date)
                             {
-                                "label": "{{ date('d M', strtotime($date->created_at)) }}"
+                                "label": "{{ date('d/m/Y H:i', strtotime($date->created_at)) }}"
                             },
                         @endforeach
                     ]
@@ -320,7 +313,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container3',
-            width: '700',
+            width: '600',
             height: '450',
             dataFormat: 'json',
             dataSource: {
@@ -343,7 +336,7 @@
                     [
                         @foreach ($parsed_data as $date)
                             {
-                                "label": "{{ date('d M', strtotime($date->created_at)) }}"
+                                "label": "{{ date('d/m/Y H:i', strtotime($date->created_at)) }}"
                             },
                         @endforeach
                     ]
@@ -367,7 +360,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container4',
-            width: '700',
+            width: '600',
             height: '450',
             dataFormat: 'json',
             dataSource: {
@@ -390,7 +383,7 @@
                     [
                         @foreach ($parsed_data as $date)
                             {
-                                "label": "{{ date('d M', strtotime($date->created_at)) }}"
+                                "label": "{{ date('d/m/Y H:i', strtotime($date->created_at)) }}"
                             },
                         @endforeach
                     ]
@@ -409,60 +402,9 @@
         chartObj.render();
     });
 </script>
-<script type="text/javascript">
-	FusionCharts.ready(function(){
-            var chartObj = new FusionCharts({
-            type: 'scrollline2d',
-            renderAt: 'chart-container5',
-            width: '700',
-            height: '450',
-            dataFormat: 'json',
-            dataSource: {
-                "chart": {
-                    "theme": "fusion",
-                    "caption": "Meter status word",
-                    "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
-                    "xaxisname": "Dates",
-                    "yaxisname": "Meter status word",
-                    "showvalues": "1",
-                    "numVisiblePlot": "12",
-                    "scrollheight": "10",
-                    "flatScrollBars": "1",
-                    "scrollShowButtons": "0",
-                    "scrollColor": "#cccccc",
-                    "showHoverEffect": "1"
-                },
-                "categories": [{
-                    "category":
-                    [
-                        @foreach ($parsed_data as $date)
-                            {
-                                "label": "{{ date('d M', strtotime($date->created_at)) }}"
-                            },
-                        @endforeach
-                    ]
-                }],
-                "dataset": [{
-                    "data": [
-                        @foreach ($parsed_data as $data_parsed)
-                            {
-                            "value": "{{ $data_parsed->meter_status_word }}"
-                            },
-                        @endforeach
-                    ]
-                }]
-            }
-        });
-        chartObj.render();
-    });
-</script>
+
 <script>
     $(document).ready(function () {
-    $('.example-scroll').DataTable({
-        scrollY: '300px',
-        scrollCollapse: true,
-        paging: false,
-    });
 
     $('#filter_date_data').change(function() {
         var dates = $(this).val();
