@@ -226,33 +226,20 @@ class MasterLastestDataController extends Controller
                 ->addColumn('frame_id', function ($row) {
                     return $row->frame_id ?? '-';
                 })
-                ->addColumn('gas_consumtion', function($row) {
-                    if ($row->gas_consumtion) {
-                        return $row->gas_consumtion;
-                    }
-
-                    return '-';
+                ->addColumn('gas_consumption', function ($row) {
+                    return $row->gas_consumption.' m3';
                 })
-                ->addColumn('gas_total_purchase', function($row) {
-                    if ($row->gas_total_purchase) {
-                        return $row->gas_total_purchase;
-                    }
 
-                    return '-';
+                ->addColumn('gas_total_purchase', function ($row) {
+                    return $row->gas_total_purchase.' m3';
                 })
-                ->addColumn('purchase_remain', function($row) {
-                    if ($row->purchase_remain) {
-                        return $row->purchase_remain;
-                    }
 
-                    return '-';
+                ->addColumn('purchase_remain', function ($row) {
+                    return $row->purchase_remain.' m3';
                 })
-                ->addColumn('balance_of_battery', function($row) {
-                    if ($row->balance_of_battery) {
-                        return $row->balance_of_battery;
-                    }
 
-                    return '-';
+                 ->addColumn('balance_of_battery', function ($row) {
+                    return $row->balance_of_battery.' %';
                 })
                 ->addColumn('meter_status_word', function($row) {
                     if ($row->meter_status_word) {
@@ -271,10 +258,20 @@ class MasterLastestDataController extends Controller
                 ->addColumn('frame_id', function ($row) {
                     return $row->frame_id ?? '-';
                 })
+                ->addColumn('meter_status_word', function ($row) {
+                    $array =  json_decode($row->meter_status_word);
+                    $hasil ='<ul>';
+                    foreach ($array as $value) {
+                        $hasil .= '<li>'.$value.'</li>';
+                    };
+                    $hasil .='</ul>';
+                    return $hasil;
+                })
+
                ->addColumn('detail', function ($row) {
                     return '<a href="' . url('panel/master-gas-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
-                ->rawColumns(['detail', 'action'])
+                ->rawColumns(['detail', 'meter_status_word','action'])
                 ->toJson();
         }
 

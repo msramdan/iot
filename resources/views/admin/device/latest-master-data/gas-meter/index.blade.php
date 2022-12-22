@@ -79,8 +79,8 @@
             name: 'frame_id'
         },
         {
-            data: 'gas_consumtion',
-            name: 'gas_consumtion',
+            data: 'gas_consumption',
+            name: 'gas_consumption',
         },
         {
             data: 'gas_total_purchase',
@@ -133,7 +133,7 @@
             return (
                 `<div class="mb-4">
                     <label for="form-label">Meter status word</label>
-                    <textarea name="" id="" cols="30" class="form-control" style="height: 100%;" disabled>${d.meter_status_word}</textarea>
+                    ${d.meter_status_word}
                 </div>`
             );
         }
