@@ -288,13 +288,6 @@ class MasterLastestDataController extends Controller
                     }
                     return '-';
                 })
-                ->addColumn('meter_status_word', function ($row) {
-                    if ($row->meter_status_word) {
-                        return $row->meter_status_word;
-                    }
-
-                    return '-';
-                })
                 ->addColumn('valve_status', function ($row) {
                     if ($row->valve_status != null) {
                         return $row->valve_status;

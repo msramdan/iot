@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\MasterLatestData;
 use App\Models\MasterLatestDataPowerMeter;
+use App\Models\MasterLatestDataGasMeter;
 use App\Models\Device;
 use App\Models\ParsedWaterMater;
 use App\Models\ParsedPowerMater;
@@ -246,7 +247,7 @@ class MasterLatestDataController extends Controller
     {
         $instance = Auth::guard('instances')->user();
         if (request()->ajax()) {
-            $parsed_data = MasterLatestData::with(['device' => function ($k) use ($instance) {
+            $parsed_data = MasterLatestDataGasMeter::with(['device' => function ($k) use ($instance) {
                 $k->with(['cluster' => function ($s) use ($instance) {
                     $s->where('instance_id', $instance->id);
                 }])
@@ -301,12 +302,6 @@ class MasterLatestDataController extends Controller
                     }
                     return '-';
                 })
-                ->addColumn('meter_status_word', function ($row) {
-                    if ($row->meter_status_word) {
-                        return $row->meter_status_word;
-                    }
-                    return '-';
-                })
                 ->addColumn('valve_status', function ($row) {
                     if ($row->valve_status != null) {
                         return $row->valve_status;
@@ -325,7 +320,7 @@ class MasterLatestDataController extends Controller
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('master-gas-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
-                ->rawColumns(['detail', 'action', 'meter_status_word'])
+                ->rawColumns(['detail', 'meter_status_word', 'action'])
                 ->toJson();
         }
 
