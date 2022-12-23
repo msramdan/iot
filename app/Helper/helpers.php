@@ -526,7 +526,7 @@ function handlePowerMeter($device_id, $request)
     $data = $request->data['data'];
     $hex = base64toHex($data);
     $frameId = substr($hex, 0, 2);
-    if ($frameId == "91" || $frameId == "1c") {
+    if ($frameId == "91") {
         if ($frameId == "91") {
             $idenfikasi = substr($hex, 4, 8);
             if ($idenfikasi == "02000006" || $idenfikasi == "02000106" || $idenfikasi == "02000206" || $idenfikasi == "02000306" || $idenfikasi == "02000406") {
@@ -626,7 +626,7 @@ function handlePowerMeter($device_id, $request)
             DB::table('master_latest_data_power_meter')
                 ->where('device_id', $device_id)
                 ->update($params);
-        } else if ($frameId == "1c") {
+        } else {
             $save = Rawdata::create([
                 'devEUI' => $request->devEUI,
                 'appID'  => $request->appID,
