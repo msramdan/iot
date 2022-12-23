@@ -95,8 +95,8 @@ class MasterLatestDataController extends Controller
         $date = $request->query('date');
         $instance = Auth::guard('instances')->user();
 
-        $parsed_data = ParsedWaterMater::wherehas('device', function ($q) use ($instance) {
-            $q->wherehas('cluster', function ($s) use ($instance) {
+        $parsed_data = ParsedWaterMater::with('device', function ($q) use ($instance) {
+            $q->with('cluster', function ($s) use ($instance) {
                 $s->where('instance_id', $instance->id);
             });
         })->where('device_id', $id);
@@ -122,7 +122,8 @@ class MasterLatestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
+        $parsed_data = $parsed_data->orderBy('id', 'desc')
+            ->whereNull('status_valve')->get();
 
         return view('partner.device.latest-master-data.water-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI', 'lastData'));
     }
@@ -242,7 +243,8 @@ class MasterLatestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
+        $parsed_data = $parsed_data->orderBy('id', 'desc')
+            ->whereNull('status_switch')->get();
 
         return view('partner.device.latest-master-data.power-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'lastData'));
     }
