@@ -102,10 +102,6 @@ class MasterLatestDataController extends Controller
             });
         })->where('device_id', $id);
 
-        $device = Device::where('id', $id)->first();
-        $devEUI = $device->devEUI;
-
-
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
 
@@ -123,7 +119,7 @@ class MasterLatestDataController extends Controller
         $parsed_data = $parsed_data->orderBy('id', 'desc')
             ->whereNull('status_valve')->get();
 
-        return view('partner.device.latest-master-data.water-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI', 'lastData'));
+        return view('partner.device.latest-master-data.water-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'lastData'));
     }
 
     public function powerMeterMaster(Request $request)
