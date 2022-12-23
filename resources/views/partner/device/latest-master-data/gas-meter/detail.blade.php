@@ -74,7 +74,7 @@
                                     <tbody>
                                         @foreach ($parsed_data as $data)
                                         <tr>
-                                            <td>{{ $data->gas_consumtion }}</td>
+                                            <td>{{ $data->gas_consumption }}</td>
                                             <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
                                         </tr>
                                         @endforeach
@@ -170,35 +170,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row" style="overflow-x:scroll">
-                            <div class="col-md-4">
-                                <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Meter status Word</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($parsed_data as $res)
-                                        <tr>
-                                            <td>{{ $res->meter_status_word }}</td>
-                                            <td>{{ date('d/m/Y H:i:s', strtotime($res->created_at)) }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-md-8">
-                                <div id="chart-container5"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
@@ -245,7 +216,7 @@
                     "data": [
                         @foreach ($parsed_data as $data_parsed)
                             {
-                            "value": "{{ $data_parsed->gas_consumtion }}"
+                            "value": "{{ $data_parsed->gas_consumption }}"
                             },
                         @endforeach
                     ]
@@ -387,53 +358,6 @@
                         @foreach ($parsed_data as $data_parsed)
                             {
                             "value": "{{ $data_parsed->balance_of_battery }}"
-                            },
-                        @endforeach
-                    ]
-                }]
-            }
-        });
-        chartObj.render();
-    });
-</script>
-<script type="text/javascript">
-	FusionCharts.ready(function(){
-            var chartObj = new FusionCharts({
-            type: 'scrollline2d',
-            renderAt: 'chart-container5',
-            width: '700',
-            height: '450',
-            dataFormat: 'json',
-            dataSource: {
-                "chart": {
-                    "theme": "fusion",
-                    "caption": "Meter status word",
-                    "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
-                    "xaxisname": "Dates",
-                    "yaxisname": "Meter status word",
-                    "showvalues": "1",
-                    "numVisiblePlot": "12",
-                    "scrollheight": "10",
-                    "flatScrollBars": "1",
-                    "scrollShowButtons": "0",
-                    "scrollColor": "#cccccc",
-                    "showHoverEffect": "1"
-                },
-                "categories": [{
-                    "category":
-                    [
-                        @foreach ($parsed_data as $date)
-                            {
-                                "label": "{{ date('d M', strtotime($date->created_at)) }}"
-                            },
-                        @endforeach
-                    ]
-                }],
-                "dataset": [{
-                    "data": [
-                        @foreach ($parsed_data as $data_parsed)
-                            {
-                            "value": "{{ $data_parsed->meter_status_word }}"
                             },
                         @endforeach
                     ]
