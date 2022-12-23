@@ -251,7 +251,7 @@
                     "data": [
                         @foreach ($parsed_data as $data_parsed)
                             {
-                            "value": "{{ $data_parsed->gas_consumtion }}"
+                            "value": "{{ $data_parsed->gas_consumption }}"
                             },
                         @endforeach
                     ]
