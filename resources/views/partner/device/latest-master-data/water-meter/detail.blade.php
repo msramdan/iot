@@ -41,12 +41,6 @@
                             @endif
                             <h4>Last Updated : <span class="badge rounded-pill badge-outline-success">{{ $lastData->updated_at  }}</span>  </h4>
                         </center> <br>
-                        <center>
-                            <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}" hidden>
-							<button type="submit" id="cek_status"  class="btn btn-primary" style="margin-top:5px;">Read Valve Status</button>
-							<button type="submit" id="open_valve" class="btn btn-success" style="margin-top:5px;"> Open Valve</button>
-							<button type="submit" id="close_valve" class="btn btn-danger" style="margin-top:5px;">Close Valve</button>
-						</center>
                     </div>
                 </div>
 
