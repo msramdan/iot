@@ -261,14 +261,12 @@ class MasterLatestDataController extends Controller
                     if ($row->device) {
                         return $row->device->devName;
                     }
-
                     return '-';
                 })
                 ->addColumn('devEUI', function ($row) {
                     if ($row->device) {
                         return $row->device->devEUI;
                     }
-
                     return '-';
                 })
 
@@ -284,7 +282,6 @@ class MasterLatestDataController extends Controller
                 })
 
                 ->addColumn('gas_total_purchase', function ($row) {
-
                     if ($row->gas_total_purchase != null) {
                         return $row->gas_total_purchase . ' m3';
                     }
@@ -292,7 +289,6 @@ class MasterLatestDataController extends Controller
                 })
 
                 ->addColumn('purchase_remain', function ($row) {
-
                     if ($row->purchase_remain != null) {
                         return $row->purchase_remain . ' m3';
                     }
@@ -300,7 +296,6 @@ class MasterLatestDataController extends Controller
                 })
 
                 ->addColumn('balance_of_battery', function ($row) {
-
                     if ($row->balance_of_battery != null) {
                         return $row->balance_of_battery . ' %';
                     }
@@ -310,14 +305,12 @@ class MasterLatestDataController extends Controller
                     if ($row->meter_status_word) {
                         return $row->meter_status_word;
                     }
-
                     return '-';
                 })
                 ->addColumn('valve_status', function ($row) {
                     if ($row->valve_status != null) {
                         return $row->valve_status;
                     }
-
                     return '-';
                 })
                 ->addColumn('meter_status_word', function ($row) {
@@ -329,12 +322,10 @@ class MasterLatestDataController extends Controller
                     $hasil .= '</ul>';
                     return $hasil;
                 })
-
-
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('master-gas-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
-                ->rawColumns(['detail', 'action'])
+                ->rawColumns(['detail', 'action', 'meter_status_word'])
                 ->toJson();
         }
 
