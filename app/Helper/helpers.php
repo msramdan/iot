@@ -686,21 +686,35 @@ function handleGasMeter($device_id, $request)
     );
 
     if ($frameId == "68") {
-        // parsed datanya
+        // cek type postpaid or prepaid
+        $type = substr($hex, 18, 2);
         $gas_consumption = littleEndian(substr($hex, 34, 8));
         $fix_gas = pengurangGasMeter($gas_consumption) * 0.01;
-        $gas_total_purchase = littleEndian(substr($hex, 42, 8));
-        $fix_gas_total_purchase = pengurangGasMeter($gas_total_purchase) * 0.01;
-        $purchase_remain = littleEndian(substr($hex, 50, 8));
-        $fix_purchase_remain = pengurangGasMeter($purchase_remain) * 0.01;
-        $balance_of_battery = littleEndian(substr($hex, 60, 2));
-        $fix_balance_of_battery = hexdec(pengurangGasMeter($balance_of_battery));
+        if($type == "15"){
+            $gas_total_purchase = littleEndian(substr($hex, 42, 8));
+            $fix_gas_total_purchase = pengurangGasMeter($gas_total_purchase) * 0.01;
+            $purchase_remain = littleEndian(substr($hex, 50, 8));
+            $fix_purchase_remain = pengurangGasMeter($purchase_remain) * 0.01;
 
-        $meter_status_word = littleEndian(substr($hex, 58, 2));
-        $fix_status_word = pengurangGasMeter($meter_status_word);
+            $balance_of_battery = littleEndian(substr($hex, 60, 2));
+            $fix_balance_of_battery = hexdec(pengurangGasMeter($balance_of_battery));
+            $meter_status_word = littleEndian(substr($hex, 58, 2));
+            $fix_status_word = pengurangGasMeter($meter_status_word);
+        }else{
+            $fix_gas_total_purchase = 0;
+            $fix_purchase_remain =0;
+            $balance_of_battery = littleEndian(substr($hex, 44, 2));
+            $fix_balance_of_battery = hexdec(pengurangGasMeter($balance_of_battery));
+
+            $meter_status_word = littleEndian(substr($hex, 42, 2));
+            $fix_status_word = pengurangGasMeter($meter_status_word);
+            // return $fix_status_word;
+        }
+
 
 
         $arrCommand = str_split($fix_status_word, 1);
+        // return $arrCommand;
         $index = 7;
         $error = [];
         $errorTiket =[];
@@ -766,5 +780,6 @@ function pengurangGasMeter($data)
 {
     $lengt_gas_consumption = strlen($data);
     $pengurang =  str_pad(3, $lengt_gas_consumption, 3, STR_PAD_LEFT);
-    return (int)  $data - (int) $pengurang;
+    $cek =  (int)  $data - (int) $pengurang;
+    return str_pad($cek, 2, "0", STR_PAD_LEFT);
 }
