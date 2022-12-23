@@ -23,13 +23,13 @@ Route::controller(CallbackController::class)->group(function () {
 /**
  * Login Partner
  */
-Route::controller(InstanceLoginController::class)->group(function() {
+Route::controller(InstanceLoginController::class)->group(function () {
     Route::get('/login', 'showLoginForm')->name('login');
     Route::post('/logout', 'logout')->name('logout');
     Route::post('/login/store', 'handleLogin')->name('login.store');
 });
 
-Route::controller(ForgotPasswordController::class)->group(function() {
+Route::controller(ForgotPasswordController::class)->group(function () {
     Route::get('/forgot_password', 'showForgetPasswordForm')->name('instances.forgot_password');
     Route::get('/reset_password/{token}', 'showResetPasswordForm')->name('instances.reset_password');
     Route::post('/forgot_password', 'submitForgetPasswordForm')->name('instances.forgot_password_store');
@@ -39,37 +39,34 @@ Route::controller(ForgotPasswordController::class)->group(function() {
 /**
  * Route Partner / Instance
  */
-Route::middleware(['auth:instances'])->name('instances.')->group(function() {
-    Route::controller(HomeController::class)->group(function() {
+Route::middleware(['auth:instances'])->name('instances.')->group(function () {
+    Route::controller(HomeController::class)->group(function () {
         Route::get('/', 'index')->name('dashboard');
         Route::post('/instance/change_password', 'change_password')->name('change_password');
     });
     Route::resources(['tickets' => TicketController::class]);
-    Route::controller(SubInstanceController::class)->group(function() {
+    Route::controller(SubInstanceController::class)->group(function () {
         Route::get('/subinstance', 'index')->name('subinstance.index');
     });
     Route::resource('subinstance.cluster', ClusterController::class);
 
-    Route::controller(DeviceController::class)->group(function() {
+    Route::controller(DeviceController::class)->group(function () {
         Route::get('/device', 'index')->name('device.index');
     });
     Route::controller(ParsedWaterMeterController::class)->group(function () {
         Route::get('/parsed-wm', 'index')->name('parsed-wm.index');
     });
-    Route::controller(ParsedPowerMeterController::class)->group(function() {
+    Route::controller(ParsedPowerMeterController::class)->group(function () {
         Route::get('/parsed-pm', 'index')->name('parsed-pm.index');
     });
-    Route::controller(ParsedGasMeterController::class)->group(function() {
+    Route::controller(ParsedGasMeterController::class)->group(function () {
         Route::get('/parsed-gm', 'index')->name('parsed-gm.index');
     });
 
-    Route::controller(MasterLatestDataController::class)->group(function() {
+    Route::controller(MasterLatestDataController::class)->group(function () {
         //Water meter
         Route::get('/master-water-meter', 'waterMeterMaster')->name('master_water_meter.index');
         Route::get('/master-water-meter/detail/{id}', 'detailWaterMeter')->name('master_water_meter.detail');
-        Route::post('/checkValve', 'checkValve')->name('checkValve');
-        Route::post('/openValve', 'openValve')->name('openValve');
-        Route::post('/closeValve', 'closeValve')->name('closeValve');
         //Power Meter
         Route::get('/master-power-meter', 'powerMeterMaster')->name('master_power_meter.index');
         Route::get('/master-power-meter/detail/{id}', 'detailPowerMeter')->name('master_power_meter.detail');
@@ -78,8 +75,3 @@ Route::middleware(['auth:instances'])->name('instances.')->group(function() {
         Route::get('/master-gas-meter/detail/{id}', 'detailGasMeter')->name('master_gas_meter.detail');
     });
 });
-
-
-
-
-

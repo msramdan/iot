@@ -110,8 +110,8 @@ class MasterLastestDataController extends Controller
         $device_id = $id;
 
         $parsed_data = $parsed_data
-                        ->orderBy('parsed_water_meter.id', 'desc')
-                        ->whereNull('status_valve')->get();
+            ->orderBy('parsed_water_meter.id', 'desc')
+            ->whereNull('status_valve')->get();
 
         return view('admin.device.latest-master-data.water-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI', 'lastData'));
     }
@@ -144,23 +144,23 @@ class MasterLastestDataController extends Controller
                 ->addColumn('frame_id', function ($row) {
                     return $row->frame_id ?? '-';
                 })
-               ->addColumn('tegangan', function ($row) {
-                    return $row->tegangan.' V';
+                ->addColumn('tegangan', function ($row) {
+                    return $row->tegangan . ' V';
                 })
                 ->addColumn('arus', function ($row) {
-                    return $row->arus.' A';
+                    return $row->arus . ' A';
                 })
                 ->addColumn('frekuensi_pln', function ($row) {
-                    return $row->frekuensi_pln. ' Hz';
+                    return $row->frekuensi_pln . ' Hz';
                 })
                 ->addColumn('active_power', function ($row) {
-                    return $row->active_power.' kW';
+                    return $row->active_power . ' kW';
                 })
                 ->addColumn('power_factor', function ($row) {
                     return $row->power_factor;
                 })
                 ->addColumn('total_energy', function ($row) {
-                    return $row->total_energy .' kWh';
+                    return $row->total_energy . ' kWh';
                 })
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('panel/master-power-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
@@ -176,7 +176,8 @@ class MasterLastestDataController extends Controller
     {
         $date = $request->query('date');
         $parsed_data = ParsedPowerMater::where('device_id', $id);
-
+        $device = Device::where('id', $id)->first();
+        $devEUI = $device->devEUI;
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
 
@@ -195,7 +196,7 @@ class MasterLastestDataController extends Controller
 
         $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
 
-        return view('admin.device.latest-master-data.power-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates'));
+        return view('admin.device.latest-master-data.power-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI'));
     }
 
     public function gasMeterMaster(Request $request)
@@ -227,28 +228,28 @@ class MasterLastestDataController extends Controller
                     return $row->frame_id ?? '-';
                 })
                 ->addColumn('gas_consumption', function ($row) {
-                    return $row->gas_consumption.' m3';
+                    return $row->gas_consumption . ' m3';
                 })
 
                 ->addColumn('gas_total_purchase', function ($row) {
-                    return $row->gas_total_purchase.' m3';
+                    return $row->gas_total_purchase . ' m3';
                 })
 
                 ->addColumn('purchase_remain', function ($row) {
-                    return $row->purchase_remain.' m3';
+                    return $row->purchase_remain . ' m3';
                 })
 
-                 ->addColumn('balance_of_battery', function ($row) {
-                    return $row->balance_of_battery.' %';
+                ->addColumn('balance_of_battery', function ($row) {
+                    return $row->balance_of_battery . ' %';
                 })
-                ->addColumn('meter_status_word', function($row) {
+                ->addColumn('meter_status_word', function ($row) {
                     if ($row->meter_status_word) {
                         return $row->meter_status_word;
                     }
 
                     return '-';
                 })
-                ->addColumn('valve_status', function($row) {
+                ->addColumn('valve_status', function ($row) {
                     if ($row->valve_status) {
                         return $row->valve_status;
                     }
@@ -260,18 +261,18 @@ class MasterLastestDataController extends Controller
                 })
                 ->addColumn('meter_status_word', function ($row) {
                     $array =  json_decode($row->meter_status_word);
-                    $hasil ='<ul>';
+                    $hasil = '<ul>';
                     foreach ($array as $value) {
-                        $hasil .= '<li>'.$value.'</li>';
+                        $hasil .= '<li>' . $value . '</li>';
                     };
-                    $hasil .='</ul>';
+                    $hasil .= '</ul>';
                     return $hasil;
                 })
 
-               ->addColumn('detail', function ($row) {
+                ->addColumn('detail', function ($row) {
                     return '<a href="' . url('panel/master-gas-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
-                ->rawColumns(['detail', 'meter_status_word','action'])
+                ->rawColumns(['detail', 'meter_status_word', 'action'])
                 ->toJson();
         }
 
@@ -309,7 +310,7 @@ class MasterLastestDataController extends Controller
         Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
             ->withOptions(['verify' => false])
             ->post('https://wspiot.xyz/openapi/devicedl/create', [
-                "devEUI" =>$request->devEUI,
+                "devEUI" => $request->devEUI,
                 "data" => 'IQ==',
                 "confirmed" => true,
                 "fport" => 8
@@ -321,7 +322,7 @@ class MasterLastestDataController extends Controller
         Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
             ->withOptions(['verify' => false])
             ->post('https://wspiot.xyz/openapi/devicedl/create', [
-                "devEUI" =>$request->devEUI,
+                "devEUI" => $request->devEUI,
                 "data" => 'IQE=',
                 "confirmed" => true,
                 "fport" => 8
@@ -333,8 +334,32 @@ class MasterLastestDataController extends Controller
         Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
             ->withOptions(['verify' => false])
             ->post('https://wspiot.xyz/openapi/devicedl/create', [
-                "devEUI" =>$request->devEUI,
+                "devEUI" => $request->devEUI,
                 "data" => 'IYE=',
+                "confirmed" => true,
+                "fport" => 8
+            ]);
+    }
+
+    public function openSwitch(Request $request)
+    {
+        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+            ->withOptions(['verify' => false])
+            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+                "devEUI" => $request->devEUI,
+                "data" => 'HBAEAAAAAAAAABoAWVkjAQGZ',
+                "confirmed" => true,
+                "fport" => 8
+            ]);
+    }
+
+    public function closeSwitch(Request $request)
+    {
+        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+            ->withOptions(['verify' => false])
+            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+                "devEUI" => $request->devEUI,
+                "data" => 'HBAEAAAAAAAAABwAWVkjAQGZ',
                 "confirmed" => true,
                 "fport" => 8
             ]);

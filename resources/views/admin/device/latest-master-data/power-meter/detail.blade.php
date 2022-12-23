@@ -41,13 +41,13 @@
                     </div>
                     <div class="card-body">
                         <center>
-                            <h4>Status Valve : </h4>
+                            <h4>Status Switch : </h4>
                             <h4>Updated : </h4>
                         </center>
                         <center>
-							<a href="" target="_blank" class="btn btn-primary" style="margin-top:5px;">Read Valve Status</a>
-							<a href="" target="_blank" class="btn btn-success" style="margin-top:5px;">Open Valve</a>
-							<a href="" target="_blank" class="btn btn-danger" style="margin-top:5px;">Close Valve</a>
+                            <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}" hidden>
+							<button id="open_switch" class="btn btn-success" style="margin-top:5px;">Open Switch</button>
+							<button id="close_switch" class="btn btn-danger" style="margin-top:5px;">Close Switch</button>
 						</center>
                     </div>
                 </div>
@@ -563,4 +563,76 @@
     });
 });
 </script>
+
+<script>
+        $('#open_switch').click(function(e) {
+            const devEUI = $('#devEUI').val();
+            let data = {
+                devEUI: devEUI,
+            }
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Are You Sure to Open Switch ?',
+                    showCancelButton: true,
+                    confirmButtonText: `Yes`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                            type: 'POST',
+                            url: '{{ route('openSwitch') }}',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            data: data,
+                            success: function(res) {
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Please Waiting Response From Server',
+                                        text: 'In progress to Open Switch',
+                                        allowOutsideClick: false,
+                                    }).then(function() {
+                                        location.reload();
+                                    })
+                            },
+                        })
+                        }
+                    });
+        })
+</script>
+<script>
+        $('#close_switch').click(function(e) {
+            const devEUI = $('#devEUI').val();
+            let data = {
+                devEUI: devEUI,
+            }
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Are You Sure to Close Switch ?',
+                    showCancelButton: true,
+                    confirmButtonText: `Yes`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                            type: 'POST',
+                            url: '{{ route('closeSwitch') }}',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            data: data,
+                            success: function(res) {
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Please Waiting Response From Server',
+                                        text: 'In progress to Close Switch',
+                                        allowOutsideClick: false,
+                                    }).then(function() {
+                                        location.reload();
+                                    })
+                            },
+                        })
+                        }
+                    });
+        })
+</script>
+
 @endpush

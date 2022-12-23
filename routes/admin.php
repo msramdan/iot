@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\ActivityLogController;
@@ -31,7 +32,7 @@ use App\Http\Controllers\Admin\ParsedPowerMeterController;
  * Route Admin Panel
  */
 
-Route::controller(LoginController::class)->group(function() {
+Route::controller(LoginController::class)->group(function () {
     Route::get('login', 'showLoginForm')->name('admin_auth.login');
     Route::post('login', 'login')->name('admin_auth.store');
     Route::post('logout', 'logout')->name('admin_auth.logout');
@@ -45,13 +46,15 @@ Route::controller(DashboardController::class)->group(function () {
     Route::put('/change_password', 'change_password')->name('dashboard.change_password');
 });
 
-Route::controller(MasterLastestDataController::class)->group(function() {
+Route::controller(MasterLastestDataController::class)->group(function () {
     //Water meter
     Route::get('/master-water-meter', 'waterMeterMaster')->name('master_water_meter.index');
     Route::get('/master-water-meter/detail/{id}', 'detailWaterMeter')->name('master_water_meter.detail');
     Route::post('/checkValve', 'checkValve')->name('checkValve');
     Route::post('/openValve', 'openValve')->name('openValve');
     Route::post('/closeValve', 'closeValve')->name('closeValve');
+    Route::post('/openSwitch', 'openSwitch')->name('openSwitch');
+    Route::post('/closeSwitch', 'closeSwitch')->name('closeSwitch');
     //Power Meter
     Route::get('/master-power-meter', 'powerMeterMaster')->name('master_power_meter.index');
     Route::get('/master-power-meter/detail/{id}', 'detailPowerMeter')->name('master_power_meter.detail');
@@ -86,7 +89,7 @@ Route::resource('subinstance.cluster', ClusterController::class);
 Route::resource('subnet', SubnetController::class);
 Route::resource('device', DeviceController::class);
 
-Route::controller(DeviceController::class)->group(function() {
+Route::controller(DeviceController::class)->group(function () {
     Route::post('device/get_cluster', 'get_cluster')->name('device.get_cluster');
     Route::post('device/sign_cluster', 'sign_cluster')->name('device.sign_cluster');
 });
@@ -102,16 +105,15 @@ Route::controller(RawdataController::class)->group(function () {
 Route::controller(ParsedWaterMaterController::class)->group(function () {
     Route::get('/parsed-wm', 'index')->name('parsed-wm.index');
 });
-Route::controller(ParsedPowerMeterController::class)->group(function() {
+Route::controller(ParsedPowerMeterController::class)->group(function () {
     Route::get('/parsed-pm', 'index')->name('parsed-pm.index');
 });
-Route::controller(ParsedGasMeterController::class)->group(function() {
+Route::controller(ParsedGasMeterController::class)->group(function () {
     Route::get('/parsed-gm', 'index')->name('parsed-gm.index');
 });
 
 
 //Route Gateway
-Route::controller(GatewayController::class)->group(function() {
+Route::controller(GatewayController::class)->group(function () {
     Route::get('/gateway', 'index')->name('gateway.index');
 });
-
