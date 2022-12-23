@@ -253,8 +253,8 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container',
-            width: '480',
-            height: '390',
+            width: '700',
+            height: '450',
             dataFormat: 'json',
             dataSource: {
                 "chart": {
@@ -300,8 +300,8 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container2',
-            width: '480',
-            height: '390',
+            width: '700',
+            height: '450',
             dataFormat: 'json',
             dataSource: {
                 "chart": {
@@ -347,8 +347,8 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container3',
-            width: '480',
-            height: '390',
+            width: '700',
+            height: '450',
             dataFormat: 'json',
             dataSource: {
                 "chart": {
@@ -394,8 +394,8 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container4',
-            width: '480',
-            height: '390',
+            width: '700',
+            height: '450',
             dataFormat: 'json',
             dataSource: {
                 "chart": {
@@ -441,8 +441,8 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container5',
-            width: '480',
-            height: '390',
+            width: '700',
+            height: '450',
             dataFormat: 'json',
             dataSource: {
                 "chart": {
@@ -488,8 +488,8 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container6',
-            width: '480',
-            height: '390',
+            width: '700',
+            height: '450',
             dataFormat: 'json',
             dataSource: {
                 "chart": {
