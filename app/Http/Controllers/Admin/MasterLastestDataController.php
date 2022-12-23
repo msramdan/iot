@@ -217,7 +217,8 @@ class MasterLastestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
+        $parsed_data = $parsed_data->orderBy('id', 'desc')
+            ->whereNull('status_switch')->get();
 
         return view('admin.device.latest-master-data.power-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI', 'lastData'));
     }
