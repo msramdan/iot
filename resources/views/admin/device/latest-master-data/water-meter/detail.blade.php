@@ -89,7 +89,7 @@
                     </div>
                     <div class="card-body" >
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                     <table id="" class="table table-sm table-bordered ">
                                         <thead>
@@ -109,7 +109,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div  id="chart-container"></div>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table table-sm table-bordered " style="width:100%">
                                     <thead>
@@ -138,7 +138,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container2"></div>
                             </div>
                         </div>
@@ -148,7 +148,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table table-sm table-bordered " style="width:100%">
                                     <thead>
@@ -168,7 +168,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container3"></div>
                             </div>
                         </div>

@@ -648,6 +648,33 @@ function handlePowerMeter($device_id, $request)
             'payload_data' => json_encode($request->all()),
         ]);
         $lastInsertedId = $save->id;
+        $temp = DB::table('temp_status_switch')->where('dev_eui', $request->devEUI)->first();
+        if ($hex == '9c00') {
+            $params = [
+                'rawdata_id' => $lastInsertedId,
+                'device_id' => $device_id,
+                'frame_id' => $frameId,
+                'status_switch' => $temp->status,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+        } else {
+            $params = [
+                'rawdata_id' => $lastInsertedId,
+                'device_id' => $device_id,
+                'frame_id' => $frameId,
+                'status_switch' => "Ada Error",
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+        }
+
+        DB::table('parsed_power_meter')->insert($params);
+        DB::table('master_latest_data_power_meter')
+            ->where('device_id', $device_id)
+            ->update($params);
+        // delete temp
+        DB::table('temp_status_switch')->where('id', $temp->id)->delete();
     }
     return "success";
     // } else {

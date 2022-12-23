@@ -15,6 +15,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class MasterLastestDataController extends Controller
 {
@@ -145,22 +146,43 @@ class MasterLastestDataController extends Controller
                     return $row->frame_id ?? '-';
                 })
                 ->addColumn('tegangan', function ($row) {
-                    return $row->tegangan . ' V';
+                    if ($row->tegangan != null) {
+                        return $row->tegangan . ' V';
+                    }
+                    return '-';
                 })
                 ->addColumn('arus', function ($row) {
-                    return $row->arus . ' A';
+                    if ($row->arus != null) {
+                        return $row->arus . ' A';
+                    }
+                    return '-';
                 })
                 ->addColumn('frekuensi_pln', function ($row) {
-                    return $row->frekuensi_pln . ' Hz';
+
+                    if ($row->frekuensi_pln != null) {
+                        return $row->frekuensi_pln . ' Hz';
+                    }
+                    return '-';
                 })
                 ->addColumn('active_power', function ($row) {
-                    return $row->active_power . ' kW';
+
+                    if ($row->active_power != null) {
+                        return $row->active_power . ' kW';
+                    }
+                    return '-';
                 })
                 ->addColumn('power_factor', function ($row) {
-                    return $row->power_factor;
+
+                    if ($row->power_factor != null) {
+                        return $row->power_factor;
+                    }
+                    return '-';
                 })
                 ->addColumn('total_energy', function ($row) {
-                    return $row->total_energy . ' kWh';
+                    if ($row->total_energy != null) {
+                        return $row->total_energy . ' kWh';
+                    }
+                    return '-';
                 })
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('panel/master-power-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
@@ -177,6 +199,7 @@ class MasterLastestDataController extends Controller
         $date = $request->query('date');
         $parsed_data = ParsedPowerMater::where('device_id', $id);
         $device = Device::where('id', $id)->first();
+        $lastData = MasterLatestDataPowerMeter::where('device_id', $id)->first();
         $devEUI = $device->devEUI;
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
@@ -196,7 +219,7 @@ class MasterLastestDataController extends Controller
 
         $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
 
-        return view('admin.device.latest-master-data.power-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI'));
+        return view('admin.device.latest-master-data.power-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI', 'lastData'));
     }
 
     public function gasMeterMaster(Request $request)
@@ -351,6 +374,11 @@ class MasterLastestDataController extends Controller
                 "confirmed" => true,
                 "fport" => 8
             ]);
+        // insert temp
+        DB::table('temp_status_switch')->insert([
+            'dev_eui' => $request->devEUI,
+            'status' => 'Open'
+        ]);
     }
 
     public function closeSwitch(Request $request)
@@ -363,5 +391,10 @@ class MasterLastestDataController extends Controller
                 "confirmed" => true,
                 "fport" => 8
             ]);
+        // insert temp
+        DB::table('temp_status_switch')->insert([
+            'dev_eui' => $request->devEUI,
+            'status' => 'Close'
+        ]);
     }
 }

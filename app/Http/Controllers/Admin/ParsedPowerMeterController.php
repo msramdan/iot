@@ -14,8 +14,8 @@ class ParsedPowerMeterController extends Controller
     {
         $devices = Device::all();
 
-        if(request()->ajax()){
-            $parsed_data = ParsedPowerMater::with('rawdata')->with(['device' => function($q){
+        if (request()->ajax()) {
+            $parsed_data = ParsedPowerMater::with('rawdata')->with(['device' => function ($q) {
                 $q->where('devices.category', 'Power Meter');
             }]);
 
@@ -38,33 +38,53 @@ class ParsedPowerMeterController extends Controller
 
             return DataTables::of($parsed_data)
                 ->addIndexColumn()
-                ->addColumn('device_name', function($row) {
+                ->addColumn('device_name', function ($row) {
                     if ($row->device) {
                         return $row->device->devName;
                     }
-
                     return '-';
                 })
                 ->addColumn('tegangan', function ($row) {
-                    return $row->tegangan.' V';
+                    if ($row->tegangan != null) {
+                        return $row->tegangan . ' V';
+                    }
+                    return '-';
                 })
                 ->addColumn('arus', function ($row) {
-                    return $row->arus.' A';
+                    if ($row->arus != null) {
+                        return $row->arus . ' A';
+                    }
+                    return '-';
                 })
                 ->addColumn('frekuensi_pln', function ($row) {
-                    return $row->frekuensi_pln. ' Hz';
+
+                    if ($row->frekuensi_pln != null) {
+                        return $row->frekuensi_pln . ' Hz';
+                    }
+                    return '-';
                 })
                 ->addColumn('active_power', function ($row) {
-                    return $row->active_power.' kW';
+
+                    if ($row->active_power != null) {
+                        return $row->active_power . ' kW';
+                    }
+                    return '-';
                 })
                 ->addColumn('power_factor', function ($row) {
-                    return $row->power_factor;
+
+                    if ($row->power_factor != null) {
+                        return $row->power_factor;
+                    }
+                    return '-';
                 })
                 ->addColumn('total_energy', function ($row) {
-                    return $row->total_energy .' kWh';
+                    if ($row->total_energy != null) {
+                        return $row->total_energy . ' kWh';
+                    }
+                    return '-';
                 })
                 ->addColumn('rawdata_id', function ($row) {
-                        return '<a href="'.url('panel/rawdata?rawdata='.$row->rawdata_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> Rawdata </a>';
+                    return '<a href="' . url('panel/rawdata?rawdata=' . $row->rawdata_id) . '" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> Rawdata </a>';
                 })
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d M Y H:i:s');

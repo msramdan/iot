@@ -90,7 +90,7 @@
                     </div>
                     <div class="card-body" >
                         <div class="row" >
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table table-sm table-bordered" style="width:100%">
                                     <thead>
@@ -110,7 +110,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div  id="chart-container"></div>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row" >
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table table-sm table-bordered" style="width:100%">
                                     <thead>
@@ -139,7 +139,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container2"></div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row" >
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table table-sm table-bordered" style="width:100%">
                                     <thead>
@@ -169,7 +169,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container3"></div>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row" >
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table table-sm table-bordered" style="width:100%">
                                     <thead>
@@ -199,7 +199,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container4"></div>
                             </div>
                         </div>
@@ -219,7 +219,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container',
-            width: '600',
+            width: '650',
             height: '450',
             dataFormat: 'json',
             dataSource: {
@@ -266,7 +266,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container2',
-            width: '600',
+            width: '650',
             height: '450',
             dataFormat: 'json',
             dataSource: {
@@ -313,7 +313,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container3',
-            width: '600',
+            width: '650',
             height: '450',
             dataFormat: 'json',
             dataSource: {
@@ -360,7 +360,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container4',
-            width: '600',
+            width: '650',
             height: '450',
             dataFormat: 'json',
             dataSource: {

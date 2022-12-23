@@ -38,6 +38,7 @@
                                         <th>Active Power</th>
                                         <th>Power Factor</th>
                                         <th>Total Energy</th>
+                                        <th>Status Swtich</th>
                                         <th>Detail</th>
                                     </tr>
                                 </thead>
@@ -95,6 +96,10 @@
         {
             data: 'total_energy',
             name: 'total_energy',
+        },
+        {
+            data: 'status_switch',
+            name: 'status_switch',
         },
         {
             data: 'detail',

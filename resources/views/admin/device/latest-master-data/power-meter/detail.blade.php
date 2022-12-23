@@ -41,9 +41,16 @@
                     </div>
                     <div class="card-body">
                         <center>
-                            <h4>Status Switch : </h4>
-                            <h4>Updated : </h4>
-                        </center>
+                            @if ($lastData->status_switch=='Open')
+                                <h4>Status Switch : <span class="badge rounded-pill badge-outline-success">{{ $lastData->status_switch  }}</span>  </h4>
+                            @elseif($lastData->status_switch=='Close')
+                                <h4>Status Switch : <span class="badge rounded-pill badge-outline-danger">{{ $lastData->status_switch  }}</span>  </h4>
+                            @else
+                                <h4>Status Switch : <span class="badge rounded-pill badge-outline-dark">{{ $lastData->status_switch  }}</span></h4>
+                            @endif
+                            <h4>Last Updated : <span class="badge rounded-pill badge-outline-success">{{ $lastData->updated_at  }}</span>  </h4>
+                        </center> <br>
+
                         <center>
                             <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}" hidden>
 							<button id="open_switch" class="btn btn-success" style="margin-top:5px;">Open Switch</button>
@@ -78,7 +85,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
@@ -98,7 +105,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container"></div>
                             </div>
                         </div>
@@ -109,7 +116,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
@@ -129,7 +136,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container2"></div>
                             </div>
                         </div>
@@ -140,7 +147,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
@@ -160,7 +167,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container3"></div>
                             </div>
                         </div>
@@ -171,7 +178,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
@@ -191,7 +198,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container4"></div>
                             </div>
                         </div>
@@ -202,7 +209,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
@@ -222,7 +229,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container5"></div>
                             </div>
                         </div>
