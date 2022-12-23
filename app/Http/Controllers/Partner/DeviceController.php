@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Partner;
 use App\Http\Controllers\Controller;
 use App\Models\Device;
 use App\Models\Subnet;
-use App\Models\SubInstance;
+use App\Models\Subinstance;
 use App\Models\Cluster;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class DeviceController extends Controller
 {
     public function index(Request $request)
     {
-        $subinstances = SubInstance::all();
+        $subinstances = Subinstance::all();
         $instance = Auth::guard('instances')->user();
 
         if (request()->ajax()) {
@@ -31,7 +31,7 @@ class DeviceController extends Controller
             }
 
             if ($request->has('subinstance') && !empty($request->subinstance)) {
-                $device = $device->with(['cluster' => function($q) use($request){
+                $device = $device->with(['cluster' => function ($q) use ($request) {
                     $q->where('subinstance_id', $request->subinstance);
                 }]);
             }
