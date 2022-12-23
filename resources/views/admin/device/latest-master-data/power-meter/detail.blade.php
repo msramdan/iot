@@ -240,7 +240,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="table-wrapper-scroll-y my-custom-scrollbar">
                                 <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                     <thead>
@@ -260,7 +260,7 @@
                                 </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container6"></div>
                             </div>
                         </div>
@@ -281,7 +281,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container',
-            width: '650',
+            width: '700',
             height: '390',
             dataFormat: 'json',
             dataSource: {
@@ -328,7 +328,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container2',
-            width: '650',
+            width: '700',
             height: '390',
             dataFormat: 'json',
             dataSource: {
@@ -375,7 +375,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container3',
-            width: '650',
+            width: '700',
             height: '390',
             dataFormat: 'json',
             dataSource: {
@@ -422,7 +422,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container4',
-            width: '650',
+            width: '700',
             height: '390',
             dataFormat: 'json',
             dataSource: {
@@ -469,7 +469,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container5',
-            width: '650',
+            width: '700',
             height: '390',
             dataFormat: 'json',
             dataSource: {
@@ -516,7 +516,7 @@
             var chartObj = new FusionCharts({
             type: 'scrollline2d',
             renderAt: 'chart-container6',
-            width: '650',
+            width: '700',
             height: '390',
             dataFormat: 'json',
             dataSource: {
