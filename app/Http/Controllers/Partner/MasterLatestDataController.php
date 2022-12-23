@@ -92,8 +92,9 @@ class MasterLatestDataController extends Controller
 
     public function detailWaterMeter(Request $request, $id)
     {
-        $date = $request->query('date');
         $instance = Auth::guard('instances')->user();
+        $lastData = MasterLatestData::where('device_id', $id)->first();
+        $date = $request->query('date');
 
         $parsed_data = ParsedWaterMater::with('device', function ($q) use ($instance) {
             $q->with('cluster', function ($s) use ($instance) {
@@ -104,7 +105,6 @@ class MasterLatestDataController extends Controller
         $device = Device::where('id', $id)->first();
         $devEUI = $device->devEUI;
 
-        $lastData = MasterLatestData::where('device_id', $id)->first();
 
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
@@ -113,10 +113,8 @@ class MasterLatestDataController extends Controller
             $dates = explode(' to ', $request->date);
             $start = str_replace(',', '', $dates[0]) . " 00:00:00";
             $end = str_replace(',', '', $dates[1]) . " 23:59:59";
-
             $start_dates = date('Y-m-d H:i:s', strtotime($start));
             $end_dates = date('Y-m-d H:i:s', strtotime($end));
-
             $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates]);
         }
 
@@ -221,6 +219,7 @@ class MasterLatestDataController extends Controller
         $instance = Auth::guard('instances')->user();
         $lastData = MasterLatestDataPowerMeter::where('device_id', $id)->first();
         $date = $request->query('date');
+
         $parsed_data = ParsedPowerMater::with(['device' => function ($q) use ($instance) {
             $q->with(['cluster' => function ($s) use ($instance) {
                 $s->where('instance_id', $instance->id);
@@ -234,10 +233,8 @@ class MasterLatestDataController extends Controller
             $dates = explode(' to ', $request->date);
             $start = str_replace(',', '', $dates[0]) . " 00:00:00";
             $end = str_replace(',', '', $dates[1]) . " 23:59:59";
-
             $start_dates = date('Y-m-d H:i:s', strtotime($start));
             $end_dates = date('Y-m-d H:i:s', strtotime($end));
-
             $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates]);
         }
 
