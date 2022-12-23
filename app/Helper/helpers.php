@@ -526,34 +526,32 @@ function handlePowerMeter($device_id, $request)
     $data = $request->data['data'];
     $hex = base64toHex($data);
     $frameId = substr($hex, 0, 2);
-    if ($frameId == "91") {
-        $idenfikasi = substr($hex, 4, 8);
-        if ($idenfikasi == "02000006" || $idenfikasi == "02000106" || $idenfikasi == "02000206" || $idenfikasi == "02000306" || $idenfikasi == "02000406") {
-            $save = Rawdata::create([
-                'devEUI' => $request->devEUI,
-                'appID'  => $request->appID,
-                'type'   => $request->type,
-                'time'   => $request->time,
-                'gwid'   => $request->data['gwid'],
-                'rssi'   => $request->data['rssi'],
-                'snr'    => $request->data['snr'],
-                'freq'   => $request->data['freq'],
-                'dr'     => $request->data['dr'],
-                'adr'    => $request->data['adr'],
-                'class'  => $request->data['class'],
-                'fcnt'   => $request->data['fCnt'],
-                'fport'  => $request->data['fPort'],
-                'confirmed' => $request->data['confirmed'],
-                'data'  => $request->data['data'],
-                'convert'  => base64toHex($request->data['data']),
-                'gws'   => json_encode($request->data['gws']),
-                'payload_data' => json_encode($request->all()),
-            ]);
-            $lastInsertedId = $save->id;
-        }
+    if ($frameId == "91" || $frameId == "1c") {
         if ($frameId == "91") {
             $idenfikasi = substr($hex, 4, 8);
-            // big frame
+            if ($idenfikasi == "02000006" || $idenfikasi == "02000106" || $idenfikasi == "02000206" || $idenfikasi == "02000306" || $idenfikasi == "02000406") {
+                $save = Rawdata::create([
+                    'devEUI' => $request->devEUI,
+                    'appID'  => $request->appID,
+                    'type'   => $request->type,
+                    'time'   => $request->time,
+                    'gwid'   => $request->data['gwid'],
+                    'rssi'   => $request->data['rssi'],
+                    'snr'    => $request->data['snr'],
+                    'freq'   => $request->data['freq'],
+                    'dr'     => $request->data['dr'],
+                    'adr'    => $request->data['adr'],
+                    'class'  => $request->data['class'],
+                    'fcnt'   => $request->data['fCnt'],
+                    'fport'  => $request->data['fPort'],
+                    'confirmed' => $request->data['confirmed'],
+                    'data'  => $request->data['data'],
+                    'convert'  => base64toHex($request->data['data']),
+                    'gws'   => json_encode($request->data['gws']),
+                    'payload_data' => json_encode($request->all()),
+                ]);
+                $lastInsertedId = $save->id;
+            }
             if ($idenfikasi == "02000006") {
                 $tegangan = littleEndian(substr($hex, 28, 4)) * 0.1;
                 $arus = littleEndian(substr($hex, 40, 6)) / 1000;
@@ -624,11 +622,33 @@ function handlePowerMeter($device_id, $request)
                     'updated_at' => date('Y-m-d H:i:s'),
                 ];
             }
+            DB::table('parsed_power_meter')->insert($params);
+            DB::table('master_latest_data_power_meter')
+                ->where('device_id', $device_id)
+                ->update($params);
+        } else if ($frameId == "1c") {
+            $save = Rawdata::create([
+                'devEUI' => $request->devEUI,
+                'appID'  => $request->appID,
+                'type'   => $request->type,
+                'time'   => $request->time,
+                'gwid'   => $request->data['gwid'],
+                'rssi'   => $request->data['rssi'],
+                'snr'    => $request->data['snr'],
+                'freq'   => $request->data['freq'],
+                'dr'     => $request->data['dr'],
+                'adr'    => $request->data['adr'],
+                'class'  => $request->data['class'],
+                'fcnt'   => $request->data['fCnt'],
+                'fport'  => $request->data['fPort'],
+                'confirmed' => $request->data['confirmed'],
+                'data'  => $request->data['data'],
+                'convert'  => base64toHex($request->data['data']),
+                'gws'   => json_encode($request->data['gws']),
+                'payload_data' => json_encode($request->all()),
+            ]);
+            $lastInsertedId = $save->id;
         }
-        DB::table('parsed_power_meter')->insert($params);
-        DB::table('master_latest_data_power_meter')
-            ->where('device_id', $device_id)
-            ->update($params);
         return "success";
     } else {
         return "Payload Data Tidak Tercover";
@@ -690,7 +710,7 @@ function handleGasMeter($device_id, $request)
         $type = substr($hex, 18, 2);
         $gas_consumption = littleEndian(substr($hex, 34, 8));
         $fix_gas = pengurangGasMeter($gas_consumption) * 0.01;
-        if($type == "15"){
+        if ($type == "15") {
             $gas_total_purchase = littleEndian(substr($hex, 42, 8));
             $fix_gas_total_purchase = pengurangGasMeter($gas_total_purchase) * 0.01;
             $purchase_remain = littleEndian(substr($hex, 50, 8));
@@ -700,9 +720,9 @@ function handleGasMeter($device_id, $request)
             $fix_balance_of_battery = hexdec(pengurangGasMeter($balance_of_battery));
             $meter_status_word = littleEndian(substr($hex, 58, 2));
             $fix_status_word = pengurangGasMeter($meter_status_word);
-        }else{
+        } else {
             $fix_gas_total_purchase = 0;
-            $fix_purchase_remain =0;
+            $fix_purchase_remain = 0;
             $balance_of_battery = littleEndian(substr($hex, 44, 2));
             $fix_balance_of_battery = hexdec(pengurangGasMeter($balance_of_battery));
 
@@ -717,7 +737,7 @@ function handleGasMeter($device_id, $request)
         // return $arrCommand;
         $index = 7;
         $error = [];
-        $errorTiket =[];
+        $errorTiket = [];
         foreach ($arrCommand as  $value) {
             $bin = base_convert($value, 16, 2);
             $fix = str_pad($bin, 4, "0", STR_PAD_LEFT);
@@ -726,7 +746,7 @@ function handleGasMeter($device_id, $request)
                 if ($dataBin == "1") {
                     $getError = $bitError1[$index];
                     array_push($error, $getError);
-                    if($index == 7 || $index == 4 || $index == 3 || $index == 2 || $index == 1 ){
+                    if ($index == 7 || $index == 4 || $index == 3 || $index == 2 || $index == 1) {
                         array_push($errorTiket, $getError);
                     }
                     // get status valve
@@ -745,8 +765,8 @@ function handleGasMeter($device_id, $request)
             }
         }
 
-        $count =count($errorTiket);
-        if($count > 0){
+        $count = count($errorTiket);
+        if ($count > 0) {
             Ticket::create([
                 'subject' => "Alert dari Device " . $request->devEUI,
                 'description'  => "Abnormal indications on : " . json_encode($errorTiket),
