@@ -32,14 +32,15 @@
                     </div>
                     <div class="card-body">
                         <center>
-                            <h4>Status Valve : </h4>
-                            <h4>Updated : </h4>
-                        </center>
-                        <center>
-							<a href="" target="_blank" class="btn btn-primary" style="margin-top:5px;">Read Valve Status</a>
-							<a href="" target="_blank" class="btn btn-success" style="margin-top:5px;">Open Valve</a>
-							<a href="" target="_blank" class="btn btn-danger" style="margin-top:5px;">Close Valve</a>
-						</center>
+                            @if ($lastData->status_switch=='Open')
+                                <h4>Status Switch : <span class="badge rounded-pill badge-outline-success">{{ $lastData->status_switch  }}</span>  </h4>
+                            @elseif($lastData->status_switch=='Close')
+                                <h4>Status Switch : <span class="badge rounded-pill badge-outline-danger">{{ $lastData->status_switch  }}</span>  </h4>
+                            @else
+                                <h4>Status Switch : <span class="badge rounded-pill badge-outline-dark">{{ $lastData->status_switch  }}</span></h4>
+                            @endif
+                            <h4>Last Updated : <span class="badge rounded-pill badge-outline-success">{{ $lastData->updated_at  }}</span>  </h4>
+                        </center> <br>
                     </div>
                 </div>
                 <!-- Tegangan -->

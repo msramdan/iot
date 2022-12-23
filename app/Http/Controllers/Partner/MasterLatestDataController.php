@@ -218,6 +218,7 @@ class MasterLatestDataController extends Controller
     public function detailPowerMeter(Request $request, $id)
     {
         $instance = Auth::guard('instances')->user();
+        $lastData = MasterLatestDataPowerMeter::where('device_id', $id)->first();
         $date = $request->query('date');
         $parsed_data = ParsedPowerMater::with(['device' => function ($q) use ($instance) {
             $q->with(['cluster' => function ($s) use ($instance) {
@@ -243,7 +244,7 @@ class MasterLatestDataController extends Controller
 
         $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
 
-        return view('partner.device.latest-master-data.power-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates'));
+        return view('partner.device.latest-master-data.power-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'lastData'));
     }
 
     public function gasMeterMaster(Request $request)
