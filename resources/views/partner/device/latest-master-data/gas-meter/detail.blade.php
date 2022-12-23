@@ -76,7 +76,7 @@
                     </div>
                     <div class="card-body" >
                         <div class="row" style="overflow-x:scroll">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
@@ -94,7 +94,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div  id="chart-container"></div>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row" style="overflow-x:scroll">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
@@ -121,7 +121,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container2"></div>
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row" style="overflow-x:scroll">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
@@ -149,7 +149,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container3"></div>
                             </div>
                         </div>
@@ -159,7 +159,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row" style="overflow-x:scroll">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
@@ -177,7 +177,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container4"></div>
                             </div>
                         </div>
@@ -187,7 +187,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row" style="overflow-x:scroll">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
@@ -205,7 +205,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container5"></div>
                             </div>
                         </div>

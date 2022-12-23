@@ -51,31 +51,31 @@ class MasterLatestDataController extends Controller
                     return $row->frame_id ?? '-';
                 })
                 ->addColumn('uplink_interval', function ($row) {
-                    if ($row->uplink_interval) {
+                    if ($row->uplink_interval != null) {
                         return $row->uplink_interval . ' Seconds';
                     }
                     return '-';
                 })
                 ->addColumn('temperatur', function ($row) {
-                    if ($row->temperatur) {
+                    if ($row->temperatur != null) {
                         return $row->temperatur . 'C';
                     }
                     return '-';
                 })
                 ->addColumn('total_flow', function ($row) {
-                    if ($row->total_flow) {
+                    if ($row->total_flow != null) {
                         return $row->total_flow . 'L';
                     }
                     return '-';
                 })
                 ->addColumn('batrai_status', function ($row) {
-                    if ($row->batrai_status) {
+                    if ($row->batrai_status != null) {
                         return $row->batrai_status . ' %';
                     }
                     return '-';
                 })
                 ->addColumn('status_valve', function ($row) {
-                    if ($row->status_valve) {
+                    if ($row->status_valve != null) {
                         return $row->status_valve;
                     }
                     return '-';
@@ -161,38 +161,47 @@ class MasterLatestDataController extends Controller
                     return $row->frame_id ?? '-';
                 })
                 ->addColumn('tegangan', function ($row) {
-                    if ($row->tegangan) {
-                        return $row->tegangan;
+                    if ($row->tegangan != null) {
+                        return $row->tegangan . ' V';
                     }
                     return '-';
                 })
                 ->addColumn('arus', function ($row) {
-                    if ($row->arus) {
-                        return $row->arus;
+                    if ($row->arus != null) {
+                        return $row->arus . ' A';
                     }
                     return '-';
                 })
                 ->addColumn('frekuensi_pln', function ($row) {
-                    if ($row->frekuensi_pln) {
-                        return $row->frekuensi_pln;
+
+                    if ($row->frekuensi_pln != null) {
+                        return $row->frekuensi_pln . ' Hz';
                     }
                     return '-';
                 })
                 ->addColumn('active_power', function ($row) {
-                    if ($row->active_power) {
-                        return $row->active_power;
+
+                    if ($row->active_power != null) {
+                        return $row->active_power . ' kW';
                     }
                     return '-';
                 })
                 ->addColumn('power_factor', function ($row) {
-                    if ($row->power_factor) {
+
+                    if ($row->power_factor != null) {
                         return $row->power_factor;
                     }
                     return '-';
                 })
                 ->addColumn('total_energy', function ($row) {
-                    if ($row->total_energy) {
-                        return $row->total_energy;
+                    if ($row->total_energy != null) {
+                        return $row->total_energy . ' kWh';
+                    }
+                    return '-';
+                })
+                ->addColumn('status_switch', function ($row) {
+                    if ($row->status_switch != null) {
+                        return $row->status_switch;
                     }
                     return '-';
                 })
@@ -266,32 +275,39 @@ class MasterLatestDataController extends Controller
 
                     return '-';
                 })
-                ->addColumn('gas_consumtion', function ($row) {
-                    if ($row->gas_consumtion) {
-                        return $row->gas_consumtion;
-                    }
 
+                ->addColumn('frame_id', function ($row) {
+                    return $row->frame_id ?? '-';
+                })
+                ->addColumn('gas_consumption', function ($row) {
+
+                    if ($row->gas_consumption != null) {
+                        return $row->gas_consumption . ' m3';
+                    }
                     return '-';
                 })
+
                 ->addColumn('gas_total_purchase', function ($row) {
-                    if ($row->gas_total_purchase) {
-                        return $row->gas_total_purchase;
-                    }
 
+                    if ($row->gas_total_purchase != null) {
+                        return $row->gas_total_purchase . ' m3';
+                    }
                     return '-';
                 })
+
                 ->addColumn('purchase_remain', function ($row) {
-                    if ($row->purchase_remain) {
-                        return $row->purchase_remain;
-                    }
 
+                    if ($row->purchase_remain != null) {
+                        return $row->purchase_remain . ' m3';
+                    }
                     return '-';
                 })
-                ->addColumn('balance_of_battery', function ($row) {
-                    if ($row->balance_of_battery) {
-                        return $row->balance_of_battery;
-                    }
 
+                ->addColumn('balance_of_battery', function ($row) {
+
+                    if ($row->balance_of_battery != null) {
+                        return $row->balance_of_battery . ' %';
+                    }
                     return '-';
                 })
                 ->addColumn('meter_status_word', function ($row) {
@@ -302,15 +318,23 @@ class MasterLatestDataController extends Controller
                     return '-';
                 })
                 ->addColumn('valve_status', function ($row) {
-                    if ($row->valve_status) {
+                    if ($row->valve_status != null) {
                         return $row->valve_status;
                     }
 
                     return '-';
                 })
-                ->addColumn('frame_id', function ($row) {
-                    return $row->frame_id ?? '-';
+                ->addColumn('meter_status_word', function ($row) {
+                    $array =  json_decode($row->meter_status_word);
+                    $hasil = '<ul>';
+                    foreach ($array as $value) {
+                        $hasil .= '<li>' . $value . '</li>';
+                    };
+                    $hasil .= '</ul>';
+                    return $hasil;
                 })
+
+
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('master-gas-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })

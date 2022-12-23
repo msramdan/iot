@@ -69,7 +69,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
@@ -87,7 +87,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container">FusionCharts XT will load here!</div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
@@ -116,7 +116,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container2">FusionCharts XT will load here!</div>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
@@ -145,7 +145,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container3">FusionCharts XT will load here!</div>
                             </div>
                         </div>
@@ -156,7 +156,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
@@ -174,7 +174,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container4">FusionCharts XT will load here!</div>
                             </div>
                         </div>
@@ -185,7 +185,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
@@ -203,7 +203,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container5">FusionCharts XT will load here!</div>
                             </div>
                         </div>
@@ -214,7 +214,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <table id="" class="table tabel-bordered table-sm example-scroll" style="width:100%">
                                     <thead>
                                         <tr>
@@ -232,7 +232,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div id="chart-container6">FusionCharts XT will load here!</div>
                             </div>
                         </div>
@@ -251,7 +251,7 @@
 <script type="text/javascript">
 	FusionCharts.ready(function(){
             var chartObj = new FusionCharts({
-            type: 'scrollColumn2d',
+            type: 'scrollline2d',
             renderAt: 'chart-container',
             width: '480',
             height: '390',
@@ -298,7 +298,7 @@
 <script type="text/javascript">
 	FusionCharts.ready(function(){
             var chartObj = new FusionCharts({
-            type: 'scrollColumn2d',
+            type: 'scrollline2d',
             renderAt: 'chart-container2',
             width: '480',
             height: '390',
@@ -345,7 +345,7 @@
 <script type="text/javascript">
 	FusionCharts.ready(function(){
             var chartObj = new FusionCharts({
-            type: 'scrollColumn2d',
+            type: 'scrollline2d',
             renderAt: 'chart-container3',
             width: '480',
             height: '390',
@@ -392,7 +392,7 @@
 <script type="text/javascript">
 	FusionCharts.ready(function(){
             var chartObj = new FusionCharts({
-            type: 'scrollColumn2d',
+            type: 'scrollline2d',
             renderAt: 'chart-container4',
             width: '480',
             height: '390',
@@ -439,7 +439,7 @@
 <script type="text/javascript">
 	FusionCharts.ready(function(){
             var chartObj = new FusionCharts({
-            type: 'scrollColumn2d',
+            type: 'scrollline2d',
             renderAt: 'chart-container5',
             width: '480',
             height: '390',
@@ -486,7 +486,7 @@
 <script type="text/javascript">
 	FusionCharts.ready(function(){
             var chartObj = new FusionCharts({
-            type: 'scrollColumn2d',
+            type: 'scrollline2d',
             renderAt: 'chart-container6',
             width: '480',
             height: '390',
