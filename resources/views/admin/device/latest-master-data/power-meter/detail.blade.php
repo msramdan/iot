@@ -454,7 +454,7 @@
                     "data": [
                         @foreach ($parsed_data as $data_parsed)
                             {
-                            "value": "{{ $data_parsed->activev_power }} L"
+                            "value": "{{ $data_parsed->active_power }} L"
                             },
                         @endforeach
                     ]
