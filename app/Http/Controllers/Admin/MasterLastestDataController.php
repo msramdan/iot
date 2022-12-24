@@ -319,6 +319,9 @@ class MasterLastestDataController extends Controller
     {
         $date = $request->query('date');
         $parsed_data = ParsedGasMater::where('device_id', $id);
+        $device = Device::where('id', $id)->first();
+        $devEUI = $device->devEUI;
+        $lastData = MasterLatestDataGasMeter::where('device_id', $id)->first();
 
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
@@ -338,7 +341,7 @@ class MasterLastestDataController extends Controller
 
         $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
 
-        return view('admin.device.latest-master-data.gas-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates'));
+        return view('admin.device.latest-master-data.gas-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI', 'lastData'));
     }
 
     public function checkValve(Request $request)
@@ -409,5 +412,62 @@ class MasterLastestDataController extends Controller
             'dev_eui' => $request->devEUI,
             'status' => 'Close'
         ]);
+    }
+
+    public function openValveGas(Request $request)
+    {
+        $devEUI = str_split($request->devEUI, 2);
+        $reversed = array_reverse($devEUI);
+        $newDevEui = '';
+        foreach ($reversed as $value) {
+            $newDevEui .= $value;
+        }
+        $step1 = "68" . $newDevEui . "68040770F333333333C9";
+        $split = str_split($step1, 2);
+        $jml = 0;
+        foreach ($split as $row) {
+            $con = hexdec($row);
+            $jml = $jml + $con;
+        }
+        $mod = $jml % 256;
+        $code = dechex($mod);
+        $payload = $step1 . '' . $code . "16";
+
+        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+            ->withOptions(['verify' => false])
+            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+                "devEUI" => $request->devEUI,
+                "data" => $payload,
+                "confirmed" => true,
+                "fport" => 8
+            ]);
+    }
+
+    public function closeValveGas(Request $request)
+    {
+        $devEUI = str_split($request->devEUI, 2);
+        $reversed = array_reverse($devEUI);
+        $newDevEui = '';
+        foreach ($reversed as $value) {
+            $newDevEui .= $value;
+        }
+        $step1 = "68" . $newDevEui . "6804076FF33333333368";
+        $split = str_split($step1, 2);
+        $jml = 0;
+        foreach ($split as $row) {
+            $con = hexdec($row);
+            $jml = $jml + $con;
+        }
+        $mod = $jml % 256;
+        $code = dechex($mod);
+        $payload = $step1 . '' . $code . "16";
+        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+            ->withOptions(['verify' => false])
+            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+                "devEUI" => $request->devEUI,
+                "data" => $payload,
+                "confirmed" => true,
+                "fport" => 8
+            ]);
     }
 }

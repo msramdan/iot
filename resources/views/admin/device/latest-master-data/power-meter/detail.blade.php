@@ -53,6 +53,7 @@
 
                         <center>
                             <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}" hidden>
+                            <button type="submit" id="topup"  class="btn btn-primary" style="margin-top:5px;">Validation Switch</button>
 							<button id="open_switch" class="btn btn-success" style="margin-top:5px;">Open Switch</button>
 							<button id="close_switch" class="btn btn-danger" style="margin-top:5px;">Close Switch</button>
 						</center>

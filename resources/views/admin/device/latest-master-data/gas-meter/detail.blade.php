@@ -44,24 +44,24 @@
                     <div class="card-header">
                         <h4>Command Downlink</h4>
                     </div>
-                    {{-- <div class="card-body">
+                    <div class="card-body">
                         <center>
-                            @if ($lastData->status_valve=='Open')
-                                <h4>Status Valve : <span class="badge rounded-pill badge-outline-success">{{ $lastData->status_valve  }}</span>  </h4>
-                            @elseif($lastData->status_valve=='Close')
-                                <h4>Status Valve : <span class="badge rounded-pill badge-outline-danger">{{ $lastData->status_valve  }}</span>  </h4>
+                            @if ($lastData->valve_status=='Valve Open')
+                                <h4>Status Valve : <span class="badge rounded-pill badge-outline-success">{{ $lastData->valve_status  }}</span>  </h4>
+                            @elseif($lastData->valve_status=='Valve Close')
+                                <h4>Status Valve : <span class="badge rounded-pill badge-outline-danger">{{ $lastData->valve_status  }}</span>  </h4>
                             @else
-                                <h4>Status Valve : <span class="badge rounded-pill badge-outline-dark">{{ $lastData->status_valve  }}</span></h4>
+                                <h4>Status Valve : <span class="badge rounded-pill badge-outline-dark">{{ $lastData->valve_status  }}</span></h4>
                             @endif
                             <h4>Last Updated : <span class="badge rounded-pill badge-outline-success">{{ $lastData->updated_at  }}</span>  </h4>
                         </center> <br>
                         <center>
                             <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}" hidden>
-							<button type="submit" id="cek_status"  class="btn btn-primary" style="margin-top:5px;">Read Valve Status</button>
+							<button type="submit" id="topup"  class="btn btn-primary" style="margin-top:5px;"> Topup</button>
 							<button type="submit" id="open_valve" class="btn btn-success" style="margin-top:5px;"> Open Valve</button>
-							<button type="submit" id="close_valve" class="btn btn-danger" style="margin-top:5px;">Close Valve</button>
+							<button type="submit" id="close_valve" class="btn btn-danger" style="margin-top:5px;"> Close Valve</button>
 						</center>
-                    </div> --}}
+                    </div>
                 </div>
 
                 <div class="card">
@@ -416,41 +416,6 @@
 });
 </script>
 <script>
-        $('#cek_status').click(function(e) {
-            const devEUI = $('#devEUI').val();
-            let data = {
-                devEUI: devEUI,
-            }
-                Swal.fire({
-                    icon: 'question',
-                    title: 'Are You Sure to Read Valve Status ?',
-                    showCancelButton: true,
-                    confirmButtonText: `Yes`,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                            type: 'POST',
-                            url: '{{ route('checkValve') }}',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            },
-                            data: data,
-                            success: function(res) {
-                                    Swal.fire({
-                                        icon: 'info',
-                                        title: 'Please Waiting Response From Server',
-                                        text: 'In progress to Read Valve Status',
-                                        allowOutsideClick: false,
-                                    }).then(function() {
-                                        location.reload();
-                                    })
-                            },
-                        })
-                        }
-                    });
-        })
-</script>
-<script>
         $('#open_valve').click(function(e) {
             const devEUI = $('#devEUI').val();
             let data = {
@@ -465,7 +430,7 @@
                         if (result.isConfirmed) {
                             $.ajax({
                             type: 'POST',
-                            url: '{{ route('openValve') }}',
+                            url: '{{ route('openValveGas') }}',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             },
@@ -500,7 +465,7 @@
                         if (result.isConfirmed) {
                             $.ajax({
                             type: 'POST',
-                            url: '{{ route('closeValve') }}',
+                            url: '{{ route('closeValveGas') }}',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
                             },

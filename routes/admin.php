@@ -55,6 +55,9 @@ Route::controller(MasterLastestDataController::class)->group(function () {
     Route::post('/closeValve', 'closeValve')->name('closeValve');
     Route::post('/openSwitch', 'openSwitch')->name('openSwitch');
     Route::post('/closeSwitch', 'closeSwitch')->name('closeSwitch');
+
+    Route::post('/openValveGas', 'openValveGas')->name('openValveGas');
+    Route::post('/closeValveGas', 'closeValveGas')->name('closeValveGas');
     //Power Meter
     Route::get('/master-power-meter', 'powerMeterMaster')->name('master_power_meter.index');
     Route::get('/master-power-meter/detail/{id}', 'detailPowerMeter')->name('master_power_meter.detail');
