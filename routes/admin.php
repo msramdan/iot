@@ -55,6 +55,7 @@ Route::controller(MasterLastestDataController::class)->group(function () {
     Route::post('/closeValve', 'closeValve')->name('closeValve');
     Route::post('/openSwitch', 'openSwitch')->name('openSwitch');
     Route::post('/closeSwitch', 'closeSwitch')->name('closeSwitch');
+    Route::post('/validationSwitch', 'validationSwitch')->name('validationSwitch');
 
     Route::post('/openValveGas', 'openValveGas')->name('openValveGas');
     Route::post('/closeValveGas', 'closeValveGas')->name('closeValveGas');

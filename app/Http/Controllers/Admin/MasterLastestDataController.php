@@ -414,9 +414,22 @@ class MasterLastestDataController extends Controller
         ]);
     }
 
+
+    public function validationSwitch(Request $request)
+    {
+        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+            ->withOptions(['verify' => false])
+            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+                "devEUI" => $request->devEUI,
+                "data" => 'XXXXXzzzYyy',
+                "confirmed" => true,
+                "fport" => 8
+            ]);
+    }
+
     public function openValveGas(Request $request)
     {
-        $devEUI = str_split($request->devEUI, 2);
+        $devEUI = str_split("0000047500265559", 2);
         $reversed = array_reverse($devEUI);
         $newDevEui = '';
         foreach ($reversed as $value) {
@@ -431,8 +444,9 @@ class MasterLastestDataController extends Controller
         }
         $mod = $jml % 256;
         $code = dechex($mod);
-        $payload = $step1 . '' . $code . "16";
-
+        $hexData = $step1 . '' . $code . "16";          // and much more hex values as string as in your example
+        $bin = hex2bin($hexData);       // convert the hex values to binary data stored as a PHP string
+        $payload = base64_encode($bin);
         Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
             ->withOptions(['verify' => false])
             ->post('https://wspiot.xyz/openapi/devicedl/create', [
@@ -460,7 +474,9 @@ class MasterLastestDataController extends Controller
         }
         $mod = $jml % 256;
         $code = dechex($mod);
-        $payload = $step1 . '' . $code . "16";
+        $hexData = $step1 . '' . $code . "16";
+        $bin = hex2bin($hexData);       // convert the hex values to binary data stored as a PHP string
+        $payload = base64_encode($bin);
         Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
             ->withOptions(['verify' => false])
             ->post('https://wspiot.xyz/openapi/devicedl/create', [

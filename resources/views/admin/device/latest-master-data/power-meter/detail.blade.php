@@ -53,7 +53,7 @@
 
                         <center>
                             <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}" hidden>
-                            <button type="submit" id="topup"  class="btn btn-primary" style="margin-top:5px;">Validation Switch</button>
+                            <button type="submit" id="validation"  class="btn btn-primary" style="margin-top:5px;">Validation Switch</button>
 							<button id="open_switch" class="btn btn-success" style="margin-top:5px;">Open Switch</button>
 							<button id="close_switch" class="btn btn-danger" style="margin-top:5px;">Close Switch</button>
 						</center>
@@ -607,6 +607,44 @@
                     });
         })
 </script>
+
+
+<script>
+        $('#validation').click(function(e) {
+            const devEUI = $('#devEUI').val();
+            let data = {
+                devEUI: devEUI,
+            }
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Are You Sure to Validation Switch ?',
+                    showCancelButton: true,
+                    confirmButtonText: `Yes`,
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                            type: 'POST',
+                            url: '{{ route('validationSwitch') }}',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            },
+                            data: data,
+                            success: function(res) {
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Please Waiting Response From Server',
+                                        text: 'In progress to Validation Switch',
+                                        allowOutsideClick: false,
+                                    }).then(function() {
+                                        location.reload();
+                                    })
+                            },
+                        })
+                        }
+                    });
+        })
+</script>
+
 <script>
         $('#close_switch').click(function(e) {
             const devEUI = $('#devEUI').val();
