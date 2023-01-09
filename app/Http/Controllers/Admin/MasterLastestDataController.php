@@ -421,7 +421,7 @@ class MasterLastestDataController extends Controller
             ->withOptions(['verify' => false])
             ->post('https://wspiot.xyz/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
-                "data" => 'XXXXXzzzYyy',
+                "data" => 'EQT/BQAE',
                 "confirmed" => true,
                 "fport" => 8
             ]);
@@ -477,6 +477,39 @@ class MasterLastestDataController extends Controller
         $hexData = $step1 . '' . $code . "16";
         $bin = hex2bin($hexData);       // convert the hex values to binary data stored as a PHP string
         $payload = base64_encode($bin);
+        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+            ->withOptions(['verify' => false])
+            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+                "devEUI" => $request->devEUI,
+                "data" => $payload,
+                "confirmed" => true,
+                "fport" => 8
+            ]);
+    }
+
+    public function topup(Request $request)
+    {
+        $devEUI = str_split($request->devEUI, 2);
+
+        $reversed = array_reverse($devEUI);
+        $newDevEui = '';
+        foreach ($reversed as $value) {
+            $newDevEui .= $value;
+        }
+        $step1 = "68" . $newDevEui . "68040D432E";
+        dd($step1);
+
+        // $split = str_split($step1, 2);
+        // $jml = 0;
+        // foreach ($split as $row) {
+        //     $con = hexdec($row);
+        //     $jml = $jml + $con;
+        // }
+        // $mod = $jml % 256;
+        // $code = dechex($mod);
+        // $hexData = $step1 . '' . $code . "16";
+        // $bin = hex2bin($hexData);
+        // $payload = base64_encode($bin);
         Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
             ->withOptions(['verify' => false])
             ->post('https://wspiot.xyz/openapi/devicedl/create', [
