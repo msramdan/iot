@@ -429,7 +429,7 @@ class MasterLastestDataController extends Controller
 
     public function openValveGas(Request $request)
     {
-        $devEUI = str_split("0000047500265559", 2);
+        $devEUI = str_split("047500265559", 2);
         $reversed = array_reverse($devEUI);
         $newDevEui = '';
         foreach ($reversed as $value) {
@@ -459,7 +459,8 @@ class MasterLastestDataController extends Controller
 
     public function closeValveGas(Request $request)
     {
-        $devEUI = str_split($request->devEUI, 2);
+        // $devEUI = str_split($request->devEUI, 2);
+        $devEUI = str_split("047500265559", 2);
         $reversed = array_reverse($devEUI);
         $newDevEui = '';
         foreach ($reversed as $value) {
