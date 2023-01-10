@@ -395,7 +395,7 @@ class MasterLastestDataController extends Controller
         // insert temp
         DB::table('temp_status_switch')->insert([
             'dev_eui' => $request->devEUI,
-            'status' => 'Open'
+            'status' => 'OFF'
         ]);
     }
 
@@ -412,7 +412,7 @@ class MasterLastestDataController extends Controller
         // insert temp
         DB::table('temp_status_switch')->insert([
             'dev_eui' => $request->devEUI,
-            'status' => 'Close'
+            'status' => 'ON'
         ]);
     }
 

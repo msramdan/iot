@@ -626,9 +626,9 @@ function handlePowerMeter($device_id, $request)
             $fix = str_pad($bin, 4, "0", STR_PAD_LEFT);
             $getBit6 = substr($fix, 1, 1);
             if ($getBit6 == 0) {
-                $statusSw = 'Open';
+                $statusSw = 'ON';
             } else {
-                $statusSw = 'Close';
+                $statusSw = 'OFF';
             }
             $params = [
                 'rawdata_id' => $lastInsertedId,
