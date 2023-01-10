@@ -621,7 +621,7 @@ function handlePowerMeter($device_id, $request)
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
         } else if ($idenfikasi == "ff050004") {
-            $cek = substr($hex, 20, 4);
+            $cek = substr($hex, 20, 1);
             $bin = base_convert($cek, 16, 2);
             $fix = str_pad($bin, 4, "0", STR_PAD_LEFT);
             $getBit6 = substr($fix, 1, 1);
