@@ -117,6 +117,9 @@ class DeviceController extends Controller
         if ($request->devType == 'otaa-type') {
             $rules['macVersion'] = 'required';
         }
+        if ($request->category == 'Power Meter') {
+            $rules['password_device'] = 'required';
+        }
 
         if (request('authType') == 'abp') {
             $rules['appSKey'] = 'required';
@@ -278,6 +281,10 @@ class DeviceController extends Controller
             $rules['appSKey'] = 'required';
             $rules['nwkSKey'] = 'required';
             $rules['devAddr'] = 'required';
+        }
+
+        if ($request->category == 'Power Meter') {
+            $rules['password_device'] = 'required';
         }
 
         $attr = request()->validate($rules);

@@ -40,7 +40,7 @@
                                     <td>{{ $device->cluster ? $device->cluster->name : '-' }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Category</td>
+                                    <td>Device Category</td>
                                     <td>:</td>
                                     <td>{{ $device->category }}</td>
                                 </tr>
@@ -109,6 +109,11 @@
                                     <td>Mac Version</td>
                                     <td>:</td>
                                     <td>{{ $device->macVersion }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Device Password</td>
+                                    <td>:</td>
+                                    <td>{{ $device->password_device ? $device->password_device : '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td>Created At</td>

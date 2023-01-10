@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('fPort')->nullable();
             $table->string('lastSeen')->nullable();
             $table->string('appID')->nullable();
+            $table->string('password_device')->nullable();
             $table->string('appEUI')->nullable();
             $table->string('appKey')->nullable();
             $table->string('appSKey')->nullable();

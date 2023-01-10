@@ -182,6 +182,18 @@
                                 @enderror
                             </div>
                         </div>
+                        @if ($device->category == 'Power Meter')
+                        <div class="col-12 col-md-4">
+                            <div class="mb-3">
+                                <label for="authType">Device Password </label>
+                                <input  type="text" name="password_device" id="password_device" value="{{ old('password_device') ? old('password_device') : $device->password_device }}"
+                                    class="form-control @error('password_device') is-invalid @enderror ">
+                                @error('password_device')
+                                <div class="invalid-feedback" id="note">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        @endif
 
                     </div>
                     <div class="row" id="type-condition">

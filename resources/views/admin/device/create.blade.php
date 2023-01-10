@@ -26,7 +26,7 @@
                     <div class="row">
                         <div class="col-12 col-md-4">
                             <div class="mb-3">
-                                <label for="kategori">Category Device</label>
+                                <label for="kategori">Device Category</label>
                                 <select name="category" id="category" class="form-control @error('category') is-invalid @enderror">
                                     <option value="" selected disabled>-- Pilih --</option>
                                     <option value="Water Meter" {{  old('category') == 'Water Meter' ? 'selected' : '' }} >Water Meter</option>
@@ -173,6 +173,22 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-12 col-md-4">
+                            <div class="mb-3">
+                                <label for="authType">Device Password </label>
+                                <p><span style="color: red;">Note : Available if the device category is a Power Meter</span></p>
+
+                                @if (old('category') == 'Power Meter')
+                                    <input  type="text"  name="password_device" id="password_device" value="{{ old('password_device') }}"
+                                    class="form-control @error('password_device') is-invalid @enderror ">
+                                @endif
+                                <input style="display: none" type="text" name="password_device" id="password_device" value="{{ old('password_device') ? old('password_device') : '04000000' }}"
+                                    class="form-control @error('password_device') is-invalid @enderror ">
+                                @error('password_device')
+                                <div class="invalid-feedback" id="note">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
 
                     </div>
                     <div class="row" id="type-condition">
@@ -235,7 +251,21 @@
 
 @push('js')
     <script>
+
         $('.selectClass').select2();
+
+        $(function() {
+            $('#category').change(function(){
+                if($('#category').val() == 'Power Meter') {
+                    $('#note').show();
+                    $('#password_device').show();
+                } else {
+                    $('#note').hide();
+                    $('#password_device').hide();
+                }
+            });
+        });
+
 
         const html = `<div class="col-12 col-md-4">
             <div class="mb-3">
