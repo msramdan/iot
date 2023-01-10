@@ -477,7 +477,6 @@ function handleWaterMeter($device_id, $request)
             13 => 'Hall sensor abnormity',
             14 => 'Reserve bit14',
             15 => 'Reserve bit15',
-
         );
 
         $convert = base64toHex($request->data['data']);
@@ -529,7 +528,7 @@ function handlePowerMeter($device_id, $request)
     // if ($frameId == "91") {
     if ($frameId == "91") {
         $idenfikasi = substr($hex, 4, 8);
-        if ($idenfikasi == "02000006" || $idenfikasi == "02000106" || $idenfikasi == "02000206" || $idenfikasi == "02000306" || $idenfikasi == "02000406") {
+        if ($idenfikasi == "02000006" || $idenfikasi == "02000106" || $idenfikasi == "02000206" || $idenfikasi == "02000306" || $idenfikasi == "02000406" || $idenfikasi == "ff050004") {
             $save = Rawdata::create([
                 'devEUI' => $request->devEUI,
                 'appID'  => $request->appID,
@@ -618,6 +617,24 @@ function handlePowerMeter($device_id, $request)
                 'device_id' => $device_id,
                 'frame_id' => $frameId,
                 'total_energy' => $total_energy,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+        } else if ($idenfikasi == "ff050004") {
+            $cek = substr($hex, 20, 1);
+            $bin = base_convert($cek, 16, 2);
+            $fix = str_pad($bin, 4, "0", STR_PAD_LEFT);
+            $getBit4 = substr($fix, 3, 1);
+            if ($getBit4 == 1) {
+                $statusSw = 'Open';
+            } else {
+                $statusSw = 'Close';
+            }
+            $params = [
+                'rawdata_id' => $lastInsertedId,
+                'device_id' => $device_id,
+                'frame_id' => $frameId,
+                'status_switch' => $statusSw,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
