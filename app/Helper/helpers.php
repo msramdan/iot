@@ -621,11 +621,12 @@ function handlePowerMeter($device_id, $request)
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
         } else if ($idenfikasi == "ff050004") {
-            $cek = substr($hex, 20, 1);
+            $cek = substr($hex, 20, 4);
             $bin = base_convert($cek, 16, 2);
             $fix = str_pad($bin, 4, "0", STR_PAD_LEFT);
             $getBit4 = substr($fix, 3, 1);
-            if ($getBit4 == 1) {
+            return $cek;
+            if ($getBit4 == 0) {
                 $statusSw = 'Open';
             } else {
                 $statusSw = 'Close';
