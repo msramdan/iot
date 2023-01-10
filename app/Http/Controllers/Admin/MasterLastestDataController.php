@@ -344,6 +344,7 @@ class MasterLastestDataController extends Controller
         return view('admin.device.latest-master-data.gas-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI', 'lastData'));
     }
 
+    // commandlink water meter
     public function checkValve(Request $request)
     {
         Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
@@ -380,6 +381,7 @@ class MasterLastestDataController extends Controller
             ]);
     }
 
+    // commandlink power meter
     public function openSwitch(Request $request)
     {
         Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
@@ -427,6 +429,7 @@ class MasterLastestDataController extends Controller
             ]);
     }
 
+    // commandlink gas
     public function openValveGas(Request $request)
     {
         $devEUI = str_split(substr($request->devEUI, 4), 2);
