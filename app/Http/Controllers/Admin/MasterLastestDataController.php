@@ -429,7 +429,7 @@ class MasterLastestDataController extends Controller
 
     public function openValveGas(Request $request)
     {
-        $devEUI = str_split("047500265559", 2);
+        $devEUI = str_split(substr($request->devEUI, 4), 2);
         $reversed = array_reverse($devEUI);
         $newDevEui = '';
         foreach ($reversed as $value) {
@@ -459,8 +459,8 @@ class MasterLastestDataController extends Controller
 
     public function closeValveGas(Request $request)
     {
-        // $devEUI = str_split($request->devEUI, 2);
-        $devEUI = str_split("047500265559", 2);
+
+        $devEUI = str_split(substr($request->devEUI, 4), 2);
         $reversed = array_reverse($devEUI);
         $newDevEui = '';
         foreach ($reversed as $value) {
@@ -490,34 +490,47 @@ class MasterLastestDataController extends Controller
 
     public function topup(Request $request)
     {
-        $devEUI = str_split($request->devEUI, 2);
-
+        $devEUI = str_split(substr($request->devEUI, 4), 2);
         $reversed = array_reverse($devEUI);
         $newDevEui = '';
         foreach ($reversed as $value) {
             $newDevEui .= $value;
         }
-        $step1 = "68" . $newDevEui . "68040D432E";
-        dd($step1);
-
-        // $split = str_split($step1, 2);
-        // $jml = 0;
-        // foreach ($split as $row) {
-        //     $con = hexdec($row);
-        //     $jml = $jml + $con;
-        // }
-        // $mod = $jml % 256;
-        // $code = dechex($mod);
-        // $hexData = $step1 . '' . $code . "16";
-        // $bin = hex2bin($hexData);
-        // $payload = base64_encode($bin);
+        // cari reverse tanggal
+        $date = date("ymdHi");
+        $splitDate =  str_split($date, 2);
+        $fixDate  =  konversiTime($splitDate);
+        // cari reverse total m3
+        $isiGas = str_pad($request->total * 100, 8, "0", STR_PAD_LEFT);
+        $split = str_split($isiGas, 1);
+        $hasil = konversiM3($split);
+        $revm3 = str_split($hasil, 2);
+        $reversedm3 = array_reverse($revm3);
+        $newTotalm3 = '';
+        foreach ($reversedm3 as $value) {
+            $newTotalm3 .= $value;
+        }
+        $payload = "68" . $newDevEui . "68040D432E" . $fixDate . '' . $newTotalm3 . '' . $request->purchase_code;
+        $split = str_split($payload, 2);
+        $jml = 0;
+        foreach ($split as $row) {
+            $con = hexdec($row);
+            $jml = $jml + $con;
+        }
+        $mod = $jml % 256;
+        $code = dechex($mod);
+        $hexData = $payload . '' . $code . "16";
+        $bin = hex2bin($hexData);
+        $payloadData = base64_encode($bin);
         Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
             ->withOptions(['verify' => false])
             ->post('https://wspiot.xyz/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
-                "data" => $payload,
+                "data" => $payloadData,
                 "confirmed" => true,
                 "fport" => 8
             ]);
+        Alert::info('Please Waiting Response From Server', 'In progress to Topup Gas');
+        return redirect()->back();
     }
 }

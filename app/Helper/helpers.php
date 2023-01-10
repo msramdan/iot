@@ -830,3 +830,59 @@ function pengurangGasMeter($data)
     $cek =  (int)  $data - (int) $pengurang;
     return str_pad($cek, 2, "0", STR_PAD_LEFT);
 }
+
+function konversiTime($splitDate)
+{
+    $string = '';
+    foreach ($splitDate as $row) {
+        $splitPartial =   str_split($row, 1);
+        foreach ($splitPartial as $datas) {
+            $jml = $datas + 3;
+            if ($jml < 10) {
+                $string .= $jml;
+            } else {
+                $a = cekAbjHex($jml);
+                $string .= $a;
+            }
+        }
+    }
+    $rev = str_split($string, 2);
+    $cek = array_reverse($rev);
+    $fexRev = '';
+    foreach ($cek as $value) {
+        $fexRev .= $value;
+    }
+    return $fexRev;
+}
+
+function konversiM3($split)
+{
+    $datam3 = '';
+    foreach ($split as $value) {
+        $jmlm3 = $value + 3;
+        if ($jmlm3 < 10) {
+            $datam3 .= $jmlm3;
+        } else {
+            $a = cekAbjHex($jmlm3);
+            $datam3 .= $a;
+        }
+    }
+    return $datam3;
+}
+
+function cekAbjHex($decimal)
+{
+    if ($decimal == 10) {
+        return 'a';
+    } else if ($decimal == 11) {
+        return 'b';
+    } else if ($decimal == 12) {
+        return 'c';
+    } else if ($decimal == 13) {
+        return 'd';
+    } else if ($decimal == 14) {
+        return 'e';
+    } else if ($decimal == 15) {
+        return 'f';
+    }
+}

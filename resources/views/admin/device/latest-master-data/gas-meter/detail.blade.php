@@ -20,19 +20,24 @@
         style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                {{-- <div class="modal-header">
                     <h5 class="modal-title" id="myModalLabel">Topup Gas Meter</h5>
                     <hr>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-                </div>
+                </div> --}}
                 <form action="{{ route('topup') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <h5 class="fs-15">
-                            <div class="col-xxl-6">
+                            <div class="col-xxl-12">
                                 <div>
                                     <label for="firstName" class="form-label">Total Gas (m3)</label>
-                                    <input type="number" name="total" class="form-control" id="firstName" placeholder=""
+                                    <input type="number" autocomplete="off" step="any"  name="total" class="form-control" id="firstName" placeholder="" required>
+                                </div>
+                                <br>
+                                <div>
+                                    <label for="firstName" class="form-label">Purchase Code</label>
+                                    <input type="text" autocomplete="off" name="purchase_code" class="form-control" id="purchase_code" placeholder=""
                                         required>
                                     <input type="hidden" name="devEUI" value="{{ $devEUI }}" class="form-control"
                                         id="firstName" placeholder="" required>
