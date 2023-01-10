@@ -624,9 +624,8 @@ function handlePowerMeter($device_id, $request)
             $cek = substr($hex, 20, 4);
             $bin = base_convert($cek, 16, 2);
             $fix = str_pad($bin, 4, "0", STR_PAD_LEFT);
-            $getBit4 = substr($fix, 1, 1);
-            return $cek;
-            if ($getBit4 == 0) {
+            $getBit6 = substr($fix, 1, 1);
+            if ($getBit6 == 0) {
                 $statusSw = 'Open';
             } else {
                 $statusSw = 'Close';
