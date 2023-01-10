@@ -384,11 +384,17 @@ class MasterLastestDataController extends Controller
     // commandlink power meter
     public function openSwitch(Request $request)
     {
+        $device = Device::where('devEUI', $request->devEUI)->first();
+        $pass = $device->password_device;
+        $data = '1C10' . $pass . '000000001A00595923010199';
+        $bin = hex2bin($data);       // convert the hex values to binary data stored as a PHP string
+        $payload = base64_encode($bin);
+
         Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
             ->withOptions(['verify' => false])
             ->post('https://wspiot.xyz/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
-                "data" => 'HBAEAAAAAAAAABoAWVkjAQGZ',
+                "data" => $payload,
                 "confirmed" => true,
                 "fport" => 8
             ]);
@@ -401,11 +407,17 @@ class MasterLastestDataController extends Controller
 
     public function closeSwitch(Request $request)
     {
+        $device = Device::where('devEUI', $request->devEUI)->first();
+        $pass = $device->password_device;
+        $data = '1C10' . $pass . '000000001C00595923010199';
+        $bin = hex2bin($data);       // convert the hex values to binary data stored as a PHP string
+        $payload = base64_encode($bin);
+
         Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
             ->withOptions(['verify' => false])
             ->post('https://wspiot.xyz/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
-                "data" => 'HBAEAAAAAAAAABwAWVkjAQGZ',
+                "data" => $payload,
                 "confirmed" => true,
                 "fport" => 8
             ]);

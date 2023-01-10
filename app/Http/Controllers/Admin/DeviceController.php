@@ -263,25 +263,25 @@ class DeviceController extends Controller
     public function update(Request $request, Device $device)
     {
         $rules = [
-            'category'      => 'required',
-            'appID'         => 'required',
-            'appEUI'        => 'required',
-            'appKey'        => 'required',
-            'devType'       => 'required',
+            // 'category'      => 'required',
+            // 'appID'         => 'required',
+            // 'appEUI'        => 'required',
+            // 'appKey'        => 'required',
+            // 'devType'       => 'required',
             'devName'       => 'required',
             'devEUI'        => 'required',
-            'region'        => 'required',
-            'subnet_id'       => 'required',
-            'supportClassB' => 'required',
-            'supportClassC' => 'required',
-            'macVersion'    => 'required',
+            // 'region'        => 'required',
+            // 'subnet_id'       => 'required',
+            // 'supportClassB' => 'required',
+            // 'supportClassC' => 'required',
+            // 'macVersion'    => 'required',
         ];
 
-        if (request('authType') == 'abp') {
-            $rules['appSKey'] = 'required';
-            $rules['nwkSKey'] = 'required';
-            $rules['devAddr'] = 'required';
-        }
+        // if (request('authType') == 'abp') {
+        //     $rules['appSKey'] = 'required';
+        //     $rules['nwkSKey'] = 'required';
+        //     $rules['devAddr'] = 'required';
+        // }
 
         if ($request->category == 'Power Meter') {
             $rules['password_device'] = 'required';
