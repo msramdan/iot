@@ -212,7 +212,7 @@ class DeviceController extends Controller
                 DB::table('master_latest_data_power_meter')->insert([
                     'device_id' => $lastInsertedId,
                 ]);
-            }else if ($request->category == 'Gas Meter'){
+            } else if ($request->category == 'Gas Meter') {
                 DB::table('master_latest_data_gas_meter')->insert([
                     'device_id' => $lastInsertedId,
                 ]);
@@ -234,7 +234,8 @@ class DeviceController extends Controller
      */
     public function show(Device $device)
     {
-        //
+        $subnets = Subnet::all();
+        return view('admin.device.detail', compact('device', 'subnets'));
     }
 
     /**

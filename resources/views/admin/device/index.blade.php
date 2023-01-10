@@ -23,8 +23,9 @@
                     <div class="card">
                         <div class="card-header">
                             @can('device_create')
-                            <a href="{{ route('device.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i>  Create
-                            </a>
+                                <a href="{{ route('device.create') }}" class="btn btn-md btn-secondary"> <i
+                                        class="mdi mdi-plus"></i> Create
+                                </a>
                             @endcan
                         </div>
                         <div class="card-body">
@@ -37,7 +38,7 @@
                                                 <option value="">-- Filter By Category Device --</option>
                                                 <option value="Water Meter">Water Meter</option>
                                                 <option value="Power Meter">Power Meter</option>
-                                                <option value="Gas Meterr">Gas Meter</option>
+                                                <option value="Gas Meter">Gas Meter</option>
                                             </select>
                                         </div>
                                         <!--end row-->
@@ -50,7 +51,8 @@
                                             <select name="instance" id="instance" class="form-control">
                                                 <option value="">-- Filter By Instance --</option>
                                                 @foreach ($instances as $instance)
-                                                <option value="{{ $instance->appID }}">{{ $instance->instance_name }}</option>
+                                                    <option value="{{ $instance->appID }}">{{ $instance->instance_name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -63,17 +65,12 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>App ID</th>
+                                            <th>Instance</th>
                                             <th>Cluster</th>
                                             <th>Category</th>
-                                            <th>Instance</th>
-                                            <th>App EUI</th>
-                                            <th>App Key</th>
                                             <th>Dev EUI</th>
                                             <th>Dev Name</th>
-                                            <th>Dev Type</th>
-                                            <th>Region</th>
-                                            <th>Subnet</th>
-                                            <th>Auth Type</th>
                                             @canany(['device_show', 'device_update', 'device_delete'])
                                                 <th>Action</th>
                                             @endcanany
@@ -97,12 +94,20 @@
         let base_url = "{{ url('/') }}";
 
         const action =
-            '{{ auth()->user()->can('device_update') || auth()->user()->can('device_delete')? 'yes yes yes': '' }}'
+            '{{ auth()->user()->can('device_update') ||auth()->user()->can('device_delete')? 'yes yes yes': '' }}'
         let columns = [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
+            },
+            {
+                data: 'appID',
+                name: 'appID',
+            },
+            {
+                data: 'instance',
+                name: 'instance'
             },
             {
                 data: 'cluster',
@@ -112,18 +117,7 @@
                 data: 'category',
                 name: 'category'
             },
-            {
-                data: 'instance',
-                name: 'instance'
-            },
-            {
-                data: 'appEUI',
-                name: 'appEUI'
-            },
-            {
-                data: 'appKey',
-                name: 'appKey'
-            },
+
             {
                 data: 'devEUI',
                 name: 'devEUI'
@@ -131,22 +125,6 @@
             {
                 data: 'devName',
                 name: 'devName'
-            },
-            {
-                data: 'devType',
-                name: 'devType'
-            },
-            {
-                data: 'region',
-                name: 'region'
-            },
-            {
-                data: 'subnet',
-                name: 'subnet'
-            },
-            {
-                data: 'authType',
-                name: 'authType'
             }
         ]
 
@@ -159,12 +137,12 @@
             })
         }
 
-       var table = $('#dataTable').DataTable({
+        var table = $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('device.index') }}",
-                data: function (s) {
+                data: function(s) {
                     s.instance = $('select[name=instance] option').filter(':selected').val()
                     s.category_device = $('select[name=category_device] option').filter(':selected').val()
                 }
