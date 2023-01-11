@@ -518,8 +518,6 @@ function handleWaterMeter($device_id, $request)
 }
 
 
-
-
 function handlePowerMeter($device_id, $request)
 {
     $data = $request->data['data'];
@@ -676,11 +674,38 @@ function handlePowerMeter($device_id, $request)
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
         } else {
+
+            $bitError = array(
+                0 => 'Other error',
+                1 => 'No request data',
+                2 => 'Password wrong/Unauthorized',
+                3 => 'Communication rate cannot be changed',
+                4 => 'The number of time zone exceeded',
+                5 => 'The number of sessions exceeded',
+                6 => 'The number of rates exceeded',
+                7 => 'Reserve',
+            );
+            $error = [];
+            $cek = substr($hex, -2);
+            $split = str_split($cek, 1);
+            $index = 7;
+            foreach ($split as $value) {
+                $bin = base_convert($value, 16, 2);
+                $fix = str_pad($bin, 4, "0", STR_PAD_LEFT);
+                $dataArr2 = str_split($fix, 1);
+                foreach ($dataArr2 as $dataBin) {
+                    if ($dataBin == "1") {
+                        $getError = $bitError[$index];
+                        array_push($error, $getError);
+                    }
+                    $index = $index - 1;
+                }
+            }
             $params = [
                 'rawdata_id' => $lastInsertedId,
                 'device_id' => $device_id,
                 'frame_id' => $frameId,
-                'status_switch' => "Ada Error",
+                'status_switch' => json_encode($error),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
