@@ -29,47 +29,59 @@
                                     <form method="get">
                                         @csrf
                                         <div class="input-group mb-4">
-                                            <select name="category_device" id="category_device" class="form-control">
-                                                <option value="">-- Filter By Category Device --</option>
-                                                <option value="Water Meter">Water Meter</option>
-                                                <option value="Power Meter">Power Meter</option>
-                                                <option value="Gas Meterr">Gas Meter</option>
+                                            <select name="subinstance_id" id="subinstance_id" class="form-control">
+                                                <option value="">-- Filter By SubInstance --</option>
+                                                @foreach ($subinstances as $subinstance)
+                                                    <option value="{{ $subinstance->id }}">
+                                                        {{ $subinstance->name_subinstance }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
-                                        <!--end row-->
                                     </form>
                                 </div>
+
                                 <div class="col-md-3">
                                     <form method="get">
                                         @csrf
                                         <div class="input-group mb-4">
-                                            <select name="subinstance" id="subinstance" class="form-control">
-                                                <option value="">-- Filter By SubInstance --</option>
-                                                @foreach ($subinstances as $subinstance)
-                                                <option value="{{ $subinstance->id }}">{{ $subinstance->name_subinstance }}</option>
+                                            <select name="cluster_id" id="cluster_id" class="form-control">
+                                                <option value="">-- Filter By Cluster --</option>
+                                                @foreach ($cluster as $data)
+                                                    <option value="{{ $data->id }}">
+                                                        {{ $data->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <!--end row-->
                                     </form>
                                 </div>
+
+                                <div class="col-md-3">
+                                    <form method="get">
+                                        @csrf
+                                        <div class="input-group mb-4">
+                                            <select name="category_device" id="category_device" class="form-control">
+                                                <option value="">-- Filter By Category Device --</option>
+                                                <option value="Water Meter">Water Meter</option>
+                                                <option value="Power Meter">Power Meter</option>
+                                                <option value="Gas Meter">Gas Meter</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-sm" id="dataTable">
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>SubInstance</th>
                                             <th>Cluster</th>
-                                            <th>Category</th>
-                                            <th>Instance</th>
+                                            <th>Category Device</th>
                                             <th>App EUI</th>
-                                            <th>App Key</th>
                                             <th>Dev EUI</th>
                                             <th>Dev Name</th>
-                                            <th>Dev Type</th>
-                                            <th>Region</th>
-                                            <th>Subnet</th>
-                                            <th>Auth Type</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -80,20 +92,21 @@
             </div>
         </div>
     </div>
-
-    </div>
 @endsection
 @push('js')
     <script>
         $('#instance').select2();
 
         let base_url = "{{ url('/') }}";
-
         let columns = [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
+            },
+            {
+                data: 'name_subinstance',
+                name: 'name_subinstance',
             },
             {
                 data: 'cluster',
@@ -104,16 +117,8 @@
                 name: 'category'
             },
             {
-                data: 'instance',
-                name: 'instance'
-            },
-            {
                 data: 'appEUI',
                 name: 'appEUI'
-            },
-            {
-                data: 'appKey',
-                name: 'appKey'
             },
             {
                 data: 'devEUI',
@@ -122,39 +127,35 @@
             {
                 data: 'devName',
                 name: 'devName'
-            },
-            {
-                data: 'devType',
-                name: 'devType'
-            },
-            {
-                data: 'region',
-                name: 'region'
-            },
-            {
-                data: 'subnet',
-                name: 'subnet'
-            },
-            {
-                data: 'authType',
-                name: 'authType'
             }
         ]
 
-       var table = $('#dataTable').DataTable({
+        columns.push({
+            data: 'action',
+            name: 'action',
+            orderable: false,
+            searchable: false
+        })
+
+        var table = $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
                 url: "{{ route('instances.device.index') }}",
-                data: function (s) {
-                    s.instance = $('select[name=subinstance] option').filter(':selected').val()
+                data: function(s) {
+                    s.subinstance_id = $('select[name=subinstance_id] option').filter(':selected').val()
                     s.category_device = $('select[name=category_device] option').filter(':selected').val()
+                    s.cluster_id = $('select[name=cluster_id] option').filter(':selected').val()
                 }
             },
             columns: columns
         });
 
-        $('#subinstance').change(function() {
+        $('#subinstance_id').change(function() {
+            table.draw();
+        })
+
+        $('#cluster_id').change(function() {
             table.draw();
         })
 

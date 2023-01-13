@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Partner;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Subinstance;
-use App\Models\SettingApp;
-use App\Models\Device;
-use App\Models\Cluster;
 use App\Models\Instance;
+use Yajra\DataTables\Facades\DataTables;
 
 class SubInstanceController extends Controller
 {
@@ -16,17 +14,13 @@ class SubInstanceController extends Controller
     {
 
         $instance = Instance::where('id', auth()->guard('instances')->user()->id)->first();
-        
-        $subinstance = Subinstance::where('instance_id', $instance->id)
-            ->when(request()->filled('keyword'), function($query){
-                $query->where('name_subinstance', 'like', '%' . request('keyword')  . '%');
-            })
-            ->get();
-
-        $cluster = Cluster::where('instance_id', $instance->id)->get();
-        $device = Device::where('appID', $instance->appID)->get();
-        return view('partner.subinstance.index', compact('instance', 'subinstance', 'cluster', 'device'));
+        if (request()->ajax()) {
+            $query = Subinstance::where('instance_id', $instance->id)->get();
+            return DataTables::of($query)
+                ->addIndexColumn()
+                ->addColumn('action', 'partner.subinstance._action')
+                ->toJson();
+        }
+        return view('partner.subinstance.index');
     }
-
-    
 }

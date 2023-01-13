@@ -52,6 +52,7 @@ Route::middleware(['auth:instances'])->name('instances.')->group(function () {
 
     Route::controller(DeviceController::class)->group(function () {
         Route::get('/device', 'index')->name('device.index');
+        Route::get('/device/detail/{id}', 'detail')->name('device.detail');
     });
     Route::controller(ParsedWaterMeterController::class)->group(function () {
         Route::get('/parsed-wm', 'index')->name('parsed-wm.index');
