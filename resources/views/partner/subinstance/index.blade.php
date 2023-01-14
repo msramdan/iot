@@ -26,6 +26,7 @@
                                 <table class="table table-bordered table-sm" id="dataTable">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>#</th>
                                             <th>Code Sub Intance</th>
                                             <th>Sub Intance</th>
@@ -43,7 +44,14 @@
 @endsection
 @push('js')
     <script>
-        let columns = [{
+        let columns = [
+            {
+                className: 'dt-control',
+                orderable: false,
+                data: null,
+                defaultContent: '',
+            },
+            {
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
@@ -66,11 +74,45 @@
             searchable: false
         })
 
-        $('#dataTable').DataTable({
+        var table = $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{{ route('instances.subinstance.index') }}",
             columns: columns
         });
+
+        $('#dataTable tbody').on('click', 'td.dt-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row(tr);
+
+            if (row.child.isShown()) {
+                row.child.hide();
+                tr.removeClass('shown');
+            } else {
+                row.child(subinstance(row.data().cluster)).show();
+                tr.addClass('shown');
+            }
+        });
+
+        const subinstance = data => {
+            var listCluster = '';
+
+            data.forEach( val => {
+                listCluster +=  `<li class="list-group-item">${button(val)} ${val.name}</li>`;
+            } )
+
+            return `<ul class="list-group list-group-flush">
+                        ${ listCluster }
+                    </ul>`
+        }
+
+        const button = (data) => {
+            let button = '';
+
+            return button = `
+                <a href="{{ url("/") }}/device?cluster_id=${data.id}" target="_blank" class="btn btn-sm  btn-warning" title="cluster"><i class="mdi mdi-bank"></i></a>
+                `
+        }
+
     </script>
 @endpush

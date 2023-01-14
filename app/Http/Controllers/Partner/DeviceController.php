@@ -20,6 +20,7 @@ class DeviceController extends Controller
         $instance = Instance::where('id', auth()->guard('instances')->user()->id)->first();
         $cluster = Cluster::where('instance_id', $instance->id)->get();
         $subinstances = Subinstance::where('instance_id', $instance->id)->get();
+
         if (request()->ajax()) {
             $device = DB::table('devices')
                 ->join('clusters', 'devices.cluster_id', '=', 'clusters.id')
@@ -35,6 +36,10 @@ class DeviceController extends Controller
             }
             if ($request->has('cluster_id') && !empty($request->cluster_id)) {
                 $device = $device->where('cluster_id', $request->cluster_id);
+            }
+
+            if ($request->has('query_cluster_id') && !empty($request->query_cluster_id)) {
+                $device = $device->where('cluster_id', $request->query_cluster_id);
             }
 
             $device = $device->orderBy('devices.id', 'desc')->get();
