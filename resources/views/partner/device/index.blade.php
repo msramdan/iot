@@ -137,6 +137,12 @@
             searchable: false
         })
 
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+
+        let query_cluster_id = params.cluster_id; // "some_value"
+
         var table = $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
@@ -146,6 +152,7 @@
                     s.subinstance_id = $('select[name=subinstance_id] option').filter(':selected').val()
                     s.category_device = $('select[name=category_device] option').filter(':selected').val()
                     s.cluster_id = $('select[name=cluster_id] option').filter(':selected').val()
+                    s.query_cluster_id = query_cluster_id
                 }
             },
             columns: columns

@@ -15,7 +15,10 @@ class SubInstanceController extends Controller
 
         $instance = Instance::where('id', auth()->guard('instances')->user()->id)->first();
         if (request()->ajax()) {
-            $query = Subinstance::where('instance_id', $instance->id)->get();
+            $query = Subinstance::with(['cluster' => function($q) {
+                $q->with('device');
+            }])
+                ->where('instance_id', $instance->id)->get();
             return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('action', 'partner.subinstance._action')

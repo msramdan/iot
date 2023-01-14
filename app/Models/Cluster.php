@@ -15,4 +15,9 @@ class Cluster extends Model
     {
         return $this->belongsTo(Subinstance::class);
     }
+
+    public function device()
+    {
+        return $this->hasMany(Device::class);
+    }
 }
