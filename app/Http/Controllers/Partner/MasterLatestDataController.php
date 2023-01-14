@@ -97,11 +97,11 @@ class MasterLatestDataController extends Controller
         $lastData = MasterLatestData::where('device_id', $id)->first();
         $date = $request->query('date');
 
-        $parsed_data = ParsedWaterMater::with('device', function ($q) use ($instance) {
-            $q->with('cluster', function ($s) use ($instance) {
-                $s->where('instance_id', $instance->id);
-            });
-        })->where('device_id', $id);
+        $parsed_data = ParsedWaterMater::with(['device' => function($q) use($instance) {
+            $q->with(['cluster' => function($s) use($instance) {
+                $s->where('clusters.instance_id', $instance->id);
+            }]);
+        }])->where('parsed_water_meter.device_id', $id);
 
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
@@ -117,8 +117,9 @@ class MasterLatestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'desc')
-            ->whereNull('status_valve')->get();
+        $parsed_data = $parsed_data->whereNull('status_valve')
+                ->orderBy('id', 'desc')
+                ->get();
 
         return view('partner.device.latest-master-data.water-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'lastData'));
     }
