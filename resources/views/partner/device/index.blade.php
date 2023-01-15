@@ -47,8 +47,9 @@
                                             <select name="cluster_id" id="cluster_id" class="form-control">
                                                 <option value="">-- Filter By Cluster --</option>
                                                 @foreach ($cluster as $data)
-                                                    <option value="{{ $data->id }}">
-                                                        {{ $data->name }}</option>
+                                                    <option value="{{ $data->id }}" {{ request()->query('cluster_id') == $data->id ? 'selected' : '' }}>
+                                                        {{ $data->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
