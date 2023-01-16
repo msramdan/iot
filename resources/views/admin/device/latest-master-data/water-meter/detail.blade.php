@@ -11,6 +11,48 @@
     .table-wrapper-scroll-y {
         display: block;
         }
+    .highcharts-figure,
+    .highcharts-data-table table {
+        min-width: 360px;
+        max-width: 800px;
+        margin: 1em auto;
+    }
+
+    .highcharts-data-table table {
+        font-family: Verdana, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #ebebeb;
+        margin: 10px auto;
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .highcharts-data-table caption {
+        padding: 1em 0;
+        font-size: 1.2em;
+        color: #555;
+    }
+
+    .highcharts-data-table th {
+        font-weight: 600;
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table td,
+    .highcharts-data-table th,
+    .highcharts-data-table caption {
+        padding: 0.5em;
+    }
+
+    .highcharts-data-table thead tr,
+    .highcharts-data-table tr:nth-child(even) {
+        background: #f8f8f8;
+    }
+
+    .highcharts-data-table tr:hover {
+        background: #f1f7ff;
+    }
 </style>
 
 
@@ -110,7 +152,9 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div  id="chart-container"></div>
+                                <figure class="highcharts-figure">
+                                    <div  id="chart-container"></div>
+                                </figure>
                             </div>
                         </div>
                     </div>
@@ -139,7 +183,9 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div id="chart-container2"></div>
+                                <figure class="highcharts-figure">
+                                    <div id="chart-container2"></div>
+                                </figure>
                             </div>
                         </div>
                     </div>
@@ -169,7 +215,9 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div id="chart-container3"></div>
+                                <figure class="highcharts-figure">
+                                    <div id="chart-container3"></div>
+                                </figure>
                             </div>
                         </div>
                     </div>
@@ -181,165 +229,154 @@
 </div>
 @endsection
 @push('js')
-<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/fusioncharts.js"></script>
-<script type="text/javascript" src="https://cdn.fusioncharts.com/fusioncharts/latest/themes/fusioncharts.theme.fusion.js"></script>
-<script type="text/javascript">
-	FusionCharts.ready(function(){
-            var chartObj = new FusionCharts({
-            type: 'scrollline2d',
-            renderAt: 'chart-container',
-            width: '700',
-            height: '450',
-            dataFormat: 'json',
-            dataSource: {
-                "chart": {
-                    "theme": "fusion",
-                    "caption": "Baterai status",
-                    "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
-                    "xaxisname": "Dates",
-                    "yaxisname": "Baterai",
-                    "showvalues": "1",
-                    "numVisiblePlot": "12",
-                    "scrollheight": "10",
-                    "flatScrollBars": "1",
-                    "scrollShowButtons": "0",
-                    "scrollColor": "#cccccc",
-                    "showHoverEffect": "1"
-                },
-                "categories": [{
-                    "category":
-                    [
-                        @foreach ($parsed_data as $date)
-                            {
-                                "label": "{{ date('d/m/Y H:i', strtotime($date->created_at)) }}"
-                            },
-                        @endforeach
-                    ]
-                }],
-                "dataset": [{
-                    "data": [
-                        @foreach ($parsed_data as $data_parsed)
-                            {
-                            "value": "{{ $data_parsed->batrai_status }} %"
-                            },
-                        @endforeach
-                    ]
-                }]
-            }
-        });
-        chartObj.render();
-    });
-</script>
-<script type="text/javascript">
-	FusionCharts.ready(function(){
-            var chartObj = new FusionCharts({
-            type: 'scrollline2d',
-            renderAt: 'chart-container2',
-            width: '700',
-            height: '450',
-            dataFormat: 'json',
-            dataSource: {
-                "chart": {
-                    "theme": "fusion",
-                    "caption": "Temperature",
-                    "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
-                    "xaxisname": "Dates",
-                    "yaxisname": "TemperaturE",
-                    "showvalues": "1",
-                    "numVisiblePlot": "12",
-                    "scrollheight": "10",
-                    "flatScrollBars": "1",
-                    "scrollShowButtons": "0",
-                    "scrollColor": "#cccccc",
-                    "showHoverEffect": "1"
-                },
-                "categories": [{
-                    "category":
-                    [
-                        @foreach ($parsed_data as $date)
-                            {
-                                "label": "{{ date('d/m/Y H:i', strtotime($date->created_at)) }}"
-                            },
-                        @endforeach
-                    ]
-                }],
-                "dataset": [{
-                    "data": [
-                        @foreach ($parsed_data as $data_parsed)
-                            {
-                            "value": "{{ $data_parsed->temperatur }}"
-                            },
-                        @endforeach
-                    ]
-                }]
-            }
-        });
-        chartObj.render();
-    });
-</script>
-<script type="text/javascript">
-	FusionCharts.ready(function(){
-            var chartObj = new FusionCharts({
-            type: 'scrollline2d',
-            renderAt: 'chart-container3',
-            width: '700',
-            height: '450',
-            dataFormat: 'json',
-            dataSource: {
-                "chart": {
-                    "theme": "fusion",
-                    "caption": "Total Flow",
-                    "subcaption": "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}",
-                    "xaxisname": "Dates",
-                    "yaxisname": "Total Flow",
-                    "showvalues": "1",
-                    "numVisiblePlot": "12",
-                    "scrollheight": "10",
-                    "flatScrollBars": "1",
-                    "scrollShowButtons": "0",
-                    "scrollColor": "#cccccc",
-                    "showHoverEffect": "1"
-                },
-                "categories": [{
-                    "category":
-                    [
-                        @foreach ($parsed_data as $date)
-                            {
-                                "label": "{{ date('d/m/Y H:i', strtotime($date->created_at)) }}"
-                            },
-                        @endforeach
-                    ]
-                }],
-                "dataset": [{
-                    "data": [
-                        @foreach ($parsed_data as $data_parsed)
-                            {
-                            "value": "{{ $data_parsed->total_flow }} L"
-                            },
-                        @endforeach
-                    ]
-                }]
-            }
-        });
-        chartObj.render();
-    });
+
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script>
+    var dates = "{{ json_encode($parsed_dates) }}";
+    dates = JSON.parse(dates).map((date) => { return moment.unix(date).format('DD/MM/YYYY HH:mm') });
 </script>
 <script>
     $(document).ready(function () {
-    // $('.example-scroll').DataTable({
-    //     scrollY: '300px',
-    //     scrollCollapse: true,
-    //     paging: false,
-    // });
+        // $('.example-scroll').DataTable({
+        //     scrollY: '300px',
+        //     scrollCollapse: true,
+        //     paging: false,
+        // });
 
-    $('#filter_date_data').change(function() {
-        var dates = $(this).val();
-        var split_dates = dates.split(" to ");
-        if ( split_dates.length >= 2 ) {
-            $('#form-date').submit();
-        }
+        $('#filter_date_data').change(function() {
+            var dates = $(this).val();
+            var split_dates = dates.split(" to ");
+            if ( split_dates.length >= 2 ) {
+                $('#form-date').submit();
+            }
+        });
     });
-});
+</script>
+<script>
+    var batrai_status = "{{ json_encode($baterai_datas) }}";
+    Highcharts.chart('chart-container', {
+        chart: {
+            type: 'line',
+            scrollablePlotArea: {
+                minWidth: 2000,
+                scrollPositionX: 1
+            }
+        },
+        title: {
+            text: 'Baterai status'
+        },
+        subtitle: {
+            text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
+        },
+        xAxis: {
+            categories: dates
+        },
+        yAxis: {
+            title: {
+                text: 'Baterai status %'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: true
+            }
+        },
+        series: [
+            {
+                name: 'Batrai status',
+                data: JSON.parse(batrai_status)
+            }
+        ]
+    });
+</script>
+<script>
+    var temperature = "{{ json_encode($temperature_datas) }}";
+    Highcharts.chart('chart-container2', {
+        chart: {
+            type: 'line',
+            scrollablePlotArea: {
+                minWidth: 2000,
+                scrollPositionX: 1
+            }
+        },
+        title: {
+            text: 'Temperature'
+        },
+        subtitle: {
+            text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
+        },
+        xAxis: {
+            categories: dates
+        },
+        yAxis: {
+            title: {
+                text: 'Temperature'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: true
+            }
+        },
+        series: [
+            {
+                name: 'Temperature',
+                data: JSON.parse(temperature)
+            }
+        ]
+    });
+</script>
+<script>
+    var total_flow = "{{ json_encode($total_flow_datas) }}";
+    Highcharts.chart('chart-container3', {
+        chart: {
+            type: 'line',
+            scrollablePlotArea: {
+                minWidth: 2000,
+                scrollPositionX: 1
+            }
+        },
+        title: {
+            text: 'Total Flow'
+        },
+        subtitle: {
+            text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
+        },
+        xAxis: {
+            categories: dates
+        },
+        yAxis: {
+            title: {
+                text: 'Total Flow'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: true
+            }
+        },
+        series: [
+            {
+                name: 'Total Flow',
+                data: JSON.parse(total_flow)
+            }
+        ]
+    });
 </script>
 <script>
         $('#cek_status').click(function(e) {
