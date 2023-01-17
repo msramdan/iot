@@ -644,9 +644,9 @@ class MasterLastestDataController extends Controller
             array_push($arrPayload, $stringInt);
         }
 
-        // $setting_app = SettingApp::all()->first();
-        // $url = $setting_app->endpoint_purchase_code;
-        $url = 'http://103.176.79.206:8060/data';
+        $setting_app = SettingApp::all()->first();
+        $url = $setting_app->endpoint_purchase_code;
+        // $url = 'http://103.176.79.206:8060/data';
         $response = Http::post($url, [
             'BarisCode' => $arrPayload
         ]);

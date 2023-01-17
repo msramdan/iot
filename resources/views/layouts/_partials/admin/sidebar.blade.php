@@ -17,30 +17,39 @@
                 </a>
             </li>
             @canany(['master_water_meter_show', 'master_power_meter_show', 'master_gas_meter_show'])
-            <li class="nav-item">
-                <a class="nav-link menu-link collapsed" href="#latestData" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
-                    <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Latest Data Device</span>
-                </a>
-                <div class="collapse menu-dropdown {{ set_show(['master_water_meter*', 'master_power_meter*', 'master_gas_meter*']) }}" id="latestData">
-                    <ul class="nav nav-sm flex-column">
-                        @can('master_water_meter_show')
-                        <li class="nav-item">
-                            <a href="{{ route('master_water_meter.index') }}" class="nav-link {{ set_active(['master_water_meter*']) }}" data-key="t-remix">Latest Data Water Meter</a>
-                        </li>
-                        @endcan
-                        @can('master_power_meter_show')
-                        <li class="nav-item">
-                            <a href="{{ route('master_power_meter.index') }}" class="nav-link {{ set_active(['master_power_meter*']) }}" data-key="t-remix">Latest Data Power Meter</a>
-                        </li>
-                        @endcan
-                        @can('master_gas_meter_show')
-                        <li class="nav-item">
-                            <a href="{{ route('master_gas_meter.index') }}" class="nav-link {{ set_active(['master_gas_meter*']) }}" data-key="t-remix">Latest Data Gas Meter</a>
-                        </li>
-                        @endcan
-                    </ul>
-                </div>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#latestData" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarIcons">
+                        <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Latest Data
+                            Device</span>
+                    </a>
+                    <div class="collapse menu-dropdown {{ set_show(['master_water_meter*', 'master_power_meter*', 'master_gas_meter*']) }}"
+                        id="latestData">
+                        <ul class="nav nav-sm flex-column">
+                            @can('master_water_meter_show')
+                                <li class="nav-item">
+                                    <a href="{{ route('master_water_meter.index') }}"
+                                        class="nav-link {{ set_active(['master_water_meter*']) }}" data-key="t-remix">Latest
+                                        Data Water Meter</a>
+                                </li>
+                            @endcan
+                            @can('master_power_meter_show')
+                                <li class="nav-item">
+                                    <a href="{{ route('master_power_meter.index') }}"
+                                        class="nav-link {{ set_active(['master_power_meter*']) }}" data-key="t-remix">Latest
+                                        Data Power Meter</a>
+                                </li>
+                            @endcan
+                            @can('master_gas_meter_show')
+                                <li class="nav-item">
+                                    <a href="{{ route('master_gas_meter.index') }}"
+                                        class="nav-link {{ set_active(['master_gas_meter*']) }}" data-key="t-remix">Latest Data
+                                        Gas Meter</a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </li>
             @endcanany
             <li class="nav-item">
                 <a class="nav-link menu-link {{ set_active('device.*') }}" href="{{ route('device.index') }}"
@@ -63,29 +72,32 @@
             <li class="nav-item">
                 <a class="nav-link menu-link {{ set_active('invoice.*') }}" href="{{ route('invoice.index') }}"
                     role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                    <i class="mdi mdi-book-information-variant"></i> <span data-key="t-dashboards">Invoices</span>
+                    <i class="mdi mdi-book-information-variant"></i> <span data-key="t-dashboards">Billing Data</span>
                 </a>
             </li>
             @canany(['bussiness_show', 'subnet_show'])
-            <li class="nav-item">
-                <a class="nav-link menu-link collapsed" href="#sidebarIcons" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarIcons">
-                    <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Master Data</span>
-                </a>
-                <div class="collapse menu-dropdown {{ set_show(['bussiness*','subnet.*']) }}" id="sidebarIcons">
-                    <ul class="nav nav-sm flex-column">
-                        @can('bussiness_show')
-                        <li class="nav-item">
-                            <a href="{{ route('bussiness.index') }}" class="nav-link {{ set_active(['bussiness*']) }}" data-key="t-remix">Business Type</a>
-                        </li>
-                        @endcan
-                        @can('subnet_show')
-                        <li class="nav-item">
-                            <a href="{{ route('subnet.index') }}" class="nav-link {{ set_active(['subnet*']) }}" data-key="t-remix">Subnet</a>
-                        </li>
-                        @endcan
-                    </ul>
-                </div>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link menu-link collapsed" href="#sidebarIcons" data-bs-toggle="collapse" role="button"
+                        aria-expanded="false" aria-controls="sidebarIcons">
+                        <i class="mdi mdi-format-list-bulleted-square"></i> <span data-key="t-icons">Master Data</span>
+                    </a>
+                    <div class="collapse menu-dropdown {{ set_show(['bussiness*', 'subnet.*']) }}" id="sidebarIcons">
+                        <ul class="nav nav-sm flex-column">
+                            @can('bussiness_show')
+                                <li class="nav-item">
+                                    <a href="{{ route('bussiness.index') }}" class="nav-link {{ set_active(['bussiness*']) }}"
+                                        data-key="t-remix">Business Type</a>
+                                </li>
+                            @endcan
+                            @can('subnet_show')
+                                <li class="nav-item">
+                                    <a href="{{ route('subnet.index') }}" class="nav-link {{ set_active(['subnet*']) }}"
+                                        data-key="t-remix">Subnet</a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </li>
             @endcanany
             @canany(['province_show', 'city_show', 'district_show', 'village_show'])
                 <li class="nav-item">
@@ -134,38 +146,46 @@
                         id="sidebarAdvanceUI" style="">
                         <ul class="nav nav-sm flex-column">
                             @can('activity_log_show')
-                            <li class="nav-item">
-                                <a href="{{ route('activity_log.index') }}"
-                                    class="nav-link {{ set_active(['activity_log*']) }}" data-key="t-chat"> Activity
-                                    Log</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('activity_log.index') }}"
+                                        class="nav-link {{ set_active(['activity_log*']) }}" data-key="t-chat"> Activity
+                                        Log</a>
+                                </li>
                             @endcan
                             @can('raw_data_show')
-                            <li class="nav-item">
-                                <a href="{{ route('rawdata.index') }}"
-                                    class="nav-link {{ set_active(['rawdata*']) }}" data-key="t-chat"> Rawdata
-                                </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('rawdata.index') }}" class="nav-link {{ set_active(['rawdata*']) }}"
+                                        data-key="t-chat"> Rawdata
+                                    </a>
+                                </li>
                             @endcan
                             <li class="nav-item">
-                                <a href="#sidebarAccount" class="nav-link collapsed" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAccount" data-key="t-level-1.2"> Parsed Rawdata
+                                <a href="#sidebarAccount" class="nav-link collapsed" data-bs-toggle="collapse"
+                                    role="button" aria-expanded="false" aria-controls="sidebarAccount"
+                                    data-key="t-level-1.2"> Parsed Rawdata
                                 </a>
                                 <div class="menu-dropdown collapse" id="sidebarAccount" style="">
                                     <ul class="nav nav-sm flex-column">
                                         @can('parsed_wm_show')
-                                        <li class="nav-item">
-                                            <a href="{{ route('parsed-wm.index') }}" class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-level-2.1"> Water Meter</a>
-                                        </li>
+                                            <li class="nav-item">
+                                                <a href="{{ route('parsed-wm.index') }}"
+                                                    class="nav-link {{ set_active(['parseddata*']) }}"
+                                                    data-key="t-level-2.1"> Water Meter</a>
+                                            </li>
                                         @endcan
                                         @can('parsed_pm_show')
-                                        <li class="nav-item">
-                                            <a href="{{ route('parsed-pm.index') }}" class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-level-2.1"> Power Meter </a>
-                                        </li>
+                                            <li class="nav-item">
+                                                <a href="{{ route('parsed-pm.index') }}"
+                                                    class="nav-link {{ set_active(['parseddata*']) }}"
+                                                    data-key="t-level-2.1"> Power Meter </a>
+                                            </li>
                                         @endcan
                                         @can('parsed_gm_show')
-                                        <li class="nav-item">
-                                            <a href="{{ route('parsed-gm.index') }}" class="nav-link {{ set_active(['parseddata*']) }}" data-key="t-level-2.1"> Gas Meter </a>
-                                        </li>
+                                            <li class="nav-item">
+                                                <a href="{{ route('parsed-gm.index') }}"
+                                                    class="nav-link {{ set_active(['parseddata*']) }}"
+                                                    data-key="t-level-2.1"> Gas Meter </a>
+                                            </li>
                                         @endcan
 
                                     </ul>
