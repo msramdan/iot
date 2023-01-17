@@ -116,7 +116,35 @@ class MasterLastestDataController extends Controller
             ->orderBy('parsed_water_meter.id', 'desc')
             ->whereNull('status_valve')->get();
 
-        return view('admin.device.latest-master-data.water-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI', 'lastData'));
+        $parsed_dates = [];
+        $baterai_datas = [];
+        $temperature_datas = [];
+        $total_flow_datas = [];
+
+        foreach ($parsed_data as $data) {
+            $dates = strtotime($data->created_at);
+            $baterai = $data->batrai_status;
+            $temperature = $data->temperatur;
+            $total_flow = $data->total_flow;
+
+            array_push($parsed_dates, $dates);
+            array_push($baterai_datas, $baterai);
+            array_push($temperature_datas, $temperature);
+            array_push($total_flow_datas, $total_flow);
+        }
+
+        return view('admin.device.latest-master-data.water-meter.detail', compact(
+            'parsed_data',
+            'device_id',
+            'start_dates',
+            'end_dates',
+            'devEUI',
+            'lastData',
+            'parsed_dates',
+            'baterai_datas',
+            'temperature_datas',
+            'total_flow_datas'
+        ));
     }
 
     public function powerMeterMaster(Request $request)
@@ -228,7 +256,41 @@ class MasterLastestDataController extends Controller
         $parsed_data = $parsed_data->orderBy('id', 'desc')
             ->whereNull('status_switch')->get();
 
-        return view('admin.device.latest-master-data.power-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI', 'lastData'));
+        $parsed_dates = [];
+        $tegangan_datas = [];
+        $arus_datas = [];
+        $frekuensi_datas = [];
+        $active_power_datas = [];
+        $power_factor_datas = [];
+        $total_energy_datas = [];
+
+        foreach ($parsed_data as $data) {
+            $dates = strtotime($data->created_at);
+
+            array_push($parsed_dates, $dates);
+            array_push($tegangan_datas, floatval($data->tegangan));
+            array_push($arus_datas, floatval($data->arus));
+            array_push($frekuensi_datas, floatval($data->frekuensi_pln));
+            array_push($active_power_datas, floatval($data->active_power));
+            array_push($power_factor_datas, floatval($data->power_factor));
+            array_push($total_energy_datas, floatval($data->total_energy));
+        }
+
+        return view('admin.device.latest-master-data.power-meter.detail', compact(
+            'parsed_data',
+            'device_id',
+            'start_dates',
+            'end_dates',
+            'devEUI',
+            'lastData',
+            'parsed_dates',
+            'tegangan_datas',
+            'arus_datas',
+            'frekuensi_datas',
+            'active_power_datas',
+            'power_factor_datas',
+            'total_energy_datas'
+        ));
     }
 
     public function gasMeterMaster(Request $request)
@@ -343,7 +405,36 @@ class MasterLastestDataController extends Controller
 
         $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
 
-        return view('admin.device.latest-master-data.gas-meter.detail', compact('parsed_data', 'device_id', 'start_dates', 'end_dates', 'devEUI', 'lastData'));
+        $parsed_dates = [];
+        $gas_consumtion_datas = [];
+        $gas_total_purchase_datas = [];
+        $purchase_remain_datas = [];
+        $balance_of_bateray_datas = [];
+
+        foreach ($parsed_data as $data) {
+            $dates = strtotime($data->created_at);
+
+            array_push($parsed_dates, $dates);
+            array_push($gas_consumtion_datas, floatval($data->gas_consumption));
+            array_push($gas_total_purchase_datas, floatval($data->gas_total_purchase));
+            array_push($purchase_remain_datas, floatval($data->purchase_remain));
+            array_push($balance_of_bateray_datas, floatval($data->balance_of_battery));
+        }
+
+
+        return view('admin.device.latest-master-data.gas-meter.detail', compact(
+            'parsed_data',
+            'device_id',
+            'start_dates',
+            'end_dates',
+            'devEUI',
+            'lastData',
+            'parsed_dates',
+            'gas_consumtion_datas',
+            'gas_total_purchase_datas',
+            'purchase_remain_datas',
+            'balance_of_bateray_datas'
+        ));
     }
 
     // commandlink water meter
