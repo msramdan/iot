@@ -928,3 +928,20 @@ function cekAbjHex($decimal)
         return 'f';
     }
 }
+
+function cekAngka($huruf)
+{
+    if ($huruf == 'a') {
+        return 10;
+    } else if ($huruf == 'b') {
+        return 11;
+    } else if ($huruf == 'c') {
+        return 12;
+    } else if ($huruf == 'd') {
+        return 13;
+    } else if ($huruf == 'e') {
+        return 14;
+    } else if ($huruf == 'f') {
+        return 15;
+    }
+}

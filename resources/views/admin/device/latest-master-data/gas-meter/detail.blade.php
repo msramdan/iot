@@ -20,11 +20,6 @@
         style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
-                {{-- <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Topup Gas Meter</h5>
-                    <hr>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-                </div> --}}
                 <form action="{{ route('topup') }}" method="POST">
                     @csrf
                     <div class="modal-body">
@@ -32,13 +27,11 @@
                             <div class="col-xxl-12">
                                 <div>
                                     <label for="firstName" class="form-label">Total Gas (m3)</label>
-                                    <input type="number" autocomplete="off" step="any"  name="total" class="form-control" id="firstName" placeholder="" required>
+                                    <input type="number" autocomplete="off" step="any" name="total"
+                                        class="form-control" id="firstName" placeholder="" required>
                                 </div>
                                 <br>
                                 <div>
-                                    <label for="firstName" class="form-label">Purchase Code</label>
-                                    <input type="text" autocomplete="off" name="purchase_code" class="form-control" id="purchase_code" placeholder=""
-                                        required>
                                     <input type="hidden" name="devEUI" value="{{ $devEUI }}" class="form-control"
                                         id="firstName" placeholder="" required>
                                 </div>
@@ -121,7 +114,8 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <form method="get"
-                                        action="{{ url('/panel/master-water-meter/detail/' . $device_id) }}" id="form-date">
+                                        action="{{ url('/panel/master-water-meter/detail/' . $device_id) }}"
+                                        id="form-date">
                                         <div class="input-group mb-4">
                                             <input type="text" class="form-control border-0 dash-filter-picker shadow"
                                                 data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y"

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('email');
             $table->text('address');
             $table->text('token_callback')->nullable();
+            $table->text('endpoint_purchase_code');
             $table->timestamps();
         });
     }

@@ -33,7 +33,8 @@ class SettingAppController extends Controller
                 'phone' => 'required|string',
                 'email' => 'required|string',
                 'address' => 'required|string',
-                'token_callback' => 'required|string'
+                'token_callback' => 'required|string',
+                'endpoint_purchase_code' => 'required|string'
             ]
         );
 
@@ -68,7 +69,8 @@ class SettingAppController extends Controller
                 'phone' => $request->phone,
                 'email' => $request->email,
                 'address' => $request->address,
-                'token_callback' => $request->token_callback
+                'token_callback' => $request->token_callback,
+                'endpoint_purchase_code' => $request->endpoint_purchase_code
             ]);
             if ($setting_app) {
                 Alert::toast('Data updated successfully', 'success');

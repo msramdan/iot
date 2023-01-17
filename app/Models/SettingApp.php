@@ -10,17 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class SettingApp extends Model
 {
-    use HasFactory,LogsActivity;
+    use HasFactory, LogsActivity;
     protected $table = 'setting_app';
-    protected $fillable = ['app_name','logo','favicon','phone','email','address', 'tos'];
+    protected $fillable = ['app_name', 'logo', 'favicon', 'phone', 'email', 'address', 'tos', 'endpoint_purchase_code', 'token_callback'];
     protected static $logFillable = true;
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-         -> useLogName('log_setting_app')
-         -> logOnly(['app_name','logo','favicon','phone','email','address'])
-         -> logOnlyDirty()
-         -> dontSubmitEmptyLogs();
+            ->useLogName('log_setting_app')
+            ->logOnly(['app_name', 'logo', 'favicon', 'phone', 'email', 'address'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
     }
 
     public function getDescriptionForEvent(string $eventName): string

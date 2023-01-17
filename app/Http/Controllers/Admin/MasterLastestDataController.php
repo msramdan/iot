@@ -17,6 +17,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\SettingApp;
+
 class MasterLastestDataController extends Controller
 {
     public function waterMeterMaster(Request $request)
@@ -525,7 +527,42 @@ class MasterLastestDataController extends Controller
         foreach ($reversedm3 as $value) {
             $newTotalm3 .= $value;
         }
-        $payload = "68" . $newDevEui . "68040D432E" . $fixDate . '' . $newTotalm3 . '' . $request->purchase_code;
+        $getPurchaseCode = $fixDate . '' . $newTotalm3;
+        // $getPurchaseCode = '76474c435533343333';
+        $arrPayload = array();
+        $splitPur = str_split($getPurchaseCode, 2);
+        foreach ($splitPur as $rows) {
+            $splitPartial =   str_split($rows, 1);
+            $string = '';
+            foreach ($splitPartial as $datas) {
+                if ($datas < 10) {
+                    $jml = $datas;
+                } else {
+                    $jml =  cekAngka($datas);
+                }
+
+                $cek = $jml - 3;
+                if ($cek < 10) {
+                    $string .= $cek;
+                } else {
+                    $b = cekAbjHex($cek);
+                    $string .= $b;
+                }
+            }
+            $stringInt = (int) $string;
+            array_push($arrPayload, $stringInt);
+        }
+
+        // $setting_app = SettingApp::all()->first();
+        // $url = $setting_app->endpoint_purchase_code;
+        $url = 'http://103.176.79.206:8060/data';
+        $response = Http::post($url, [
+            'BarisCode' => $arrPayload
+        ]);
+        $responsePC = json_decode($response->getBody());
+        $arr = $responsePC->arr;
+        $lastString = substr($arr, -4);
+        $payload = "68" . $newDevEui . "68040D432E" . $fixDate . '' . $newTotalm3 . '' . $lastString;
         $split = str_split($payload, 2);
         $jml = 0;
         foreach ($split as $row) {
