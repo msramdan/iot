@@ -442,16 +442,24 @@ function handleWaterMeter($device_id, $request)
         if (isset($params['total_flow'])) {
             $usage = floatval($params['total_flow']) - floatval($yesterdayData->total_flow);
 
-            DailyUsageWaterMeter::updateOrcreate(
-                [
-                    'device_id' => $device_id,
-                    'date' => $today
-                ],
+            $dailyUsage = DailyUsageWaterMeter::where('date', $today)->where('device_id', $device_id)->first();
+
+            if (!$dailyUsage) {
+                DailyUsageWaterMeter::create(
                 [
                     'device_id' => $device_id,
                     'date' => $today,
                     'usage' => $usage,
                 ]);
+            } else {
+                $dailyUsage->update([
+                    'device_id' => $device_id,
+                    'date' => $today,
+                    'usage' => $usage,
+                ]);
+            }
+
+
         }
 
 
