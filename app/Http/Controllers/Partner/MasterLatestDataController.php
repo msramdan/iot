@@ -11,6 +11,7 @@ use App\Models\Device;
 use App\Models\ParsedWaterMater;
 use App\Models\ParsedPowerMater;
 use App\Models\ParsedGasMater;
+use App\Models\DailyUsageWaterMeter;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
@@ -121,10 +122,14 @@ class MasterLatestDataController extends Controller
                 ->orderBy('id', 'desc')
                 ->get();
 
+        $dailyUsages = DailyUsageWaterMeter::whereBetween('created_at', [$start_dates, $end_dates])->get();
+
         $parsed_dates = [];
         $baterai_datas = [];
         $temperature_datas = [];
         $total_flow_datas = [];
+        $daily_usage_dates = [];
+        $daily_usage_datas = [];
 
         foreach ($parsed_data as $data) {
             $dates = strtotime($data->created_at);
@@ -138,6 +143,11 @@ class MasterLatestDataController extends Controller
             array_push($total_flow_datas, $total_flow);
         }
 
+        foreach ($dailyUsages as $daily) {
+            array_push($daily_usage_dates, strtotime($daily->dates." 00:00:00"));
+            array_push($daily_usage_datas, $daily->usage);
+        }
+
         return view('partner.device.latest-master-data.water-meter.detail', compact(
             'parsed_data',
             'device_id',
@@ -147,7 +157,10 @@ class MasterLatestDataController extends Controller
             'parsed_dates',
             'baterai_datas',
             'temperature_datas',
-            'total_flow_datas'
+            'total_flow_datas',
+            'dailyUsages',
+            'daily_usage_dates',
+            'daily_usage_datas'
         ));
     }
 

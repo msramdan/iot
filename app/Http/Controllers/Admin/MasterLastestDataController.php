@@ -11,6 +11,7 @@ use App\Models\MasterLatestDataGasMeter;
 use App\Models\ParsedWaterMater;
 use App\Models\ParsedPowerMater;
 use App\Models\ParsedGasMater;
+use App\Models\DailyUsageWaterMeter;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
@@ -93,12 +94,18 @@ class MasterLastestDataController extends Controller
     {
         $date = $request->query('date');
         $parsed_data = ParsedWaterMater::where('device_id', $id);
+
         $device = Device::where('id', $id)->first();
         $devEUI = $device->devEUI;
+
         $lastData = MasterLatestData::where('device_id', $id)->first();
+
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
 
+        /**
+         * Date for filter
+         */
         if (!empty($date)) {
             $dates = explode(' to ', $request->date);
             $start = str_replace(',', '', $dates[0]) . " 00:00:00";
@@ -116,10 +123,14 @@ class MasterLastestDataController extends Controller
             ->orderBy('parsed_water_meter.id', 'desc')
             ->whereNull('status_valve')->get();
 
+        $dailyUsages = DailyUsageWaterMeter::whereBetween('created_at', [$start_dates, $end_dates])->get();
+
         $parsed_dates = [];
+        $daily_usage_dates = [];
         $baterai_datas = [];
         $temperature_datas = [];
         $total_flow_datas = [];
+        $daily_usage_datas = [];
 
         foreach ($parsed_data as $data) {
             $dates = strtotime($data->created_at);
@@ -133,6 +144,12 @@ class MasterLastestDataController extends Controller
             array_push($total_flow_datas, $total_flow);
         }
 
+        foreach ($dailyUsages as $daily) {
+            array_push($daily_usage_dates, strtotime($daily->dates." 00:00:00"));
+            array_push($daily_usage_datas, $daily->usage);
+        }
+
+
         return view('admin.device.latest-master-data.water-meter.detail', compact(
             'parsed_data',
             'device_id',
@@ -143,7 +160,10 @@ class MasterLastestDataController extends Controller
             'parsed_dates',
             'baterai_datas',
             'temperature_datas',
-            'total_flow_datas'
+            'total_flow_datas',
+            'dailyUsages',
+            'daily_usage_dates',
+            'daily_usage_datas'
         ));
     }
 

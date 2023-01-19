@@ -149,6 +149,35 @@
                                         <table id="" class="table table-sm table-bordered ">
                                             <thead>
                                                 <tr>
+                                                    <th>Usage</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($dailyUsages as $data)
+                                                    <tr>
+                                                        <td style="width: 50%">{{ $data->usage }} L</td>
+                                                        <td>{{ date('d/m/Y', strtotime($data->date)) }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <figure class="highcharts-figure">
+                                    <div id="chart-container0"></div>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                        <table id="" class="table table-sm table-bordered ">
+                                            <thead>
+                                                <tr>
                                                     <th>Batrai Status</th>
                                                     <th>Date</th>
                                                 </tr>
@@ -165,13 +194,10 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="chart-container"></div>
+                                    <figure class="highcharts-figure">
+                                        <div id="chart-container"></div>
+                                    </figure>
                                 </div>
-                            </div>
-                            <div class="col-md-8">
-                                <figure class="highcharts-figure">
-                                    <div id="chart-container"></div>
-                                </figure>
                             </div>
                         </div>
                     </div>
@@ -199,17 +225,13 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <div id="chart-container2"></div>
+                                    <figure class="highcharts-figure">
+                                        <div id="chart-container2"></div>
+                                    </figure>
                                 </div>
-                            </div>
-                            <div class="col-md-8">
-                                <figure class="highcharts-figure">
-                                    <div id="chart-container2"></div>
-                                </figure>
                             </div>
                         </div>
                     </div>
-
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
@@ -234,13 +256,10 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
+                                    <figure class="highcharts-figure">
                                     <div id="chart-container3"></div>
+                                    </figure>
                                 </div>
-                            </div>
-                            <div class="col-md-8">
-                                <figure class="highcharts-figure">
-                                    <div id="chart-container3"></div>
-                                </figure>
                             </div>
                         </div>
                     </div>
@@ -278,6 +297,48 @@
                     $('#form-date').submit();
                 }
             });
+        });
+    </script>
+     <script>
+        var daily_usage = "{{ json_encode($daily_usage_datas) }}";
+        var daily_dates = "{{ json_encode($daily_usage_dates) }}";
+        daily_dates = JSON.parse(daily_dates).map((daily_date) => {
+            return moment.unix(daily_date).format('DD/MM/YYYY')
+        });
+        Highcharts.chart('chart-container0', {
+            chart: {
+                type: 'line',
+                scrollablePlotArea: {
+                    minWidth: 2000,
+                    scrollPositionX: 1
+                }
+            },
+            title: {
+                text: 'Daily Usage'
+            },
+            subtitle: {
+                text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
+            },
+            xAxis: {
+                categories: daily_dates
+            },
+            yAxis: {
+                title: {
+                    text: 'Daily Usage'
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: true
+                }
+            },
+            series: [{
+                name: 'Daily usage',
+                data: JSON.parse(daily_usage)
+            }]
         });
     </script>
     <script>

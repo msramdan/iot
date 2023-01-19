@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use App\Models\Rawdata;
 use App\Models\Ticket;
+use App\Models\DailyUsageWaterMeter;
+use App\Models\ParsedWaterMater;
 
 if (!function_exists('set_active')) {
     function set_active($uri)
@@ -318,6 +321,7 @@ function handleWaterMeter($device_id, $request)
     $data = $request->data['data'];
     $hex = base64toHex($data);
     $frameId = substr($hex, 0, 2);
+
     if ($frameId == "00" || $frameId == "10" || $frameId == "71" || $frameId == "95" || $frameId == "21") {
         $save = Rawdata::create([
             'devEUI' => $request->devEUI,
@@ -419,10 +423,38 @@ function handleWaterMeter($device_id, $request)
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
         }
+
+        $yesterdayStart = Carbon::now()->subDay(2)->hour(00)->minute(00)->second(00);
+        $yesterdayEnd   = Carbon::now()->subDay(2)->hour(23)->minute(59)->second(59);
+
+        $today = Carbon::today()->format('Y-m-d');
+
+        $yesterdayData = ParsedWaterMater::where('device_id', $device_id)
+                        ->whereBetween("created_at", [$yesterdayStart, $yesterdayEnd])
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+
         DB::table('parsed_water_meter')->insert($params);
         DB::table('master_latest_datas')
             ->where('device_id', $device_id)
             ->update($params);
+
+        if (isset($params['total_flow'])) {
+            $usage = floatval($params['total_flow']) - floatval($yesterdayData->total_flow);
+
+            DailyUsageWaterMeter::updateOrcreate(
+                [
+                    'device_id' => $device_id,
+                    'date' => $today
+                ],
+                [
+                    'device_id' => $device_id,
+                    'date' => $today,
+                    'usage' => $usage,
+                ]);
+        }
+
+
         return "success";
     } else if ($frameId == "0f") {
         $save = Rawdata::create([
