@@ -299,7 +299,7 @@
             });
         });
     </script>
-    {{-- <script>
+    <script>
         Highcharts.chart('chart-container0', {
             chart: {
                 type: 'column'
@@ -356,8 +356,8 @@
                 ]
             }],
         });
-    </script> --}}
-    <script>
+    </script>
+    {{-- <script>
         var daily_usage = "{{ json_encode($daily_usage_datas) }}";
         var daily_dates = "{{ json_encode($daily_usage_dates) }}";
         daily_dates = JSON.parse(daily_dates).map((daily_date) => {
@@ -394,7 +394,7 @@
                 data: JSON.parse(daily_usage)
             }]
         });
-    </script>
+    </script> --}}
     <script>
         var batrai_status = "{{ json_encode($baterai_datas) }}";
         Highcharts.chart('chart-container', {
