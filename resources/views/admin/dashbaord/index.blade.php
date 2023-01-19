@@ -369,8 +369,6 @@
                     "{{ $instance->id }}", "{{ $instance->instance_name }}");
             @endforeach
 
-            const getLocationMapMarker = L.marker([0, 0]).addTo(getLocationMap);
-
             function getToLoc(lat, lng, getLocationMap, id, instance_name) {
                 const zoom = 17;
                 var url_edit = "{{ url('/panel/instance/') }}/" + id + "/edit";
