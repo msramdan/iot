@@ -145,7 +145,7 @@ class MasterLastestDataController extends Controller
         }
 
         foreach ($dailyUsages as $daily) {
-            array_push($daily_usage_dates, strtotime($daily->dates." 00:00:00"));
+            array_push($daily_usage_dates, strtotime($daily->dates . " 00:00:00"));
             array_push($daily_usage_datas, $daily->usage);
         }
 
@@ -639,6 +639,7 @@ class MasterLastestDataController extends Controller
             $newTotalm3 .= $value;
         }
         $getPurchaseCode = $fixDate . '' . $newTotalm3;
+
         // $getPurchaseCode = '76474c435533343333';
         $arrPayload = array();
         $splitPur = str_split($getPurchaseCode, 2);
@@ -661,12 +662,14 @@ class MasterLastestDataController extends Controller
                 }
             }
             $stringInt = (int) $string;
-            array_push($arrPayload, $stringInt);
+            // hecal to decimal
+            $fix = hexdec($string);
+            array_push($arrPayload, $fix);
         }
+
 
         $setting_app = SettingApp::all()->first();
         $url = $setting_app->endpoint_purchase_code;
-        // $url = 'http://103.176.79.206:8060/data';
         $response = Http::post($url, [
             'BarisCode' => $arrPayload
         ]);
