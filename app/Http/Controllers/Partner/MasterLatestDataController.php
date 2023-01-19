@@ -98,8 +98,8 @@ class MasterLatestDataController extends Controller
         $lastData = MasterLatestData::where('device_id', $id)->first();
         $date = $request->query('date');
 
-        $parsed_data = ParsedWaterMater::with(['device' => function($q) use($instance) {
-            $q->with(['cluster' => function($s) use($instance) {
+        $parsed_data = ParsedWaterMater::with(['device' => function ($q) use ($instance) {
+            $q->with(['cluster' => function ($s) use ($instance) {
                 $s->where('clusters.instance_id', $instance->id);
             }]);
         }])->where('parsed_water_meter.device_id', $id);
@@ -119,8 +119,8 @@ class MasterLatestDataController extends Controller
         $device_id = $id;
 
         $parsed_data = $parsed_data->whereNull('status_valve')
-                ->orderBy('id', 'desc')
-                ->get();
+            ->orderBy('id', 'desc')
+            ->get();
 
         $dailyUsages = DailyUsageWaterMeter::whereBetween('created_at', [$start_dates, $end_dates])->get();
 
@@ -144,7 +144,7 @@ class MasterLatestDataController extends Controller
         }
 
         foreach ($dailyUsages as $daily) {
-            array_push($daily_usage_dates, strtotime($daily->dates." 00:00:00"));
+            array_push($daily_usage_dates, strtotime($daily->dates . " 00:00:00"));
             array_push($daily_usage_datas, $daily->usage);
         }
 
@@ -383,13 +383,16 @@ class MasterLatestDataController extends Controller
                     return '-';
                 })
                 ->addColumn('meter_status_word', function ($row) {
-                    $array =  json_decode($row->meter_status_word);
-                    $hasil = '<ul>';
-                    foreach ($array as $value) {
-                        $hasil .= '<li>' . $value . '</li>';
-                    };
-                    $hasil .= '</ul>';
-                    return $hasil;
+                    if ($row->meter_status_word != null) {
+                        $array =  json_decode($row->meter_status_word);
+                        $hasil = '<ul>';
+                        foreach ($array as $value) {
+                            $hasil .= '<li>' . $value . '</li>';
+                        };
+                        $hasil .= '</ul>';
+                        return $hasil;
+                    }
+                    return '-';
                 })
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('master-gas-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';

@@ -257,7 +257,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <figure class="highcharts-figure">
-                                    <div id="chart-container3"></div>
+                                        <div id="chart-container3"></div>
                                     </figure>
                                 </div>
                             </div>
@@ -299,65 +299,65 @@
             });
         });
     </script>
-    <script>
-		Highcharts.chart('chart-container0', {
-			chart: {
-				type: 'column'
-			},
-			title: {
-				align: 'center',
-				text: 'Daily Usage'
-			},
+    {{-- <script>
+        Highcharts.chart('chart-container0', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                align: 'center',
+                text: 'Daily Usage'
+            },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
             },
-			accessibility: {
-				announceNewData: {
-					enabled: true
-				}
-			},
-			xAxis: {
-				type: 'Date'
-			},
-			yAxis: {
-				title: {
-					text: 'Usage'
-				}
+            accessibility: {
+                announceNewData: {
+                    enabled: true
+                }
+            },
+            xAxis: {
+                type: 'Date'
+            },
+            yAxis: {
+                title: {
+                    text: 'Usage'
+                }
 
-			},
-			legend: {
-				enabled: true
-			},
-			plotOptions: {
-				series: {
-					borderWidth: 0,
-					dataLabels: {
-						enabled: true,
-						format: '{point.y:.0f}'
-					}
-				}
-			},
+            },
+            legend: {
+                enabled: true
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.0f}'
+                    }
+                }
+            },
 
-			tooltip: {
-				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b><br/>'
-			},
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b><br/>'
+            },
 
-			series: [{
-				name: "Usage",
-				colorByPoint: true,
-				data: [
-					@foreach($dailyUsages as $usage)
-						{
-							name: '{{ $usage->date }}',
-							y: {{ $usage->usage }},
-						},
+            series: [{
+                name: "Usage",
+                colorByPoint: true,
+                data: [
+                    @foreach ($dailyUsages as $usage)
+                        {
+                            name: '{{ $usage->date }}',
+                            y: {{ $usage->usage }},
+                        },
                     @endforeach
-				]
-			}],
-		});
-	</script>
-     {{-- <script>
+                ]
+            }],
+        });
+    </script> --}}
+    <script>
         var daily_usage = "{{ json_encode($daily_usage_datas) }}";
         var daily_dates = "{{ json_encode($daily_usage_dates) }}";
         daily_dates = JSON.parse(daily_dates).map((daily_date) => {
@@ -365,11 +365,7 @@
         });
         Highcharts.chart('chart-container0', {
             chart: {
-                type: 'line',
-                scrollablePlotArea: {
-                    minWidth: 2000,
-                    scrollPositionX: 1
-                }
+                type: 'column',
             },
             title: {
                 text: 'Daily Usage'
@@ -398,7 +394,7 @@
                 data: JSON.parse(daily_usage)
             }]
         });
-    </script> --}}
+    </script>
     <script>
         var batrai_status = "{{ json_encode($baterai_datas) }}";
         Highcharts.chart('chart-container', {
