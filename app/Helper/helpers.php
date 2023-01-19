@@ -430,9 +430,9 @@ function handleWaterMeter($device_id, $request)
         $today = Carbon::today()->format('Y-m-d');
 
         $yesterdayData = ParsedWaterMater::where('device_id', $device_id)
-                        ->whereBetween("created_at", [$yesterdayStart, $yesterdayEnd])
-                        ->orderBy('created_at', 'desc')
-                        ->first();
+            ->whereBetween("created_at", [$yesterdayStart, $yesterdayEnd])
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         DB::table('parsed_water_meter')->insert($params);
         DB::table('master_latest_datas')
@@ -446,11 +446,12 @@ function handleWaterMeter($device_id, $request)
 
             if (!$dailyUsage) {
                 DailyUsageWaterMeter::create(
-                [
-                    'device_id' => $device_id,
-                    'date' => $today,
-                    'usage' => $usage,
-                ]);
+                    [
+                        'device_id' => $device_id,
+                        'date' => $today,
+                        'usage' => $usage,
+                    ]
+                );
             } else {
                 $dailyUsage->update([
                     'device_id' => $device_id,
@@ -458,8 +459,6 @@ function handleWaterMeter($device_id, $request)
                     'usage' => $usage,
                 ]);
             }
-
-
         }
 
 
@@ -769,26 +768,59 @@ function handleGasMeter($device_id, $request)
     $data = $request->data['data'];
     $hex = base64toHex($data);
     $frameId = substr($hex, 0, 2);
-    $save = Rawdata::create([
-        'devEUI' => $request->devEUI,
-        'appID'  => $request->appID,
-        'type'   => $request->type,
-        'time'   => $request->time,
-        'gwid'   => $request->data['gwid'],
-        'rssi'   => $request->data['rssi'],
-        'snr'    => $request->data['snr'],
-        'freq'   => $request->data['freq'],
-        'dr'     => $request->data['dr'],
-        'adr'    => $request->data['adr'],
-        'class'  => $request->data['class'],
-        'fcnt'   => $request->data['fCnt'],
-        'fport'  => $request->data['fPort'],
-        'confirmed' => $request->data['confirmed'],
-        'data'  => $request->data['data'],
-        'convert'  => base64toHex($request->data['data']),
-        'gws'   => json_encode($request->data['gws']),
-        'payload_data' => json_encode($request->all()),
-    ]);
+
+    $command = substr($hex, 16, 4);
+    // return untuk command toptup tidak perlu parced data
+    if ($command == 'c400' || $command == '8407') {
+        if ($command == 'c400') {
+            $type_payload = 'Topup Gas Error';
+        } else if ($command == '8407') {
+            $type_payload = 'Topup Gas Success';
+        }
+        $save = Rawdata::create([
+            'devEUI' => $request->devEUI,
+            'appID'  => $request->appID,
+            'type'   => $request->type,
+            'time'   => $request->time,
+            'gwid'   => $request->data['gwid'],
+            'rssi'   => $request->data['rssi'],
+            'snr'    => $request->data['snr'],
+            'freq'   => $request->data['freq'],
+            'dr'     => $request->data['dr'],
+            'adr'    => $request->data['adr'],
+            'class'  => $request->data['class'],
+            'fcnt'   => $request->data['fCnt'],
+            'fport'  => $request->data['fPort'],
+            'confirmed' => $request->data['confirmed'],
+            'data'  => $request->data['data'],
+            'convert'  => base64toHex($request->data['data']),
+            'gws'   => json_encode($request->data['gws']),
+            'payload_data' => json_encode($request->all()),
+            'type_payload'  => $type_payload,
+        ]);
+        return "success";
+    } else {
+        $save = Rawdata::create([
+            'devEUI' => $request->devEUI,
+            'appID'  => $request->appID,
+            'type'   => $request->type,
+            'time'   => $request->time,
+            'gwid'   => $request->data['gwid'],
+            'rssi'   => $request->data['rssi'],
+            'snr'    => $request->data['snr'],
+            'freq'   => $request->data['freq'],
+            'dr'     => $request->data['dr'],
+            'adr'    => $request->data['adr'],
+            'class'  => $request->data['class'],
+            'fcnt'   => $request->data['fCnt'],
+            'fport'  => $request->data['fPort'],
+            'confirmed' => $request->data['confirmed'],
+            'data'  => $request->data['data'],
+            'convert'  => base64toHex($request->data['data']),
+            'gws'   => json_encode($request->data['gws']),
+            'payload_data' => json_encode($request->all()),
+        ]);
+    }
 
     $lastInsertedId = $save->id;
 
@@ -817,6 +849,7 @@ function handleGasMeter($device_id, $request)
     if ($frameId == "68") {
         // cek type postpaid or prepaid
         $type = substr($hex, 18, 2);
+
         $gas_consumption = littleEndian(substr($hex, 34, 8));
         $fix_gas = pengurangGasMeter($gas_consumption) * 0.01;
         if ($type == "15") {
@@ -824,23 +857,18 @@ function handleGasMeter($device_id, $request)
             $fix_gas_total_purchase = pengurangGasMeter($gas_total_purchase) * 0.01;
             $purchase_remain = littleEndian(substr($hex, 50, 8));
             $fix_purchase_remain = pengurangGasMeter($purchase_remain) * 0.01;
-
             $balance_of_battery = littleEndian(substr($hex, 60, 2));
             $fix_balance_of_battery = hexdec(pengurangGasMeter($balance_of_battery));
             $meter_status_word = littleEndian(substr($hex, 58, 2));
             $fix_status_word = pengurangGasMeter($meter_status_word);
-        } else {
+        } else if ('0d') {
             $fix_gas_total_purchase = 0;
             $fix_purchase_remain = 0;
             $balance_of_battery = littleEndian(substr($hex, 44, 2));
             $fix_balance_of_battery = hexdec(pengurangGasMeter($balance_of_battery));
-
             $meter_status_word = littleEndian(substr($hex, 42, 2));
             $fix_status_word = pengurangGasMeter($meter_status_word);
-            // return $fix_status_word;
         }
-
-
 
         $arrCommand = str_split($fix_status_word, 1);
         // return $arrCommand;
@@ -902,15 +930,32 @@ function handleGasMeter($device_id, $request)
     DB::table('master_latest_data_gas_meter')
         ->where('device_id', $device_id)
         ->update($params);
+
+
     return "success";
 }
 
 function pengurangGasMeter($data)
 {
-    $lengt_gas_consumption = strlen($data);
-    $pengurang =  str_pad(3, $lengt_gas_consumption, 3, STR_PAD_LEFT);
-    $cek =  (int)  $data - (int) $pengurang;
-    return str_pad($cek, 2, "0", STR_PAD_LEFT);
+    // split
+    $arr = str_split($data, 2);
+    $string = '';
+    foreach ($arr as $row) {
+        $splitPartial =   str_split($row, 1);
+        foreach ($splitPartial as $datas) {
+            if ($datas < 10) {
+                $jml = $datas - 3;
+                $string .= $jml;
+            } else {
+                $a = cekAngka($datas);
+                $jml = $a - 3;
+                $string .= $jml;
+            }
+        }
+    }
+    $cek =  (int)  $string;
+    $cek2 = str_pad($cek, 2, "0", STR_PAD_LEFT);
+    return $cek2;
 }
 
 function konversiTime($splitDate)

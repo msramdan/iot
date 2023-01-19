@@ -17,13 +17,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('rawdata_id')->nullable();
             $table->foreignId('device_id')->constrained('devices')->cascadeOnDelete();
-            $table->string('frame_id',20)->nullable();
-            $table->string('gas_consumption',20)->nullable();
-            $table->string('gas_total_purchase',20)->nullable();
-            $table->string('purchase_remain',20)->nullable();
-            $table->string('balance_of_battery',20)->nullable();
+            $table->string('frame_id', 20)->nullable();
+            $table->string('gas_consumption', 20)->nullable();
+            $table->string('gas_total_purchase', 20)->nullable();
+            $table->string('purchase_remain', 20)->nullable();
+            $table->string('balance_of_battery', 20)->nullable();
             $table->json('meter_status_word')->nullable();
-            $table->string('valve_status',20)->nullable();
+            $table->string('valve_status', 20)->nullable();
             $table->timestamps();
         });
     }

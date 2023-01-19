@@ -380,13 +380,16 @@ class MasterLastestDataController extends Controller
                     return '-';
                 })
                 ->addColumn('meter_status_word', function ($row) {
-                    $array =  json_decode($row->meter_status_word);
-                    $hasil = '<ul>';
-                    foreach ($array as $value) {
-                        $hasil .= '<li>' . $value . '</li>';
-                    };
-                    $hasil .= '</ul>';
-                    return $hasil;
+                    if ($row->meter_status_word != null) {
+                        $array =  json_decode($row->meter_status_word);
+                        $hasil = '<ul>';
+                        foreach ($array as $value) {
+                            $hasil .= '<li>' . $value . '</li>';
+                        };
+                        $hasil .= '</ul>';
+                        return $hasil;
+                    }
+                    return '-';
                 })
 
                 ->addColumn('detail', function ($row) {
@@ -640,7 +643,7 @@ class MasterLastestDataController extends Controller
         }
         $getPurchaseCode = $fixDate . '' . $newTotalm3;
 
-        // $getPurchaseCode = '76474c435533343333';
+        // $getPurchaseCode = '96474c435533343333';
         $arrPayload = array();
         $splitPur = str_split($getPurchaseCode, 2);
         foreach ($splitPur as $rows) {

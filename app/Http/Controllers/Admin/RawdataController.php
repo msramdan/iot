@@ -29,7 +29,11 @@ class RawdataController extends Controller
                 })
                 ->addColumn('parsed', function ($row) {
                     if ($row->type_payload == 'Alert') {
-                         return '<button style="width:120px" class="btn btn-sm btn-danger"> Alert Rawdata</button>';
+                        return '<button style="width:120px" class="btn btn-sm btn-danger"> Alert Rawdata</button>';
+                    } else if ($row->type_payload == 'Topup Gas Success') {
+                        return '<button style="width:120px" class="btn btn-sm btn-primary"> Topup Success</button>';
+                    } else if ($row->type_payload == 'Topup Gas Error') {
+                        return '<button style="width:120px" class="btn btn-sm btn-danger"> Topup Error</button>';
                     } else {
                         if ($row->device->category == 'Water Meter') {
                             return '<a href="' . url('/panel/parsed-wm?parsed_data=' . $row->id) . '" style="width:120px" target="_blank" class="btn btn-sm  btn-success"> Parsed Rawdata </a>';
