@@ -51,4 +51,17 @@ class LoginController extends Controller
         $this->preformLogout($request);
         return redirect()->route('admin_auth.login');
     }
+
+        /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        // redirect to '/panel', route name 'dashboard'
+        return redirect()->route('dashboard');
+    }
 }
