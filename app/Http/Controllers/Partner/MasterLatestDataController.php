@@ -122,7 +122,7 @@ class MasterLatestDataController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        $dailyUsages = DailyUsageWaterMeter::whereBetween('created_at', [$start_dates, $end_dates])->get();
+        $dailyUsages = DailyUsageWaterMeter::where('device_id', $id)->whereBetween('created_at', [$start_dates, $end_dates])->get();
 
         $parsed_dates = [];
         $baterai_datas = [];
@@ -144,7 +144,7 @@ class MasterLatestDataController extends Controller
         }
 
         foreach ($dailyUsages as $daily) {
-            array_push($daily_usage_dates, strtotime($daily->dates . " 00:00:00"));
+            array_push($daily_usage_dates, strtotime($daily->date));
             array_push($daily_usage_datas, $daily->usage);
         }
 
