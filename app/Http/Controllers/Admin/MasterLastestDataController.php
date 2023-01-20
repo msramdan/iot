@@ -586,6 +586,11 @@ class MasterLastestDataController extends Controller
                 "confirmed" => true,
                 "fport" => 8
             ]);
+        // insert temp
+        DB::table('temp_status_valve_gas_meter')->insert([
+            'dev_eui' => $request->devEUI,
+            'status' => 'Valve Open'
+        ]);
     }
 
     public function closeValveGas(Request $request)
@@ -617,6 +622,11 @@ class MasterLastestDataController extends Controller
                 "confirmed" => true,
                 "fport" => 8
             ]);
+        // insert temp
+        DB::table('temp_status_valve_gas_meter')->insert([
+            'dev_eui' => $request->devEUI,
+            'status' => 'Valve Close'
+        ]);
     }
 
     public function topup(Request $request)
