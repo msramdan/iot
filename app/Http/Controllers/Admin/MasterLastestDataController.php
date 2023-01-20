@@ -425,8 +425,7 @@ class MasterLastestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
-
+        $parsed_data = $parsed_data->orderBy('id', 'desc')->whereNotNull('gas_consumption')->get();
         $parsed_dates = [];
         $gas_consumtion_datas = [];
         $gas_total_purchase_datas = [];
@@ -588,7 +587,7 @@ class MasterLastestDataController extends Controller
         // insert temp
         DB::table('temp_status_valve_gas_meter')->insert([
             'dev_eui' => $request->devEUI,
-            'status' => 'Valve Open'
+            'status_valve' => 'Valve Open'
         ]);
     }
 
@@ -624,7 +623,7 @@ class MasterLastestDataController extends Controller
         // insert temp
         DB::table('temp_status_valve_gas_meter')->insert([
             'dev_eui' => $request->devEUI,
-            'status' => 'Valve Close'
+            'status_valve' => 'Valve Close'
         ]);
     }
 

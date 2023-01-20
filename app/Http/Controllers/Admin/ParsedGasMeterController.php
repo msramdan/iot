@@ -7,14 +7,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Device;
 use App\Models\ParsedGasMater;
 use Yajra\DataTables\DataTables;
+
 class ParsedGasMeterController extends Controller
 {
-     public function index(Request $request)
+    public function index(Request $request)
     {
         $devices = Device::all();
 
-        if(request()->ajax()){
-            $parsed_data = ParsedGasMater::with('rawdata')->with(['device' => function($q){
+        if (request()->ajax()) {
+            $parsed_data = ParsedGasMater::with('rawdata')->with(['device' => function ($q) {
                 $q->where('devices.category', 'Gas Meter');
             }]);
 
@@ -37,7 +38,7 @@ class ParsedGasMeterController extends Controller
 
             return DataTables::of($parsed_data)
                 ->addIndexColumn()
-                ->addColumn('device_name', function($row) {
+                ->addColumn('device_name', function ($row) {
                     if ($row->device) {
                         return $row->device->devName;
                     }
@@ -46,37 +47,52 @@ class ParsedGasMeterController extends Controller
                 })
 
                 ->addColumn('gas_consumption', function ($row) {
-                    return $row->gas_consumption.' m3';
+                    if ($row->gas_consumption != null) {
+                        return $row->gas_consumption . ' m3';
+                    }
+                    return '-';
                 })
 
                 ->addColumn('gas_total_purchase', function ($row) {
-                    return $row->gas_total_purchase.' m3';
+                    if ($row->gas_total_purchase != null) {
+                        return $row->gas_total_purchase . ' m3';
+                    }
+                    return '-';
                 })
 
                 ->addColumn('purchase_remain', function ($row) {
-                    return $row->purchase_remain.' m3';
+                    if ($row->purchase_remain != null) {
+                        return $row->purchase_remain . ' m3';
+                    }
+                    return '-';
                 })
 
-                 ->addColumn('balance_of_battery', function ($row) {
-                    return $row->balance_of_battery.' %';
+                ->addColumn('balance_of_battery', function ($row) {
+                    if ($row->balance_of_battery != null) {
+                        return $row->balance_of_battery . ' %';
+                    }
+                    return '-';
                 })
 
                 ->addColumn('rawdata_id', function ($row) {
-                        return '<a href="'.url('panel/rawdata?rawdata='.$row->rawdata_id).'" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> Rawdata </a>';
+                    return '<a href="' . url('panel/rawdata?rawdata=' . $row->rawdata_id) . '" class="btn btn-sm  btn-success" target="_blank"><i class="mdi mdi-eye"></i> Rawdata </a>';
                 })
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d M Y H:i:s');
                 })
                 ->addColumn('meter_status_word', function ($row) {
-                    $array =  json_decode($row->meter_status_word);
-                    $hasil ='<ul>';
-                    foreach ($array as $value) {
-                        $hasil .= '<li>'.$value.'</li>';
-                    };
-                    $hasil .='</ul>';
-                    return $hasil;
+                    if ($row->meter_status_word != null) {
+                        $array =  json_decode($row->meter_status_word);
+                        $hasil = '<ul>';
+                        foreach ($array as $value) {
+                            $hasil .= '<li>' . $value . '</li>';
+                        };
+                        $hasil .= '</ul>';
+                        return $hasil;
+                    }
+                    return '-';
                 })
-                ->rawColumns(['rawdata_id','meter_status_word','action'])
+                ->rawColumns(['rawdata_id', 'meter_status_word', 'action'])
                 ->toJson();
         }
         return view('admin.parsed_rawdata.parsed_gas_meter.index', compact('devices'));

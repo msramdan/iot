@@ -771,11 +771,13 @@ function handleGasMeter($device_id, $request)
 
     $command = substr($hex, 16, 4);
     // return untuk command toptup tidak perlu parced data
-    if ($command == 'c400' || $command == '8407') {
+    if ($command == 'c400' || $command == '8407' || $command == '8400') {
         if ($command == 'c400') {
             $type_payload = 'Topup Gas Error';
         } else if ($command == '8407') {
             $type_payload = 'Topup Gas Success';
+        } else if ($command == '8400') {
+            $type_payload = 'Command Gas Meter';
         }
         $save = Rawdata::create([
             'devEUI' => $request->devEUI,
@@ -798,6 +800,24 @@ function handleGasMeter($device_id, $request)
             'payload_data' => json_encode($request->all()),
             'type_payload'  => $type_payload,
         ]);
+        if ($command == '8400') {
+            $lastInsertedId = $save->id;
+            $temp = DB::table('temp_status_valve_gas_meter')->where('dev_eui', $request->devEUI)->first();
+            $params = [
+                'rawdata_id' => $lastInsertedId,
+                'device_id' => $device_id,
+                'frame_id' => $frameId,
+                'valve_status' => $temp->status_valve,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            DB::table('parsed_gas_meter')->insert($params);
+            DB::table('master_latest_data_gas_meter')
+                ->where('device_id', $device_id)
+                ->update($params);
+            // ramdan
+            DB::table('temp_status_valve_gas_meter')->where('id', $temp->id)->delete();
+        }
         return "success";
     } else {
         $save = Rawdata::create([
