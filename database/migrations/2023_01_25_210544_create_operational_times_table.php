@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('instance_id')->nullable();
             $table->enum('day', ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'])->nullable();
-            $table->time('open_hour');
-            $table->time('closed_hour');
+            $table->time('open_hour')->nullable();
+            $table->time('closed_hour')->nullable();
             $table->timestamps();
             $table->foreign('instance_id')->references('id')->on('instances');
         });
