@@ -20,7 +20,7 @@ return new class extends Migration
             $table->time('open_hour')->nullable();
             $table->time('closed_hour')->nullable();
             $table->timestamps();
-            $table->foreign('instance_id')->references('id')->on('instances');
+            $table->foreign('instance_id')->references('id')->on('instances')->onDelete('cascade');
         });
     }
 

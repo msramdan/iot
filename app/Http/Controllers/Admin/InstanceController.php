@@ -278,6 +278,16 @@ class InstanceController extends Controller
                                             ->orderBy('id', 'asc')
                                             ->get();
 
+        $days = [
+            'sunday',
+            'monday',
+            'tuesday',
+            'wednesday',
+            'thursday',
+            'friday',
+            'saturday'
+        ];
+
         return view('admin.instance.edit', compact(
             'instance',
             'provinces',
@@ -288,7 +298,8 @@ class InstanceController extends Controller
             'operational_times',
             'setting_water_tolerances',
             'setting_power_tolerances',
-            'setting_gas_tolerances'
+            'setting_gas_tolerances',
+            'days'
         ));
     }
 
@@ -328,12 +339,10 @@ class InstanceController extends Controller
                 ],
                 'longitude' => 'required|string',
                 'latitude' => 'required|string',
-                'operational_id.*' => 'required',
                 'type_device.*' => 'required',
                 'day.*' => 'required',
                 'opening_hour.*' => 'required',
                 'closing_hour.*' => 'required',
-                'device_tolerance_id.*' => 'required',
                 'field_data.*' => 'required',
                 'min_tolerance' => 'required',
                 'max_tolerance' => 'required',
@@ -364,15 +373,29 @@ class InstanceController extends Controller
             $opening_hours = $request->opening_hour; // array opening hour
             $closing_hours = $request->closing_hour; // array closing hour
 
+
             foreach ($operational_id as $i => $operational) {
                 $operational_time = OperationalTime::where('instance_id', $id)
                                     ->where('id', $operational)
-                                    ->update([
-                                        'day' => $days[$i],
-                                        'open_hour' => $opening_hours[$i],
-                                        'closed_hour' => $closing_hours[$i],
-                                    ]);
+                                    ->first();
+                if ($operational_time) {
+                    $operational_time->update([
+                        'day' => $days[$i],
+                        'open_hour' => $opening_hours[$i],
+                        'closed_hour' => $closing_hours[$i],
+                    ]);
+                } else {
+                    $operational_time = OperationalTime::create([
+                        'instance_id' => $instance->id,
+                        'day' => $days[$i],
+                        'open_hour' => $opening_hours[$i],
+                        'closed_hour' => $closing_hours[$i]
+                    ]);
+                }
+
             }
+
+
             /** End Update Operational Time */
 
             /** Update setting alert device */
@@ -385,13 +408,26 @@ class InstanceController extends Controller
             foreach ($device_tolerance_id as $a => $tolerance_id) {
                 $device_tolerance = SettingToleranceAlert::where('instance_id', $id)
                                     ->where('id', $tolerance_id)
-                                    ->update([
-                                        'type_device' => $type_devices[$a],
-                                        'field_data' => $field_datas[$a],
-                                        'min_tolerance' => $min_tolerances[$a],
-                                        'max_tolerance' => $max_tolerances[$a],
-                                    ]);
+                                    ->first();
+
+                if ($device_tolerance) {
+                    $device_tolerance->update([
+                        'type_device' => $type_devices[$a],
+                        'field_data' => $field_datas[$a],
+                        'min_tolerance' => $min_tolerances[$a],
+                        'max_tolerance' => $max_tolerances[$a],
+                    ]);
+                } else {
+                    $setting_tolerance = SettingToleranceAlert::create([
+                        'instance_id' => $instance->id,
+                        'type_device' => $type_devices[$a],
+                        'field_data' => $field_datas[$a],
+                        'min_tolerance' => $min_tolerances[$a],
+                        'max_tolerance' => $max_tolerances[$a]
+                    ]);
+                }
             }
+
 
             /** End update setting alert device */
 
