@@ -43,6 +43,7 @@ Route::middleware(['auth:instances'])->name('instances.')->group(function () {
     Route::controller(HomeController::class)->group(function () {
         Route::get('/', 'index')->name('dashboard');
         Route::post('/instance/change_password', 'change_password')->name('change_password');
+        Route::get('/profile', 'profile')->name('profile');
     });
     Route::resources(['tickets' => TicketController::class]);
     Route::controller(SubInstanceController::class)->group(function () {
