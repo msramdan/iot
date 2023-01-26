@@ -18,10 +18,10 @@ return new class extends Migration
             $table->foreignId('instance_id');
             $table->string('type_device');
             $table->string('field_data');
-            $table->string('min_tolerance');
-            $table->string('max_tolerance');
+            $table->float('min_tolerance');
+            $table->float('max_tolerance');
             $table->timestamps();
-            $table->foreign('instance_id')->references('id')->on('instances');
+            $table->foreign('instance_id')->references('id')->on('instances')->onDelete('cascade');
         });
     }
 

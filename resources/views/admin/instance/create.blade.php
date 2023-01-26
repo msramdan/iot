@@ -464,14 +464,14 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="text" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.0') }}">
+                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.0') }}">
                                                                 @error('min_tolerance.0')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="text" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.0') }}">
+                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.0') }}">
                                                                 @error('max_tolerance.0')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -490,14 +490,14 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="text" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.1') }}">
+                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.1') }}">
                                                                 @error('min_tolerance.1')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="text" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.1') }}">
+                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.1') }}">
                                                                 @error('max_tolerance.1')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -522,14 +522,14 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="text" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.2') }}">
+                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.2') }}">
                                                                 @error('min_tolerance.2')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="text" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.2') }}">
+                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.2') }}">
                                                                 @error('max_tolerance.2')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -548,14 +548,14 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="text" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.3') }}">
+                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.3') }}">
                                                                 @error('min_tolerance.3')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="text" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.3') }}">
+                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.3') }}">
                                                                 @error('max_tolerance.3')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -580,14 +580,14 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="text" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.4') }}">
+                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.4') }}">
                                                                 @error('min_tolerance.4')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="text" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.4') }}">
+                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.4') }}">
                                                                 @error('max_tolerance.4')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
@@ -606,14 +606,14 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="text" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.5') }}">
+                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.5') }}">
                                                                 @error('min_tolerance.5')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="text" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.5') }}">
+                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.5') }}">
                                                                 @error('max_tolerance.5')
                                                                 <span style="color: red;">{{ $message }}</span>
                                                                 @enderror
