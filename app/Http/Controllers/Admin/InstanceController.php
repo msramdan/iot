@@ -266,17 +266,17 @@ class InstanceController extends Controller
         $district = District::where('id', $instance->district_id)->get();
         $operational_times = OperationalTime::where('instance_id', $id)->orderBy('id', 'asc')->get();
         $setting_water_tolerances = SettingToleranceAlert::where('instance_id', $id)
-                                            ->where('type_device', 'water_meter')
-                                            ->orderBy('id', 'asc')
-                                            ->get();
+            ->where('type_device', 'water_meter')
+            ->orderBy('id', 'asc')
+            ->get();
         $setting_power_tolerances = SettingToleranceAlert::where('instance_id', $id)
-                                            ->where('type_device', 'power_meter')
-                                            ->orderBy('id', 'asc')
-                                            ->get();
+            ->where('type_device', 'power_meter')
+            ->orderBy('id', 'asc')
+            ->get();
         $setting_gas_tolerances = SettingToleranceAlert::where('instance_id', $id)
-                                            ->where('type_device', 'gas_meter')
-                                            ->orderBy('id', 'asc')
-                                            ->get();
+            ->where('type_device', 'gas_meter')
+            ->orderBy('id', 'asc')
+            ->get();
 
         $days = [
             'sunday',
@@ -341,11 +341,11 @@ class InstanceController extends Controller
                 'latitude' => 'required|string',
                 'type_device.*' => 'required',
                 'day.*' => 'required',
-                'opening_hour.*' => 'required',
-                'closing_hour.*' => 'required',
+                'opening_hour.*' => 'nullable',
+                'closing_hour.*' => 'nullable',
                 'field_data.*' => 'required',
-                'min_tolerance' => 'required',
-                'max_tolerance' => 'required',
+                'min_tolerance.*' => 'required',
+                'max_tolerance.*' => 'required',
             ]
         );
 
@@ -376,8 +376,8 @@ class InstanceController extends Controller
 
             foreach ($operational_id as $i => $operational) {
                 $operational_time = OperationalTime::where('instance_id', $id)
-                                    ->where('id', $operational)
-                                    ->first();
+                    ->where('id', $operational)
+                    ->first();
                 if ($operational_time) {
                     $operational_time->update([
                         'day' => $days[$i],
@@ -392,7 +392,6 @@ class InstanceController extends Controller
                         'closed_hour' => $closing_hours[$i]
                     ]);
                 }
-
             }
 
 
@@ -407,8 +406,8 @@ class InstanceController extends Controller
 
             foreach ($device_tolerance_id as $a => $tolerance_id) {
                 $device_tolerance = SettingToleranceAlert::where('instance_id', $id)
-                                    ->where('id', $tolerance_id)
-                                    ->first();
+                    ->where('id', $tolerance_id)
+                    ->first();
 
                 if ($device_tolerance) {
                     $device_tolerance->update([
