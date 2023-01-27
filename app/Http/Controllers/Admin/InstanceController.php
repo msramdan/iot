@@ -348,7 +348,7 @@ class InstanceController extends Controller
                 'max_tolerance.*' => 'required',
             ]
         );
-
+        //dd($request);
         if ($validator->fails()) {
             // Alert::toast('Data failed to save. ' . $validator->errors()->first(), 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
@@ -375,9 +375,11 @@ class InstanceController extends Controller
 
 
             foreach ($operational_id as $i => $operational) {
+                //dd($operational);
                 $operational_time = OperationalTime::where('instance_id', $id)
                     ->where('id', $operational)
                     ->first();
+
                 if ($operational_time) {
                     $operational_time->update([
                         'day' => $days[$i],

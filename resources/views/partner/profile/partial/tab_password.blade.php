@@ -1,4 +1,4 @@
- <form action="{{ route('merchants.update_password') }}" method="POST">
+ <form action="{{ route('instances.change_password') }}" method="POST">
     @csrf
     <div class="row g-2">
         <div class="col-lg-4">
@@ -33,7 +33,7 @@
         <!--end col-->
         <div class="col-lg-12">
             <div class="mb-3">
-                <a href="javascript:void(0);" class="link-primary text-decoration-underline">Forgot Password ?</a>
+                <a href="{{ route('instances.forgot_password') }}" class="link-primary text-decoration-underline">Forgot Password ?</a>
             </div>
         </div>
         <!--end col-->

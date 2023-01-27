@@ -8,6 +8,12 @@ use App\Models\Cluster;
 use App\Models\Device;
 use App\Models\Instance;
 use App\Models\Subinstance;
+use App\Models\OperationalTime;
+use App\Models\Bussiness;
+use App\Models\District;
+use App\Models\Province;
+use App\Models\City;
+use App\Models\Village;
 use Carbon\Carbon;
 use Illuminate\Validation\Rules\Password;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -68,4 +74,26 @@ class HomeController extends Controller
             return redirect()->back();
         }
     }
+
+    public function profile()
+    {
+        $instance = Instance::where('id', auth()->guard('instances')->user()->id)->first();
+        $operational_times = OperationalTime::where('instance_id', $instance->id)->get();
+        $provinces = Province::all();
+        $bussinesses = Bussiness::all();
+        $city = City::where('id', $instance->city_id)->get();
+        $village = Village::where('id', $instance->village_id)->get();
+        $district = District::where('id', $instance->district_id)->get();
+
+        return view('partner.profile.index', compact(
+            'instance',
+            'operational_times',
+            'provinces',
+            'bussinesses',
+            'city',
+            'village',
+            'district',
+        ));
+    }
+
 }
