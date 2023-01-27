@@ -342,7 +342,7 @@
                                                             <div>
                                                                 <label for="address2">Address2</label>
                                                                 <textarea name="address2" id="address2" rows="3" class="form-control @error('address2') is-invalid @enderror"
-                                                placeholder="" value="{{ old('address2') }}" autocomplete="off">{{ old('address2') ? old('address2') : $instance->address2 }}</textarea>
+                                                                    placeholder="" value="{{ old('address2') }}" autocomplete="off">{{ old('address2') ? old('address2') : $instance->address2 }}</textarea>
                                                                 <span class="d-none" style="color: red;" id="error-address2"></span>
                                                                 @error('address2')
                                                                     <span style="color: red;">{{ $message }}</span>
@@ -422,7 +422,7 @@
                                                     @forelse ($operational_times as $i => $operational)
                                                     <div class="row">
                                                         <div class="col-md-4">
-                                                            <input type="hidden" name="operational_id[]" value="">
+                                                            <input type="hidden" name="operational_id[]" value="{{ $operational->id }}">
                                                             <label for="sunday">Day</label>
                                                             <input type="text"
                                                                 class="form-control @error('day.{{$i}}') is-invalid @enderror"
@@ -682,7 +682,7 @@
                                                                 $g += 4;
                                                             @endphp
                                                             <div class="row">
-                                                                <input type="hidden" name="device_tolerance_id[]" value="">
+                                                                <input type="hidden" name="device_tolerance_id[]" value="{{ $gas_tolerance->id }}">
                                                                 <input type="hidden" name="type_device[]" value="{{ $gas_tolerance->type_device }}">
                                                                 <div class="col-md-4">
                                                                     <label for="temperatur_tolerance">Field</label>
