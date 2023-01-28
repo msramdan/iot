@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\Rawdata;
 use App\Models\Ticket;
-use App\Models\DailyUsageWaterMeter;
+use App\Models\DailyUsageDevice;
 use App\Models\ParsedWaterMater;
+use App\Models\ParsedPowerMater;
+use App\Models\ParsedGasMater;
 
 if (!function_exists('set_active')) {
     function set_active($uri)
@@ -442,12 +444,13 @@ function handleWaterMeter($device_id, $request)
         if (isset($params['total_flow'])) {
             $usage = floatval($params['total_flow']) - floatval($yesterdayData->total_flow);
 
-            $dailyUsage = DailyUsageWaterMeter::where('date', $today)->where('device_id', $device_id)->first();
+            $dailyUsage = DailyUsageDevice::where('date', $today)->where('device_id', $device_id)->first();
 
             if (!$dailyUsage) {
-                DailyUsageWaterMeter::create(
+                DailyUsageDevice::create(
                     [
                         'device_id' => $device_id,
+                        'device_type' => 'water_meter',
                         'date' => $today,
                         'usage' => $usage,
                     ]
@@ -455,6 +458,7 @@ function handleWaterMeter($device_id, $request)
             } else {
                 $dailyUsage->update([
                     'device_id' => $device_id,
+                    'device_type' => 'water_meter',
                     'date' => $today,
                     'usage' => $usage,
                 ]);
@@ -676,10 +680,45 @@ function handlePowerMeter($device_id, $request)
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
         }
+
+        $yesterdayStart = Carbon::now()->subDay(2)->hour(00)->minute(00)->second(00);
+        $yesterdayEnd   = Carbon::now()->subDay(2)->hour(23)->minute(59)->second(59);
+
+        $today = Carbon::today()->format('Y-m-d');
+
+        $yesterdayData = ParsedPowerMater::where('device_id', $device_id)
+            ->whereBetween("created_at", [$yesterdayStart, $yesterdayEnd])
+            ->orderBy('created_at', 'desc')
+            ->first();
+
         DB::table('parsed_power_meter')->insert($params);
         DB::table('master_latest_data_power_meter')
             ->where('device_id', $device_id)
             ->update($params);
+
+        if (isset($params['total_energy'])) {
+            $usage = floatval($params['total_energy']) - floatval($yesterdayData->total_energy);
+
+            $dailyUsage = DailyUsageDevice::where('date', $today)->where('device_id', $device_id)->first();
+
+            if (!$dailyUsage) {
+                DailyUsageDevice::create(
+                    [
+                        'device_id' => $device_id,
+                        'device_type' => 'power_meter',
+                        'date' => $today,
+                        'usage' => $usage,
+                    ]
+                );
+            } else {
+                $dailyUsage->update([
+                    'device_id' => $device_id,
+                    'device_type' => 'power_meter',
+                    'date' => $today,
+                    'usage' => $usage,
+                ]);
+            }
+        }
     } else {
         $save = Rawdata::create([
             'devEUI' => $request->devEUI,
@@ -946,10 +985,45 @@ function handleGasMeter($device_id, $request)
             'updated_at' => date('Y-m-d H:i:s'),
         ];
     }
+
+    $yesterdayStart = Carbon::now()->subDay(2)->hour(00)->minute(00)->second(00);
+    $yesterdayEnd   = Carbon::now()->subDay(2)->hour(23)->minute(59)->second(59);
+
+    $today = Carbon::today()->format('Y-m-d');
+
+    $yesterdayData = ParsedGasMater::where('device_id', $device_id)
+        ->whereBetween("created_at", [$yesterdayStart, $yesterdayEnd])
+        ->orderBy('created_at', 'desc')
+        ->first();
+    
     DB::table('parsed_gas_meter')->insert($params);
     DB::table('master_latest_data_gas_meter')
         ->where('device_id', $device_id)
         ->update($params);
+
+    if (isset($params['gas_consumption'])) {
+        $usage = floatval($params['gas_consumption']) - floatval($yesterdayData->gas_consumption);
+
+        $dailyUsage = DailyUsageDevice::where('date', $today)->where('device_id', $device_id)->first();
+
+        if (!$dailyUsage) {
+            DailyUsageDevice::create(
+                [
+                    'device_id' => $device_id,
+                    'device_type' => 'gas_meter',
+                    'date' => $today,
+                    'usage' => $usage,
+                ]
+            );
+        } else {
+            $dailyUsage->update([
+                'device_id' => $device_id,
+                'device_type' => 'gas_meter',
+                'date' => $today,
+                'usage' => $usage,
+            ]);
+        }
+    }
 
 
     return "success";
