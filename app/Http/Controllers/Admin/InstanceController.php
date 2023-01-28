@@ -395,8 +395,6 @@ class InstanceController extends Controller
                     ]);
                 }
             }
-
-
             /** End Update Operational Time */
 
             /** Update setting alert device */
