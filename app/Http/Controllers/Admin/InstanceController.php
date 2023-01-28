@@ -107,17 +107,7 @@ class InstanceController extends Controller
             'prefix' => 'ISC-' . date('Ymd')
         ]);
 
-        $days = [
-            'sunday',
-            'monday',
-            'tuesday',
-            'wednesday',
-            'thursday',
-            'friday',
-            'saturday'
-        ];
-
-        return view('admin.instance.create', compact('bussinesses', 'provinces', 'instance_code', 'days'));
+        return view('admin.instance.create', compact('bussinesses', 'provinces', 'instance_code'));
     }
 
     /**
@@ -155,13 +145,6 @@ class InstanceController extends Controller
                 ],
                 'longitude' => 'required|string',
                 'latitude' => 'required|string',
-                'day.*' => 'required',
-                'opening_hour.*' => 'nullable',
-                'closing_hour.*' => 'nullable',
-                'type_device.*' => 'required',
-                'field_data.*' => 'required',
-                'min_tolerance.*' => 'required',
-                'max_tolerance.*' => 'required',
             ]
         );
 
@@ -183,47 +166,6 @@ class InstanceController extends Controller
             $data['appID'] = $response['appID'];
             $data['appName'] = Str::slug(request('instance_name', '_'));
             $instances = Instance::create($data);
-
-
-            /**
-             * Intances Operational Time
-             */
-            $days = $request->day;
-            $open_hour = $request->opening_hour;
-            $closing_hour = $request->closing_hour;
-
-            foreach ($days as $i => $day) {
-                $operational_time = OperationalTime::create([
-                    'instance_id' => $instances->id,
-                    'day' => $day,
-                    'open_hour' => $open_hour[$i],
-                    'closed_hour' => $closing_hour[$i]
-                ]);
-            }
-            /**
-             * End Instances Operational Time
-             */
-
-            /**
-             * Setting Device Tolerance Alert
-             */
-            $field_data = $request->field_data;
-            $min_tolerance = $request->min_tolerance;
-            $max_tolerance = $request->max_tolerance;
-            $type_device = $request->type_device;
-
-            foreach ($field_data as $a => $field) {
-                $setting_tolerance = SettingToleranceAlert::create([
-                    'instance_id' => $instances->id,
-                    'type_device' => $type_device[$a],
-                    'field_data' => $field,
-                    'min_tolerance' => $min_tolerance[$a],
-                    'max_tolerance' => $max_tolerance[$a]
-                ]);
-            }
-            /**
-             * End Setting Device Tolerance
-             */
 
 
             if ($instances) {
@@ -264,29 +206,6 @@ class InstanceController extends Controller
         $city = City::where('id', $instance->city_id)->get();
         $village = Village::where('id', $instance->village_id)->get();
         $district = District::where('id', $instance->district_id)->get();
-        $operational_times = OperationalTime::where('instance_id', $id)->orderBy('id', 'asc')->get();
-        $setting_water_tolerances = SettingToleranceAlert::where('instance_id', $id)
-            ->where('type_device', 'water_meter')
-            ->orderBy('id', 'asc')
-            ->get();
-        $setting_power_tolerances = SettingToleranceAlert::where('instance_id', $id)
-            ->where('type_device', 'power_meter')
-            ->orderBy('id', 'asc')
-            ->get();
-        $setting_gas_tolerances = SettingToleranceAlert::where('instance_id', $id)
-            ->where('type_device', 'gas_meter')
-            ->orderBy('id', 'asc')
-            ->get();
-
-        $days = [
-            'sunday',
-            'monday',
-            'tuesday',
-            'wednesday',
-            'thursday',
-            'friday',
-            'saturday'
-        ];
 
         return view('admin.instance.edit', compact(
             'instance',
@@ -295,11 +214,6 @@ class InstanceController extends Controller
             'city',
             'village',
             'district',
-            'operational_times',
-            'setting_water_tolerances',
-            'setting_power_tolerances',
-            'setting_gas_tolerances',
-            'days'
         ));
     }
 
@@ -339,16 +253,9 @@ class InstanceController extends Controller
                 ],
                 'longitude' => 'required|string',
                 'latitude' => 'required|string',
-                'type_device.*' => 'required',
-                'day.*' => 'required',
-                'opening_hour.*' => 'nullable',
-                'closing_hour.*' => 'nullable',
-                'field_data.*' => 'required',
-                'min_tolerance.*' => 'required',
-                'max_tolerance.*' => 'required',
             ]
         );
-        //dd($request);
+
         if ($validator->fails()) {
             // Alert::toast('Data failed to save. ' . $validator->errors()->first(), 'error');
             return redirect()->back()->withInput($request->all())->withErrors($validator);
@@ -367,73 +274,11 @@ class InstanceController extends Controller
 
             $instance->update($data);
 
-            /** Update Operational Time */
-            $operational_id = $request->operational_id; // array operational id
-            $days = $request->day; // array days
-            $opening_hours = $request->opening_hour; // array opening hour
-            $closing_hours = $request->closing_hour; // array closing hour
-
-
-            foreach ($operational_id as $i => $operational) {
-                //dd($operational);
-                $operational_time = OperationalTime::where('instance_id', $id)
-                    ->where('id', $operational)
-                    ->first();
-
-                if ($operational_time) {
-                    $operational_time->update([
-                        'day' => $days[$i],
-                        'open_hour' => $opening_hours[$i],
-                        'closed_hour' => $closing_hours[$i],
-                    ]);
-                } else {
-                    $operational_time = OperationalTime::create([
-                        'instance_id' => $instance->id,
-                        'day' => $days[$i],
-                        'open_hour' => $opening_hours[$i],
-                        'closed_hour' => $closing_hours[$i]
-                    ]);
-                }
-            }
-            /** End Update Operational Time */
-
-            /** Update setting alert device */
-            $device_tolerance_id = $request->device_tolerance_id;
-            $type_devices = $request->type_device;
-            $field_datas = $request->field_data;
-            $min_tolerances = $request->min_tolerance;
-            $max_tolerances = $request->max_tolerance;
-
-            foreach ($device_tolerance_id as $a => $tolerance_id) {
-                $device_tolerance = SettingToleranceAlert::where('instance_id', $id)
-                    ->where('id', $tolerance_id)
-                    ->first();
-
-                if ($device_tolerance) {
-                    $device_tolerance->update([
-                        'type_device' => $type_devices[$a],
-                        'field_data' => $field_datas[$a],
-                        'min_tolerance' => $min_tolerances[$a],
-                        'max_tolerance' => $max_tolerances[$a],
-                    ]);
-                } else {
-                    $setting_tolerance = SettingToleranceAlert::create([
-                        'instance_id' => $instance->id,
-                        'type_device' => $type_devices[$a],
-                        'field_data' => $field_datas[$a],
-                        'min_tolerance' => $min_tolerances[$a],
-                        'max_tolerance' => $max_tolerances[$a]
-                    ]);
-                }
-            }
-
-
             /** End update setting alert device */
 
             Alert::toast('Data successfully updated', 'success');
             return redirect()->route('instance.index');
         } catch (Exception $e) {
-            \Log::error($e);
             DB::rollback();
             Alert::toast('Data failed to save.', 'error');
             return redirect()->route('instance.index');
