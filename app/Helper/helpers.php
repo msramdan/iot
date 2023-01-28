@@ -442,7 +442,11 @@ function handleWaterMeter($device_id, $request)
             ->update($params);
 
         if (isset($params['total_flow'])) {
-            $usage = floatval($params['total_flow']) - floatval($yesterdayData->total_flow);
+            if ($yesterdayData) {
+                $usage = floatval($params['total_flow']) - floatval($yesterdayData->total_flow);
+            } else {
+                $usage = floatval($params['total_flow']);
+            }
 
             $dailyUsage = DailyUsageDevice::where('date', $today)->where('device_id', $device_id)->first();
 
@@ -559,7 +563,6 @@ function handleWaterMeter($device_id, $request)
         return "Payload Data Tidak Tercover";
     }
 }
-
 
 function handlePowerMeter($device_id, $request)
 {
@@ -697,7 +700,11 @@ function handlePowerMeter($device_id, $request)
             ->update($params);
 
         if (isset($params['total_energy'])) {
-            $usage = floatval($params['total_energy']) - floatval($yesterdayData->total_energy);
+            if ($yesterdayData) {
+                $usage = floatval($params['total_energy']) - floatval($yesterdayData->total_energy);
+            } else {
+                $usage = floatval($params['total_energy']);
+            }
 
             $dailyUsage = DailyUsageDevice::where('date', $today)->where('device_id', $device_id)->first();
 
@@ -995,14 +1002,18 @@ function handleGasMeter($device_id, $request)
         ->whereBetween("created_at", [$yesterdayStart, $yesterdayEnd])
         ->orderBy('created_at', 'desc')
         ->first();
-    
+
     DB::table('parsed_gas_meter')->insert($params);
     DB::table('master_latest_data_gas_meter')
         ->where('device_id', $device_id)
         ->update($params);
 
     if (isset($params['gas_consumption'])) {
-        $usage = floatval($params['gas_consumption']) - floatval($yesterdayData->gas_consumption);
+        if ($yesterdayData) {
+            $usage = floatval($params['gas_consumption']) - floatval($yesterdayData->gas_consumption);
+        } else {
+            $usage = floatval($params['gas_consumption']);
+        }
 
         $dailyUsage = DailyUsageDevice::where('date', $today)->where('device_id', $device_id)->first();
 
