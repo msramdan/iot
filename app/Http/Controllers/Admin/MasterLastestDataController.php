@@ -319,6 +319,7 @@ class MasterLastestDataController extends Controller
             'active_power_datas',
             'power_factor_datas',
             'total_energy_datas',
+            'dailyUsages',
             'daily_usage_dates',
             'daily_usage_datas'
         ));
@@ -478,6 +479,7 @@ class MasterLastestDataController extends Controller
             'gas_total_purchase_datas',
             'purchase_remain_datas',
             'balance_of_bateray_datas',
+            'dailyUsages',
             'daily_usage_dates',
             'daily_usage_datas'
         ));
