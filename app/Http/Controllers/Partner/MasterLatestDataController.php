@@ -11,7 +11,7 @@ use App\Models\Device;
 use App\Models\ParsedWaterMater;
 use App\Models\ParsedPowerMater;
 use App\Models\ParsedGasMater;
-use App\Models\DailyUsageWaterMeter;
+use App\Models\DailyUsageDevice;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
@@ -122,7 +122,7 @@ class MasterLatestDataController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-        $dailyUsages = DailyUsageWaterMeter::where('device_id', $id)->whereBetween('created_at', [$start_dates, $end_dates])->get();
+        $dailyUsages = DailyUsageDevice::where('device_id', $id)->whereBetween('created_at', [$start_dates, $end_dates])->get();
 
         $parsed_dates = [];
         $baterai_datas = [];
@@ -278,8 +278,11 @@ class MasterLatestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'desc')
+        $parsed_data = $parsed_data->orderBy('id', 'asc')
             ->whereNull('status_switch')->get();
+
+        $dailyUsages = DailyUsageDevice::where('device_id', $id)
+            ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
         $parsed_dates = [];
         $tegangan_datas = [];
@@ -288,6 +291,8 @@ class MasterLatestDataController extends Controller
         $active_power_datas = [];
         $power_factor_datas = [];
         $total_energy_datas = [];
+        $daily_usage_dates = [];
+        $daily_usage_datas = [];
 
         foreach ($parsed_data as $data) {
             $dates = strtotime($data->created_at);
@@ -301,6 +306,12 @@ class MasterLatestDataController extends Controller
             array_push($total_energy_datas, floatval($data->total_energy));
         }
 
+        foreach ($dailyUsages as $daily) {
+            array_push($daily_usage_dates, strtotime($daily->date));
+            array_push($daily_usage_datas, $daily->usage);
+        }
+
+
         return view('partner.device.latest-master-data.power-meter.detail', compact(
             'parsed_data',
             'device_id',
@@ -313,7 +324,10 @@ class MasterLatestDataController extends Controller
             'frekuensi_datas',
             'active_power_datas',
             'power_factor_datas',
-            'total_energy_datas'
+            'total_energy_datas',
+            'dailyUsages',
+            'daily_usage_dates',
+            'daily_usage_datas'
         ));
     }
 
@@ -432,13 +446,18 @@ class MasterLatestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
+        $parsed_data = $parsed_data->orderBy('id', 'asc')->get();
+
+        $dailyUsages = DailyUsageDevice::where('device_id', $id)
+        ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
         $parsed_dates = [];
         $gas_consumtion_datas = [];
         $gas_total_purchase_datas = [];
         $purchase_remain_datas = [];
         $balance_of_bateray_datas = [];
+        $daily_usage_dates = [];
+        $daily_usage_datas = [];
 
         foreach ($parsed_data as $data) {
             $dates = strtotime($data->created_at);
@@ -448,6 +467,11 @@ class MasterLatestDataController extends Controller
             array_push($gas_total_purchase_datas, floatval($data->gas_total_purchase));
             array_push($purchase_remain_datas, floatval($data->purchase_remain));
             array_push($balance_of_bateray_datas, floatval($data->balance_of_battery));
+        }
+
+        foreach ($dailyUsages as $daily) {
+            array_push($daily_usage_dates, strtotime($daily->date));
+            array_push($daily_usage_datas, $daily->usage);
         }
 
 
@@ -461,7 +485,10 @@ class MasterLatestDataController extends Controller
             'gas_consumtion_datas',
             'gas_total_purchase_datas',
             'purchase_remain_datas',
-            'balance_of_bateray_datas'
+            'balance_of_bateray_datas',
+            'dailyUsages',
+            'daily_usage_dates',
+            'daily_usage_datas'
         ));
     }
 }

@@ -443,7 +443,6 @@ class MasterLastestDataController extends Controller
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
         ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
-
         $parsed_dates = [];
         $gas_consumtion_datas = [];
         $gas_total_purchase_datas = [];
