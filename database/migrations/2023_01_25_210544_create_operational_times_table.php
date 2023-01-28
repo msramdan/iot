@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('operational_times', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('instance_id')->nullable();
+            $table->foreignId('subinstance_id')->nullable();
             $table->enum('day', ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'])->nullable();
             $table->time('open_hour')->nullable();
             $table->time('closed_hour')->nullable();
             $table->timestamps();
-            $table->foreign('instance_id')->references('id')->on('instances')->onDelete('cascade');
+            $table->foreign('subinstance_id')->references('id')->on('subinstances')->onDelete('cascade');
         });
     }
 

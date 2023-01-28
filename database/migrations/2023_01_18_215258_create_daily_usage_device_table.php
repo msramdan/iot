@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('daily_usage_water_meters', function (Blueprint $table) {
+        Schema::create('daily_usage_devices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('device_id')->nullable();
+            $table->string('device_type')->nullable();
             $table->dateTime('date')->nullable();
             $table->float('usage')->default(0);
             $table->timestamps();

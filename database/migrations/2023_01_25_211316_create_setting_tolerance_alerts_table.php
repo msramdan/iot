@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('setting_tolerance_alerts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('instance_id');
+            $table->foreignId('subinstance_id');
             $table->string('type_device');
             $table->string('field_data');
             $table->float('min_tolerance');
             $table->float('max_tolerance');
             $table->timestamps();
-            $table->foreign('instance_id')->references('id')->on('instances')->onDelete('cascade');
+            $table->foreign('subinstance_id')->references('id')->on('subinstances')->onDelete('cascade');
         });
     }
 

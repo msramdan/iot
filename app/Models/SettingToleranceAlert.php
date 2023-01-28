@@ -11,8 +11,8 @@ class SettingToleranceAlert extends Model
 
     protected $guarded = ['id'];
 
-    public function instance()
+    public function subinstance()
     {
-        return $this->belongsTo(Instance::class);
+        return $this->belongsTo(SubInstance::class);
     }
 }
