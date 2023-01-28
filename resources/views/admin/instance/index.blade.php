@@ -141,8 +141,13 @@
         });
 
         const subinstance = data => {
+            var subinstance = '';
+
+            data.forEach( val => {
+                subinstance += `<li class="list-group-item">${button(val)} ${val.name_subinstance}</li>`;
+            } )
             return `<ul class="list-group list-group-flush">
-                        ${ data.map(val => `<li class="list-group-item">${button(val)} ${val.name_subinstance}</li>`) }
+                        ${ subinstance }
                     </ul>`
         }
 
