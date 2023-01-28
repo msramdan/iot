@@ -35,31 +35,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="flex-grow-1">
-                                <h5 class="card-title mb-0">Operational time</h5>
-                            </div>
-                        </div>
-                        <ul class="list-group list-approval-log">
-                            @foreach ($operational_times as $operational_time)
-                            <li class="list-group-item">
-                                <div class="">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <span><b>{{ ucwords($operational_time->day) }}</b></span>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <small>{{ date('H:i', strtotime($operational_time->open_hour)) }} AM - {{ date('H:i', strtotime($operational_time->closed_hour)) }} PM</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
             </div>
             <!--end col-->
             <div class="col-lg-9">

@@ -78,7 +78,6 @@ class HomeController extends Controller
     public function profile()
     {
         $instance = Instance::where('id', auth()->guard('instances')->user()->id)->first();
-        $operational_times = OperationalTime::where('instance_id', $instance->id)->get();
         $provinces = Province::all();
         $bussinesses = Bussiness::all();
         $city = City::where('id', $instance->city_id)->get();
@@ -87,7 +86,6 @@ class HomeController extends Controller
 
         return view('partner.profile.index', compact(
             'instance',
-            'operational_times',
             'provinces',
             'bussinesses',
             'city',
