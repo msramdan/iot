@@ -25,6 +25,9 @@ class GatewayController extends Controller
             $query = Gateway::all();
             return Datatables::of($query)
                 ->addIndexColumn()
+                ->addColumn('updated_at', function ($row) {
+                    return $row->updated_at->format('d M Y H:i:s');
+                })
                 ->toJson();
         }
         return view('admin.gateway.index');

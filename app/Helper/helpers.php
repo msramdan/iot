@@ -870,6 +870,7 @@ function handleGasMeter($device_id, $request)
             'type_payload'  => $type_payload,
         ]);
         insertGateway($request->data['gwid'], $save->updated_at);
+
         if ($command == '8400') {
             $lastInsertedId = $save->id;
             $temp = DB::table('temp_status_valve_gas_meter')->where('dev_eui', $request->devEUI)->first();
@@ -878,8 +879,8 @@ function handleGasMeter($device_id, $request)
                 'device_id' => $device_id,
                 'frame_id' => $frameId,
                 'valve_status' => $temp->status_valve,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at' => $save->updated_at,
+                'updated_at' => $save->updated_at,
             ];
             DB::table('parsed_gas_meter')->insert($params);
             DB::table('master_latest_data_gas_meter')
@@ -887,6 +888,24 @@ function handleGasMeter($device_id, $request)
                 ->update($params);
             // ramdan
             DB::table('temp_status_valve_gas_meter')->where('id', $temp->id)->delete();
+        } else if ($command == 'c400') {
+            $getDevice = DB::table('devices')->where('devEUI', $request->devEUI)->first();
+            $getHistory = DB::table('history_topup_gas_meter')->where('device_id', $getDevice->id)->whereNull('updated_at')->first();
+            DB::table('history_topup_gas_meter')
+                ->where('id', $getHistory->id)
+                ->update([
+                    'status' => 'Error',
+                    'updated_at' => $save->updated_at,
+                ]);
+        } else if ($command == '8407') {
+            $getDevice = DB::table('devices')->where('devEUI', $request->devEUI)->first();
+            $getHistory = DB::table('history_topup_gas_meter')->where('device_id', $getDevice->id)->whereNull('updated_at')->first();
+            DB::table('history_topup_gas_meter')
+                ->where('id', $getHistory->id)
+                ->update([
+                    'status' => 'Success',
+                    'updated_at' => $save->updated_at,
+                ]);
         }
         return "success";
     } else {

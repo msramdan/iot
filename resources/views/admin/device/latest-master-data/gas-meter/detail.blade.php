@@ -8,6 +8,12 @@
             overflow: auto;
         }
 
+        .my-custom-scrollbar2 {
+            position: relative;
+            height: 250px;
+            overflow: auto;
+        }
+
         .table-wrapper-scroll-y {
             display: block;
         }
@@ -68,6 +74,8 @@
                                 <div>
                                     <input type="hidden" name="devEUI" value="{{ $devEUI }}" class="form-control"
                                         id="firstName" placeholder="" required>
+                                    <input type="hidden" name="device_id" value="{{ $device_id }}" class="form-control"
+                                        id="device_id" placeholder="" required>
                                 </div>
                             </div>
                         </h5>
@@ -108,64 +116,117 @@
                             </a>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Command Downlink</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>Command Downlink</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-wrapper-scroll-y my-custom-scrollbar2">
+                                        <center>
+
+                                            @if ($lastData->meter_status_word != null)
+                                                @php
+                                                    $json = json_decode($lastData->meter_status_word);
+                                                @endphp
+                                                <h4>Type : <span class="">{{ $json[1] }}</span>
+                                                </h4>
+                                            @else
+                                                <h4>Type : <span class="">-</span>
+                                                </h4>
+                                            @endif
+                                            @if ($lastData->valve_status == 'Valve Open')
+                                                <h4>Status Valve : <span
+                                                        class="badge rounded-pill badge-outline-success">{{ $lastData->valve_status }}</span>
+                                                </h4>
+                                            @elseif($lastData->valve_status == 'Valve Close')
+                                                <h4>Status Valve : <span
+                                                        class="badge rounded-pill badge-outline-danger">{{ $lastData->valve_status }}</span>
+                                                </h4>
+                                            @else
+                                                <h4>Status Valve : <span class="">-</span>
+                                                </h4>
+                                            @endif
+
+                                            @if ($lastData->updated_at != null)
+                                                <h4>Last Updated : <span
+                                                        class="badge rounded-pill badge-outline-success">{{ $lastData->updated_at }}</span>
+                                                </h4>
+                                            @else
+                                                <h4>Last Updated : <span class="">-</span>
+                                                </h4>
+                                            @endif
+
+
+                                        </center> <br>
+                                        <center>
+                                            <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}"
+                                                hidden>
+                                            @if ($lastData->meter_status_word != null)
+                                                @if ($json[1] == 'Prepaid')
+                                                    <button type="button" class="btn btn-primary " data-bs-toggle="modal"
+                                                        style="margin-top:5px" data-bs-target="#myModal">Topup</button>
+                                                @endif
+                                                <button type="submit" id="open_valve" class="btn btn-success"
+                                                    style="margin-top:5px;">
+                                                    Open
+                                                    Valve</button>
+                                                <button type="submit" id="close_valve" class="btn btn-danger"
+                                                    style="margin-top:5px;">
+                                                    Close Valve</button>
+                                            @endif
+
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <center>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>History Topup Gas</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-wrapper-scroll-y my-custom-scrollbar2">
+                                        <table id="" class="table table-sm table-bordered" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Total Gas</th>
+                                                    <th>User</th>
+                                                    <th>Topup date </th>
+                                                    <th>Response date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($history as $data)
+                                                    <tr>
+                                                        <td>{{ $data->total_gas }} m3</td>
+                                                        <td>{{ $data->name }}
+                                                        </td>
+                                                        <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}
+                                                        </td>
+                                                        <td>
+                                                            @if ($data->updated_at)
+                                                                {{ date('d/m/Y H:i:s', strtotime($data->updated_at)) }}
+                                                            @else
+                                                                -
+                                                            @endif
 
-                                @if ($lastData->meter_status_word != null)
-                                    @php
-                                        $json = json_decode($lastData->meter_status_word);
-                                    @endphp
-                                    <h4>Type : <span class="">{{ $json[1] }}</span>
-                                    </h4>
-                                @else
-                                    <h4>Type : <span class="">-</span>
-                                    </h4>
-                                @endif
-                                @if ($lastData->valve_status == 'Valve Open')
-                                    <h4>Status Valve : <span
-                                            class="badge rounded-pill badge-outline-success">{{ $lastData->valve_status }}</span>
-                                    </h4>
-                                @elseif($lastData->valve_status == 'Valve Close')
-                                    <h4>Status Valve : <span
-                                            class="badge rounded-pill badge-outline-danger">{{ $lastData->valve_status }}</span>
-                                    </h4>
-                                @else
-                                    <h4>Status Valve : <span class="">-</span>
-                                    </h4>
-                                @endif
-
-                                @if ($lastData->updated_at != null)
-                                    <h4>Last Updated : <span
-                                            class="badge rounded-pill badge-outline-success">{{ $lastData->updated_at }}</span>
-                                    </h4>
-                                @else
-                                    <h4>Last Updated : <span class="">-</span>
-                                    </h4>
-                                @endif
-
-
-                            </center> <br>
-                            <center>
-                                <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}" hidden>
-                                @if ($lastData->meter_status_word != null)
-                                    @if ($json[1] == 'Prepaid')
-                                        <button type="button" class="btn btn-primary " data-bs-toggle="modal"
-                                            style="margin-top:5px" data-bs-target="#myModal">Topup</button>
-                                    @endif
-                                    <button type="submit" id="open_valve" class="btn btn-success" style="margin-top:5px;">
-                                        Open
-                                        Valve</button>
-                                    <button type="submit" id="close_valve" class="btn btn-danger" style="margin-top:5px;">
-                                        Close Valve</button>
-                                @endif
-
-                            </center>
+                                                        </td>
+                                                        <td>{{ $data->status }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
+
 
                     <div class="card">
                         <div class="card-header">
@@ -176,8 +237,8 @@
                                         id="form-date">
                                         <div class="input-group mb-4">
                                             <input type="text" class="form-control border-0 dash-filter-picker shadow"
-                                                data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y"
-                                                data-deafult-date="" name="date"
+                                                data-provider="flatpickr" data-range-date="true"
+                                                data-date-format="d M, Y" data-deafult-date="" name="date"
                                                 @if (!empty($start_dates) && !empty($end_dates)) value="{{ date('d M, Y', strtotime($start_dates)) }} to {{ date('d M, Y', strtotime($end_dates)) }}"
                                             @else
                                             value="" @endif
