@@ -183,590 +183,221 @@
                             @method('PUT')
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h3 class="card-title text-bold">Data Informasi Merchant</h3>
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="row gy-3">
-                                                        <div class="col-md-3 col-md-6">
-                                                            <label for="instance_code">Instance Code</label>
-                                                            <input type="text" readonly class="form-control @error('instance_code') is-invalid @enderror" name="instance_code" id="instance_code" placeholder="" value="{{ old('instance_code') ? old('instance_code') : $instance->instance_code}}" autocomplete="off">
-                                                            @error('instance_code')
-                                                            <span style="color: red;">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <label for="instance_name">Instance Name</label>
-                                                            <input type="text" class="form-control @error('instance_name') is-invalid @enderror" name="instance_name" id="instance_name" placeholder="" value="{{ old('instance_name') ? old('instance_name') : $instance->instance_name }}" autocomplete="off">
-                                                            @error('instance_name')
-                                                            <span style="color: red;">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <label for="push_url">Push Url</label>
-                                                            <input type="text" class="form-control @error('push_url') is-invalid @enderror" name="push_url" id="push_url" placeholder="" value="{{ old('push_url') ? old('push_url') : $instance->push_url }}" autocomplete="off">
-                                                            @error('push_url')
-                                                            <span style="color: red;">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <label for="username">Username</label>
-                                                            <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" id="username" placeholder="" value="{{ old('username') ? old('username') : $instance->username }}" autocomplete="off">
-                                                            @error('username')
-                                                            <span style="color: red;">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <label for="phone">Phone</label>
-                                                            <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" placeholder="" value="{{ old('phone') ? old('phone') : $instance->phone }}" autocomplete="off">
-                                                            @error('phone')
-                                                            <span style="color: red;">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <label for="email">Email</label>
-                                                            <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="" value="{{ old('email') ? old('email') : $instance->email }}" autocomplete="off">
-                                                            @error('email')
-                                                            <span style="color: red;">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <div>
-                                                                <label for="bussiness_id">Bussiness</label>
-                                                                <select name="bussiness_id" id="bussiness_id"
-                                                                    class="form-control @error('bussiness_id') is-invalid @enderror">
-                                                                    <option value="">-- Select --</option>
-                                                                    @foreach ($bussinesses as $bussiness)
-                                                                        <option value="{{ $bussiness->id }}" {{ (old('bussiness_id') ? old('bussiness_id') : $instance->bussiness_id ) == $bussiness->id ? 'selected' : '' }}>
-                                                                            {{ $bussiness->bussiness_name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('bussiness_id')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <label for="password">Password</label>
-                                                            <input type="password"
-                                                                class="form-control @error('password') is-invalid @enderror"
-                                                                name="password" id="password" placeholder=""
-                                                                value="{{ old('password') }}" autocomplete="off">
-                                                            <span class="d-none" style="color: red;" id="error-password"></span>
-                                                            @error('password')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                            @enderror
-                                                            <div class="my-1">
-                                                                <button class="btn btn-sm btn-primary" type="button"
-                                                                    onclick="generatePassword()">Generate Password</button>
-                                                                <button class="btn btn-sm btn-secondary" type="button"
-                                                                    onclick="toggleShowPassword()"><i
-                                                                        class="mdi mdi-eye"></i></button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <div>
-                                                                <label for="provinsi">Provinsi</label>
-                                                                <select name="province_id" id="provinsi"
-                                                                    class="form-control  @error('province_id') is-invalid @enderror">
-                                                                    <option value="">-- Select --</option>
-                                                                    @foreach ($provinces as $province)
-                                                                        <option value="{{ $province->id }}" {{ $province->id == $instance->province_id ? 'selected' : '' }}>
-                                                                            {{ $province->provinsi }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('province_id')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <div>
-                                                                <label for="kota">Kab/Kota</label>
-                                                                <select name="city_id" id="kota" class="form-control  @error('city_id') is-invalid @enderror">
-                                                                    <option value="">-- Select --</option>
-                                                                    @foreach ($city as $item)
-                                                                    <option value="{{ $item->id }}" {{ $item->id == $instance->city_id ? 'selected' : '' }}>{{ $item->kabupaten_kota }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('city_id')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <div>
-                                                                <label for="kecamatan">Kecamatan</label>
-                                                                <select name="district_id" id="kecamatan"
-                                                                    class="form-control  @error('district_id') is-invalid @enderror">
-                                                                    <option value="">-- Select --</option>
-                                                                    @foreach ($district as $kecamatan)
-                                                                    <option value="{{ $kecamatan->id }}" {{ $kecamatan->id == $instance->district_id ? 'selected' : '' }}>{{ $kecamatan->kecamatan }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('district_id')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <div>
-                                                                <label for="kelurahan">Kelurahan</label>
-                                                                <select name="village_id" id="kelurahan"
-                                                                    class="form-control  @error('village_id') is-invalid @enderror">
-                                                                    <option value="">-- Select --</option>
-                                                                    @foreach ($village as $kelurahan)
-                                                                    <option value="{{ $kelurahan->id }}" {{ $kelurahan->id == $instance->village_id ? 'selected' : '' }}>{{ $kelurahan->kelurahan }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('village_id')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <div>
-                                                                <label for="address1">Address1</label>
-                                                                <textarea name="address1" id="address1" rows="3" class="form-control @error('address1') is-invalid @enderror"
-                                                                placeholder="" value="{{ old('address1') }}" autocomplete="off">{{ old('address1') ? old('address1') : $instance->address1 }}</textarea>
-                                                                <span class="d-none" style="color: red;" id="error-address1"></span>
-                                                                @error('address1')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <div>
-                                                                <label for="address2">Address2</label>
-                                                                <textarea name="address2" id="address2" rows="3" class="form-control @error('address2') is-invalid @enderror"
-                                                                    placeholder="" value="{{ old('address2') }}" autocomplete="off">{{ old('address2') ? old('address2') : $instance->address2 }}</textarea>
-                                                                <span class="d-none" style="color: red;" id="error-address2"></span>
-                                                                @error('address2')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <div>
-                                                                <label for="zip_code">Zip Code</label>
-                                                                <input type="text"
-                                                                class="form-control @error('zip_code') is-invalid @enderror"
-                                                                name="zip_code" id="zip_code" placeholder=""
-                                                                value="{{ old('zip_code') ? old('zip_code') : $instance->zip_code }}" autocomplete="off">
-                                                                <span class="d-none" style="color: red;" id="error-zip_code"></span>
-                                                                @error('zip_code')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3 col-md-6">
-                                                            <div>
-                                                                <label for="latitude">Latitude</label>
-                                                                <input type="text"
-                                                                class="form-control @error('latitude') is-invalid @enderror"
-                                                                name="latitude" id="latitude" placeholder=""
-                                                                value="{{ old('latitude') ? old('latitude') : $instance->latitude }}" autocomplete="off">
-                                                                <span class="d-none" style="color: red;" id="error-latitude"></span>
-                                                                @error('latitude')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                         <div class="col-md-3 col-md-6">
-                                                            <div>
-                                                                <label for="longitude">Longitude</label>
-                                                                <input type="text"
-                                                                class="form-control @error('longitude') is-invalid @enderror"
-                                                                name="longitude" id="longitude" placeholder=""
-                                                                value="{{ old('longitude') ? old('longitude') : $instance->longitude }}"
-                                                                autocomplete="off">
-                                                                <span class="d-none" style="color: red;" id="error-longitude"></span>
-                                                                @error('longitude')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <div class="card px-2 py-1">
-                                                            <div class="mb-3 search-box">
-                                                                <input type="text"
-                                                                class="form-control @error('place') is-invalid @enderror"
-                                                                name="place" id="search_place" placeholder="Cari Lokasi"
-                                                                value="{{ old('place') }}" autocomplete="off">
-                                                                <span class="d-none" style="color: red;" id="error-place"></span>
-                                                                @error('place')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                                <ul class="results" >
-                                                                    <li style="text-align: center;padding: 50% 0; max-height: 25hv;">Masukan Pencarian</li>
-                                                                </ul>
-                                                            </div>
-                                                            <div class="map-embed" id="map"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div class="mb-3">
+                                        <label for="instance_code">Instance Code</label>
+                                        <input type="text" class="form-control @error('instance_code') is-invalid @enderror" name="instance_code" id="instance_code" placeholder="" value="{{ old('instance_code') ? old('instance_code') : $instance->instance_code }}" autocomplete="off">
+                                        @error('instance_code')
+                                        <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="instance_name">Instance Name</label>
+                                        <input type="text" class="form-control @error('instance_name') is-invalid @enderror" name="instance_name" id="instance_name" placeholder="" value="{{ old('instance_name') ? old('instance_name') : $instance->instance_name }}" autocomplete="off">
+                                        @error('instance_name')
+                                        <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="push_url">Push Url</label>
+                                        <input type="text" class="form-control @error('inspush_urltance_name') is-invalid @enderror" name="push_url" id="push_url" placeholder="" value="{{ old('push_url') ? old('push_url') : $instance->push_url }}" autocomplete="off">
+                                        @error('push_url')
+                                        <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="username">Username</label>
+                                        <input type="text" class="form-control @error('username') is-invalid @enderror" name="username" id="username" placeholder="" value="{{ old('username') ? old('username') : $instance->username }}" autocomplete="off">
+                                        @error('username')
+                                        <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phone">Phone</label>
+                                        <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" placeholder="" value="{{ old('phone') ? old('phone') : $instance->phone }}" autocomplete="off">
+                                        @error('phone')
+                                        <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email">Email</label>
+                                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="" value="{{ old('email') ? old('email') : $instance->email }}" autocomplete="off">
+                                        @error('email')
+                                        <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3">
+                                        <div>
+                                            <label for="bussiness">Bussiness</label>
+                                            <select name="bussiness_id" id="bussiness"
+                                                class="form-control">
+                                                <option value="">-- Select --</option>
+                                                @foreach ($bussinesses as $bussiness)
+                                                    <option value="{{ $bussiness->id }}" {{ $instance->bussiness_id == $bussiness->id ? 'selected' : '' }}>
+                                                        {{ $bussiness->bussiness_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('provinsi_id')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password">Password</label>
+                                        <input type="password"
+                                            class="form-control @error('password') is-invalid @enderror"
+                                            name="password" id="password" placeholder=""
+                                            value="{{ old('password') }}" autocomplete="off">
+                                        <span class="d-none" style="color: red;" id="error-password"></span>
+                                        @error('password')
+                                            <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                        <div class="my-1">
+                                            <button class="btn btn-sm btn-primary" type="button"
+                                                onclick="generatePassword()">Generate Password</button>
+                                            <button class="btn btn-sm btn-secondary" type="button"
+                                                onclick="toggleShowPassword()"><i
+                                                    class="mdi mdi-eye"></i></button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h3 class="card-title text-bold">Data Operational time</h3>
-                                                </div>
-                                                <div class="card-body">
-                                                    @forelse ($operational_times as $i => $operational)
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <input type="hidden" name="operational_id[]" value="{{ $operational->id }}">
-                                                            <label for="sunday">Day</label>
-                                                            <input type="text"
-                                                                class="form-control @error('day.{{$i}}') is-invalid @enderror"
-                                                                name="day[]" value="{{ old("day.{$i}") ? old("day.{$i}") : $operational->day }}" placeholder=""
-                                                                readonly autocomplete="off">
-                                                            @error('day.{{$i}}')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <label for="opening_hour">Opening Hour</label>
-                                                            <input type="time" class="form-control @error('opening_hour.{{$i}}') is-invalid @enderror"
-                                                                name="opening_hour[]" placeholder=""
-                                                                value="{{ old("opening_hour.{$i}") ? old("opening_hour.{$i}") : $operational->open_hour }}" autocomplete="off">
-                                                            @error('opening_hour.{{$i}}')
-                                                            <span style="color: red;">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <label for="closing_hour">Closing Hour</label>
-                                                            <input type="time" class="form-control @error('closing_hour{{$i}}') is-invalid @enderror"
-                                                                name="closing_hour[]" placeholder=""
-                                                                value="{{ old("closing_hour.{$i}") ? old("closing_hour.{$i}") : $operational->closed_hour }}" autocomplete="off">
-                                                            @error('closing_hour{{$i}}')
-                                                            <span style="color: red;">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    @empty
-                                                        @foreach ($days as $i => $day)
-                                                        <div class="row">
-                                                            <input type="hidden" name="operational_id[]" value="">
-                                                            <div class="col-md-4">
-                                                                <label for="sunday">Day</label>
-                                                                <input type="text"
-                                                                    class="form-control @error('day.{{$i}}') is-invalid @enderror"
-                                                                    name="day[]" value="{{ $day }}" placeholder=""
-                                                                    readonly autocomplete="off">
-                                                                @error('day.{{$i}}')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="opening_hour">Opening Hour</label>
-                                                                <input type="time" class="form-control @error('opening_hour.{{$i}}') is-invalid @enderror"
-                                                                    name="opening_hour[]" placeholder=""
-                                                                    value="{{ old("opening_hour.{$i}") }}" autocomplete="off">
-                                                                @error('opening_hour.{{$i}}')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="closing_hour">Closing Hour</label>
-                                                                <input type="time" class="form-control @error('closing_hour{{$i}}') is-invalid @enderror"
-                                                                    name="closing_hour[]" placeholder=""
-                                                                    value="{{ old("closing_hour.{$i}") }}" autocomplete="off">
-                                                                @error('closing_hour{{$i}}')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        @endforeach
-                                                    @endforelse
-                                                </div>
-                                            </div>
+                                    <div class="mb-3">
+                                        <div>
+                                            <label for="provinsi">Provinsi</label>
+                                            <select name="province_id" id="provinsi"
+                                                class="form-control">
+                                                <option value="">-- Select --</option>
+                                                @foreach ($provinces as $province)
+                                                    <option value="{{ $province->id }}" {{ $province->id == $instance->province_id ? 'selected' : '' }}>
+                                                        {{ $province->provinsi }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('provinsi_id')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    <h3 class="card-title text-bold">Data Setting Device Alert Tollerance</h3>
-                                                </div>
-                                                <div class="card-body">
-                                                    <!-- Water Meter -->
-                                                    <div class="form-group">
-                                                        <h3 class="card-title text-bold">Water Meter</h3>
-                                                        @forelse ($setting_water_tolerances as $s => $water_tolerance)
-                                                        <div class="row">
-                                                            <input type="hidden" name="device_tolerance_id[]" value="{{ $water_tolerance->id }}">
-                                                            <input type="hidden" name="type_device[]" value="{{ $water_tolerance->type_device }}">
-                                                            <div class="col-md-4">
-                                                                <label for="temperatur_tolerance">Field</label>
-                                                                <input type="text" class="form-control" name="field_data[]" readonly value="{{ $water_tolerance->field_data }}">
-                                                                @error('field_data.{{ $s }}')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old("min_tolerance.{$s}") ? old("min_tolerance.{$s}") : $water_tolerance->min_tolerance }}">
-                                                                @error('min_tolerance.{{ $s }}')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old("max_tolerance.{$s}") ? old("max_tolerance.{$s}") : $water_tolerance->max_tolerance }}">
-                                                                @error('max_tolerance.{{ $s }}')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        @empty
-                                                            <!--Temperature -->
-                                                            <div class="row">
-                                                                <input type="hidden" name="device_tolerance_id[]" value="">
-                                                                <input type="hidden" name="type_device[]" value="water_meter">
-                                                                <div class="col-md-4">
-                                                                    <label for="temperatur_tolerance">Field</label>
-                                                                    <input type="text" class="form-control" name="field_data[]" readonly value="temperature">
-                                                                    @error('field_data.0')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label for="min_tolerance">Min Tolerance</label>
-                                                                    <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.0') }}">
-                                                                    @error('min_tolerance.0')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label for="max_tolerance">Max Tolerance</label>
-                                                                    <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.0') }}">
-                                                                    @error('max_tolerance.0')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Temperature -->
-                                                            <!-- Bateray -->
-                                                            <div class="row">
-                                                                <input type="hidden" name="device_tolerance_id[]" value="">
-                                                                <input type="hidden" name="type_device[]" value="water_meter">
-                                                                <div class="col-md-4">
-                                                                    <label for="temperatur_tolerance">Field</label>
-                                                                    <input type="text" class="form-control" name="field_data[]" readonly value="water_bateray">
-                                                                    @error('field_data.1')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label for="min_tolerance">Min Tolerance</label>
-                                                                    <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.1') }}">
-                                                                    @error('min_tolerance.1')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label for="max_tolerance">Max Tolerance</label>
-                                                                    <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.1') }}">
-                                                                    @error('max_tolerance.1')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Bateray -->
-                                                        @endforelse
-                                                    </div>
-                                                    <!-- End Water Meter -->
-                                                    <!-- Power Meter -->
-                                                    <hr>
-                                                    <div class="form-group mt-2">
-                                                        <h3 class="card-title text-bold">Power Meter</h3>
-                                                        @forelse ($setting_power_tolerances as $p => $power_tolerance)
-                                                        @php
-                                                            $p += 2;
-                                                        @endphp
-                                                        <div class="row">
-                                                            <input type="hidden" name="device_tolerance_id[]" value="{{ $power_tolerance->id }}">
-                                                            <input type="hidden" name="type_device[]" value="{{ $power_tolerance->type_device }}">
-                                                            <div class="col-md-4">
-                                                                <label for="temperatur_tolerance">Field</label>
-                                                                <input type="text" class="form-control" name="field_data[]" readonly value="{{ $power_tolerance->field_data }}">
-                                                                @error('field_data.{{ $p }}')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old("min_tolerance.{$p}") ? old("min_tolerance.{$p}") : $power_tolerance->min_tolerance }}">
-                                                                @error('min_tolerance.{{ $p }}')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old("max_tolerance.{$p}") ? old("max_tolerance.{$p}") : $power_tolerance->max_tolerance }}">
-                                                                @error('max_tolerance.{{ $p }}')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        @empty
-                                                         <!--Tegangan -->
-                                                         <div class="row">
-                                                            <input type="hidden" name="device_tolerance_id[]" value="">
-                                                            <input type="hidden" name="type_device[]" value="power_meter">
-                                                            <div class="col-md-4">
-                                                                <label for="tegangan">Field</label>
-                                                                <input type="text" class="form-control" name="field_data[]" readonly value="tegangan">
-                                                                @error('field_data.2')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.2') }}">
-                                                                @error('min_tolerance.2')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.2') }}">
-                                                                @error('max_tolerance.2')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <!-- End Tegangan -->
-                                                        <!-- Arus -->
-                                                        <div class="row">
-                                                            <input type="hidden" name="device_tolerance_id[]" value="">
-                                                            <input type="hidden" name="type_device[]" value="power_meter">
-                                                            <div class="col-md-4">
-                                                                <label for="arus">Field</label>
-                                                                <input type="text" class="form-control" name="field_data[]" readonly value="arus">
-                                                                @error('field_data.3')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.3') }}">
-                                                                @error('min_tolerance.3')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.3') }}">
-                                                                @error('max_tolerance.3')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <!-- End Arus -->
-                                                        @endforelse
-                                                    </div>
-                                                    <!-- End Power Meter -->
-                                                    <!-- Gas Meter -->
-                                                    <hr>
-                                                    <div class="form-group mt-2">
-                                                        <h3 class="card-title text-bold">Gas Meter</h3>
-                                                        @forelse ($setting_gas_tolerances as $g => $gas_tolerance)
-                                                            @php
-                                                                $g += 4;
-                                                            @endphp
-                                                            <div class="row">
-                                                                <input type="hidden" name="device_tolerance_id[]" value="{{ $gas_tolerance->id }}">
-                                                                <input type="hidden" name="type_device[]" value="{{ $gas_tolerance->type_device }}">
-                                                                <div class="col-md-4">
-                                                                    <label for="temperatur_tolerance">Field</label>
-                                                                    <input type="text" class="form-control" name="field_data[]" readonly value="{{ $gas_tolerance->field_data }}">
-                                                                    @error('field_data.{{ $g }}')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label for="min_tolerance">Min Tolerance</label>
-                                                                    <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old("min_tolerance.{$g}") ? old("min_tolerance.{$g}") : $gas_tolerance->min_tolerance }}">
-                                                                    @error('min_tolerance.{{ $g }}')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label for="max_tolerance">Max Tolerance</label>
-                                                                    <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old("max_tolerance.{$g}") ? old("max_tolerance.{$g}") : $gas_tolerance->max_tolerance }}">
-                                                                    @error('max_tolerance.{{ $g }}')
-                                                                    <span style="color: red;">{{ $message }}</span>
-                                                                    @enderror
-                                                                </div>
-                                                            </div>
-                                                        @empty
-                                                          <!--Purchase Remain -->
-                                                          <div class="row">
-                                                            <input type="hidden" name="device_tolerance_id[]" value="">
-                                                            <input type="hidden" name="type_device[]" value="gas_meter">
-                                                            <div class="col-md-4">
-                                                                <label for="tegangan">Field</label>
-                                                                <input type="text" class="form-control" name="field_data[]" readonly value="purchase_remain">
-                                                                @error('field_data.4')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.4') }}">
-                                                                @error('min_tolerance.4')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.4') }}">
-                                                                @error('max_tolerance.4')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <!-- End Purchase remain -->
-                                                        <!-- Bateray-->
-                                                        <div class="row">
-                                                            <input type="hidden" name="device_tolerance_id[]" value="">
-                                                            <input type="hidden" name="type_device[]" value="gas_meter">
-                                                            <div class="col-md-4">
-                                                                <label for="arus">Field</label>
-                                                                <input type="text" class="form-control" name="field_data[]" readonly value="gas_bateray">
-                                                                @error('field_data.5')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="min_tolerance">Min Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="min_tolerance[]" value="{{ old('min_tolerance.5') }}">
-                                                                @error('min_tolerance.5')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <label for="max_tolerance">Max Tolerance</label>
-                                                                <input type="number" step="any" class="form-control" name="max_tolerance[]" value="{{ old('max_tolerance.5') }}">
-                                                                @error('max_tolerance.5')
-                                                                <span style="color: red;">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-                                                        </div>
-                                                        <!-- End Bateray -->
-                                                        @endforelse
-                                                    </div>
-                                                    <!-- End Gas Meter -->
-                                                </div>
-                                            </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div>
+                                            <label for="kota">Kab/Kota</label>
+                                            <select name="city_id" id="kota" class="form-control">
+                                                <option value="">-- Select --</option>
+                                                @foreach ($city as $item)
+                                                <option value="{{ $item->id }}" {{ $item->id == $instance->city_id ? 'selected' : '' }}>{{ $item->kabupaten_kota }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="d-none" style="color: red;" id="error-kota"></span>
+                                            @error('kota')
+                                            <span style="color: red;">{{ $message }}</span>
+                                            @enderror
                                         </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div>
+                                            <label for="kecamatan">Kecamatan</label>
+                                            <select name="district_id" id="kecamatan" class="form-control">
+                                                <option value="">-- Select --</option>
+                                                @foreach ($district as $kecamatan)
+                                                <option value="{{ $kecamatan->id }}" {{ $kecamatan->id == $instance->district_id ? 'selected' : '' }}>{{ $kecamatan->kecamatan }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="d-none" style="color: red;" id="error-kecamatan"></span>
+                                            @error('kecamatan')
+                                            <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div>
+                                            <label for="kelurahan">Kelurahan</label>
+                                            <select name="village_id" id="kelurahan" class="form-control">
+                                                <option value="">-- Select --</option>
+                                                @foreach ($village as $kelurahan)
+                                                <option value="{{ $kelurahan->id }}" {{ $kelurahan->id == $instance->village_id ? 'selected' : '' }}>{{ $kelurahan->kelurahan }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="d-none" style="color: red;" id="error-kelurahan"></span>
+                                            @error('kelurahan')
+                                            <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div>
+                                            <label for="address1">Address1</label>
+                                            <textarea name="address1" id="address1" rows="3" class="form-control @error('address1') is-invalid @enderror"
+                                                placeholder="" value="{{ old('address1') }}" autocomplete="off">{{ old('address1') ? old('address1') : $instance->address1 }}</textarea>
+                                            <span class="d-none" style="color: red;" id="error-address1"></span>
+                                            @error('address1')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div>
+                                            <label for="address2">Address2</label>
+                                            <textarea name="address2" id="address2" rows="3" class="form-control @error('address2') is-invalid @enderror"
+                                                placeholder="" value="{{ old('address2') }}" autocomplete="off">{{ old('address2') ? old('address2') : $instance->address2 }}</textarea>
+                                            <span class="d-none" style="color: red;" id="error-address2"></span>
+                                            @error('address2')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div>
+                                            <label for="zip_code">Zip Code</label>
+                                            <input type="text"
+                                                class="form-control @error('zip_code') is-invalid @enderror"
+                                                name="zip_code" id="zip_code" placeholder=""
+                                                value="{{ old('zip_code') ? old('zip_code') : $instance->zip_code }}" autocomplete="off">
+                                            <span class="d-none" style="color: red;" id="error-zip_code"></span>
+                                            @error('zip_code')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                     <div class="mb-3">
+                                        <div>
+                                            <label for="latitude">Latitude</label>
+                                            <input type="text"
+                                                class="form-control @error('latitude') is-invalid @enderror"
+                                                name="latitude" id="latitude" placeholder=""
+                                                value="{{ old('latitude') ? old('latitude') : $instance->latitude }}" autocomplete="off">
+                                            <span class="d-none" style="color: red;" id="error-latitude"></span>
+                                            @error('latitude')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div>
+                                            <label for="longitude">Longitude</label>
+                                            <input type="text"
+                                                class="form-control @error('longitude') is-invalid @enderror"
+                                                name="longitude" id="longitude" placeholder=""
+                                                value="{{ old('longitude') ? old('longitude') : $instance->longitude }}" autocomplete="off">
+                                            <span class="d-none" style="color: red;" id="error-longitude"></span>
+                                            @error('longitude')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="card px-2 py-1">
+                                        <div class="mb-3 search-box">
+                                            <input type="text"
+                                                class="form-control @error('place') is-invalid @enderror"
+                                                name="place" id="search_place" placeholder="Cari Lokasi"
+                                                value="{{ old('place') }}" autocomplete="off">
+                                            <span class="d-none" style="color: red;" id="error-place"></span>
+                                            @error('place')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                            <ul class="results" >
+                                                <li style="text-align: center;padding: 50% 0; max-height: 25hv;">Masukan Pencarian</li>
+                                            </ul>
+                                        </div>
+                                        <div class="map-embed" id="map"></div>
                                     </div>
                                 </div>
                             </div>

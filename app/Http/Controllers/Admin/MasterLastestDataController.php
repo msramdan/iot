@@ -11,7 +11,7 @@ use App\Models\MasterLatestDataGasMeter;
 use App\Models\ParsedWaterMater;
 use App\Models\ParsedPowerMater;
 use App\Models\ParsedGasMater;
-use App\Models\DailyUsageWaterMeter;
+use App\Models\DailyUsageDevice;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
@@ -120,15 +120,15 @@ class MasterLastestDataController extends Controller
         $device_id = $id;
 
         $parsed_data = $parsed_data
-            ->orderBy('parsed_water_meter.id', 'desc')
+            ->orderBy('parsed_water_meter.id', 'asc')
             ->whereNull('status_valve')->get();
 
-        $dailyUsages = DailyUsageWaterMeter::where('device_id', $id)->whereBetween('created_at', [$start_dates, $end_dates])->get();
+        $dailyUsages = DailyUsageDevice::where('device_id', $id)->where('device_type', 'water_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
         $parsed_dates = [];
-        $daily_usage_dates = [];
         $baterai_datas = [];
         $temperature_datas = [];
         $total_flow_datas = [];
+        $daily_usage_dates = [];
         $daily_usage_datas = [];
 
         foreach ($parsed_data as $data) {
@@ -272,8 +272,11 @@ class MasterLastestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'desc')
+        $parsed_data = $parsed_data->orderBy('id', 'asc')
             ->whereNull('status_switch')->get();
+
+        $dailyUsages = DailyUsageDevice::where('device_id', $id)
+        ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
         $parsed_dates = [];
         $tegangan_datas = [];
@@ -282,6 +285,8 @@ class MasterLastestDataController extends Controller
         $active_power_datas = [];
         $power_factor_datas = [];
         $total_energy_datas = [];
+        $daily_usage_dates = [];
+        $daily_usage_datas = [];
 
         foreach ($parsed_data as $data) {
             $dates = strtotime($data->created_at);
@@ -293,6 +298,11 @@ class MasterLastestDataController extends Controller
             array_push($active_power_datas, floatval($data->active_power));
             array_push($power_factor_datas, floatval($data->power_factor));
             array_push($total_energy_datas, floatval($data->total_energy));
+        }
+
+        foreach ($dailyUsages as $daily) {
+            array_push($daily_usage_dates, strtotime($daily->date));
+            array_push($daily_usage_datas, $daily->usage);
         }
 
         return view('admin.device.latest-master-data.power-meter.detail', compact(
@@ -308,7 +318,10 @@ class MasterLastestDataController extends Controller
             'frekuensi_datas',
             'active_power_datas',
             'power_factor_datas',
-            'total_energy_datas'
+            'total_energy_datas',
+            'dailyUsages',
+            'daily_usage_dates',
+            'daily_usage_datas'
         ));
     }
 
@@ -425,12 +438,18 @@ class MasterLastestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'desc')->whereNotNull('gas_consumption')->get();
+        $parsed_data = $parsed_data->orderBy('id', 'asc')->whereNotNull('gas_consumption')->get();
+
+        $dailyUsages = DailyUsageDevice::where('device_id', $id)
+        ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
+
         $parsed_dates = [];
         $gas_consumtion_datas = [];
         $gas_total_purchase_datas = [];
         $purchase_remain_datas = [];
         $balance_of_bateray_datas = [];
+        $daily_usage_dates = [];
+        $daily_usage_datas = [];
 
         foreach ($parsed_data as $data) {
             $dates = strtotime($data->created_at);
@@ -442,6 +461,10 @@ class MasterLastestDataController extends Controller
             array_push($balance_of_bateray_datas, floatval($data->balance_of_battery));
         }
 
+        foreach ($dailyUsages as $daily) {
+            array_push($daily_usage_dates, strtotime($daily->date));
+            array_push($daily_usage_datas, $daily->usage);
+        }
 
         return view('admin.device.latest-master-data.gas-meter.detail', compact(
             'parsed_data',
@@ -454,7 +477,10 @@ class MasterLastestDataController extends Controller
             'gas_consumtion_datas',
             'gas_total_purchase_datas',
             'purchase_remain_datas',
-            'balance_of_bateray_datas'
+            'balance_of_bateray_datas',
+            'dailyUsages',
+            'daily_usage_dates',
+            'daily_usage_datas'
         ));
     }
 

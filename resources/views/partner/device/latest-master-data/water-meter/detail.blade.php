@@ -153,9 +153,11 @@
                                         </table>
                                     </div>
                                 </div>
-                                <figure class="highcharts-figure">
-                                    <div id="chart-container0"></div>
-                                </figure>
+                                <div class="col-md-8">
+                                    <figure class="highcharts-figure">
+                                        <div id="chart-container0"></div>
+                                    </figure>
+                                </div>
                             </div>
                         </div>
                     </div>

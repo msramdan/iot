@@ -172,7 +172,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <form method="get"
-                                        action="{{ url('/panel/master-water-meter/detail/' . $device_id) }}"
+                                        action="{{ url('/panel/master-gas-meter/detail/' . $device_id) }}"
                                         id="form-date">
                                         <div class="input-group mb-4">
                                             <input type="text" class="form-control border-0 dash-filter-picker shadow"
@@ -191,6 +191,37 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                        <table id="" class="table table-sm table-bordered ">
+                                            <thead>
+                                                <tr>
+                                                    <th>Usage</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($dailyUsages as $data)
+                                                    <tr>
+                                                        <td style="width: 50%">{{ $data->usage }} L</td>
+                                                        <td>{{ date('d/m/Y', strtotime($data->date)) }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <figure class="highcharts-figure">
+                                        <div id="chart-container0"></div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4">
@@ -333,6 +364,61 @@
         var dates = "{{ json_encode($parsed_dates) }}";
         dates = JSON.parse(dates).map((date) => {
             return moment.unix(date).format('DD/MM/YYYY HH:mm')
+        });
+    </script>
+    <script>
+        var daily_dates = "{{ json_encode($daily_usage_dates) }}";
+        var daily_usage = "{{ json_encode($daily_usage_datas) }}";
+        daily_dates = JSON.parse(daily_dates).map((daily_date) => {
+            return moment.unix(daily_date).format('DD/MM/YYYY')
+        });
+        Highcharts.chart('chart-container0', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                align: 'center',
+                text: 'Daily Usage'
+            },
+            subtitle: {
+                text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
+            },
+            accessibility: {
+                announceNewData: {
+                    enabled: true
+                }
+            },
+            xAxis: {
+                title: {
+                    text: 'Dates'
+                },
+                categories: daily_dates
+            },
+            yAxis: {
+                title: {
+                    text: 'Usage'
+                }
+
+            },
+            legend: {
+                enabled: true
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                }
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+            },
+
+            series: [{
+                name: "Usage",
+                colorByPoint: true,
+                data: JSON.parse(daily_usage)
+            }],
         });
     </script>
     <script>

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DailyUsageWaterMeter extends Model
+class DailyUsageDevice extends Model
 {
     use HasFactory;
 
