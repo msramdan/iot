@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Gateway;
 use Illuminate\Http\Request;
 use App\Models\Rawdata;
 use Yajra\DataTables\Facades\DataTables;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+
 
 class GatewayController extends Controller
 {
@@ -20,12 +22,9 @@ class GatewayController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $query = Rawdata::groupBy('gwid')->orderBy('id', 'desc')->get();
+            $query = Gateway::all();
             return Datatables::of($query)
                 ->addIndexColumn()
-                ->addColumn('gateway', function($row){
-                    return $row->gwid;
-                })
                 ->toJson();
         }
         return view('admin.gateway.index');

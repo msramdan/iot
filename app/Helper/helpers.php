@@ -317,6 +317,24 @@ function littleEndian($str)
     return bin2hex(implode(array_reverse(str_split(hex2bin($str)))));
 }
 
+function insertGateway($gwid, $time)
+{
+    $gateway = DB::table('gateway')
+        ->where('gwid', '=', $gwid)
+        ->count();
+    if ($gateway < 1) {
+        DB::table('gateway')->insert([
+            'gwid' => $gwid,
+            'created_at' => $time,
+            'updated_at' => $time,
+        ]);
+    } else {
+        DB::table('gateway')
+            ->where('gwid', $gwid)
+            ->update(['updated_at' => $time]);
+    }
+}
+
 
 function handleWaterMeter($device_id, $request)
 {
@@ -325,6 +343,7 @@ function handleWaterMeter($device_id, $request)
     $frameId = substr($hex, 0, 2);
 
     if ($frameId == "00" || $frameId == "10" || $frameId == "71" || $frameId == "95" || $frameId == "21") {
+
         $save = Rawdata::create([
             'devEUI' => $request->devEUI,
             'appID'  => $request->appID,
@@ -346,6 +365,7 @@ function handleWaterMeter($device_id, $request)
             'payload_data' => json_encode($request->all()),
         ]);
         $lastInsertedId = $save->id;
+        insertGateway($request->data['gwid'], $save->updated_at);
         if ($frameId == "00") {
             $uplinkInterval = hexdec(littleEndian(substr($hex, 2, 4)));
             $batraiStatus = hexdec(littleEndian(substr($hex, 6, 2)));
@@ -494,6 +514,7 @@ function handleWaterMeter($device_id, $request)
             'type_payload'  => 'Alert',
         ]);
         $lastInsertedId = $save->id;
+        insertGateway($request->data['gwid'], $save->updated_at);
 
         // get list alert
         $listFixedError = array(
@@ -594,6 +615,7 @@ function handlePowerMeter($device_id, $request)
                 'payload_data' => json_encode($request->all()),
             ]);
             $lastInsertedId = $save->id;
+            insertGateway($request->data['gwid'], $save->updated_at);
         }
         if ($idenfikasi == "02000006") {
             $tegangan = littleEndian(substr($hex, 28, 4)) * 0.1;
@@ -748,6 +770,7 @@ function handlePowerMeter($device_id, $request)
             'payload_data' => json_encode($request->all()),
         ]);
         $lastInsertedId = $save->id;
+        insertGateway($request->data['gwid'], $save->updated_at);
         $temp = DB::table('temp_status_switch')->where('dev_eui', $request->devEUI)->first();
         if ($hex == '9c00') {
             $params = [
@@ -846,6 +869,7 @@ function handleGasMeter($device_id, $request)
             'payload_data' => json_encode($request->all()),
             'type_payload'  => $type_payload,
         ]);
+        insertGateway($request->data['gwid'], $save->updated_at);
         if ($command == '8400') {
             $lastInsertedId = $save->id;
             $temp = DB::table('temp_status_valve_gas_meter')->where('dev_eui', $request->devEUI)->first();
@@ -887,8 +911,8 @@ function handleGasMeter($device_id, $request)
             'payload_data' => json_encode($request->all()),
         ]);
     }
-
     $lastInsertedId = $save->id;
+    insertGateway($request->data['gwid'], $save->updated_at);
 
     $bitError1 = array(
         0 => 'Valve Close',
