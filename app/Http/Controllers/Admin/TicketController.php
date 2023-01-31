@@ -20,13 +20,22 @@ class TicketController extends Controller
     public function index()
     {
         $ticket = Ticket::with('created_by')->orderBy('id', 'desc')->get();
-        if(request()->ajax()){
+        if (request()->ajax()) {
             return DataTables::of($ticket)
                 ->addIndexColumn()
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d M Y H:i:s');
                 })
-                ->addColumn('action', 'admin.ticket._action')
+                ->addColumn('description', function ($row) {
+                    $arr =  json_decode($row->description);
+                    $output = '';
+                    foreach ($arr as $value) {
+                        $output .= "<li>" . $value . "</li>";
+                    }
+                    return $output;
+                })
+                ->addColumn('action', 'admin.ticket._action', 'description')
+                ->rawColumns(['description', 'action', 'admin.ticket._action'])
                 ->toJson();
         }
 
@@ -59,20 +68,20 @@ class TicketController extends Controller
             'status' => 'required',
         ]);
 
-        if(request()->has('image_1')){
+        if (request()->has('image_1')) {
             $attr['image_1'] = request('image_1')->store('image');
         }
 
-        if(request()->has('image_2')){
+        if (request()->has('image_2')) {
             $attr['image_2'] = request('image_2')->store('image');
         }
 
         $attr['is_device'] = 0;
 
-        try{
+        try {
             Ticket::create($attr);
             Alert::toast('Ticket successfully created', 'success');
-        }catch(Exception $err){
+        } catch (Exception $err) {
             Alert::toast('Failed to save records', 'error');
         }
 
@@ -98,7 +107,7 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-       return view('admin.ticket.edit', compact('ticket'));
+        return view('admin.ticket.edit', compact('ticket'));
     }
 
     /**
@@ -144,10 +153,10 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
-        try{
+        try {
             $ticket = Ticket::find($id);
-            if(!empty($ticket->image_1)) Storage::delete($ticket->image_1);
-            if(!empty($ticket->image_2)) Storage::delete($ticket->image_2);
+            if (!empty($ticket->image_1)) Storage::delete($ticket->image_1);
+            if (!empty($ticket->image_2)) Storage::delete($ticket->image_2);
             $ticket->delete();
             Alert::toast('Ticket successfully deleted', 'success');
         } catch (Exception $err) {
