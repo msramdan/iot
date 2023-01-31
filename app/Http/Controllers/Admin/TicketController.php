@@ -26,13 +26,19 @@ class TicketController extends Controller
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('d M Y H:i:s');
                 })
+
                 ->addColumn('description', function ($row) {
-                    $arr =  json_decode($row->description);
-                    $output = '';
-                    foreach ($arr as $value) {
-                        $output .= "<li>" . $value . "</li>";
+                    $result = json_decode($row->description);
+                    if (json_last_error() === JSON_ERROR_NONE) {
+                        $arr =  json_decode($row->description);
+                        $output = '';
+                        foreach ($arr as $value) {
+                            $output .= "<li>" . $value . "</li>";
+                        }
+                        return $output;
+                    } else {
+                        return $row->description;
                     }
-                    return $output;
                 })
                 ->addColumn('action', 'admin.ticket._action', 'description')
                 ->rawColumns(['description', 'action', 'admin.ticket._action'])
