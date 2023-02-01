@@ -40,13 +40,7 @@ class ClusterController extends Controller
         $attr = request()->validate([
             'kode' => 'required',
             'name' => 'required',
-            'instance_id' => 'required',
-            'xpercentage_water' => 'required',
-            'yfixed_cost_water' => 'required',
-            'xpercentage_power' => 'required',
-            'yfixed_cost_power' => 'required',
-            'xpercentage_gas' => 'required',
-            'yfixed_cost_gas' => 'required'
+            'instance_id' => 'required'
         ]);
 
         $attr['subinstance_id'] = $subinstance->id;
@@ -72,18 +66,17 @@ class ClusterController extends Controller
     {
         $attr = request()->validate([
             'kode' => 'required',
-            'name' => 'required',
-            'xpercentage_water' => 'required',
-            'yfixed_cost_water' => 'required',
-            'xpercentage_power' => 'required',
-            'yfixed_cost_power' => 'required',
-            'xpercentage_gas' => 'required',
-            'yfixed_cost_gas' => 'required'
+            'name' => 'required'
         ]);
 
         try {
             Cluster::where(['subinstance_id' => $subinstanceId, 'id' => $id])->update($attr);
-            Alert::toast('Cluster successfully updated', 'success');
+
+            return response()->json([
+                'message' => 'Cluster successfully updated',
+                'type' => 'success',
+                'data' => ''
+            ]);
         } catch (Exception $err) {
             return $err;
         }

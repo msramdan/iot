@@ -1,127 +1,152 @@
 @extends('layouts.master')
 @section('title', 'Data Cluster')
 @section('content')
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Cluster</h4>
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Cluster</h4>
 
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Cluster</li>
-                        </ol>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-lg-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h6>Create Cluster</h6>
-                    </div>
-                    <div class="card-body">
-                        <form action="{{ route('subinstance.cluster.store', $subinstance->id) }}" method="post" id="create">
-                            @csrf
-                            <input type="hidden" name="subinstance_id" value="{{ $subinstance->id }}">
-                            <input type="hidden" name="instance_id" value="{{ $subinstance->instance_id }}">
-                            <div class="mb-3">
-                                <label for="">Kode</label>
-                                <input type="text" name="kode" class="form-control" id="kode" placeholder="Nama Cluster" value="{{ $kode }}" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="">Name</label>
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Nama Cluster" >
-                            </div>
-                           <div class="form-group">
-                            <a href="{{ route('instance.index') }}" class="btn btn-warning"><i class="mdi mdi-arrow-left-thin"></i> Back</a>
-                            <button type="submit"  class="btn btn-primary" id="save-btn"><i class="mdi mdi-content-save"></i>
-                                SIMPAN</button>
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Cluster</li>
+                            </ol>
                         </div>
-                        </form>
+
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-8">
-                <div class="card">
-                    <div class="card-header">
-
+            <div class="row">
+                <div class="col-12 col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Create Cluster</h6>
+                        </div>
+                        <div class="card-body">
+                            <form action="{{ route('subinstance.cluster.store', $subinstance->id) }}" method="post"
+                                id="create">
+                                @csrf
+                                <input type="hidden" name="subinstance_id" value="{{ $subinstance->id }}">
+                                <input type="hidden" name="instance_id" value="{{ $subinstance->instance_id }}">
+                                <div class="mb-3">
+                                    <label for="">Kode</label>
+                                    <input type="text" name="kode" class="form-control" id="kode"
+                                        placeholder="Nama Cluster" value="{{ $kode }}" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="">Name</label>
+                                    <input type="text" name="name" class="form-control" id="name"
+                                        placeholder="Nama Cluster" required>
+                                </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        {{-- <div class="row">
-                            <div class="col-md-3">
-                                <form method="get">
-                                    @csrf
-                                    <div class="input-group mb-4">
-                                        <input type="text" class="form-control border-0 dash-filter-picker shadow"
-                                            data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y"
-                                            data-deafult-date="01 Jan 2022 to 31 Jan 2022" value=""
-                                            id="filter_date_merchant" />
-                                        <div class="input-group-text bg-primary border-primary text-white">
-                                            <i class="ri-calendar-2-line"></i>
-                                        </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Variable For Billing Data</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <h3 class="card-title text-bold">Water Meter</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="min_tolerance">Persentage (X)</label>
+                                        <input type="number" step="any" class="form-control" name="xpercentage_water"
+                                            value="" required>
                                     </div>
-                                    <!--end row-->
-                                </form>
+                                    <div class="col-md-6">
+                                        <label for="max_tolerance">Fixed Cost (Y)</label>
+                                        <input type="number" step="any" class="form-control" name="yfixed_cost_water"
+                                            value="" required>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <form method="get">
-                                    @csrf
-                                    <div class="input-group mb-4">
-                                        <select name="kabkot_id" id="kota" class="form-control">
-                                            <option value="">-- Filter By City --</option>
+                            <hr>
+                            <div class="form-group">
+                                <h3 class="card-title text-bold">Power Meter</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="min_tolerance">Persentage (X)</label>
+                                        <input type="number" step="any" class="form-control" name="xpercentage_power"
+                                            value="" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="max_tolerance">Fixed Cost (Y)</label>
+                                        <input type="number" step="any" class="form-control" name="yfixed_cost_power"
+                                            value="" required>
+                                    </div>
+                                </div>
+                            </div>
 
-                                        </select>
+                            <hr>
+                            <div class="form-group mb-2">
+                                <h3 class="card-title text-bold">Gas Meter</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="min_tolerance">Persentage (X)</label>
+                                        <input type="number" step="any" class="form-control" name="xpercentage_gas"
+                                            value="" required>
                                     </div>
-                                    <!--end row-->
-                                </form>
+                                    <div class="col-md-6">
+                                        <label for="max_tolerance">Fixed Cost (Y)</label>
+                                        <input type="number" step="any" class="form-control" name="yfixed_cost_gas"
+                                            value="" required>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <form method="get">
-                                    @csrf
-                                    <div class="input-group mb-4">
-                                        <select name="kabkot_id" id="kota" class="form-control">
-                                            <option value="">-- Filter By MCC --</option>
+                            <div class="form-group">
+                                <a href="{{ route('instance.index') }}" class="btn btn-warning"><i
+                                        class="mdi mdi-arrow-left-thin"></i> Back</a>
+                                <button type="submit" class="btn btn-primary" id="save-btn"><i
+                                        class="mdi mdi-content-save"></i>
+                                    SIMPAN</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
 
-                                        </select>
-                                    </div>
-                                    <!--end row-->
-                                </form>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm" id="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Kode</th>
+                                            <th>Name</th>
+                                            <th>Water Meter (X)</th>
+                                            <th>Water Meter (Y)</th>
+                                            <th>Power Meter (X)</th>
+                                            <th>Power Meter (Y)</th>
+                                            <th>Gas Meter (X)</th>
+                                            <th>Gas Meter (Y)</th>
+                                            @canany(['cluster_show', 'cluster_update', 'cluster_delete'])
+                                                <th>Action</th>
+                                            @endcanany
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
-                        </div> --}}
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-sm" id="dataTable">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Kode</th>
-                                        <th>Name</th>
-                                        @canany(['cluster_show', 'cluster_update', 'cluster_delete'])
-                                        <th>Action</th>
-                                        @endcanany
-                                    </tr>
-                                </thead>
-                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-</div>
+    </div>
 @endsection
 @push('js')
-<script>
-    let base_url = "{{ url('/') }}";
+    <script>
+        let base_url = "{{ url('/') }}";
 
         const action =
-            '{{ auth()->user()->can('cluster_update') || auth()->user()->can('cluster_delete')? 'yes yes yes': '' }}'
+            '{{ auth()->user()->can('cluster_update') ||auth()->user()->can('cluster_delete')? 'yes yes yes': '' }}'
         let columns = [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
@@ -133,6 +158,24 @@
             },
             {
                 data: 'name',
+            },
+            {
+                data: 'xpercentage_water',
+            },
+            {
+                data: 'yfixed_cost_water',
+            },
+            {
+                data: 'xpercentage_power',
+            },
+            {
+                data: 'yfixed_cost_power',
+            },
+            {
+                data: 'xpercentage_gas',
+            },
+            {
+                data: 'yfixed_cost_gas',
             },
         ]
 
@@ -158,18 +201,18 @@
             confirm("Are your sure?");
             const url = $(event.target).attr('action');
 
-             $.ajax({
+            $.ajax({
                 url,
                 method: 'POST',
                 data: $(event.target).serialize(),
-                success: function(res){
+                success: function(res) {
                     toastMixin.fire({
                         title: res.message,
                         icon: res.type
                     });
                     table.ajax.reload()
                 },
-                error: function(err){
+                error: function(err) {
                     console.log(err)
                     toastMixin.fire({
                         title: 'Failed to delete cluster',
@@ -180,20 +223,20 @@
         }
 
 
-        $('form#create').submit(function(){
+        $('form#create').submit(function() {
             event.preventDefault();
 
             const data = $(this).serialize()
 
             $.ajax({
-                beforeSend: function(){
+                beforeSend: function() {
                     $('#save-btn').html('Loading...')
                     $('#save-btn').prop('disabled', true)
                 },
                 url: $(this).attr('action'),
                 method: 'POST',
                 data,
-                success: function(res){
+                success: function(res) {
                     toastMixin.fire({
                         title: res.message,
                         icon: res.type
@@ -205,7 +248,7 @@
                     $('#save-btn').prop('disabled', false)
                     $('#kode').val(res.kode);
                 },
-                error: function(err){
+                error: function(err) {
                     toastMixin.fire({
                         title: err.responseJSON.message,
                         icon: 'error'
@@ -216,7 +259,5 @@
                 }
             })
         })
-
-
-</script>
+    </script>
 @endpush
