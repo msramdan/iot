@@ -30,7 +30,7 @@ if (!function_exists('set_active')) {
 function setting_web()
 {
     $setting = DB::table('setting_app')->first();
-    return $setting->app_name;
+    return $setting;
 }
 
 function set_show($uri)

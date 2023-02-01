@@ -35,7 +35,7 @@ class SettingAppController extends Controller
                 'address' => 'required|string',
                 'token_callback' => 'required|string',
                 'endpoint_purchase_code' => 'required|string',
-                'command_link' => 'required',
+                'endpoint_nms' => 'required',
                 'is_notif_tele' => 'required'
             ]
         );
@@ -73,7 +73,7 @@ class SettingAppController extends Controller
                 'address' => $request->address,
                 'token_callback' => $request->token_callback,
                 'endpoint_purchase_code' => $request->endpoint_purchase_code,
-                'command_link' => $request->command_link,
+                'endpoint_nms' => $request->endpoint_nms,
                 'is_notif_tele' => $request->is_notif_tele
             ]);
             if ($setting_app) {

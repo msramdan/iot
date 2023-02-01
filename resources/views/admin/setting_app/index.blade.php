@@ -117,12 +117,12 @@
                                             @enderror
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label" for="token_callbacck">Command Link</label>
-                                            <input class="form-control @error('command_link') is-invalid @enderror"
-                                                id="command_link" type="text"
-                                                value="{{ old('command_link') ? old('command_link') : $setting_app->command_link }}"
-                                                placeholder="" name="command_link" autocomplete="off">
-                                            @error('command_link')
+                                            <label class="form-label" for="token_callbacck">Endpoint NMS</label>
+                                            <input class="form-control @error('endpoint_nms') is-invalid @enderror"
+                                                id="endpoint_nms" type="text"
+                                                value="{{ old('endpoint_nms') ? old('endpoint_nms') : $setting_app->endpoint_nms }}"
+                                                placeholder="" name="endpoint_nms" autocomplete="off">
+                                            @error('endpoint_nms')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>

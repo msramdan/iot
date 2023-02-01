@@ -512,9 +512,9 @@ class MasterLastestDataController extends Controller
     // commandlink water meter
     public function checkValve(Request $request)
     {
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => 'IQ==',
                 "confirmed" => true,
@@ -524,9 +524,9 @@ class MasterLastestDataController extends Controller
 
     public function openValve(Request $request)
     {
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => 'IQE=',
                 "confirmed" => true,
@@ -536,9 +536,9 @@ class MasterLastestDataController extends Controller
 
     public function closeValve(Request $request)
     {
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => 'IYE=',
                 "confirmed" => true,
@@ -555,9 +555,9 @@ class MasterLastestDataController extends Controller
         $bin = hex2bin($data);       // convert the hex values to binary data stored as a PHP string
         $payload = base64_encode($bin);
 
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => $payload,
                 "confirmed" => true,
@@ -578,9 +578,9 @@ class MasterLastestDataController extends Controller
         $bin = hex2bin($data);       // convert the hex values to binary data stored as a PHP string
         $payload = base64_encode($bin);
 
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => $payload,
                 "confirmed" => true,
@@ -596,9 +596,9 @@ class MasterLastestDataController extends Controller
 
     public function validationSwitch(Request $request)
     {
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => 'EQT/BQAE',
                 "confirmed" => true,
@@ -627,9 +627,9 @@ class MasterLastestDataController extends Controller
         $hexData = $step1 . '' . $code . "16";          // and much more hex values as string as in your example
         $bin = hex2bin($hexData);       // convert the hex values to binary data stored as a PHP string
         $payload = base64_encode($bin);
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => $payload,
                 "confirmed" => true,
@@ -663,9 +663,9 @@ class MasterLastestDataController extends Controller
         $hexData = $step1 . '' . $code . "16";
         $bin = hex2bin($hexData);       // convert the hex values to binary data stored as a PHP string
         $payload = base64_encode($bin);
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => $payload,
                 "confirmed" => true,
@@ -750,9 +750,9 @@ class MasterLastestDataController extends Controller
         $hexData = $payload . '' . $code . "16";
         $bin = hex2bin($hexData);
         $payloadData = base64_encode($bin);
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => $payloadData,
                 "confirmed" => true,

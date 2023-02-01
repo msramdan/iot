@@ -138,10 +138,8 @@ class DeviceController extends Controller
 
         try {
             $subnet = Subnet::Where('id', $request->subnet_id)->first();
-
-            $url_endpoint = 'https://wspiot.xyz/openapi/device/create';
-
-            $api_token   = env('APITOKEN', 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c=');
+            $url_endpoint = setting_web()->endpoint_nms . '/openapi/device/create';
+            $api_token   = env('APITOKEN', setting_web()->token_callback);
 
             $payload = [
                 "devEUI" => $request->devEUI,
@@ -290,10 +288,10 @@ class DeviceController extends Controller
         $attr = request()->validate($rules);
 
         try {
-            $url_update = 'https://wspiot.xyz/openapi/device/update';
-            $url_check_device = 'https://wspiot.xyz/openapi/device/status?devEUI=' . $device->devEUI;
+            $url_update = setting_web()->endpoint_nms . '/openapi/device/update';
+            $url_check_device = setting_web()->endpoint_nms . '/openapi/device/status?devEUI=' . $device->devEUI;
 
-            $api_token   = env('APITOKEN', 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c=');
+            $api_token   = env('APITOKEN', setting_web()->token_callback);
 
             $curlOptions = [
                 CURLOPT_SSL_VERIFYPEER => 0,
@@ -374,9 +372,9 @@ class DeviceController extends Controller
     public function destroy(Device $device)
     {
         try {
-            $url_endpoint = 'https://wspiot.xyz/openapi/device/delete';
+            $url_endpoint = setting_web()->endpoint_nms . '/openapi/device/delete';
 
-            $api_token   = env('APITOKEN', 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c=');
+            $api_token   = env('APITOKEN', setting_web()->token_callback);
 
             $payload = [
                 "devEUIs" => [$device->devEUI],

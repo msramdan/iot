@@ -153,9 +153,9 @@ class InstanceController extends Controller
         }
 
         try {
-            $response = Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+            $response = Http::withHeaders(['x-access-token' => setting_web()->token_callback])
                 ->withOptions(['verify' => false])
-                ->post('https://wspiot.xyz/openapi/app/create', [
+                ->post(setting_web()->endpoint_nms . '/openapi/app/create', [
                     "appName" =>  Str::slug(request('instance_name', '_')),
                     "pushURL" => $request->push_url,
                     "enableMQTT" => false
@@ -297,9 +297,9 @@ class InstanceController extends Controller
     {
         $instance = Instance::findOrFail($id);
         try {
-            $response = Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+            $response = Http::withHeaders(['x-access-token' => setting_web()->token_callback])
                 ->withOptions(['verify' => false])
-                ->post('https://wspiot.xyz/openapi/app/delete', [
+                ->post(setting_web()->endpoint_nms . '/openapi/app/delete', [
                     "appIDs" => [$instance->appID],
                 ]);
 
