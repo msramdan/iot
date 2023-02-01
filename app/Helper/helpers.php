@@ -30,7 +30,7 @@ if (!function_exists('set_active')) {
 function setting_web()
 {
     $setting = DB::table('setting_app')->first();
-    return $setting->app_name;
+    return $setting;
 }
 
 function set_show($uri)
@@ -317,13 +317,78 @@ function littleEndian($str)
     return bin2hex(implode(array_reverse(str_split(hex2bin($str)))));
 }
 
+function insertGateway($gwid, $time)
+{
+    $gateway = DB::table('gateway')
+        ->where('gwid', '=', $gwid)
+        ->count();
+    if ($gateway < 1) {
+        DB::table('gateway')->insert([
+            'gwid' => $gwid,
+            'created_at' => $time,
+            'updated_at' => $time,
+        ]);
+    } else {
+        DB::table('gateway')
+            ->where('gwid', $gwid)
+            ->update(['updated_at' => $time]);
+    }
+}
+
+function createTiket($device_id, $devEUI, $type_device, $data)
+{
+
+    if ($data != null) {
+        // get subintance
+        $subintanceData = DB::table('devices')
+            ->join('clusters', 'devices.cluster_id', '=', 'clusters.id')
+            ->select('clusters.subinstance_id')
+            ->where('devices.id', $device_id)->first();
+        if ($subintanceData) {
+            $day = strtolower(date('l'));
+            // get operational time
+            $operationalDay = DB::table('operational_times')
+                ->select('open_hour', 'closed_hour')
+                ->where('day', $day)
+                ->where('subinstance_id', $subintanceData->subinstance_id)
+                ->first();
+            if ($operationalDay) {
+                if ($operationalDay->open_hour != null && $operationalDay->closed_hour != null) {
+                    $abnormal = [];
+                    foreach ($data as $key => $value) {
+                        // get toleransi
+                        $ToleranceAlerts = DB::table('setting_tolerance_alerts')
+                            ->select('min_tolerance', 'max_tolerance')
+                            ->where('field_data', $key)
+                            ->where('type_device', $type_device)
+                            ->where('subinstance_id', $subintanceData->subinstance_id)
+                            ->first();
+                        if ($value < $ToleranceAlerts->min_tolerance) {
+                            array_push($abnormal, "$key less than $ToleranceAlerts->min_tolerance reading results $value");
+                        } else if ($value > $ToleranceAlerts->max_tolerance) {
+                            array_push($abnormal, "$key more than $ToleranceAlerts->max_tolerance reading results $value");
+                        }
+                    }
+                    // create tiket
+                    Ticket::create([
+                        'subject' => "Alert from device " . $devEUI,
+                        'description'  => json_encode($abnormal),
+                        'is_device'   => 1,
+                        'status'   => "alert",
+                    ]);
+                    // send notif tele
+                }
+            }
+        }
+    }
+}
+
 
 function handleWaterMeter($device_id, $request)
 {
     $data = $request->data['data'];
     $hex = base64toHex($data);
     $frameId = substr($hex, 0, 2);
-
     if ($frameId == "00" || $frameId == "10" || $frameId == "71" || $frameId == "95" || $frameId == "21") {
         $save = Rawdata::create([
             'devEUI' => $request->devEUI,
@@ -346,6 +411,7 @@ function handleWaterMeter($device_id, $request)
             'payload_data' => json_encode($request->all()),
         ]);
         $lastInsertedId = $save->id;
+        insertGateway($request->data['gwid'], $save->updated_at);
         if ($frameId == "00") {
             $uplinkInterval = hexdec(littleEndian(substr($hex, 2, 4)));
             $batraiStatus = hexdec(littleEndian(substr($hex, 6, 2)));
@@ -371,6 +437,10 @@ function handleWaterMeter($device_id, $request)
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
+            $dataAbnormal = [
+                'temperature' => $temperatur,
+                'water_bateray' => $batt
+            ];
         } else if ($frameId == "10") {
             $temperatur = hexdec(littleEndian(substr($hex, 2, 4))) * 0.01;
             $params = [
@@ -380,6 +450,9 @@ function handleWaterMeter($device_id, $request)
                 'temperatur' => $temperatur,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            $dataAbnormal = [
+                'temperature' => $temperatur,
             ];
         } else if ($frameId == "71") {
             $totalFlow = hexdec(littleEndian(substr($hex, 2, 16))) * 0.01;
@@ -391,6 +464,7 @@ function handleWaterMeter($device_id, $request)
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
+            $dataAbnormal = [];
         } else if ($frameId == "95") {
             $batraiStatus = hexdec(littleEndian(substr($hex, 2, 2)));
             if ($batraiStatus > 254) {
@@ -399,6 +473,9 @@ function handleWaterMeter($device_id, $request)
                 $batt = 'Power Supply';
             } else {
                 $batt = $batraiStatus / 2.54;
+                $dataAbnormal = [
+                    'water_bateray' => $batt,
+                ];
             }
             $params = [
                 'rawdata_id' => $lastInsertedId,
@@ -408,6 +485,7 @@ function handleWaterMeter($device_id, $request)
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
+            $dataAbnormal = [];
         } else if ($frameId == "21") {
             if ($hex == '2101') {
                 $status_valve = 'Open';
@@ -424,13 +502,12 @@ function handleWaterMeter($device_id, $request)
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
+            $dataAbnormal = [];
         }
 
         $yesterdayStart = Carbon::now()->subDay(2)->hour(00)->minute(00)->second(00);
         $yesterdayEnd   = Carbon::now()->subDay(2)->hour(23)->minute(59)->second(59);
-
         $today = Carbon::today()->format('Y-m-d');
-
         $yesterdayData = ParsedWaterMater::where('device_id', $device_id)
             ->whereBetween("created_at", [$yesterdayStart, $yesterdayEnd])
             ->orderBy('created_at', 'desc')
@@ -440,6 +517,7 @@ function handleWaterMeter($device_id, $request)
         DB::table('master_latest_datas')
             ->where('device_id', $device_id)
             ->update($params);
+        createTiket($device_id, $request->devEUI, $type_device = 'water_meter', $dataAbnormal);
 
         if (isset($params['total_flow'])) {
             if ($yesterdayData) {
@@ -468,8 +546,6 @@ function handleWaterMeter($device_id, $request)
                 ]);
             }
         }
-
-
         return "success";
     } else if ($frameId == "0f") {
         $save = Rawdata::create([
@@ -494,7 +570,8 @@ function handleWaterMeter($device_id, $request)
             'type_payload'  => 'Alert',
         ]);
         $lastInsertedId = $save->id;
-
+        insertGateway($request->data['gwid'], $save->updated_at);
+        // create tiket water meter cek operation time dan hour
         // get list alert
         $listFixedError = array(
             '0f1402' => 'Illegal Movement Warning',
@@ -551,10 +628,9 @@ function handleWaterMeter($device_id, $request)
                 }
             }
         }
-
         Ticket::create([
-            'subject' => "Alert dari Device " . $request->devEUI,
-            'description'  => "Abnormal indications on : " . json_encode($error),
+            'subject' => "Alert from device " . $request->devEUI,
+            'description'  => json_encode($error),
             'is_device'   => 1,
             'status'   => "alert",
         ]);
@@ -594,6 +670,7 @@ function handlePowerMeter($device_id, $request)
                 'payload_data' => json_encode($request->all()),
             ]);
             $lastInsertedId = $save->id;
+            insertGateway($request->data['gwid'], $save->updated_at);
         }
         if ($idenfikasi == "02000006") {
             $tegangan = littleEndian(substr($hex, 28, 4)) * 0.1;
@@ -615,6 +692,10 @@ function handlePowerMeter($device_id, $request)
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
+            $dataAbnormal = [
+                'tegangan' => $tegangan,
+                'arus' => $arus
+            ];
             // mini frame 1
         } else if ($idenfikasi == "02000106") {
             $tegangan = littleEndian(substr($hex, 22, 4)) * 0.1;
@@ -630,6 +711,10 @@ function handlePowerMeter($device_id, $request)
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
+            $dataAbnormal = [
+                'tegangan' => $tegangan,
+                'arus' => $arus
+            ];
             // mini frame 2
         } else if ($idenfikasi == "02000206") {
             $active_power = littleEndian(substr($hex, 22, 6)) / 10000;
@@ -641,6 +726,7 @@ function handlePowerMeter($device_id, $request)
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
+            $dataAbnormal = [];
             // mini frame 3
         } else if ($idenfikasi == "02000306") {
             $power_factor = littleEndian(substr($hex, 22, 4)) / 1000;
@@ -664,6 +750,7 @@ function handlePowerMeter($device_id, $request)
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
+            $dataAbnormal = [];
         } else if ($idenfikasi == "ff050004") {
             $cek = substr($hex, 20, 1);
             $bin = base_convert($cek, 16, 2);
@@ -682,6 +769,7 @@ function handlePowerMeter($device_id, $request)
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
+            $dataAbnormal = [];
         }
 
         $yesterdayStart = Carbon::now()->subDay(2)->hour(00)->minute(00)->second(00);
@@ -698,6 +786,8 @@ function handlePowerMeter($device_id, $request)
         DB::table('master_latest_data_power_meter')
             ->where('device_id', $device_id)
             ->update($params);
+
+        createTiket($device_id, $request->devEUI, $type_device = 'power_meter', $dataAbnormal);
 
         if (isset($params['total_energy'])) {
             if ($yesterdayData) {
@@ -748,6 +838,7 @@ function handlePowerMeter($device_id, $request)
             'payload_data' => json_encode($request->all()),
         ]);
         $lastInsertedId = $save->id;
+        insertGateway($request->data['gwid'], $save->updated_at);
         $temp = DB::table('temp_status_switch')->where('dev_eui', $request->devEUI)->first();
         if ($hex == '9c00') {
             $params = [
@@ -846,6 +937,8 @@ function handleGasMeter($device_id, $request)
             'payload_data' => json_encode($request->all()),
             'type_payload'  => $type_payload,
         ]);
+        insertGateway($request->data['gwid'], $save->updated_at);
+
         if ($command == '8400') {
             $lastInsertedId = $save->id;
             $temp = DB::table('temp_status_valve_gas_meter')->where('dev_eui', $request->devEUI)->first();
@@ -854,15 +947,34 @@ function handleGasMeter($device_id, $request)
                 'device_id' => $device_id,
                 'frame_id' => $frameId,
                 'valve_status' => $temp->status_valve,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at' => $save->updated_at,
+                'updated_at' => $save->updated_at,
             ];
+            // $dataAbnormal = [];
             DB::table('parsed_gas_meter')->insert($params);
             DB::table('master_latest_data_gas_meter')
                 ->where('device_id', $device_id)
                 ->update($params);
             // ramdan
             DB::table('temp_status_valve_gas_meter')->where('id', $temp->id)->delete();
+        } else if ($command == 'c400') {
+            $getDevice = DB::table('devices')->where('devEUI', $request->devEUI)->first();
+            $getHistory = DB::table('history_topup_gas_meter')->where('device_id', $getDevice->id)->whereNull('updated_at')->first();
+            DB::table('history_topup_gas_meter')
+                ->where('id', $getHistory->id)
+                ->update([
+                    'status' => 'Error',
+                    'updated_at' => $save->updated_at,
+                ]);
+        } else if ($command == '8407') {
+            $getDevice = DB::table('devices')->where('devEUI', $request->devEUI)->first();
+            $getHistory = DB::table('history_topup_gas_meter')->where('device_id', $getDevice->id)->whereNull('updated_at')->first();
+            DB::table('history_topup_gas_meter')
+                ->where('id', $getHistory->id)
+                ->update([
+                    'status' => 'Success',
+                    'updated_at' => $save->updated_at,
+                ]);
         }
         return "success";
     } else {
@@ -887,8 +999,8 @@ function handleGasMeter($device_id, $request)
             'payload_data' => json_encode($request->all()),
         ]);
     }
-
     $lastInsertedId = $save->id;
+    insertGateway($request->data['gwid'], $save->updated_at);
 
     $bitError1 = array(
         0 => 'Valve Close',
@@ -971,8 +1083,8 @@ function handleGasMeter($device_id, $request)
         $count = count($errorTiket);
         if ($count > 0) {
             Ticket::create([
-                'subject' => "Alert dari Device " . $request->devEUI,
-                'description'  => "Abnormal indications on : " . json_encode($errorTiket),
+                'subject' => "Alert from device " . $request->devEUI,
+                'description'  => json_encode($errorTiket),
                 'is_device'   => 1,
                 'status'   => "alert",
             ]);
@@ -991,6 +1103,10 @@ function handleGasMeter($device_id, $request)
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
+        $dataAbnormal = [
+            'purchase_remain' => $fix_purchase_remain,
+            'gas_bateray' => $fix_balance_of_battery
+        ];
     }
 
     $yesterdayStart = Carbon::now()->subDay(2)->hour(00)->minute(00)->second(00);
@@ -1007,6 +1123,7 @@ function handleGasMeter($device_id, $request)
     DB::table('master_latest_data_gas_meter')
         ->where('device_id', $device_id)
         ->update($params);
+    createTiket($device_id, $request->devEUI, $type_device = 'gas_meter', $dataAbnormal);
 
     if (isset($params['gas_consumption'])) {
         if ($yesterdayData) {

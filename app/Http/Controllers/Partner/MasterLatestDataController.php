@@ -15,6 +15,7 @@ use App\Models\DailyUsageDevice;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
+use App\Models\Instance;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +24,7 @@ class MasterLatestDataController extends Controller
     public function waterMeterMaster(Request $request)
     {
         $instance = Auth::guard('instances')->user();
+        $x = $instance->appID;
         if (request()->ajax()) {
             $parsed_data = MasterLatestData::with(['device' => function ($k) use ($instance) {
                 $k->with(['cluster' => function ($q) use ($instance) {
@@ -31,7 +33,9 @@ class MasterLatestDataController extends Controller
                     ->where('devices.category', 'Water Meter');
             }]);
 
-            $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
+            $parsed_data = $parsed_data->whereHas('device', function ($query) use ($x) {
+                $query->where('appID', $x);
+            })->orderBy('id', 'desc')->get();
 
             return DataTables::of($parsed_data)
                 ->addIndexColumn()
@@ -78,14 +82,20 @@ class MasterLatestDataController extends Controller
                 })
                 ->addColumn('status_valve', function ($row) {
                     if ($row->status_valve != null) {
-                        return $row->status_valve;
+                        if ($row->status_valve == "Open") {
+                            return '<span class="badge badge-label bg-success"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->status_valve . '</span>';
+                        } else {
+                            return '<span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->status_valve . '</span>';
+                        }
                     }
                     return '-';
                 })
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('master-water-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
-                ->rawColumns(['detail', 'action'])
+                ->rawColumns(['detail', 'action', 'status_valve'])
                 ->toJson();
         }
 
@@ -167,7 +177,7 @@ class MasterLatestDataController extends Controller
     public function powerMeterMaster(Request $request)
     {
         $instance = Auth::guard('instances')->user();
-
+        $x = $instance->appID;
         if (request()->ajax()) {
             $parsed_data = MasterLatestDataPowerMeter::with(['device' => function ($k) use ($instance) {
                 $k->with(['cluster' => function ($s) use ($instance) {
@@ -176,7 +186,9 @@ class MasterLatestDataController extends Controller
                     ->where('devices.category', 'Power Meter');
             }]);
 
-            $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
+            $parsed_data = $parsed_data->whereHas('device', function ($query) use ($x) {
+                $query->where('appID', $x);
+            })->orderBy('id', 'desc')->get();
 
             return DataTables::of($parsed_data)
                 ->addIndexColumn()
@@ -238,14 +250,20 @@ class MasterLatestDataController extends Controller
                 })
                 ->addColumn('status_switch', function ($row) {
                     if ($row->status_switch != null) {
-                        return $row->status_switch;
+                        if ($row->status_switch == "ON") {
+                            return '<span class="badge badge-label bg-success"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->status_switch . '</span>';
+                        } else {
+                            return '<span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->status_switch . '</span>';
+                        }
                     }
                     return '-';
                 })
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('master-power-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
-                ->rawColumns(['detail', 'action'])
+                ->rawColumns(['detail', 'action', 'status_switch'])
                 ->toJson();
         }
 
@@ -334,6 +352,7 @@ class MasterLatestDataController extends Controller
     public function gasMeterMaster(Request $request)
     {
         $instance = Auth::guard('instances')->user();
+        $x = $instance->appID;
         if (request()->ajax()) {
             $parsed_data = MasterLatestDataGasMeter::with(['device' => function ($k) use ($instance) {
                 $k->with(['cluster' => function ($s) use ($instance) {
@@ -342,7 +361,9 @@ class MasterLatestDataController extends Controller
                     ->where('devices.category', 'Gas Meter');
             }]);
 
-            $parsed_data = $parsed_data->orderBy('id', 'desc')->get();
+            $parsed_data = $parsed_data->whereHas('device', function ($query) use ($x) {
+                $query->where('appID', $x);
+            })->orderBy('id', 'desc')->get();
 
             return DataTables::of($parsed_data)
                 ->addIndexColumn()
@@ -392,7 +413,13 @@ class MasterLatestDataController extends Controller
                 })
                 ->addColumn('valve_status', function ($row) {
                     if ($row->valve_status != null) {
-                        return $row->valve_status;
+                        if ($row->valve_status == "Valve Open") {
+                            return '<span class="badge badge-label bg-success"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->valve_status . '</span>';
+                        } else {
+                            return '<span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->valve_status . '</span>';
+                        }
                     }
                     return '-';
                 })
@@ -411,7 +438,7 @@ class MasterLatestDataController extends Controller
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('master-gas-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
-                ->rawColumns(['detail', 'meter_status_word', 'action'])
+                ->rawColumns(['detail', 'meter_status_word', 'action', 'valve_status'])
                 ->toJson();
         }
 
@@ -449,7 +476,7 @@ class MasterLatestDataController extends Controller
         $parsed_data = $parsed_data->orderBy('id', 'asc')->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
-        ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
+            ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
         $parsed_dates = [];
         $gas_consumtion_datas = [];

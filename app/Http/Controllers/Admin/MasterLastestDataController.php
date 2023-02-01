@@ -76,14 +76,20 @@ class MasterLastestDataController extends Controller
                 })
                 ->addColumn('status_valve', function ($row) {
                     if ($row->status_valve != null) {
-                        return $row->status_valve;
+                        if ($row->status_valve == "Open") {
+                            return '<span class="badge badge-label bg-success"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->status_valve . '</span>';
+                        } else {
+                            return '<span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->status_valve . '</span>';
+                        }
                     }
                     return '-';
                 })
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('panel/master-water-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
-                ->rawColumns(['detail', 'action'])
+                ->rawColumns(['detail', 'action', 'status_valve'])
                 ->toJson();
         }
 
@@ -234,14 +240,20 @@ class MasterLastestDataController extends Controller
                 })
                 ->addColumn('status_switch', function ($row) {
                     if ($row->status_switch != null) {
-                        return $row->status_switch;
+                        if ($row->status_switch == "ON") {
+                            return '<span class="badge badge-label bg-success"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->status_switch . '</span>';
+                        } else {
+                            return '<span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->status_switch . '</span>';
+                        }
                     }
                     return '-';
                 })
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('panel/master-power-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
-                ->rawColumns(['detail', 'action'])
+                ->rawColumns(['detail', 'action', 'status_switch'])
                 ->toJson();
         }
 
@@ -275,7 +287,7 @@ class MasterLastestDataController extends Controller
                                    ->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
-        ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
+            ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
         $parsed_dates = [];
         $tegangan_datas = [];
@@ -385,7 +397,13 @@ class MasterLastestDataController extends Controller
                 })
                 ->addColumn('valve_status', function ($row) {
                     if ($row->valve_status != null) {
-                        return $row->valve_status;
+                        if ($row->valve_status == "Valve Open") {
+                            return '<span class="badge badge-label bg-success"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->valve_status . '</span>';
+                        } else {
+                            return '<span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>
+                                    ' . $row->valve_status . '</span>';
+                        }
                     }
 
                     return '-';
@@ -406,7 +424,7 @@ class MasterLastestDataController extends Controller
                 ->addColumn('detail', function ($row) {
                     return '<a href="' . url('panel/master-gas-meter/detail/' . $row->device_id) . '" class="btn btn-sm  btn-success" target=""><i class="mdi mdi-eye"></i> Detail</a>';
                 })
-                ->rawColumns(['detail', 'meter_status_word', 'action'])
+                ->rawColumns(['detail', 'meter_status_word', 'action', 'valve_status'])
                 ->toJson();
         }
 
@@ -420,6 +438,12 @@ class MasterLastestDataController extends Controller
         $device = Device::where('id', $id)->first();
         $devEUI = $device->devEUI;
         $lastData = MasterLatestDataGasMeter::where('device_id', $id)->first();
+        $history = DB::table('history_topup_gas_meter')
+            ->join('users', 'history_topup_gas_meter.user_id', '=', 'users.id')
+            ->select('history_topup_gas_meter.*', 'users.name')
+            ->where('device_id', $id)
+            ->orderByDesc('history_topup_gas_meter.id')
+            ->get();
 
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
@@ -441,7 +465,7 @@ class MasterLastestDataController extends Controller
                                    ->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
-        ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
+            ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
         $parsed_dates = [];
         $gas_consumtion_datas = [];
@@ -470,6 +494,7 @@ class MasterLastestDataController extends Controller
             'parsed_data',
             'device_id',
             'start_dates',
+            'history',
             'end_dates',
             'devEUI',
             'lastData',
@@ -487,9 +512,9 @@ class MasterLastestDataController extends Controller
     // commandlink water meter
     public function checkValve(Request $request)
     {
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => 'IQ==',
                 "confirmed" => true,
@@ -499,9 +524,9 @@ class MasterLastestDataController extends Controller
 
     public function openValve(Request $request)
     {
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => 'IQE=',
                 "confirmed" => true,
@@ -511,9 +536,9 @@ class MasterLastestDataController extends Controller
 
     public function closeValve(Request $request)
     {
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => 'IYE=',
                 "confirmed" => true,
@@ -530,9 +555,9 @@ class MasterLastestDataController extends Controller
         $bin = hex2bin($data);       // convert the hex values to binary data stored as a PHP string
         $payload = base64_encode($bin);
 
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => $payload,
                 "confirmed" => true,
@@ -553,9 +578,9 @@ class MasterLastestDataController extends Controller
         $bin = hex2bin($data);       // convert the hex values to binary data stored as a PHP string
         $payload = base64_encode($bin);
 
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => $payload,
                 "confirmed" => true,
@@ -571,9 +596,9 @@ class MasterLastestDataController extends Controller
 
     public function validationSwitch(Request $request)
     {
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => 'EQT/BQAE',
                 "confirmed" => true,
@@ -602,9 +627,9 @@ class MasterLastestDataController extends Controller
         $hexData = $step1 . '' . $code . "16";          // and much more hex values as string as in your example
         $bin = hex2bin($hexData);       // convert the hex values to binary data stored as a PHP string
         $payload = base64_encode($bin);
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => $payload,
                 "confirmed" => true,
@@ -638,9 +663,9 @@ class MasterLastestDataController extends Controller
         $hexData = $step1 . '' . $code . "16";
         $bin = hex2bin($hexData);       // convert the hex values to binary data stored as a PHP string
         $payload = base64_encode($bin);
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => $payload,
                 "confirmed" => true,
@@ -725,14 +750,23 @@ class MasterLastestDataController extends Controller
         $hexData = $payload . '' . $code . "16";
         $bin = hex2bin($hexData);
         $payloadData = base64_encode($bin);
-        Http::withHeaders(['x-access-token' => 'W4OBctr1nstGjv5ePcd42ypMqI3UsXSTfNGNAcjLP+c='])
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
             ->withOptions(['verify' => false])
-            ->post('https://wspiot.xyz/openapi/devicedl/create', [
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
                 "devEUI" => $request->devEUI,
                 "data" => $payloadData,
                 "confirmed" => true,
                 "fport" => 8
             ]);
+        // insert histiry topup
+        DB::table('history_topup_gas_meter')->insert([
+            'total_gas' => $request->total,
+            'device_id' => $request->device_id,
+            'user_id' =>  \Auth::user()->id,
+            'created_at' => date('Y-m-d H:i:s'),
+            'status' => 'Pending'
+        ]);
+
         Alert::info('Please Waiting Response From Server', 'In progress to Topup Gas');
         return redirect()->back();
     }
