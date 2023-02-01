@@ -667,7 +667,23 @@
         var dates = $(this).val();
         var split_dates = dates.split(" to ");
         if ( split_dates.length >= 2 ) {
-            $('#form-date').submit();
+            var start = new Date(split_dates[0].replace(',', '')).getTime();
+            var end = new Date(split_dates[1].replace(',', '')).getTime();
+
+            var differenceTime = end - start;
+            var differenceDay = differenceTime / (1000 * 3600 *24);
+
+            if (differenceDay > 30) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid filter Date',
+                    text: 'Maximum filter date is 30 days',
+                    allowOutsideClick: false,
+                    confirmButtonText: `OK`,
+                })
+            } else {
+                $('#form-date').submit();
+            }
         }
     });
 });

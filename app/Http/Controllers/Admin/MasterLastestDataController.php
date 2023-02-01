@@ -113,15 +113,14 @@ class MasterLastestDataController extends Controller
 
             $start_dates = date('Y-m-d H:i:s', strtotime($start));
             $end_dates = date('Y-m-d H:i:s', strtotime($end));
-
-            $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates]);
         }
+
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data
-            ->orderBy('parsed_water_meter.id', 'asc')
-            ->whereNull('status_valve')->get();
+        $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates])
+                        ->orderBy('parsed_water_meter.id', 'asc')
+                        ->whereNull('status_valve')->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)->where('device_type', 'water_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
         $parsed_dates = [];
@@ -266,14 +265,14 @@ class MasterLastestDataController extends Controller
 
             $start_dates = date('Y-m-d H:i:s', strtotime($start));
             $end_dates = date('Y-m-d H:i:s', strtotime($end));
-
-            $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates]);
         }
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'asc')
-            ->whereNull('status_switch')->get();
+        $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates])
+                                   ->orderBy('id', 'asc')
+                                   ->whereNull('status_switch')
+                                   ->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
         ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
@@ -432,13 +431,14 @@ class MasterLastestDataController extends Controller
 
             $start_dates = date('Y-m-d H:i:s', strtotime($start));
             $end_dates = date('Y-m-d H:i:s', strtotime($end));
-
-            $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates]);
         }
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'asc')->whereNotNull('gas_consumption')->get();
+        $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates])
+                                   ->orderBy('id', 'asc')
+                                   ->whereNotNull('gas_consumption')
+                                   ->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
         ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
