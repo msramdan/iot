@@ -2,56 +2,52 @@
 
 return [
     'authorities' => [
-        'user' =>[
+        'user' => [
             'user_show',
             'user_create',
             'user_update',
             'user_delete',
         ],
-        'role' =>[
+        'role' => [
             'role_show',
             'role_create',
             'role_update',
             'role_delete',
         ],
-        'otp' => [
-            'otp_show',
-            'otp_create',
-            'otp_update',
-            'otp_delete',
-        ],
-        'setting_app' =>[
+        'setting_app' => [
             'setting_app_show',
             'setting_app_update',
         ],
-        'activity_log' =>[
-            'activity_log_show',
+        'device' => [
+            'device_show',
+            'device_create',
+            'device_update',
+            'device_delete',
+            'device_sign'
         ],
-
-        'wilayah' => [
+        'province' => [
             'province_show',
             'province_create',
             'province_update',
             'province_delete',
+        ],
+        'city' => [
             'city_show',
             'city_create',
             'city_update',
             'city_delete',
+        ],
+        'district' => [
             'district_show',
             'district_create',
             'district_update',
             'district_delete',
+        ],
+        'village' => [
             'village_show',
             'village_create',
             'village_update',
             'village_delete',
-        ],
-        'bussiness' => [
-            'bussiness_show',
-            'bussiness_create',
-            'bussiness_edit',
-            'bussiness_update',
-            'bussiness_delete'
         ],
         'instance' => [
             'instance_show',
@@ -65,23 +61,18 @@ return [
             'subinstance_update',
             'subinstance_delete'
         ],
-        'ticket' => [
-            'ticket_show',
-            'ticket_create',
-            'ticket_update',
-            'ticket_delete'
-        ],
-        'invoice' => [
-            'invoice_show',
-            'invoice_create',
-            'invoice_update',
-            'invoice_delete'
-        ],
         'cluster' => [
             'cluster_show',
             'cluster_create',
             'cluster_update',
             'cluster_delete'
+        ],
+        'bussiness' => [
+            'bussiness_show',
+            'bussiness_create',
+            'bussiness_edit',
+            'bussiness_update',
+            'bussiness_delete'
         ],
         'subnet' => [
             'subnet_show',
@@ -89,15 +80,22 @@ return [
             'subnet_update',
             'subnet_delete'
         ],
-        'device' => [
-            'device_show',
-            'device_create',
-            'device_update',
-            'device_delete',
-            'device_sign'
+        'ticket' => [
+            'ticket_show',
+            'ticket_create',
+            'ticket_update',
+            'ticket_delete'
+        ],
+        'billing' => [
+            'billing_show',
+            'billing_detail',
+            'edit_variable'
         ],
         'gateway' => [
             'gateway_show'
+        ],
+        'activity_log' => [
+            'activity_log_show',
         ],
         'raw_data' => [
             'raw_data_show'

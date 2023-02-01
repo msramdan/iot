@@ -70,8 +70,9 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('invoice.*') }}" href="{{ route('invoice.index') }}"
-                    role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                <a class="nav-link menu-link {{ set_active('billing-data.*') }}"
+                    href="{{ route('billing-data.index') }}" role="button" aria-expanded="false"
+                    aria-controls="sidebarDashboards">
                     <i class="mdi mdi-book-information-variant"></i> <span data-key="t-dashboards">Billing Data</span>
                 </a>
             </li>

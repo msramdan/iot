@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\InstanceController;
 use App\Http\Controllers\Admin\BussinessController;
 use App\Http\Controllers\Admin\ClusterController;
-use App\Http\Controllers\Admin\InvoiceController;
+use App\Http\Controllers\Admin\BillingdataController;
 use App\Http\Controllers\Admin\RawdataController;
 use App\Http\Controllers\Admin\SubInstanceController;
 use App\Http\Controllers\Admin\TicketController;
@@ -88,7 +88,7 @@ Route::controller(SettingAppController::class)->group(function () {
 });
 //ticket
 Route::resource('tickets', TicketController::class);
-Route::resource('invoice', InvoiceController::class);
+Route::resource('billing-data', BillingdataController::class);
 Route::resource('instance.subinstance', SubInstanceController::class);
 Route::resource('subinstance.cluster', ClusterController::class);
 Route::resource('subnet', SubnetController::class);
