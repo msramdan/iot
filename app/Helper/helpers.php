@@ -317,7 +317,7 @@ function littleEndian($str)
     return bin2hex(implode(array_reverse(str_split(hex2bin($str)))));
 }
 
-function insertGateway($gwid, $time)
+function insertGateway($gwid, $time, $status_online = null, $pktfwdStatus = null)
 {
     $gateway = DB::table('gateway')
         ->where('gwid', '=', $gwid)
@@ -325,13 +325,19 @@ function insertGateway($gwid, $time)
     if ($gateway < 1) {
         DB::table('gateway')->insert([
             'gwid' => $gwid,
+            'status_online' => $status_online,
+            'pktfwdStatus' => $pktfwdStatus,
             'created_at' => $time,
             'updated_at' => $time,
         ]);
     } else {
         DB::table('gateway')
             ->where('gwid', $gwid)
-            ->update(['updated_at' => $time]);
+            ->update([
+                'updated_at' => $time,
+                'status_online' => $status_online,
+                'pktfwdStatus' => $pktfwdStatus
+            ]);
     }
 }
 
