@@ -337,7 +337,6 @@ function insertGateway($gwid, $time)
 
 function createTiket($device_id, $devEUI, $type_device, $data)
 {
-
     if ($data != null) {
         // get subintance
         $subintanceData = DB::table('devices')
@@ -354,29 +353,37 @@ function createTiket($device_id, $devEUI, $type_device, $data)
                 ->first();
             if ($operationalDay) {
                 if ($operationalDay->open_hour != null && $operationalDay->closed_hour != null) {
-                    $abnormal = [];
-                    foreach ($data as $key => $value) {
-                        // get toleransi
-                        $ToleranceAlerts = DB::table('setting_tolerance_alerts')
-                            ->select('min_tolerance', 'max_tolerance')
-                            ->where('field_data', $key)
-                            ->where('type_device', $type_device)
-                            ->where('subinstance_id', $subintanceData->subinstance_id)
-                            ->first();
-                        if ($value < $ToleranceAlerts->min_tolerance) {
-                            array_push($abnormal, "$key less than $ToleranceAlerts->min_tolerance reading results $value");
-                        } else if ($value > $ToleranceAlerts->max_tolerance) {
-                            array_push($abnormal, "$key more than $ToleranceAlerts->max_tolerance reading results $value");
+                    // cek masuk ke range jam kerja tidak
+                    $jam = date('H:i:s');
+                    if (
+                        $jam >= $operationalDay->open_hour && $jam <= $operationalDay->closed_hour
+                    ) {
+                        $abnormal = [];
+                        foreach ($data as $key => $value) {
+                            // get toleransi
+                            $ToleranceAlerts = DB::table('setting_tolerance_alerts')
+                                ->select('min_tolerance', 'max_tolerance')
+                                ->where('field_data', $key)
+                                ->where('type_device', $type_device)
+                                ->where('subinstance_id', $subintanceData->subinstance_id)
+                                ->first();
+                            if ($value < $ToleranceAlerts->min_tolerance) {
+                                array_push($abnormal, "$key less than $ToleranceAlerts->min_tolerance reading results $value");
+                            } else if ($value > $ToleranceAlerts->max_tolerance) {
+                                array_push($abnormal, "$key more than $ToleranceAlerts->max_tolerance reading results $value");
+                            }
                         }
+                        if (!empty($abnormal)) {
+                            // create tiket
+                            Ticket::create([
+                                'subject' => "Alert from device " . $devEUI,
+                                'description'  => json_encode($abnormal),
+                                'is_device'   => 1,
+                                'status'   => "alert",
+                            ]);
+                        }
+                        // send notif tele
                     }
-                    // create tiket
-                    Ticket::create([
-                        'subject' => "Alert from device " . $devEUI,
-                        'description'  => json_encode($abnormal),
-                        'is_device'   => 1,
-                        'status'   => "alert",
-                    ]);
-                    // send notif tele
                 }
             }
         }
