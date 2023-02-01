@@ -23,6 +23,8 @@ return new class extends Migration
             $table->text('address');
             $table->text('token_callback')->nullable();
             $table->text('endpoint_purchase_code')->nullable();
+            $table->text('command_link')->nullable();
+            $table->string('is_notif_tele', 1);
             $table->timestamps();
         });
     }

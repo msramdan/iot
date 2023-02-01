@@ -339,7 +339,6 @@ function createTiket($device_id, $devEUI, $type_device, $data)
 {
 
     if ($data != null) {
-
         // get subintance
         $subintanceData = DB::table('devices')
             ->join('clusters', 'devices.cluster_id', '=', 'clusters.id')
@@ -355,9 +354,7 @@ function createTiket($device_id, $devEUI, $type_device, $data)
                 ->first();
             if ($operationalDay) {
                 if ($operationalDay->open_hour != null && $operationalDay->closed_hour != null) {
-
                     $abnormal = [];
-                    $i = 1;
                     foreach ($data as $key => $value) {
                         // get toleransi
                         $ToleranceAlerts = DB::table('setting_tolerance_alerts')
@@ -372,12 +369,14 @@ function createTiket($device_id, $devEUI, $type_device, $data)
                             array_push($abnormal, "$key more than $ToleranceAlerts->max_tolerance reading results $value");
                         }
                     }
+                    // create tiket
                     Ticket::create([
                         'subject' => "Alert from device " . $devEUI,
                         'description'  => json_encode($abnormal),
                         'is_device'   => 1,
                         'status'   => "alert",
                     ]);
+                    // send notif tele
                 }
             }
         }
