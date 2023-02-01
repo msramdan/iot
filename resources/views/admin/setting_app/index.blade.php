@@ -116,6 +116,34 @@
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="token_callbacck">Command Link</label>
+                                            <input class="form-control @error('command_link') is-invalid @enderror"
+                                                id="command_link" type="text"
+                                                value="{{ old('command_link') ? old('command_link') : $setting_app->command_link }}"
+                                                placeholder="" name="command_link" autocomplete="off">
+                                            @error('command_link')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="token_callbacck">Notif Tele</label>
+                                            <select name="is_notif_tele"
+                                                class="form-control  @error('is_notif_tele') is-invalid @enderror"
+                                                id="is_notif_tele">
+                                                <option value="">-- Pilih --</option>
+                                                <option value="1"
+                                                    {{ $setting_app->is_notif_tele == '1' ? 'selected' : '' }}>
+                                                    Yes</option>
+                                                <option value="0"
+                                                    {{ $setting_app->is_notif_tele == '0' ? 'selected' : '' }}>
+                                                    No</option>
+                                            </select>
+                                            @error('is_notif_tele')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
                                         @can('setting_app_update')
                                             <button type="submit" class="btn btn-primary"><i
                                                     class="mdi mdi-content-save"></i>
