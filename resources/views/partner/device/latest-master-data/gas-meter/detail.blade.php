@@ -121,7 +121,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <form method="get" action="{{ url('/master-water-meter/detail/' . $device_id) }}"
+                                    <form method="get" action="{{ url('/master-gas-meter/detail/' . $device_id) }}"
                                         id="form-date">
                                         <div class="input-group mb-4">
                                             <input type="text" class="form-control border-0 dash-filter-picker shadow"
@@ -534,7 +534,23 @@
                 var dates = $(this).val();
                 var split_dates = dates.split(" to ");
                 if (split_dates.length >= 2) {
-                    $('#form-date').submit();
+                    var start = new Date(split_dates[0].replace(',', '')).getTime();
+                    var end = new Date(split_dates[1].replace(',', '')).getTime();
+
+                    var differenceTime = end - start;
+                    var differenceDay = differenceTime / (1000 * 3600 *24);
+
+                    if (differenceDay > 30) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Invalid filter Date',
+                            text: 'Maximum filter date is 30 days',
+                            allowOutsideClick: false,
+                            confirmButtonText: `OK`,
+                        })
+                    } else {
+                        $('#form-date').submit();
+                    }
                 }
             });
         });
