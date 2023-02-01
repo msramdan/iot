@@ -28,6 +28,25 @@ class GatewayController extends Controller
                 ->addColumn('updated_at', function ($row) {
                     return $row->updated_at->format('d M Y H:i:s');
                 })
+                ->addColumn('status_online', function ($row) {
+                    if ($row->status_online == 1) {
+                        return '<span class="badge badge-label bg-success"><i class="mdi mdi-circle-medium"></i>Aktive</span>';
+                    } else if ($row->status_online == 2) {
+                        return '<span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>Non Aktive</span>';
+                    } else {
+                        return '-';
+                    }
+                })
+                ->addColumn('pktfwdStatus', function ($row) {
+                    if ($row->pktfwdStatus == 1) {
+                        return '<span class="badge badge-label bg-success"><i class="mdi mdi-circle-medium"></i>Aktive</span>';
+                    } else if ($row->pktfwdStatus == 2) {
+                        return '<span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>Non Aktive</span>';
+                    } else {
+                        return '-';
+                    }
+                })
+                ->rawColumns(['status_online', 'pktfwdStatus'])
                 ->toJson();
         }
         return view('admin.gateway.index');

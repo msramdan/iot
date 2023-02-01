@@ -6,25 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('gateway', function (Blueprint $table) {
             $table->id();
             $table->string('gwid', 100)->nullable();
+            $table->boolean('status_online')->nullable();
+            $table->boolean('pktfwdStatus')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('gateway');

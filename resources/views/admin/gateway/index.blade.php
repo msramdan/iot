@@ -30,6 +30,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Gateway ID</th>
+                                            <th>Status</th>
+                                            <th>Pkt Fwd Status</th>
                                             <th>Last Data</th>
                                         </tr>
                                     </thead>
@@ -54,6 +56,14 @@
             {
                 data: 'gwid',
                 name: 'gwid'
+            },
+            {
+                data: 'status_online',
+                name: 'status_online'
+            },
+            {
+                data: 'pktfwdStatus',
+                name: 'pktfwdStatus'
             },
             {
                 data: 'updated_at',
