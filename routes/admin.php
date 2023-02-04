@@ -88,7 +88,6 @@ Route::controller(SettingAppController::class)->group(function () {
 });
 //ticket
 Route::resource('tickets', TicketController::class);
-Route::resource('billing-data', BillingdataController::class);
 Route::resource('instance.subinstance', SubInstanceController::class);
 Route::resource('subinstance.cluster', ClusterController::class);
 Route::resource('subnet', SubnetController::class);
@@ -117,8 +116,14 @@ Route::controller(ParsedGasMeterController::class)->group(function () {
     Route::get('/parsed-gm', 'index')->name('parsed-gm.index');
 });
 
-
 //Route Gateway
 Route::controller(GatewayController::class)->group(function () {
     Route::get('/gateway', 'index')->name('gateway.index');
 });
+
+Route::prefix('billing-data')->controller(BillingdataController::class)->group(function() {
+   Route::get('/', 'index')->name('billing-data.index');
+   Route::get('detail/{id}', 'detail')->name('billing-data.show');
+   Route::post('detail/{id}', 'detail')->name('billing-data.show');
+});
+

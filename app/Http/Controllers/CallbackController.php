@@ -78,6 +78,7 @@ class CallbackController extends Controller
                 }
             }
         } catch (Exception $err) {
+            \Log::error($err);
             return response()->json(['success' => false, 'message' => $err->getMessage()], 500);
         }
     }

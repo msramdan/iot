@@ -22,6 +22,27 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form method="get">
+                                        @csrf
+                                        <div class="input-group mb-4">
+                                            <input type="text" class="form-control border-0 dash-filter-picker shadow"
+                                                data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y"
+                                                id="date-transaction" placeholder="Filter by registered date"
+                                                @if (!empty($start_dates) && !empty($end_dates))
+                                                    value="{{ date('d M, Y', strtotime($start_dates)) }} to {{ date('d M, Y', strtotime($end_dates)) }}"
+                                                @else
+                                                    value=""
+                                                @endif/>
+                                            <div class="input-group-text bg-primary border-primary text-white">
+                                                <i class="ri-calendar-2-line"></i>
+                                            </div>
+                                        </div>
+                                        <!--end row-->
+                                    </form>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-sm" id="dataTable">
                                     <thead>
@@ -44,9 +65,10 @@
                     </div>
                 </div>
             </div>
+            <form id="form-detail" method="get">
+                <input type="hidden" name="date">
+            </form>
         </div>
-    </div>
-
     </div>
 @endsection
 @push('js')
@@ -62,22 +84,22 @@
                 searchable: false
             },
             {
-                data: 'invoice_number',
+                data: 'instance',
             },
             {
-                data: 'description',
+                data: 'subinstance',
             },
             {
-                data: 'description',
+                data: 'cluster',
             },
             {
-                data: 'description',
+                data: 'water_meter',
             },
             {
-                data: 'description',
+                data: 'power_meter',
             },
             {
-                data: 'grand_total',
+                data: 'gas_meter',
             },
         ]
 
@@ -90,11 +112,32 @@
             })
         }
 
-        $('#dataTable').DataTable({
+        var table = $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('billing-data.index') }}",
+            ajax: {
+                url: "{{ route('billing-data.index') }}",
+                data: function (d) {
+                    d.date = $('#date-transaction').val();
+                }
+            },
             columns: columns
         });
+
+        $('#date-transaction').change(function() {
+            let dates = $(this).val()
+            let split = dates.split(" to ")
+
+            if (split.length >= 2) {
+                table.draw()
+            }
+        })
+
+        function onDetail(cluster_id) {
+            var date = $('#date-transaction').val();
+            $('#form-detail').find("input[name='date']").val(date);
+            $('#form-detail').attr('action', `${base_url}/panel/billing-data/detail/${cluster_id}`);
+            $('#form-detail').submit();
+        }
     </script>
 @endpush
