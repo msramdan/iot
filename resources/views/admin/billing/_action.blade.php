@@ -1,6 +1,6 @@
 <td>
     @can('billing_show')
-        <a href="" class="btn btn-sm  btn-warning"><i class="mdi mdi-eye"></i> </a>
+        <button class="btn btn-sm  btn-warning" onclick="onDetail('{{ $model->id }}')"><i class="mdi mdi-eye"></i> </button>
     @endcan
     @can('edit_variable')
     <button type="button" class="btn btn-success btn-sm " data-bs-toggle="modal"

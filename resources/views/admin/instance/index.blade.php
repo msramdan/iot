@@ -152,7 +152,6 @@
         }
 
         const button = (data) => {
-            console.log(data);
             let button = '';
             const url = '{{ url("/panel") }}' + `/instance/${data.instance_id}/subinstance/${data.id}`
 

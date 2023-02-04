@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\Rawdata;
 use App\Models\Ticket;
+use App\Models\Device;
 use App\Models\DailyUsageDevice;
 use App\Models\ParsedWaterMater;
 use App\Models\ParsedPowerMater;
@@ -373,6 +374,7 @@ function createTiket($device_id, $devEUI, $type_device, $data)
                                 ->where('type_device', $type_device)
                                 ->where('subinstance_id', $subintanceData->subinstance_id)
                                 ->first();
+
                             if ($value < $ToleranceAlerts->min_tolerance) {
                                 array_push($abnormal, "$key less than $ToleranceAlerts->min_tolerance reading results $value");
                             } else if ($value > $ToleranceAlerts->max_tolerance) {
@@ -526,10 +528,13 @@ function handleWaterMeter($device_id, $request)
             ->orderBy('created_at', 'desc')
             ->first();
 
+        $device = Device::find($device_id);
+
         DB::table('parsed_water_meter')->insert($params);
         DB::table('master_latest_datas')
             ->where('device_id', $device_id)
             ->update($params);
+
         createTiket($device_id, $request->devEUI, $type_device = 'water_meter', $dataAbnormal);
 
         if (isset($params['total_flow'])) {
@@ -545,6 +550,7 @@ function handleWaterMeter($device_id, $request)
                 DailyUsageDevice::create(
                     [
                         'device_id' => $device_id,
+                        'cluster_id' => $device->cluster_id,
                         'device_type' => 'water_meter',
                         'date' => $today,
                         'usage' => $usage,
@@ -553,6 +559,7 @@ function handleWaterMeter($device_id, $request)
             } else {
                 $dailyUsage->update([
                     'device_id' => $device_id,
+                    'cluster_id' => $device->cluster_id,
                     'device_type' => 'water_meter',
                     'date' => $today,
                     'usage' => $usage,
@@ -787,13 +794,13 @@ function handlePowerMeter($device_id, $request)
 
         $yesterdayStart = Carbon::now()->subDay(2)->hour(00)->minute(00)->second(00);
         $yesterdayEnd   = Carbon::now()->subDay(2)->hour(23)->minute(59)->second(59);
-
         $today = Carbon::today()->format('Y-m-d');
-
         $yesterdayData = ParsedPowerMater::where('device_id', $device_id)
             ->whereBetween("created_at", [$yesterdayStart, $yesterdayEnd])
             ->orderBy('created_at', 'desc')
             ->first();
+
+        $device = Device::find($device_id);
 
         DB::table('parsed_power_meter')->insert($params);
         DB::table('master_latest_data_power_meter')
@@ -815,6 +822,7 @@ function handlePowerMeter($device_id, $request)
                 DailyUsageDevice::create(
                     [
                         'device_id' => $device_id,
+                        'cluster_id' => $device->cluster_id,
                         'device_type' => 'power_meter',
                         'date' => $today,
                         'usage' => $usage,
@@ -823,6 +831,7 @@ function handlePowerMeter($device_id, $request)
             } else {
                 $dailyUsage->update([
                     'device_id' => $device_id,
+                    'cluster_id' => $device->cluster_id,
                     'device_type' => 'power_meter',
                     'date' => $today,
                     'usage' => $usage,
@@ -1124,18 +1133,19 @@ function handleGasMeter($device_id, $request)
 
     $yesterdayStart = Carbon::now()->subDay(2)->hour(00)->minute(00)->second(00);
     $yesterdayEnd   = Carbon::now()->subDay(2)->hour(23)->minute(59)->second(59);
-
     $today = Carbon::today()->format('Y-m-d');
-
     $yesterdayData = ParsedGasMater::where('device_id', $device_id)
         ->whereBetween("created_at", [$yesterdayStart, $yesterdayEnd])
         ->orderBy('created_at', 'desc')
         ->first();
 
+    $device = Device::find($device_id);
+
     DB::table('parsed_gas_meter')->insert($params);
     DB::table('master_latest_data_gas_meter')
         ->where('device_id', $device_id)
         ->update($params);
+
     createTiket($device_id, $request->devEUI, $type_device = 'gas_meter', $dataAbnormal);
 
     if (isset($params['gas_consumption'])) {
@@ -1151,6 +1161,7 @@ function handleGasMeter($device_id, $request)
             DailyUsageDevice::create(
                 [
                     'device_id' => $device_id,
+                    'cluster_id' => $device->cluster_id,
                     'device_type' => 'gas_meter',
                     'date' => $today,
                     'usage' => $usage,
@@ -1159,6 +1170,7 @@ function handleGasMeter($device_id, $request)
         } else {
             $dailyUsage->update([
                 'device_id' => $device_id,
+                'cluster_id' => $device->cluster_id,
                 'device_type' => 'gas_meter',
                 'date' => $today,
                 'usage' => $usage,

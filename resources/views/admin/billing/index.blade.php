@@ -65,9 +65,10 @@
                     </div>
                 </div>
             </div>
+            <form id="form-detail" method="get">
+                <input type="hidden" name="date">
+            </form>
         </div>
-    </div>
-
     </div>
 @endsection
 @push('js')
@@ -111,7 +112,7 @@
             })
         }
 
-        $('#dataTable').DataTable({
+        var table = $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
@@ -131,5 +132,12 @@
                 table.draw()
             }
         })
+
+        function onDetail(cluster_id) {
+            var date = $('#date-transaction').val();
+            $('#form-detail').find("input[name='date']").val(date);
+            $('#form-detail').attr('action', `${base_url}/panel/billing-data/detail/${cluster_id}`);
+            $('#form-detail').submit();
+        }
     </script>
 @endpush
