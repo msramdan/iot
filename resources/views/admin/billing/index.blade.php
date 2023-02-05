@@ -52,8 +52,11 @@
                                             <th>Subintance</th>
                                             <th>Cluster</th>
                                             <th>Water Meter</th>
+                                            <th>Total Biiling Water</th>
                                             <th>Power Meter</th>
+                                            <th>Total Billing Power</th>
                                             <th>Gas Meter</th>
+                                            <th>Total Billing Gas</th>
                                             @canany(['billing_detail', 'edit_variable'])
                                                 <th>Action</th>
                                             @endcanany
@@ -94,6 +97,15 @@
             },
             {
                 data: 'water_meter',
+            },
+            {
+                data: 'billing_water'
+            },
+            {
+                data: 'billing_power',
+            },
+            {
+                data: 'billing_gas',
             },
             {
                 data: 'power_meter',

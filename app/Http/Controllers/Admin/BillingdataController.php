@@ -94,7 +94,9 @@ class BillingdataController extends Controller
                     $total_usage_cluster_gas += $device_gas->total_usage;
                 }
                 /** End Water Meter */
-
+                $clusters[$i]->billing_water = $total_usage_cluster_water * $cluster->xpercentage_water + $cluster->yfixed_cost_water;
+                $clusters[$i]->billing_power = $total_usage_cluster_power * $cluster->xpercentage_power + $cluster->yfixed_cost_power;
+                $clusters[$i]->billing_gas = $total_usage_cluster_gas * $cluster->xpercentage_gas + $cluster->yfixed_cost_gas;
                 $clusters[$i]->water_meter = $total_usage_cluster_water;
                 $clusters[$i]->power_meter = $total_usage_cluster_power;
                 $clusters[$i]->gas_meter = $total_usage_cluster_gas;
@@ -114,6 +116,15 @@ class BillingdataController extends Controller
                 })
                 ->addColumn('water_meter', function($row) {
                     return $row->water_meter ?? 0;
+                })
+                ->addColumn('billing_water', function($row) {
+                    return 'Rp. '.number_format($row->billing_water,0, '.', '.');
+                })
+                ->addColumn('billing_power', function($row) {
+                    return 'Rp. '.number_format($row->billing_power,0, '.', '.');
+                })
+                ->addColumn('billing_gas', function($row) {
+                    return 'Rp. '.number_format($row->billing_gas,0, '.', '.');
                 })
                 ->addColumn('power_meter', function($row) {
                     return $row->power_meter ?? 0;
@@ -164,13 +175,13 @@ class BillingdataController extends Controller
 
             switch (Str::slug($device->category)) {
                 case 'water-meter' :
-                    $total_billing = ($device->total_usage * $cluster->xpercentage_water) + $cluster->yfixed_cost_water;
+                    $total_billing = $total_usage * $cluster->xpercentage_water + $cluster->yfixed_cost_water;
                     break;
                 case 'power-meter' :
-                    $total_billing = ($device->total_usage * $cluster->xpercentage_power) + $cluster->yfixed_cost_power;
+                    $total_billing = $total_usage * $cluster->xpercentage_power + $cluster->yfixed_cost_power;
                     break;
                 case 'gas-meter' :
-                    $total_billing = ($device->total_usage * $cluster->xpercentage_gas) + $cluster->yfixed_cost_gas;
+                    $total_billing = $total_usage * $cluster->xpercentage_gas + $cluster->yfixed_cost_gas;
                     break;
                 default:
                     $total_billing = 0;

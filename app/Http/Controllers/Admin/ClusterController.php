@@ -84,6 +84,7 @@ class ClusterController extends Controller
         try {
             Cluster::where(['subinstance_id' => $subinstanceId, 'id' => $id])->update($attr);
             Alert::toast('Cluster successfully updated', 'success');
+            return redirect()->back();
         } catch (Exception $err) {
             return $err;
         }
