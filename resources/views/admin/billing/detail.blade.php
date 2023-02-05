@@ -1,5 +1,12 @@
 @extends('layouts.master')
 @section('title', 'Detail Billing Data')
+@push('style')
+<style>
+    .card-body-2{
+        height: 100px;
+    }
+</style>
+@endpush
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
@@ -25,6 +32,9 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="card">
+                                        <div class="card-header">
+                                            <h5>Detail Billing Data</h5>
+                                        </div>
                                         <div class="card-body">
                                            <ul class="nav list-group">
                                                 <li class="list-item"><h6>Instance : {{ $cluster->instance_name }}</h6></li>
@@ -37,9 +47,9 @@
                                 <div class="col-md-4">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h6>Total Billing</h6>
+                                            <h5>Total Billing</h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body card-body-2 pt-4">
                                             <h6 id="total_amount_bill">Rp. {{ number_format($total_amount_bill, 0, '.', '.') }}</h6>
                                         </div>
                                     </div>
@@ -47,9 +57,9 @@
                                 <div class="col-md-4">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h6>Periode</h6>
+                                            <h5>Periode</h5>
                                         </div>
-                                        <div class="card-body">
+                                        <div class="card-body card-body-2 pt-4">
                                             <h6 id="">{{ date('d M, Y', strtotime($start_dates)) }} - {{ date('d M, Y', strtotime($end_dates)) }}</h6>
                                         </div>
                                     </div>
