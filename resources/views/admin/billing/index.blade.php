@@ -30,11 +30,9 @@
                                             <input type="text" class="form-control border-0 dash-filter-picker shadow"
                                                 data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y"
                                                 id="date-transaction" placeholder="Filter by registered date"
-                                                @if (!empty($start_dates) && !empty($end_dates))
-                                                    value="{{ date('d M, Y', strtotime($start_dates)) }} to {{ date('d M, Y', strtotime($end_dates)) }}"
+                                                @if (!empty($start_dates) && !empty($end_dates)) value="{{ date('d M, Y', strtotime($start_dates)) }} to {{ date('d M, Y', strtotime($end_dates)) }}"
                                                 @else
-                                                    value=""
-                                                @endif/>
+                                                    value="" @endif />
                                             <div class="input-group-text bg-primary border-primary text-white">
                                                 <i class="ri-calendar-2-line"></i>
                                             </div>
@@ -51,11 +49,11 @@
                                             <th>Intance</th>
                                             <th>Subintance</th>
                                             <th>Cluster</th>
-                                            <th>Water Meter</th>
+                                            {{-- <th>Water Meter</th> --}}
                                             <th>Total Biiling Water</th>
-                                            <th>Power Meter</th>
+                                            {{-- <th>Power Meter</th> --}}
                                             <th>Total Billing Power</th>
-                                            <th>Gas Meter</th>
+                                            {{-- <th>Gas Meter</th> --}}
                                             <th>Total Billing Gas</th>
                                             @canany(['billing_detail', 'edit_variable'])
                                                 <th>Action</th>
@@ -95,21 +93,21 @@
             {
                 data: 'cluster',
             },
-            {
-                data: 'water_meter',
-            },
+            // {
+            //     data: 'water_meter',
+            // },
             {
                 data: 'billing_water'
             },
-            {
-                data: 'power_meter',
-            },
+            // {
+            //     data: 'power_meter',
+            // },
             {
                 data: 'billing_power',
             },
-            {
-                data: 'gas_meter',
-            },
+            // {
+            //     data: 'gas_meter',
+            // },
             {
                 data: 'billing_gas',
             },
@@ -129,7 +127,7 @@
             serverSide: true,
             ajax: {
                 url: "{{ route('billing-data.index') }}",
-                data: function (d) {
+                data: function(d) {
                     d.date = $('#date-transaction').val();
                 }
             },

@@ -121,9 +121,8 @@ Route::controller(GatewayController::class)->group(function () {
     Route::get('/gateway', 'index')->name('gateway.index');
 });
 
-Route::prefix('billing-data')->controller(BillingdataController::class)->group(function() {
-   Route::get('/', 'index')->name('billing-data.index');
-   Route::get('detail/{id}', 'detail')->name('billing-data.show');
-   Route::post('detail/{id}', 'detail')->name('billing-data.show');
+Route::prefix('billing-data')->controller(BillingdataController::class)->group(function () {
+    Route::get('/', 'index')->name('billing-data.index');
+    Route::get('detail/{id}', 'detail')->name('billing-data.show');
+    //    Route::post('detail/{id}', 'detail')->name('billing-data.show');
 });
-

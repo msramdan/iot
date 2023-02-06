@@ -29,9 +29,9 @@ class BillingdataController extends Controller
                 'instances.instance_name',
                 'subinstances.name_subinstance'
             )
-            ->join('instances', 'clusters.instance_id', '=', 'instances.id')
-            ->join('subinstances', 'clusters.subinstance_id', 'subinstances.id')
-            ->get();
+                ->join('instances', 'clusters.instance_id', '=', 'instances.id')
+                ->join('subinstances', 'clusters.subinstance_id', 'subinstances.id')
+                ->get();
 
             if ($request->has('date') && !empty($request->date)) {
                 $dates = explode(' to ', $request->date);
@@ -50,23 +50,23 @@ class BillingdataController extends Controller
                 $total_billing_power = 0;
                 $total_billing_gas = 0;
 
-                $devices= Device::where('devices.cluster_id', $cluster->id)->get();
+                $devices = Device::where('devices.cluster_id', $cluster->id)->get();
 
                 foreach ($devices as $device) {
                     $total_usage = DailyUsageDevice::where('device_id', $device->id)
-                    ->whereBetween('created_at', [$start_dates, $end_dates])
-                    ->sum('usage');
+                        ->whereBetween('created_at', [$start_dates, $end_dates])
+                        ->sum('usage');
 
                     switch (Str::slug($device->category)) {
-                        case 'water-meter' :
+                        case 'water-meter':
                             $total_usage_cluster_water += $total_usage;
                             $total_billing_water += $total_usage * $cluster->xpercentage_water + $cluster->yfixed_cost_water;
                             break;
-                        case 'power-meter' :
+                        case 'power-meter':
                             $total_usage_cluster_power += $total_usage;
                             $total_billing_power += $total_usage * $cluster->xpercentage_power + $cluster->yfixed_cost_power;
                             break;
-                        case 'gas-meter' :
+                        case 'gas-meter':
                             $total_usage_cluster_gas += $total_usage;
                             $total_billing_gas += $total_usage * $cluster->xpercentage_gas + $cluster->yfixed_cost_gas;
                             break;
@@ -86,32 +86,32 @@ class BillingdataController extends Controller
 
             return DataTables::of($clusters)
                 ->addIndexColumn()
-                ->addColumn('instance', function($row) {
+                ->addColumn('instance', function ($row) {
                     return $row->instance_name ?? '-';
                 })
-                ->addColumn('subinstance', function($row) {
+                ->addColumn('subinstance', function ($row) {
                     return $row->name_subinstance ?? '-';
                 })
-                ->addColumn('cluster', function($row) {
+                ->addColumn('cluster', function ($row) {
                     return $row->name ?? '-';
                 })
-                ->addColumn('water_meter', function($row) {
-                    return $row->water_meter ?? 0;
+                // ->addColumn('water_meter', function ($row) {
+                //     return $row->water_meter ?? 0;
+                // })
+                ->addColumn('billing_water', function ($row) {
+                    return 'Rp. ' . number_format($row->billing_water, 2, '.', '.');
                 })
-                ->addColumn('billing_water', function($row) {
-                    return 'Rp. '.number_format($row->billing_water,0, '.', '.');
+                // ->addColumn('power_meter', function ($row) {
+                //     return $row->power_meter ?? 0;
+                // })
+                ->addColumn('billing_power', function ($row) {
+                    return 'Rp. ' . number_format($row->billing_power, 2, '.', '.');
                 })
-                ->addColumn('power_meter', function($row) {
-                    return $row->power_meter ?? 0;
-                })
-                ->addColumn('billing_power', function($row) {
-                    return 'Rp. '.number_format($row->billing_power,0, '.', '.');
-                })
-                ->addColumn('gas_meter', function($row) {
-                    return $row->gas_meter ?? 0;
-                })
-                ->addColumn('billing_gas', function($row) {
-                    return 'Rp. '.number_format($row->billing_gas,0, '.', '.');
+                // ->addColumn('gas_meter', function ($row) {
+                //     return $row->gas_meter ?? 0;
+                // })
+                ->addColumn('billing_gas', function ($row) {
+                    return 'Rp. ' .  number_format($row->billing_gas, 2, '.', '.');
                 })
                 ->addColumn('action', 'admin.billing._action')
                 ->toJson();
@@ -130,10 +130,10 @@ class BillingdataController extends Controller
             'instances.instance_name',
             'subinstances.name_subinstance'
         )
-        ->join('instances', 'clusters.instance_id', '=', 'instances.id')
-        ->join('subinstances', 'clusters.subinstance_id', 'subinstances.id')
-        ->where('clusters.id', $id)
-        ->first();
+            ->join('instances', 'clusters.instance_id', '=', 'instances.id')
+            ->join('subinstances', 'clusters.subinstance_id', 'subinstances.id')
+            ->where('clusters.id', $id)
+            ->first();
 
         $total_amount_bill = 0;
         $date = $request->date ?? null;
@@ -151,17 +151,17 @@ class BillingdataController extends Controller
 
         foreach ($devices as $i => $device) {
             $total_usage = DailyUsageDevice::where('device_id', $device->id)
-                                ->whereBetween('created_at', [$start_dates, $end_dates])
-                                ->sum('usage');
+                ->whereBetween('created_at', [$start_dates, $end_dates])
+                ->sum('usage');
 
             switch (Str::slug($device->category)) {
-                case 'water-meter' :
+                case 'water-meter':
                     $total_billing = $total_usage * $cluster->xpercentage_water + $cluster->yfixed_cost_water;
                     break;
-                case 'power-meter' :
+                case 'power-meter':
                     $total_billing = $total_usage * $cluster->xpercentage_power + $cluster->yfixed_cost_power;
                     break;
-                case 'gas-meter' :
+                case 'gas-meter':
                     $total_billing = $total_usage * $cluster->xpercentage_gas + $cluster->yfixed_cost_gas;
                     break;
                 default:
@@ -176,7 +176,6 @@ class BillingdataController extends Controller
         }
 
 
-        return view('admin.billing.detail', compact('date', 'start_dates', 'end_dates', 'cluster', 'devices' , 'total_amount_bill'));
+        return view('admin.billing.detail', compact('date', 'start_dates', 'end_dates', 'cluster', 'devices', 'total_amount_bill'));
     }
-
 }

@@ -1,11 +1,11 @@
 @extends('layouts.master')
 @section('title', 'Detail Billing Data')
 @push('style')
-<style>
-    .card-body-2{
-        height: 100px;
-    }
-</style>
+    <style>
+        .card-body-2 {
+            height: 100px;
+        }
+    </style>
 @endpush
 @section('content')
     <div class="page-content">
@@ -36,11 +36,17 @@
                                             <h5>Detail Billing Data</h5>
                                         </div>
                                         <div class="card-body">
-                                           <ul class="nav list-group">
-                                                <li class="list-item"><h6>Instance : {{ $cluster->instance_name }}</h6></li>
-                                                <li class="list-item"><h6>Sub Instance : {{ $cluster->name_subinstance }}</h6></li>
-                                                <li class="list-item"><h6>Cluster : {{ $cluster->name }}</h6></li>
-                                           </ul>
+                                            <ul class="nav list-group">
+                                                <li class="list-item">
+                                                    <h6>Instance : {{ $cluster->instance_name }}</h6>
+                                                </li>
+                                                <li class="list-item">
+                                                    <h6>Sub Instance : {{ $cluster->name_subinstance }}</h6>
+                                                </li>
+                                                <li class="list-item">
+                                                    <h6>Cluster : {{ $cluster->name }}</h6>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -50,7 +56,8 @@
                                             <h5>Total Billing</h5>
                                         </div>
                                         <div class="card-body card-body-2 pt-4">
-                                            <h6 id="total_amount_bill">Rp. {{ number_format($total_amount_bill, 0, '.', '.') }}</h6>
+                                            <h6 id="total_amount_bill">Rp.
+                                                {{ number_format($total_amount_bill, 2, '.', '.') }}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -60,7 +67,8 @@
                                             <h5>Periode</h5>
                                         </div>
                                         <div class="card-body card-body-2 pt-4">
-                                            <h6 id="">{{ date('d M, Y', strtotime($start_dates)) }} - {{ date('d M, Y', strtotime($end_dates)) }}</h6>
+                                            <h6 id="">{{ date('d M, Y', strtotime($start_dates)) }} -
+                                                {{ date('d M, Y', strtotime($end_dates)) }}</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -86,13 +94,10 @@
                                     </form>
                                 </div>
                             </div> --}}
-                            <input type="hidden" class="form-control"
-                                id="date-transaction"
-                                @if (!empty($start_dates) && !empty($end_dates))
-                                    value="{{ date('d M, Y', strtotime($start_dates)) }} to {{ date('d M, Y', strtotime($end_dates)) }}"
+                            <input type="hidden" class="form-control" id="date-transaction"
+                                @if (!empty($start_dates) && !empty($end_dates)) value="{{ date('d M, Y', strtotime($start_dates)) }} to {{ date('d M, Y', strtotime($end_dates)) }}"
                                 @else
-                                    value=""
-                                @endif/>
+                                    value="" @endif />
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="card">
@@ -102,13 +107,16 @@
                                         <div class="card-body">
                                             <ul class="nav list-group">
                                                 <li class="list-item">
-                                                    Water meter : SUM(daily_usage) * {{ $cluster->xpercentage_water }} + {{ $cluster->yfixed_cost_water }}
+                                                    Water meter : SUM(daily_usage) * {{ $cluster->xpercentage_water }} +
+                                                    {{ $cluster->yfixed_cost_water }}
                                                 </li>
                                                 <li class="list-item">
-                                                    Power meter : SUM(daily_usage) * {{ $cluster->xpercentage_power }} + {{ $cluster->yfixed_cost_power }}
+                                                    Power meter : SUM(daily_usage) * {{ $cluster->xpercentage_power }} +
+                                                    {{ $cluster->yfixed_cost_power }}
                                                 </li>
                                                 <li class="list-item">
-                                                    Gas meter : SUM(daily_usage) * {{ $cluster->xpercentage_gas }} + {{ $cluster->yfixed_cost_gas }}
+                                                    Gas meter : SUM(daily_usage) * {{ $cluster->xpercentage_gas }} +
+                                                    {{ $cluster->yfixed_cost_gas }}
                                                 </li>
                                             </ul>
                                         </div>
@@ -133,20 +141,20 @@
                                                 <td>{{ $device->devEUI }}</td>
                                                 <td>{{ $device->category }}</td>
                                                 <td>
-                                                   @if ($device->category == 'Water Meter')
-                                                   {{ $device->total_usage ? $device->total_usage. ' L' : '0 L' }}
-                                                   @elseif ($device->category == 'Power Meter')
-                                                   {{ $device->total_usage ? $device->total_usage. ' Kwh' : '0 Kwh' }}
-                                                   @elseif ($device->category == 'Gas Meter')
-                                                   {{ $device->total_usage ? $device->total_usage. ' m3' : '0 m3' }}
-                                                   @endif
+                                                    @if ($device->category == 'Water Meter')
+                                                        {{ $device->total_usage ? $device->total_usage . ' L' : '0 L' }}
+                                                    @elseif ($device->category == 'Power Meter')
+                                                        {{ $device->total_usage ? $device->total_usage . ' Kwh' : '0 Kwh' }}
+                                                    @elseif ($device->category == 'Gas Meter')
+                                                        {{ $device->total_usage ? $device->total_usage . ' m3' : '0 m3' }}
+                                                    @endif
                                                 </td>
-                                                <td>Rp. {{ number_format($device->total_billing,0, '.', '.') }}</td>
+                                                <td>Rp. {{ number_format($device->total_billing, 2, '.', '.') }}</td>
                                             </tr>
                                         @endforeach
                                         <td>
-                                            <td colspan="3"><b>Total Nominal Billing</b></td>
-                                            <td><b>Rp. {{ number_format($total_amount_bill,0, '.', '.') }}</b></td>
+                                        <td colspan="3"><b>Total Nominal Billing</b></td>
+                                        <td><b>Rp. {{ number_format($total_amount_bill, 2, '.', '.') }}</b></td>
                                         </td>
                                     </tbody>
                                 </table>
@@ -168,9 +176,9 @@
 
         // $('#dataTable tbody').append(
         //     `<tr>
-        //         <td colspan="4">Total Billing</td>
-        //         <td>${total_amount_bill}</td>
-        //     </tr>`
+    //         <td colspan="4">Total Billing</td>
+    //         <td>${total_amount_bill}</td>
+    //     </tr>`
         // );
     </script>
 @endpush
