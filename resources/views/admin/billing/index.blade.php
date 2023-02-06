@@ -102,16 +102,16 @@
                 data: 'billing_water'
             },
             {
-                data: 'billing_power',
-            },
-            {
-                data: 'billing_gas',
-            },
-            {
                 data: 'power_meter',
             },
             {
+                data: 'billing_power',
+            },
+            {
                 data: 'gas_meter',
+            },
+            {
+                data: 'billing_gas',
             },
         ]
 

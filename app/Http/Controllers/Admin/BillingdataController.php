@@ -46,57 +46,38 @@ class BillingdataController extends Controller
                 $total_usage_cluster_water = 0;
                 $total_usage_cluster_gas = 0;
                 $total_usage_cluster_power = 0;
+                $total_billing_water = 0;
+                $total_billing_power = 0;
+                $total_billing_gas = 0;
 
-                /** Water Meter */
-                $device_waters = Device::select(
-                    'devices.cluster_id as device_cluster_id',
-                    DB::raw("SUM(daily_usage_devices.usage) as total_usage")
-                )
-                ->join('daily_usage_devices', 'devices.id', '=', 'daily_usage_devices.device_id')
-                ->where('devices.cluster_id', $cluster->id)
-                ->where('category', 'Water Meter')
-                ->whereBetween('daily_usage_devices.created_at', [$start_dates, $end_dates])
-                ->get();
+                $devices= Device::where('devices.cluster_id', $cluster->id)->get();
 
-                foreach ($device_waters as $device_water) {
-                    $total_usage_cluster_water += $device_water->total_usage;
+                foreach ($devices as $device) {
+                    $total_usage = DailyUsageDevice::where('device_id', $device->id)
+                    ->whereBetween('created_at', [$start_dates, $end_dates])
+                    ->sum('usage');
+
+                    switch (Str::slug($device->category)) {
+                        case 'water-meter' :
+                            $total_usage_cluster_water += $total_usage;
+                            $total_billing_water += $total_usage * $cluster->xpercentage_water + $cluster->yfixed_cost_water;
+                            break;
+                        case 'power-meter' :
+                            $total_usage_cluster_power += $total_usage;
+                            $total_billing_power += $total_usage * $cluster->xpercentage_power + $cluster->yfixed_cost_power;
+                            break;
+                        case 'gas-meter' :
+                            $total_usage_cluster_gas += $total_usage;
+                            $total_billing_gas += $total_usage * $cluster->xpercentage_gas + $cluster->yfixed_cost_gas;
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                /** End Water Meter */
 
-                 /**Power Meter */
-                 $device_powers = Device::select(
-                    'devices.cluster_id as device_cluster_id',
-                    DB::raw("SUM(daily_usage_devices.usage) as total_usage")
-                )
-                ->join('daily_usage_devices', 'devices.id', '=', 'daily_usage_devices.device_id')
-                ->where('devices.cluster_id', $cluster->id)
-                ->where('category', 'Power Meter')
-                ->whereBetween('daily_usage_devices.created_at', [$start_dates, $end_dates])
-                ->get();
-
-                foreach ($device_powers as $device_power) {
-                    $total_usage_cluster_power += $device_power->total_usage;
-                }
-                /** End Power Meter */
-
-                 /** Gas Meter */
-                 $device_gases = Device::select(
-                    'devices.cluster_id as device_cluster_id',
-                    DB::raw("SUM(daily_usage_devices.usage) as total_usage")
-                )
-                ->join('daily_usage_devices', 'devices.id', '=', 'daily_usage_devices.device_id')
-                ->where('devices.cluster_id', $cluster->id)
-                ->where('category', 'Gas Meter')
-                ->whereBetween('daily_usage_devices.created_at', [$start_dates, $end_dates])
-                ->get();
-
-                foreach ($device_gases as $device_gas) {
-                    $total_usage_cluster_gas += $device_gas->total_usage;
-                }
-                /** End Water Meter */
-                $clusters[$i]->billing_water = $total_usage_cluster_water * $cluster->xpercentage_water + $cluster->yfixed_cost_water;
-                $clusters[$i]->billing_power = $total_usage_cluster_power * $cluster->xpercentage_power + $cluster->yfixed_cost_power;
-                $clusters[$i]->billing_gas = $total_usage_cluster_gas * $cluster->xpercentage_gas + $cluster->yfixed_cost_gas;
+                $clusters[$i]->billing_water =  $total_billing_water;
+                $clusters[$i]->billing_power =  $total_billing_power;
+                $clusters[$i]->billing_gas =  $total_billing_gas;
                 $clusters[$i]->water_meter = $total_usage_cluster_water;
                 $clusters[$i]->power_meter = $total_usage_cluster_power;
                 $clusters[$i]->gas_meter = $total_usage_cluster_gas;
@@ -120,17 +101,17 @@ class BillingdataController extends Controller
                 ->addColumn('billing_water', function($row) {
                     return 'Rp. '.number_format($row->billing_water,0, '.', '.');
                 })
-                ->addColumn('billing_power', function($row) {
-                    return 'Rp. '.number_format($row->billing_power,0, '.', '.');
-                })
-                ->addColumn('billing_gas', function($row) {
-                    return 'Rp. '.number_format($row->billing_gas,0, '.', '.');
-                })
                 ->addColumn('power_meter', function($row) {
                     return $row->power_meter ?? 0;
                 })
+                ->addColumn('billing_power', function($row) {
+                    return 'Rp. '.number_format($row->billing_power,0, '.', '.');
+                })
                 ->addColumn('gas_meter', function($row) {
                     return $row->gas_meter ?? 0;
+                })
+                ->addColumn('billing_gas', function($row) {
+                    return 'Rp. '.number_format($row->billing_gas,0, '.', '.');
                 })
                 ->addColumn('action', 'admin.billing._action')
                 ->toJson();
