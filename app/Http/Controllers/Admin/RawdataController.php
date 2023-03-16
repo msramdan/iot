@@ -53,4 +53,16 @@ class RawdataController extends Controller
 
         return view('admin.rawdata.index');
     }
+
+    public function destroy(Rawdata $rawdata)
+    {
+        try {
+            $rawdata->delete();
+            Alert::toast('The rawdata was deleted successfully.', 'success');
+            return redirect()->route('rawdatas.index');
+        } catch (\Throwable $th) {
+            Alert::toast('The rawdata cant be deleted because its related to another table.', 'error');
+            return redirect()->route('rawdatas.index');
+        }
+    }
 }

@@ -45,14 +45,18 @@
                                                 <div class="input-group mb-4">
                                                     <input type="text" class="form-control border-0 dash-filter-picker shadow"
                                                         data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y"
-                                                        id="date-transaction" placeholder="Filter by registered date"
+                                                        id="date-transaction" placeholder=""
                                                         @if (!empty($start_dates) && !empty($end_dates)) value="{{ date('d M, Y', strtotime($start_dates)) }} to {{ date('d M, Y', strtotime($end_dates)) }}"
                                                         @else
                                                             value="" @endif />
                                                     <div class="input-group-text bg-primary border-primary text-white">
                                                         <i class="ri-calendar-2-line"></i>
                                                     </div>
-                                                </div>
+                                                    <input type="hidden" name="start_date" id="start_date"
+                                                    value="{{ $microFrom }}">
+                                                    <input type="hidden" name="end_date" id="end_date"
+                                                        value="{{ $microTo }}">
+                                                    </div>
                                                 <!--end row-->
                                             </form>
                                         </div>
@@ -119,12 +123,12 @@
                 searchable: false
             },
             {
-                data: 'dev_eui',
-                name: 'dev_eui'
+                data: 'devEUI',
+                name: 'devEUI'
             },
             {
-                data: 'app_id',
-                name: 'app_id'
+                data: 'appID',
+                name: 'appID'
             },
             {
                 data: 'gwid',
@@ -227,8 +231,19 @@
         $('#dev_eui').change(function() {
             table.draw();
         })
-        $('#daterange-btn').change(function() {
-            table.draw();
+        $('#date-transaction').change(function() {
+            let dates = $(this).val()
+            let split = dates.split(" to ")
+
+            if (split.length >= 2) {
+                var start_dates = new Date(split_dates[0].replace(',', '')).getTime();
+                var end_dates = new Date(split_dates[1].replace(',', '')).getTime();
+
+                $('#start_date').val(start_dates);
+                $('#end_date').val(end_dates);
+
+                table.draw()
+            }
         })
     </script>
 

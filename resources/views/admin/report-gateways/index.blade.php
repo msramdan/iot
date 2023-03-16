@@ -51,9 +51,9 @@
                                                     </div>
                                                     <input type="hidden" name="start_date" id="start_date"
                                                     value="{{ $microFrom }}">
-                                                <input type="hidden" name="end_date" id="end_date"
-                                                    value="{{ $microTo }}">
-                                                </div>
+                                                    <input type="hidden" name="end_date" id="end_date"
+                                                        value="{{ $microTo }}">
+                                                    </div>
                                                 <!--end row-->
                                             </form>
                                         </div>

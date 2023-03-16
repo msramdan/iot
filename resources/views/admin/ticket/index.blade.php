@@ -74,12 +74,15 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Judul</th>
-                                            <th>Description</th>
-                                            <th>Status</th>
-                                            <th>Created At</th>
+                                            <th>{{ __('Branches') }}</th>
+                                            <th>{{ __('Cluster') }}</th>
+                                            <th>{{ __('Subject') }}</th>
+                                            <th>{{ __('Status') }}</th>
+                                            <th>{{ __('Update By') }}</th>
+                                            <th>{{ __('Created At') }}</th>
+                                            <th>{{ __('Updated At') }}</th>
                                             @canany(['ticket_show', 'ticket_update', 'ticket_delete'])
-                                                <th>Action</th>
+                                            <th>{{ __('Action') }}</th>
                                             @endcanany
                                         </tr>
                                     </thead>
@@ -100,25 +103,41 @@
 
         const action =
             '{{ auth()->user()->can('ticket_update') || auth()->user()->can('ticket_delete')? 'yes yes yes': '' }}'
+
         let columns = [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
+            }, {
+                data: 'branches',
+                name: 'branches',
+            },
+            {
+                data: 'cluster',
+                name: 'cluster',
             },
             {
                 data: 'subject',
-            },
-            {
-                data: 'description',
+                name: 'subject',
             },
             {
                 data: 'status',
+                name: 'status',
+            },
+            {
+                data: 'user',
+                name: 'user',
             },
             {
                 data: 'created_at',
+                name: 'created_at'
             },
-        ]
+            {
+                data: 'updated_at',
+                name: 'updated_at'
+            }
+        ];
 
         if (action) {
             columns.push({
@@ -129,10 +148,20 @@
             })
         }
 
-        $('#dataTable').DataTable({
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+        // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+        let query = params.parsed_data; // "some_value"
+        var table = $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('tickets.index') }}",
+            ajax: {
+                url: "{{ route('tickets.index') }}",
+                data: function(s) {
+                    s.parsed_data = query
+                }
+            },
             columns: columns
         });
     </script>

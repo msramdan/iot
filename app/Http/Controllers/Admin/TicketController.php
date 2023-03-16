@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -17,10 +18,65 @@ class TicketController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $ticket = Ticket::with('created_by')->orderBy('id', 'desc')->get();
         if (request()->ajax()) {
+            $parsed_data = Ticket::with('device:id,devEUI,instance_id,cluster_id');
+
+            $query_parsed = intval($request->query('parsed_data'));
+
+            if (isset($query_parsed) && !empty($query_parsed)) {
+                $parsed_data = $parsed_data->where('tickets.id', $query_parsed);
+            }
+            $parsed_data = $parsed_data->orderBy('tickets.id', 'DESC')->get();
+            return DataTables::of($parsed_data)
+                ->addIndexColumn()
+                ->addColumn('created_at', function ($row) {
+                    return $row->created_at->format('d M Y H:i:s');
+                })->addColumn('updated_at', function ($row) {
+                    return $row->updated_at->format('d M Y H:i:s');
+                })->addColumn('status', function ($row) {
+                    if ($row->status == "Opened") {
+                        return '<button class="btn btn-pill btn-danger btn-air-danger btn-xs" type="button" title="btn btn-pill btn-danger btn-air-danger btn-xs"> Open</button>';
+                    } else {
+                        return '<button class="btn btn-pill btn-primary btn-air-primary btn-xs" type="button" title="btn btn-pill btn-primary btn-air-primary btn-xs">Close</button>';
+                    }
+                })
+                ->addColumn('description', function ($row) {
+                    $result = json_decode($row->description);
+                    if (json_last_error() === JSON_ERROR_NONE) {
+                        $arr =  json_decode($row->description);
+                        $output = '';
+                        foreach ($arr as $value) {
+                            $output .= "<li>" . $value . "</li>";
+                        }
+                        return $output;
+                    } else {
+                        return $row->description;
+                    }
+                })
+                ->addColumn('user', function ($row) {
+                    if ($row->author_id) {
+                        $user = User::find($row->author_id);
+                        return $user->name;
+                    }
+
+                    return '-';
+                })
+                ->addColumn('branches', function ($row) {
+                    return $row->device ? getInstance($row->device->instance_id)->instance_name  : '';
+                })
+                ->addColumn('cluster', function ($row) {
+                    return $row->device ? getCluster($row->device->cluster_id)->cluster_name  : '';
+                })
+
+                ->addColumn('device', function ($row) {
+                    return $row->device ? $row->device->dev_eui : '';
+                })->addColumn('action', 'admin.ticket._action', 'description')
+                ->rawColumns(['description', 'action', 'admin.ticket._action', 'status'])
+                ->toJson();
+        } if (request()->ajax()) {
             return DataTables::of($ticket)
                 ->addIndexColumn()
                 ->addColumn('created_at', function ($row) {

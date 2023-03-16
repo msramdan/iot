@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Device;
 use App\Models\Rawdata;
 use App\Exports\ReportDeviceLogExport;
-use Maatwebsite\Excel\Excel;
+use Excel;
+use Carbon\Carbon;
 
 class ReportDeviceController extends Controller
 {
@@ -26,6 +27,9 @@ class ReportDeviceController extends Controller
      */
     public function index(Request $request)
     {
+        $start_dates = Carbon::now()->firstOfMonth();
+        $end_dates = Carbon::now()->endOfMonth();
+
         if (request()->ajax()) {
             $rawdatas = Rawdata::query();
             $dev_eui = intval($request->query('dev_eui'));
@@ -34,7 +38,7 @@ class ReportDeviceController extends Controller
 
             if (isset($dev_eui) && !empty($dev_eui)) {
                 if($dev_eui !='All'){
-                    $rawdatas = $rawdatas->where('dev_eui',$dev_eui);
+                    $rawdatas = $rawdatas->where('devEUI',$dev_eui);
                 }
             }
             if (isset($start_date) && !empty($start_date)) {
@@ -52,7 +56,7 @@ class ReportDeviceController extends Controller
                 $rawdatas = $rawdatas->where('created_at', '<=', $to);
             }
 
-            $rawdatas = $rawdatas->orderBy('rawdatas.id', 'desc')->get();
+            $rawdatas = $rawdatas->orderBy('rawdata.id', 'desc')->get();
             return DataTables::of($rawdatas)
                 ->addIndexColumn()
                 // ->addColumn('payload', function ($row) {
@@ -70,16 +74,19 @@ class ReportDeviceController extends Controller
                     }
                     return '-';
                 })
-                ->addColumn('action', 'rawdatas.include.action')
+                ->addColumn('action', 'admin.rawdata.include.action')
                 ->rawColumns(['parsed', 'action'])
                 ->toJson();
         }
-        $from = date('Y-m-d') . " 00:00:00";
-        $to = date('Y-m-d') . " 23:59:59";
-        $microFrom = strtotime($from) * 1000;
-        $microTo = strtotime($to) * 1000;
+
+
+        $microFrom = $start_dates->timestamp;
+        $microTo = $end_dates->timestamp;
+
         return view('admin.report-devices.index',[
             'device' => Device::all(),
+            'start_dates' => $start_dates,
+            'end_dates' => $end_dates,
             'microFrom' => $microFrom,
             'microTo' => $microTo,
         ]);
@@ -88,7 +95,7 @@ class ReportDeviceController extends Controller
     public function export($dev_eui, $start_date, $end_date)
     {
         $date= date('d-m-Y');
-        $nameFile = 'RM-Device Log-' .$date;
+        $nameFile = 'IOT-Device Log-' .$date;
          return Excel::download(new ReportDeviceLogExport($dev_eui, $start_date, $end_date), $nameFile.'.xlsx');
 
     }

@@ -15,4 +15,9 @@ class Ticket extends Model
     {
         return $this->belongsTo(Instance::class, 'author_id', 'id');
     }
+
+    public function device()
+    {
+        return $this->belongsTo(\App\Models\Device::class);
+    }
 }

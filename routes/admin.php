@@ -106,6 +106,7 @@ Route::controller(ActivityLogController::class)->group(function () {
     Route::get('/activity_log', 'index')->name('activity_log.index');
 });
 Route::controller(RawdataController::class)->group(function () {
+    Route::post('/rawdata/destory/{id}', 'destroy')->name('rawdata.destroy');
     Route::get('/rawdata', 'index')->name('rawdata.index');
 });
 Route::controller(ParsedWaterMaterController::class)->group(function () {

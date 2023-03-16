@@ -35,7 +35,7 @@ class ReportDeviceLogExport implements FromView,ShouldAutoSize, WithEvents
                 $to = date("Y-m-d H:i:s", substr($this->end_date, 0, 10));
                 $rawdatas = $rawdatas->where('created_at', '<=', $to);
         }
-        $rawdatas = $rawdatas->orderBy('rawdatas.id', 'desc')->get();
+        $rawdatas = $rawdatas->orderBy('rawdata.id', 'desc')->get();
         return view('admin.report-devices.export', [
             'data' => $rawdatas
         ]);
