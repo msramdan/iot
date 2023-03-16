@@ -360,7 +360,7 @@ function createTiket($device_id, $devEUI, $type_device, $data)
         // get subintance
         $subintanceData = DB::table('devices')
             ->join('clusters', 'devices.cluster_id', '=', 'clusters.id')
-            ->select('clusters.subinstance_id')
+            ->select('devices.*', 'clusters.name', 'instances.instance_name')
             ->where('devices.id', $device_id)->first();
         if ($subintanceData) {
             $day = strtolower(date('l'));

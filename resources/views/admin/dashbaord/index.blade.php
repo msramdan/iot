@@ -2,6 +2,7 @@
 
 @section('title', 'Dashboard')
 @push('style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/dashboard.css') }}">
     <style>
         .map-embed {
             width: 100%;
@@ -176,220 +177,528 @@
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
-
-            <!-- start page title -->
             <div class="row">
-                <div class="col-12">
-                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Dashboard</h4>
+                <div class="col-xl-3 col-sm-6 box-col-3">
+                    <div class="card radius-10 border-start border-0 border-3 border-info">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <p class="mb-0 text-secondary">Total Branches</p>
+                                    <h4 class="my-1 text-info"><a href="{{ route('instance.index') }}"><span
+                                                style="color:red">{{ $selectBranchesError }}</span>
+                                            / {{ $countBranches }}
+                                        </a></h4>
 
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboards</a></li>
-                                <li class="breadcrumb-item active">Dashboard</li>
-                            </ol>
+                                </div>
+                                <div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto"><i
+                                        class="fa fa-database"></i>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 box-col-3">
+                    <div class="card radius-10 border-start border-0 border-3 border-danger">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <p class="mb-0 text-secondary">Total Clusters</p>
+                                    <h4 class="my-1 text-danger"> <a href="#"><span
+                                                style="color:red">{{ $selectClusterError }}</span>
+                                            / {{ $countCluster }}
+                                        </a>
+                                    </h4>
 
+                                </div>
+                                <div class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto"><i
+                                        class="fa fa-list"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 box-col-3">
+                    <div class="card radius-10 border-start border-0 border-3 border-success">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <p class="mb-0 text-secondary">Total Devices</p>
+                                    <h4 class="my-1 text-success"><a href="{{ route('device.index') }}"><span
+                                                style="color:red">{{ $countDeviceError }}</span> /
+                                            {{ $countDevice }}
+                                        </a></h4>
+
+                                </div>
+                                <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i
+                                        class="fa fa-hard-drive"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 box-col-3">
+                    <div class="card radius-10 border-start border-0 border-3 border-warning">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div>
+                                    <p class="mb-0 text-secondary">Total User</p>
+                                    <h4 class="my-1 text-warning"><a
+                                            href="#">{{ App\Models\User::count() }} Data</a></h4>
+
+                                </div>
+                                <div class="widgets-icons-2 rounded-circle bg-gradient-blooker text-white ms-auto"><i
+                                        class="fa fa-users"></i>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- end page title -->
 
             <div class="row">
-                <div class="col">
 
-                    <div class="h-100">
-                        <div class="row mb-3 pb-1">
-                            <div class="col-12">
-                                <div class="d-flex align-items-lg-center flex-lg-row flex-column">
-                                    <div class="flex-grow-1">
-                                        <h4 class="fs-16 mb-1">Welcome, {{ Auth::user()->name }}</h4>
-                                    </div>
-                                    <div class="mt-3 mt-lg-0">
-                                    </div>
-                                </div><!-- end card header -->
+                <div class="col-xl-3 col-50 box-col-3 des-xl-50">
+                    <div class="card income-card card-primary" style="height: 250px">
+                        <div class="card-body">
+                            <div class="round-progress knob-block text-center">
+                                <p>Branches Status</p>
+                                <input type="text" value="{{ $chartPersentageBranches }}" id="infinite2"
+                                    data-fgColor="<?= $selectBranchesError > 0 ? '#EB4656' : '#24695C' ?>"
+                                    data-angleOffset=0 data-angleArc=360 data-rotation=anticlockwise>
+
+                                <h6 class="my-1 <?= $selectBranchesError > 0 ? 'text-danger' : 'text-success' ?>"> <b> <i
+                                            class="fa <?= $selectBranchesError > 0 ? 'fa-exclamation-triangle' : 'fa-check' ?>"
+                                            aria-hidden="true"></i>
+                                        <?= $selectBranchesError > 0 ? 'Warning' : 'Healthy' ?></b>
+                                </h6>
+                                <p class="my-1 <?= $selectBranchesError > 0 ? 'text-danger' : 'text-success' ?>">
+                                    <a class="<?= $selectBranchesError > 0 ? 'text-danger' : 'text-success' ?>"
+                                        href="{{ route('tickets.index') }}">{{ $countBranches - $selectBranchesError }}/{{ $countBranches }}</a>
+
+                                </p>
                             </div>
-                            <!--end col-->
                         </div>
-                        <!--end row-->
+                    </div>
+                </div>
 
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6">
-                                <!-- card -->
-                                <div class="card card-animate">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1 overflow-hidden">
-                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total
-                                                    Instance</p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between mt-4">
-                                            <div>
-                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                        data-target="{{ $total_instance }}"></span></h4>
-                                            </div>
-                                            <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-success rounded fs-3">
-                                                    <i class="bx bx-dollar-circle"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div><!-- end card body -->
-                                </div><!-- end card -->
-                            </div><!-- end col -->
+                <div class="col-xl-3 col-50 box-col-3 des-xl-50">
+                    <div class="card income-card card-secondary" style="height: 250px">
+                        <div class="card-body align-items-center">
+                            <div class="round-progress knob-block text-center">
+                                <p>Clusters Status</p>
+                                <input type="text" value="{{ $chartPersentageCluster }}" id="infinite3"
+                                    data-fgColor="<?= $selectClusterError > 0 ? '#EB4656' : '#24695C' ?>" data-angleOffset=0
+                                    data-angleArc=360 data-rotation=anticlockwise>
 
-                            <div class="col-xl-3 col-md-6">
-                                <!-- card -->
-                                <div class="card card-animate">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1 overflow-hidden">
-                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total
-                                                    SubInstance</p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between mt-4">
-                                            <div>
-                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                        data-target="{{ $total_subinstance }}"></span></h4>
-                                            </div>
-                                            <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-info rounded fs-3">
-                                                    <i class="bx bx-shopping-bag"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div><!-- end card body -->
-                                </div><!-- end card -->
-                            </div><!-- end col -->
 
-                            <div class="col-xl-3 col-md-6">
-                                <!-- card -->
-                                <div class="card card-animate">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1 overflow-hidden">
-                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total
-                                                    Cluster</p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between mt-4">
-                                            <div>
-                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                        data-target="{{ $total_cluster }}"></span></h4>
-                                            </div>
-                                            <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-danger rounded fs-3">
-                                                    <i class="bx bx-wallet"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div><!-- end card body -->
-                                </div><!-- end card -->
-                            </div><!-- end col -->
+                                <h6 class="my-1 <?= $selectClusterError > 0 ? 'text-danger' : 'text-success' ?>"> <b><i
+                                            class="fa <?= $selectClusterError > 0 ? 'fa-exclamation-triangle' : 'fa-check' ?>"
+                                            aria-hidden="true"></i>
+                                        <?= $selectClusterError > 0 ? 'Warning' : 'Healthy' ?></b>
+                                </h6>
+                                <p class="my-1 <?= $selectClusterError > 0 ? 'text-danger' : 'text-success' ?>">
+                                    <a class="<?= $selectClusterError > 0 ? 'text-danger' : 'text-success' ?>"
+                                        href="{{ route('tickets.index') }}">{{ $countCluster - $selectClusterError }}/{{ $countCluster }}</a>
 
-                            <div class="col-xl-3 col-md-6">
-                                <!-- card -->
-                                <div class="card card-animate">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1 overflow-hidden">
-                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total
-                                                    Gateway</p>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between mt-4">
-                                            <div>
-                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                        data-target="{{ $total_gateway }}"></span></h4>
-                                            </div>
-                                            <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-warning rounded fs-3">
-                                                    <i class="bx bx-user-circle"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div><!-- end card body -->
-                                </div><!-- end card -->
-                            </div><!-- end col -->
-                        </div> <!-- end row-->
-
-                        <div class="row">
-                            <div class="map-embed" id="map"></div>
+                                </p>
+                            </div>
                         </div>
-                    </div> <!-- end .h-100-->
-                </div> <!-- end col -->
+                    </div>
+                </div>
+                <div class="col-xl-3 col-50 box-col-3 des-xl-50">
+                    <div class="card income-card card-secondary" style="height: 250px">
+                        <div class="card-body align-items-center">
+                            <div class="round-progress knob-block text-center">
+
+                                {{-- ramdan --}}
+                                <p>Temperature Status</p>
+                                <input type="text" value="{{ $chartPersentage }}" id="infinite"
+                                    data-fgColor="<?= $countDeviceError > 0 ? '#EB4656' : '#24695C' ?>" data-angleOffset=0
+                                    data-angleArc=360 data-rotation=anticlockwise>
+
+                                <h6 class="my-1 <?= $countDeviceError > 0 ? 'text-danger' : 'text-success' ?>">
+                                    <b><i class="fa <?= $countDeviceError > 0 ? 'fa-exclamation-triangle' : 'fa-check' ?> "
+                                            aria-hidden="true"></i>
+                                        <?= $countDeviceError > 0 ? 'Warning' : 'Healthy' ?> </b>
+                                </h6>
+                                <p class="my-1  <?= $countDeviceError > 0 ? 'text-danger' : 'text-success' ?>">
+                                    <a class="<?= $countDeviceError > 0 ? 'text-danger' : 'text-success' ?>"
+                                        href="{{ route('tickets.index') }}">{{ $countDevice - $countDeviceError }}/{{ $countDevice }}</a>
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-50 box-col-3 des-xl-50">
+                    <div class="card income-card card-primary" style="height: 250px">
+                        <div class="card-body">
+                            <div class="round-progress knob-block text-center">
+                                <p>Overall Status</p>
+                                <i
+                                    class="fa-solid <?= $countDeviceError > 0 ? 'fa-exclamation-triangle' : 'fa fa-check' ?> fa-7x my-1 <?= $countDeviceError > 0 ? 'text-danger' : 'text-success' ?>"></i>
+                                <h6 class="my-1 <?= $countDeviceError > 0 ? 'text-danger' : 'text-success' ?>">
+                                    <b><a class="<?= $countDeviceError > 0 ? 'text-danger' : 'text-success' ?>"
+                                            href="{{ route('tickets.index') }}"><?= $countDeviceError > 0 ? 'Warning Alert' : 'Perfectly Healthy' ?></a></b>
+
+                                </h6>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-8 col-50 box-col-8 des-xl-50">
+                    <div class="card radius-10 border-start border-0 border-3" style="height: 450px">
+                        <div class="card-body">
+                            <h5>Tickets List</h5>
+                            <hr>
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table class="table table-xs table-bordered" id="">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Subject</th>
+                                            <th scope="col">Created at</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($ticket as $row)
+                                            <tr>
+                                                <td><a href="{{ url('/tickets?parsed_data=' . $row->id) }}">
+                                                        <b>{{ $row->subject }}</b>
+                                                    </a>
+                                                </td>
+                                                <td> <a href="{{ url('/tickets?parsed_data=' . $row->id) }}">
+                                                        <b>{{ $row->created_at }}</b>
+                                                    </a></td>
+                                                @if ($row->status == 'Opened')
+                                                    <td><a href="{{ url('/tickets?parsed_data=' . $row->id) }}"
+                                                            class="btn btn-pill btn-danger btn-air-danger btn-xs"
+                                                            type="button" title="">
+                                                            Open</a>
+                                                    @else
+                                                    <td><a href="{{ url('/tickets?parsed_data=' . $row->id) }}"
+                                                            class="btn btn-pill btn-success btn-air-success btn-xs"
+                                                            type="button" title="">
+                                                            Close</a>
+                                                @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-50 box-col-4 des-xl-50">
+                    <div class="card radius-10 border-start border-0 border-3" style="height: 450px">
+                        <div class="card-body">
+                            <script src="https://code.highcharts.com/highcharts.js"></script>
+                            <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                            <script src="https://code.highcharts.com/modules/export-data.js"></script>
+                            <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+                            <figure class="highcharts-figure">
+                                <div id="container" style="width: 320px"></div>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-8" style="padding-right: 10px; padding-left:10px">
+                    <div class="card radius-10 border-start border-0 border-3" style="height: 450px">
+                        <div class="card-body">
+                            <div class="map-embed" id="map" style="height: 100%; z-index: 0;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4" style="padding-right: 10px">
+                    <div class="card radius-10 border-start border-0 border-3" style="height: 450px">
+                        <div class="card-body">
+                            <h5>List Brances</h5>
+                            <hr>
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table class="table table-xs table-bordered" id="dataTables-example" style="100%">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">App Id</th>
+                                            <th scope="col">Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($instances as $row)
+                                            <tr>
+                                                <td>{{ $row->app_id }}</td>
+                                                <td> {{ $row->instance_name }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-4 col-50 box-col-4 des-xl-50">
+                    <div class="card radius-10 border-start border-0 border-3" style="height: 450px">
+                        <div class="card-body">
+                            <h5>Device By Brances</h5>
+                            <hr>
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table class="table table-xs table-bordered" id="" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Branches</th>
+                                            <th scope="col">Qty</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($TotalByBrances as $row)
+                                            <tr>
+                                                <td>{{ $row->instance_name }}</td>
+                                                <td> <span class="badge badge-primary pull-right">{{ $row->total }}
+                                                        Device</span></td>
+                                            </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-50 box-col-4 des-xl-50">
+                    <div class="card radius-10 border-start border-0 border-3" style="height: 450px">
+                        <div class="card-body">
+                            <h5>Device By Cluster</h5>
+                            <hr>
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table class="table table-xs table-bordered" id="" style="width: 100%">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">Cluster</th>
+                                            <th scope="col">Qty</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($TotalByCluster as $row)
+                                            <tr>
+                                                <td>{{ $row->name }}</td>
+                                                <td> <span class="badge badge-primary pull-right">{{ $row->total }}
+                                                        Device</span></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-50 box-col-4 des-xl-50">
+                    <div class="card radius-10 border-start border-0 border-3" style="height: 450px">
+                        <div class="card-body">
+                            <h5>Device By Location</h5>
+                            <hr>
+                            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                <table class="table table-xs table-bordered" id="" style="100%">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Location</th>
+                                            <th scope="col">Qty</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($TotalByLocation as $row)
+                                            <tr>
+                                                <td>{{ $row->kabupaten_kota }}</td>
+                                                <td> <span class="badge badge-primary pull-right">{{ $row->total }}
+                                                        Device</span></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- container-fluid -->
     </div>
-
 @endsection
 @push('js')
-    <script>
-        $(document).ready(function() {
-            var i = 1;
-
-            function checkKosongLatLong() {
-                if ($('#latitude').val() == '' || $('#longitude').val() == '') {
-                    $('.alert-choose-loc').show();
-                } else {
-                    $('.alert-choose-loc').hide();
-                }
-            }
-            var delay = (function() {
-                var timer = 0;
-                return function(callback, ms) {
-                    clearTimeout(timer);
-                    timer = setTimeout(callback, ms);
-                };
-            })()
-            // initialize map
-            const getLocationMap = L.map('map');
-            // initialize OSM
-            const osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-            const osmAttrib = 'Leaflet © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-            const osm = new L.TileLayer(osmUrl, {
-                // minZoom: 0,
-                // maxZoom: 3,
-                attribution: osmAttrib
-            });
-            // render map
-            getLocationMap.scrollWheelZoom.disable()
-            @foreach ($instances as $ins)
-                getLocationMap.setView(new L.LatLng("{{ $ins->latitude }}", "{{ $ins->longitude }}"), 7);
-            @endforeach
-            getLocationMap.addLayer(osm)
-            // initial hidden marker, and update on click
-            let location = '';
-
-            @foreach ($instances as $instance)
-                getToLoc("{{ $instance->latitude }}", "{{ $instance->longitude }}", getLocationMap,
-                    "{{ $instance->id }}", "{{ $instance->instance_name }}");
-            @endforeach
-
-            function getToLoc(lat, lng, getLocationMap, id, instance_name) {
-                const zoom = 17;
-                var url_edit = "{{ url('/panel/instance/') }}/" + id + "/edit";
-                $.ajax({
-                    url: `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
-                    dataType: 'json',
-                    success: function(result) {
-                        let marker = L.marker([lat, lng]).addTo(getLocationMap);
-                        let list_of_location_html = '';
-                        list_of_location_html += '<div>';
-                        list_of_location_html += `<b>${instance_name}</b><br>`;
-                        list_of_location_html += `<b>${result.display_name}</b><br>`;
-                        list_of_location_html += `<span>latitude : ${result.lat}</span><br>`;
-                        list_of_location_html += `<span>longitude: ${result.lon}</span><br>`;
-                        list_of_location_html +=
-                            `<a href="${url_edit}" target="_blank" class="btn btn-primary" style="color: white; margin-top: 1rem;">Edit</a>`;
-                        list_of_location_html += '</div>';
-                        marker.bindPopup(list_of_location_html);
-                    }
-                });
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.knob/1.2.2/jquery.knob.js"></script>
+<script>
+    $(function() {
+        $("#infinite").knob({
+            'readOnly': true,
+            'thickness': 0.2,
+            'tickColorizeValues': true,
+            'width': 100,
+            'height': 100,
+            'change': function(v) {
+                console.log(v);
+            },
+            draw: function() {
+                $(this.i).val(this.cv + '%');
             }
         });
-    </script>
+    });
+</script>
+<script>
+    $(function() {
+        $("#infinite2").knob({
+            'readOnly': true,
+            'thickness': 0.2,
+            'tickColorizeValues': true,
+            'width': 100,
+            'height': 100,
+            'change': function(v) {
+                console.log(v);
+            },
+            draw: function() {
+                $(this.i).val(this.cv + '%');
+            }
+        });
+    });
+</script>
+<script>
+    $(function() {
+        $("#infinite3").knob({
+            'readOnly': true,
+            'thickness': 0.2,
+            'tickColorizeValues': true,
+            'width': 100,
+            'height': 100,
+            'change': function(v) {
+                console.log(v);
+            },
+            draw: function() {
+                $(this.i).val(this.cv + '%');
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        var i = 1;
+
+        function checkKosongLatLong() {
+            if ($('#latitude').val() == '' || $('#longitude').val() == '') {
+                $('.alert-choose-loc').show();
+            } else {
+                $('.alert-choose-loc').hide();
+            }
+        }
+        var delay = (function() {
+            var timer = 0;
+            return function(callback, ms) {
+                clearTimeout(timer);
+                timer = setTimeout(callback, ms);
+            };
+        })()
+        // initialize map
+        const getLocationMap = L.map('map');
+        // initialize OSM
+        const osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        const osmAttrib = 'Leaflet © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+        const osm = new L.TileLayer(osmUrl, {
+            // minZoom: 0,
+            // maxZoom: 3,
+            attribution: osmAttrib
+        });
+        // render map
+        getLocationMap.scrollWheelZoom.disable()
+        @foreach ($instances as $ins)
+            getLocationMap.setView(new L.LatLng("{{ $ins->latitude }}", "{{ $ins->longitude }}"), 7);
+        @endforeach
+        getLocationMap.addLayer(osm)
+        // initial hidden marker, and update on click
+        let location = '';
+
+        @foreach ($instances as $instance)
+            getToLoc("{{ $instance->latitude }}", "{{ $instance->longitude }}", getLocationMap,
+                "{{ $instance->id }}", "{{ $instance->instance_name }}");
+        @endforeach
+
+        function getToLoc(lat, lng, getLocationMap, id, instance_name) {
+            const zoom = 17;
+            var url_edit = "{{ url('/panel/instance/') }}/" + id + "/edit";
+            $.ajax({
+                url: `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+                dataType: 'json',
+                success: function(result) {
+                    let marker = L.marker([lat, lng]).addTo(getLocationMap);
+                    let list_of_location_html = '';
+                    list_of_location_html += '<div>';
+                    list_of_location_html += `<b>${instance_name}</b><br>`;
+                    list_of_location_html += `<b>${result.display_name}</b><br>`;
+                    list_of_location_html += `<span>latitude : ${result.lat}</span><br>`;
+                    list_of_location_html += `<span>longitude: ${result.lon}</span><br>`;
+                    list_of_location_html +=
+                        `<a href="${url_edit}" target="_blank" class="btn btn-primary" style="color: white; margin-top: 1rem;">Edit</a>`;
+                    list_of_location_html += '</div>';
+                    marker.bindPopup(list_of_location_html);
+                }
+            });
+        }
+    });
+</script>
+<script>
+    // Data retrieved from https://netmarketshare.com/
+    // Build the chart
+    Highcharts.chart('container', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Tickets Status',
+            align: 'left'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'Brands',
+            colorByPoint: true,
+            data: [{
+                name: 'Open',
+                y: {{ $ticketOpen }},
+                color: '#d22d3d'
+            }, {
+                name: 'Close',
+                y: {{ $ticketClose }},
+                color: '#24695c'
+            }]
+        }]
+    });
+</script>
 @endpush

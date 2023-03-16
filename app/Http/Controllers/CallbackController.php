@@ -14,34 +14,6 @@ class CallbackController extends Controller
 {
     public function index(Request $request)
     {
-        // $header = $request->header('Authorization');
-
-        // if (!$header) {
-        //     return response()->json(['message' => 'Invalid bearer Token'], 403);
-        // }
-
-        // $setting = SettingApp::first();
-
-        // $token = substr($header, 7);
-
-        // if ($setting->token_callback != $token) {
-        //     return response()->json(['success' => 'false', 'message' => 'Invalid Bearer Token'], 403);
-        // }
-
-        // $validator = Validator::make(
-        //     $request->all(),
-        //     [
-        //         'devEUI'    => 'required',
-        //         'appID'     => 'required',
-        //         'type'      => 'required',
-        //         'time'      => 'required',
-        //         'data'      => 'required'
-        //     ]
-        // );
-
-        // if ($validator->fails()) {
-        //     return response()->json(['success' => false, 'message' => $validator->errors()->first()], 422);
-        // }
         try {
             // cek callback gateway or device
             if ($request->type == 'gwstat' || $request->type == 'gwconnection') {
