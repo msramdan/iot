@@ -82,6 +82,7 @@ return [
         ],
         'ticket' => [
             'ticket_show',
+            'ticket_detail',
             'ticket_create',
             'ticket_update',
             'ticket_delete'

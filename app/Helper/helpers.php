@@ -1321,7 +1321,7 @@ function cekAngka($huruf)
 
 function getInstance($id)
 {
-    $instances = DB::table('instances')->where('id', $id)->first();
+    $instances = DB::table('instances')->where('appID', $id)->first();
     return $instances;
 }
 

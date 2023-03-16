@@ -19,10 +19,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             RoleSeeder::class,
-            SettingAppSeeder::class,
-            BussinessSeeder::class,
+           // SettingAppSeeder::class,
+            //BussinessSeeder::class,
             // InstanceSeeder::class,
-            SubnetSeeder::class
+            //SubnetSeeder::class
         ]);
     }
 }

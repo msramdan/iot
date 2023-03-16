@@ -22,7 +22,7 @@ class TicketController extends Controller
     {
         $ticket = Ticket::with('created_by')->orderBy('id', 'desc')->get();
         if (request()->ajax()) {
-            $parsed_data = Ticket::with('device:id,devEUI,instance_id,cluster_id');
+            $parsed_data = Ticket::with('device:id,devEUI,appID,cluster_id');
 
             $query_parsed = intval($request->query('parsed_data'));
 
@@ -65,7 +65,7 @@ class TicketController extends Controller
                     return '-';
                 })
                 ->addColumn('branches', function ($row) {
-                    return $row->device ? getInstance($row->device->instance_id)->instance_name  : '';
+                    return $row->device ? getInstance($row->device->appID)->instance_name  : '';
                 })
                 ->addColumn('cluster', function ($row) {
                     return $row->device ? getCluster($row->device->cluster_id)->cluster_name  : '';
