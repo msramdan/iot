@@ -27,6 +27,8 @@ use App\Http\Controllers\Admin\ParsedWaterMaterController;
 use App\Http\Controllers\Admin\MasterLastestDataController;
 use App\Http\Controllers\Admin\ParsedGasMeterController;
 use App\Http\Controllers\Admin\ParsedPowerMeterController;
+use App\Http\Controllers\Admin\ReportDeviceController;
+use App\Http\Controllers\Admin\ReportGatewayController;
 
 /**
  * Route Admin Panel
@@ -125,3 +127,8 @@ Route::prefix('billing-data')->controller(BillingdataController::class)->group(f
     Route::get('/', 'index')->name('billing-data.index');
     Route::get('detail/{id}', 'detail')->name('billing-data.show');
 });
+
+Route::resource('report-gateways', ReportGatewayController::class)->middleware('auth');
+Route::resource('report-devices', ReportDeviceController::class)->middleware('auth');
+Route::get('export-data/{dev_eui}/{start_date}/{end_date}', [ReportDeviceController::class, 'export'])->name('exportReportDevice')->middleware('auth');
+Route::get('export-data-gateway/{dev_eui}/{start_date}/{end_date}', [ReportGatewayController::class, 'export'])->name('exportReportGateway')->middleware('auth');

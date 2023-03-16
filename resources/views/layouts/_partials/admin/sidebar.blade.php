@@ -197,6 +197,33 @@
                 </li>
             @endcanany
 
+            @canany(['report_gateway_log', 'report_device_log'])
+            <li class="nav-item">
+                <a class="nav-link menu-link collapsed" href="#sidebarReport" data-bs-toggle="collapse"
+                    role="button" aria-expanded="false" aria-controls="sidebarReport">
+                    <i class="mdi mdi-math-log"></i> <span data-key="t-advance-ui">Report Log</span>
+                </a>
+                <div class="menu-dropdown collapse {{ set_show(['report_gateway_log*', 'report_device_log*']) }}"
+                    id="sidebarReport" style="">
+                    <ul class="nav nav-sm flex-column">
+                        @can('report_gateway_log')
+                            <li class="nav-item">
+                                <a href="{{ route('report-gateways.index') }}"
+                                    class="nav-link {{ set_active(['report-gateways*']) }}" data-key="t-chat">Report Gateway Log</a>
+                            </li>
+                        @endcan
+                        @can('report_device_log')
+                            <li class="nav-item">
+                                <a href="{{ route('report-devices.index') }}" class="nav-link {{ set_active(['report-device*']) }}"
+                                    data-key="t-chat"> Report Devices Log
+                                </a>
+                            </li>
+                        @endcan
+                    </ul>
+                </div>
+            </li>
+            @endcanany
+
             @canany(['user_show', 'role_show', 'setting_app_show'])
                 <li class="nav-item">
                     <a class="nav-link menu-link collapsed" href="#sidebarApps" data-bs-toggle="collapse" role="button"

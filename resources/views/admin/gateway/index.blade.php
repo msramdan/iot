@@ -33,6 +33,7 @@
                                             <th>Status</th>
                                             <th>Pkt Fwd Status</th>
                                             <th>Last Data</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -69,6 +70,12 @@
                 data: 'updated_at',
                 name: 'updated_at'
             },
+            {
+                data: 'action',
+                name: 'action',
+                orderable: false,
+                searchable: false
+            }
         ]
 
         $('#dataTable').DataTable({

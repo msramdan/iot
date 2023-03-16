@@ -92,10 +92,16 @@ return [
             'edit_variable'
         ],
         'gateway' => [
-            'gateway_show'
+            'gateway_show',
+            'gateway_detail',
+            'gateway_report',
         ],
         'activity_log' => [
             'activity_log_show',
+        ],
+        'report_log' => [
+            'report_gateway_log',
+            'report_device_log',
         ],
         'raw_data' => [
             'raw_data_show'

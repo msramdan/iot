@@ -322,24 +322,36 @@ function insertGateway($gwid, $time, $status_online = null, $pktfwdStatus = null
 {
     $gateway = DB::table('gateway')
         ->where('gwid', '=', $gwid)
-        ->count();
-    if ($gateway < 1) {
-        DB::table('gateway')->insert([
+        ->first();
+
+    if ($gateway) {
+        $gateway_id = $gateway->id;
+        $gateways = DB::table('gateway')
+                ->where('gwid', $gwid)
+                ->update([
+                    'updated_at' => $time,
+                    'status_online' => $status_online,
+                    'pktfwdStatus' => $pktfwdStatus
+                ]);
+
+    } else {
+        $gateways = DB::table('gateway')->insert([
             'gwid' => $gwid,
             'status_online' => $status_online,
             'pktfwdStatus' => $pktfwdStatus,
             'created_at' => $time,
             'updated_at' => $time,
         ]);
-    } else {
-        DB::table('gateway')
-            ->where('gwid', $gwid)
-            ->update([
-                'updated_at' => $time,
-                'status_online' => $status_online,
-                'pktfwdStatus' => $pktfwdStatus
-            ]);
+        $gateway_id = DB::getPdo()->lastInsertId();
     }
+    // insert log
+    DB::table('gateway_logs')->insert([
+        'gateway_id' => $gateway_id,
+        'status_online' => $status_online,
+        'pktfwd_status' => $pktfwdStatus,
+        'created_at' => $time,
+        'updated_at' => $time,
+    ]);
 }
 
 function createTiket($device_id, $devEUI, $type_device, $data)
@@ -382,13 +394,42 @@ function createTiket($device_id, $devEUI, $type_device, $data)
                             }
                         }
                         if (!empty($abnormal)) {
-                            // create tiket
-                            Ticket::create([
+                            $tickets = DB::table('tickets')
+                            ->where('device_id', '=', $device_id)
+                            ->latest()->first();
+
+                            if (!$tickets || !$tickets->is_open) {
+                                // create tiket
+                                $tickets = Ticket::create([
+                                    'device_id' => $device_id,
+                                    'is_open' => 1,
+                                    'subject' => "Alert from device " . $devEUI,
+                                    'description'  => json_encode($abnormal),
+                                    'is_device'   => 1,
+                                    'status'   => "alert",
+                                ]);
+
+                            } else {
+                                $tickets->update([
+                                    'is_open' => 1,
+                                    'subject' => "Alert from device " . $devEUI,
+                                    'description'  => json_encode($abnormal),
+                                    'is_device'   => 1,
+                                    'status'   => "alert",
+                                ]);
+                            }
+
+                            // insert log ticket
+                            DB::table('ticket_logs')->insert([
                                 'subject' => "Alert from device " . $devEUI,
-                                'description'  => json_encode($abnormal),
-                                'is_device'   => 1,
-                                'status'   => "alert",
+                                'description' => json_encode($abnormal),
+                                'ticket_id' => $tickets->id,
                             ]);
+
+                            // update device status
+                            DB::table('devices')
+                            ->where('id', $device_id)
+                            ->update(['status' => 'error']);
                         }
                         // send notif tele
                     }
@@ -1276,4 +1317,22 @@ function cekAngka($huruf)
     } else if ($huruf == 'f') {
         return 15;
     }
+}
+
+function getInstance($id)
+{
+    $instances = DB::table('instances')->where('id', $id)->first();
+    return $instances;
+}
+
+function getCluster($id)
+{
+    $clusters = DB::table('clusters')->where('id', $id)->first();
+    return $clusters;
+}
+
+function getGwid($id)
+{
+    $clusters = DB::table('gateway')->where('id', $id)->first();
+    return $clusters;
 }

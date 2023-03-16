@@ -25,7 +25,9 @@ class GatewayController extends Controller
             $query = Gateway::all();
             return Datatables::of($query)
                 ->addIndexColumn()
-                ->addColumn('updated_at', function ($row) {
+                ->addColumn('created_at', function ($row) {
+                    return $row->created_at->format('d M Y H:i:s');
+                })->addColumn('updated_at', function ($row) {
                     return $row->updated_at->format('d M Y H:i:s');
                 })
                 ->addColumn('status_online', function ($row) {
@@ -42,7 +44,8 @@ class GatewayController extends Controller
                         return '<span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>Non Aktive</span>';
                     }
                 })
-                ->rawColumns(['status_online', 'pktfwdStatus'])
+                ->addColumn('action', 'admin.gateway.include.action')
+                ->rawColumns(['status_online', 'action', 'pktfwdStatus'])
                 ->toJson();
         }
         return view('admin.gateway.index');
