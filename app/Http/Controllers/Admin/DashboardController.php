@@ -46,11 +46,12 @@ class DashboardController extends Controller
         $total_gateway = count(Rawdata::groupBy('gwid')->get());
         $instances = Instance::get();
         $ticket =Ticket::orderBy('id', 'desc')->limit(9)->get();
-        $ticketOpen = Ticket::where('status','Opened')->count();
-        $ticketClose = Ticket::where('status','Closed')->count();
+        $ticketOpen = Ticket::where('is_open', 1)->count();
+        $ticketClose = Ticket::where('is_open', 0)->count();
         // ===
         $TotalByBrances =  "SELECT `instance_name`, count(*) AS total FROM `devices` INNER JOIN `instances` ON `devices`.`appID` = `instances`.`appID` GROUP BY `devices`.`appID`";
         $TotalByBrances = DB::select($TotalByBrances);
+        //dd($TotalByBrances);
         // ===
         $TotalByCluster =  "SELECT clusters.*, count(*) AS total FROM `devices` INNER JOIN `clusters` ON `devices`.`cluster_id` = `clusters`.`id` GROUP BY `devices`.`cluster_id`";
         $TotalByCluster = DB::select($TotalByCluster);
