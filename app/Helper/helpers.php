@@ -359,9 +359,11 @@ function createTiket($device_id, $devEUI, $type_device, $data)
     if ($data != null) {
         // get subintance
         $subintanceData = DB::table('devices')
+            ->join('instances', 'devices.appID', '=', 'instances.appID')
             ->join('clusters', 'devices.cluster_id', '=', 'clusters.id')
-            ->select('devices.*', 'clusters.name', 'instances.instance_name')
+            ->select('devices.*', 'clusters.name', 'clusters.subinstance_id', 'instances.instance_name')
             ->where('devices.id', $device_id)->first();
+        //dd($subintanceData);
         if ($subintanceData) {
             $day = strtolower(date('l'));
             // get operational time
