@@ -68,7 +68,7 @@ class TicketController extends Controller
                     return $row->device ? getInstance($row->device->appID)->instance_name  : '';
                 })
                 ->addColumn('cluster', function ($row) {
-                    return $row->device ? getCluster($row->device->cluster_id)->cluster_name  : '';
+                    return $row->device ? getCluster($row->device->cluster_id)->name  : '';
                 })
 
                 ->addColumn('device', function ($row) {

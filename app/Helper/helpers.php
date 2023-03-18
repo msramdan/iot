@@ -363,7 +363,7 @@ function createTiket($device_id, $devEUI, $type_device, $data)
             ->join('clusters', 'devices.cluster_id', '=', 'clusters.id')
             ->select('devices.*', 'clusters.name', 'clusters.subinstance_id', 'instances.instance_name')
             ->where('devices.id', $device_id)->first();
-        //dd($subintanceData);
+
         if ($subintanceData) {
             $day = strtolower(date('l'));
             // get operational time
@@ -469,7 +469,9 @@ function handleWaterMeter($device_id, $request)
             'payload_data' => json_encode($request->all()),
         ]);
         $lastInsertedId = $save->id;
+
         insertGateway($request->data['gwid'], $save->updated_at);
+
         if ($frameId == "00") {
             $uplinkInterval = hexdec(littleEndian(substr($hex, 2, 4)));
             $batraiStatus = hexdec(littleEndian(substr($hex, 6, 2)));
