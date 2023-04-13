@@ -103,6 +103,7 @@ class MasterLastestDataController extends Controller
 
         $device = Device::where('id', $id)->first();
         $devEUI = $device->devEUI;
+        $hit_nms = $device->hit_nms;
 
         $lastData = MasterLatestData::where('device_id', $id)->first();
 
@@ -125,8 +126,8 @@ class MasterLastestDataController extends Controller
         $device_id = $id;
 
         $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates])
-                        ->orderBy('parsed_water_meter.id', 'asc')
-                        ->whereNull('status_valve')->get();
+            ->orderBy('parsed_water_meter.id', 'asc')
+            ->whereNull('status_valve')->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)->where('device_type', 'water_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
         $parsed_dates = [];
@@ -159,6 +160,7 @@ class MasterLastestDataController extends Controller
             'device_id',
             'start_dates',
             'end_dates',
+            'hit_nms',
             'devEUI',
             'lastData',
             'parsed_dates',
@@ -282,9 +284,9 @@ class MasterLastestDataController extends Controller
         $device_id = $id;
 
         $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates])
-                                   ->orderBy('id', 'asc')
-                                   ->whereNull('status_switch')
-                                   ->get();
+            ->orderBy('id', 'asc')
+            ->whereNull('status_switch')
+            ->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
             ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
@@ -460,9 +462,9 @@ class MasterLastestDataController extends Controller
         $device_id = $id;
 
         $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates])
-                                   ->orderBy('id', 'asc')
-                                   ->whereNotNull('gas_consumption')
-                                   ->get();
+            ->orderBy('id', 'asc')
+            ->whereNotNull('gas_consumption')
+            ->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
             ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();

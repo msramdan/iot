@@ -257,7 +257,7 @@ class DeviceController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withInput($request->all())->withErrors($validator);
             }
-            DB::table('devices')->insert([
+            $simpanData = DB::table('devices')->insert([
                 'hit_nms'       => 'N',
                 'category'      => $request->category,
                 'appID'         => $request->appID,
@@ -265,6 +265,20 @@ class DeviceController extends Controller
                 'devName'       => $request->devName,
                 'devEUI'       => $request->devEUI,
             ]);
+            $lastInsertedId = DB::getPdo()->lastInsertId();
+            if ($request->category == 'Water Meter') {
+                DB::table('master_latest_datas')->insert([
+                    'device_id' => $lastInsertedId,
+                ]);
+            } else if ($request->category == 'Power Meter') {
+                DB::table('master_latest_data_power_meter')->insert([
+                    'device_id' => $lastInsertedId,
+                ]);
+            } else if ($request->category == 'Gas Meter') {
+                DB::table('master_latest_data_gas_meter')->insert([
+                    'device_id' => $lastInsertedId,
+                ]);
+            }
         }
 
 

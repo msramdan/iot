@@ -84,40 +84,47 @@
                             </a>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Command Downlink</h4>
+
+                    @if ($hit_nms == 'Y')
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Command Downlink</h4>
+                            </div>
+                            <div class="card-body">
+                                <center>
+                                    @if ($lastData->status_valve == 'Open')
+                                        <h4>Status Valve : <span
+                                                class="badge rounded-pill badge-outline-success">{{ $lastData->status_valve }}</span>
+                                        </h4>
+                                    @elseif($lastData->status_valve == 'Close')
+                                        <h4>Status Valve : <span
+                                                class="badge rounded-pill badge-outline-danger">{{ $lastData->status_valve }}</span>
+                                        </h4>
+                                    @else
+                                        <h4>Status Valve : <span
+                                                class="badge rounded-pill badge-outline-dark">{{ $lastData->status_valve }}</span>
+                                        </h4>
+                                    @endif
+                                    <h4>Last Updated : <span
+                                            class="badge rounded-pill badge-outline-success">{{ $lastData->updated_at }}</span>
+                                    </h4>
+                                </center> <br>
+                                <center>
+                                    <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}" hidden>
+                                    <button type="submit" id="cek_status" class="btn btn-primary"
+                                        style="margin-top:5px;">Read
+                                        Valve Status</button>
+                                    <button type="submit" id="open_valve" class="btn btn-success" style="margin-top:5px;">
+                                        Open
+                                        Valve</button>
+                                    <button type="submit" id="close_valve" class="btn btn-danger"
+                                        style="margin-top:5px;">Close
+                                        Valve</button>
+                                </center>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <center>
-                                @if ($lastData->status_valve == 'Open')
-                                    <h4>Status Valve : <span
-                                            class="badge rounded-pill badge-outline-success">{{ $lastData->status_valve }}</span>
-                                    </h4>
-                                @elseif($lastData->status_valve == 'Close')
-                                    <h4>Status Valve : <span
-                                            class="badge rounded-pill badge-outline-danger">{{ $lastData->status_valve }}</span>
-                                    </h4>
-                                @else
-                                    <h4>Status Valve : <span
-                                            class="badge rounded-pill badge-outline-dark">{{ $lastData->status_valve }}</span>
-                                    </h4>
-                                @endif
-                                <h4>Last Updated : <span
-                                        class="badge rounded-pill badge-outline-success">{{ $lastData->updated_at }}</span>
-                                </h4>
-                            </center> <br>
-                            <center>
-                                <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}" hidden>
-                                <button type="submit" id="cek_status" class="btn btn-primary" style="margin-top:5px;">Read
-                                    Valve Status</button>
-                                <button type="submit" id="open_valve" class="btn btn-success" style="margin-top:5px;"> Open
-                                    Valve</button>
-                                <button type="submit" id="close_valve" class="btn btn-danger" style="margin-top:5px;">Close
-                                    Valve</button>
-                            </center>
-                        </div>
-                    </div>
+                    @endif
+
 
                     <div class="card">
                         <div class="card-header">
@@ -172,68 +179,79 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                                        <table id="" class="table table-sm table-bordered ">
-                                            <thead>
-                                                <tr>
-                                                    <th>Batrai Status</th>
-                                                    <th>Date</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($parsed_data as $data)
+
+
+                    @if ($hit_nms == 'Y')
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                            <table id="" class="table table-sm table-bordered ">
+                                                <thead>
                                                     <tr>
-                                                        <td style="width: 50%">{{ $data->batrai_status }} %</td>
-                                                        <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
+                                                        <th>Batrai Status</th>
+                                                        <th>Date</th>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($parsed_data as $data)
+                                                        <tr>
+                                                            <td style="width: 50%">{{ $data->batrai_status }} %</td>
+                                                            <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <figure class="highcharts-figure">
-                                        <div id="chart-container"></div>
-                                    </figure>
+                                    <div class="col-md-8">
+                                        <figure class="highcharts-figure">
+                                            <div id="chart-container"></div>
+                                        </figure>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
-                                        <table id="" class="table table-sm table-bordered " style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>Temperature</th>
-                                                    <th>Date</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($parsed_data as $item)
+                    @endif
+
+                    @if ($hit_nms == 'Y')
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                            <table id="" class="table table-sm table-bordered " style="width:100%">
+                                                <thead>
                                                     <tr>
-                                                        <td>{{ $item->temperatur }} C</td>
-                                                        <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
+                                                        <th>Temperature</th>
+                                                        <th>Date</th>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($parsed_data as $item)
+                                                        <tr>
+                                                            <td>{{ $item->temperatur }} C</td>
+                                                            <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <figure class="highcharts-figure">
-                                        <div id="chart-container2"></div>
-                                    </figure>
+                                    <div class="col-md-8">
+                                        <figure class="highcharts-figure">
+                                            <div id="chart-container2"></div>
+                                        </figure>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
+
+
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
@@ -294,7 +312,7 @@
                     var end = new Date(split_dates[1].replace(',', '')).getTime();
 
                     var differenceTime = end - start;
-                    var differenceDay = differenceTime / (1000 * 3600 *24);
+                    var differenceDay = differenceTime / (1000 * 3600 * 24);
 
                     if (differenceDay > 30) {
                         Swal.fire({
