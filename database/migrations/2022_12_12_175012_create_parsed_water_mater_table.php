@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('parsed_water_meter', function (Blueprint $table) {
             $table->id();
             $table->foreignId('device_id')->nullable();
-            $table->foreignId('rawdata_id')->constrained('rawdata')->cascadeOnDelete();
-            $table->string('frame_id',20)->nullable();
-            $table->string('uplink_interval',150)->nullable();
-            $table->float('batrai_status',11,2)->nullable();
-            $table->float('temperatur',11,2)->nullable();
-            $table->float('total_flow',11,2)->nullable();
-            $table->string('status_valve',50)->nullable();
+            $table->foreignId('rawdata_id')->nullable()->constrained('rawdata')->cascadeOnDelete();
+            $table->string('frame_id', 20)->nullable();
+            $table->string('uplink_interval', 150)->nullable();
+            $table->float('batrai_status', 11, 2)->nullable();
+            $table->float('temperatur', 11, 2)->nullable();
+            $table->float('total_flow', 11, 2)->nullable();
+            $table->string('status_valve', 50)->nullable();
             $table->timestamps();
         });
     }

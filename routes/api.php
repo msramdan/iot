@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\WilayahController;
+use App\Http\Controllers\api\WaterMeterController;
 use App\Http\Controllers\CallbackController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +17,8 @@ use App\Http\Controllers\CallbackController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::get('kota/{provinsiId}', [WilayahController::class, 'kota'])->name('api.kota');
 Route::get('kecamatan/{kotaId}', [WilayahController::class, 'kecamatan'])->name('api.kecamatan');
 Route::get('kelurahan/{kecamatanId}', [WilayahController::class, 'kelurahan'])->name('api.kelurahan');
+Route::post('water-meter', [WaterMeterController::class, 'store'])->name('api.water-meter');
