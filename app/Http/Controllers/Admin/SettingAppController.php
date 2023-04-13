@@ -66,7 +66,7 @@ class SettingAppController extends Controller
                     'favicon'     => $banner->hashName(),
                 ]);
             }
-            $setting_app->update([
+            $data  = [
                 'app_name' => $request->app_name,
                 'phone' => $request->phone,
                 'email' => $request->email,
@@ -75,7 +75,8 @@ class SettingAppController extends Controller
                 'endpoint_purchase_code' => $request->endpoint_purchase_code,
                 'endpoint_nms' => $request->endpoint_nms,
                 'is_notif_tele' => $request->is_notif_tele
-            ]);
+            ];
+            $setting_app->update($data);
             if ($setting_app) {
                 Alert::toast('Data updated successfully', 'success');
                 return redirect()->route('settingApp.index', 1);

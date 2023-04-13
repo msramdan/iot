@@ -41,7 +41,18 @@
                                                 <option value="Gas Meter">Gas Meter</option>
                                             </select>
                                         </div>
-                                        <!--end row-->
+                                    </form>
+                                </div>
+                                <div class="col-md-3">
+                                    <form method="get">
+                                        @csrf
+                                        <div class="input-group mb-4">
+                                            <select name="hit_nms" id="hit_nms" class="form-control">
+                                                <option value="">-- Filter By Hit Nms --</option>
+                                                <option value="Y">Yes</option>
+                                                <option value="N">No</option>
+                                            </select>
+                                        </div>
                                     </form>
                                 </div>
                                 <div class="col-md-3">
@@ -56,9 +67,9 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <!--end row-->
                                     </form>
                                 </div>
+
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-sm" id="dataTable">
@@ -69,6 +80,7 @@
                                             <th>Instance</th>
                                             <th>Cluster</th>
                                             <th>Category</th>
+                                            <th>Hit Nms</th>
                                             <th>Dev EUI</th>
                                             <th>Dev Name</th>
                                             @canany(['device_show', 'device_update', 'device_delete'])
@@ -117,6 +129,10 @@
                 data: 'category',
                 name: 'category'
             },
+            {
+                data: 'hit_nms',
+                name: 'hit_nms'
+            },
 
             {
                 data: 'devEUI',
@@ -145,6 +161,7 @@
                 data: function(s) {
                     s.instance = $('select[name=instance] option').filter(':selected').val()
                     s.category_device = $('select[name=category_device] option').filter(':selected').val()
+                    s.hit_nms = $('select[name=hit_nms] option').filter(':selected').val()
                 }
             },
             columns: columns
@@ -155,6 +172,10 @@
         })
 
         $('#category_device').change(function() {
+            table.draw();
+        })
+
+        $('#hit_nms').change(function() {
             table.draw();
         })
     </script>

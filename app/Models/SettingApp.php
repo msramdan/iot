@@ -12,7 +12,7 @@ class SettingApp extends Model
 {
     use HasFactory, LogsActivity;
     protected $table = 'setting_app';
-    protected $fillable = ['app_name', 'logo', 'favicon', 'phone', 'email', 'address', 'tos', 'endpoint_purchase_code', 'token_callback', 'command_link', 'is_notif_tele'];
+    protected $fillable = ['app_name', 'logo', 'favicon', 'phone', 'email', 'address', 'tos', 'endpoint_purchase_code', 'token_callback', 'command_link', 'is_notif_tele', 'endpoint_nms'];
     protected static $logFillable = true;
     public function getActivitylogOptions(): LogOptions
     {

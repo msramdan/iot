@@ -207,12 +207,9 @@
                                     </div>
                                     <div class="mt-3 mt-lg-0">
                                     </div>
-                                </div><!-- end card header -->
+                                </div>
                             </div>
-                            <!--end col-->
                         </div>
-                        <!--end row-->
-
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
                                 <!-- card -->
@@ -235,8 +232,8 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    </div><!-- end card body -->
-                                </div><!-- end card -->
+                                    </div>
+                                </div>
                             </div><!-- end col -->
 
                             <div class="col-xl-3 col-md-6">
@@ -260,8 +257,8 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    </div><!-- end card body -->
-                                </div><!-- end card -->
+                                    </div>
+                                </div>
                             </div><!-- end col -->
 
                             <div class="col-xl-3 col-md-6">
@@ -285,8 +282,8 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    </div><!-- end card body -->
-                                </div><!-- end card -->
+                                    </div>
+                                </div>
                             </div><!-- end col -->
 
                             <div class="col-xl-3 col-md-6">
@@ -310,19 +307,540 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    </div><!-- end card body -->
-                                </div><!-- end card -->
+                                    </div>
+                                </div>
                             </div><!-- end col -->
-                        </div> <!-- end row-->
+                        </div>
+
+                        {{-- grafik knob --}}
+                        <div class="row">
+                            <div class="col-xl-3 col-md-3">
+                                <div class="card" style="height: 350px">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1">
+                                            Water Meter Status
+                                        </h4>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+                                <div class="card" style="height: 350px">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1">
+                                            Power Meter Status
+                                        </h4>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+                                <div class="card" style="height: 350px">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1">
+                                            Gas Meter Status</h4>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+                                <div class="card" style="height: 350px">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1"> Overall System</h4>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- map --}}
+                        <div class="row">
+                            <div class="col-xl-9 col-md-9">
+                                <div class="card" style="height: 450px">
+                                    <div class="card-body">
+                                        <div class="map-embed" id="map" style="height:100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+                                <div class="card" style="height: 450px">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1">The Newest 10 Instances</h4>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Status</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div style="margin-left: 5px;margin-right: 5px" class="alert alert-info"
+                                                role="alert">
+                                                <b>Total of all tickets :</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="row">
-                            <div class="map-embed" id="map"></div>
+                            <div class="col-xl-5 col-md-5">
+                                <div class="card" style="height: 450px">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1"><i
+                                                class="mdi mdi-book text-success fs-3"></i>Tickets List</h4>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Judul</th>
+                                                        <th>Description</th>
+                                                        <th>Status</th>
+                                                        <th>Created At</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
+                                                        <td>
+                                                            <div class="text-nowrap">$100.1K</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
+                                                        <td>
+                                                            <div class="text-nowrap">$100.1K</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
+                                                        <td>
+                                                            <div class="text-nowrap">$100.1K</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
+                                                        <td>
+                                                            <div class="text-nowrap">$100.1K</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
+                                                        <td>
+                                                            <div class="text-nowrap">$100.1K</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
+                                                        <td>
+                                                            <div class="text-nowrap">$100.1K</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
+                                                        <td>
+                                                            <div class="text-nowrap">$100.1K</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
+                                                        <td>
+                                                            <div class="text-nowrap">$100.1K</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
+                                                        <td>
+                                                            <div class="text-nowrap">$100.1K</div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
+                                                        <td>
+                                                            <div class="text-nowrap">$100.1K</div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-md-4">
+                                <div class="card" style="height: 450px">
+                                    <div class="card-body">
+                                        <script src="https://code.highcharts.com/highcharts.js"></script>
+                                        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                                        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+                                        <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+                                        <figure class="highcharts-figure">
+                                            <div id="container"></div>
+                                        </figure>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-3">
+                                <div class="card" style="height: 450px">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1">Total tickets status</h4>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Status</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div style="margin-left: 5px;margin-right: 5px" class="alert alert-info"
+                                                role="alert">
+                                                <b>Total of all tickets :</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                    </div> <!-- end .h-100-->
-                </div> <!-- end col -->
+
+                        <div class="row">
+                            <div class="col-xl-4 col-md-4">
+                                <div class="card" style="height: 450px">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1"><i
+                                                class="mdi mdi-tag text-success fs-3"></i>
+                                            Device By Type
+                                        </h4>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Device Type </th>
+                                                        <th>Qty</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-4">
+                                <div class="card" style="height: 450px">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1"><i
+                                                class="mdi mdi-bank text-success fs-3"></i>
+                                            Device By
+                                            Intances</h4>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Intance Name </th>
+                                                        <th>Qty</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-4">
+                                <div class="card" style="height: 450px">
+                                    <div class="card-header align-items-center d-flex">
+                                        <h4 class="card-title mb-0 flex-grow-1"><i
+                                                class="mdi mdi-map-marker text-success fs-3"></i> Device
+                                            By
+                                            Location</h4>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="table-responsive table-card">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Location </th>
+                                                        <th>Qty</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Sep 20, 2021</td>
+                                                        <td>Sep 20, 2021</td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- container-fluid -->
     </div>
 
 @endsection
@@ -390,6 +908,64 @@
                     }
                 });
             }
+        });
+    </script>
+
+    <script>
+        // Data retrieved from https://netmarketshare.com/
+        // Build the chart
+        Highcharts.chart('container', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Percentage of tickets status',
+                align: 'left'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: 'Brands',
+                colorByPoint: true,
+                data: [{
+                    name: 'Chrome',
+                    y: 74.77
+                }, {
+                    name: 'Edge',
+                    y: 12.82
+                }, {
+                    name: 'Firefox',
+                    y: 4.63
+                }, {
+                    name: 'Safari',
+                    y: 2.44
+                }, {
+                    name: 'Internet Explorer',
+                    y: 2.02
+                }, {
+                    name: 'Other',
+                    y: 3.28
+                }]
+            }]
         });
     </script>
 @endpush

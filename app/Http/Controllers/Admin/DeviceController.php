@@ -44,6 +44,10 @@ class DeviceController extends Controller
                 $device = $device->where('appID', $request->instance);
             }
 
+            if ($request->has('hit_nms') && !empty($request->hit_nms)) {
+                $device = $device->where('hit_nms', $request->hit_nms);
+            }
+
             $device = $device->orderBy('id', 'desc')->get();
 
             return DataTables::of($device)
@@ -54,6 +58,14 @@ class DeviceController extends Controller
                     }
 
                     return $row->subnet->subnet;
+                })
+
+                ->addColumn('hit_nms', function ($row) {
+                    if ($row->hit_nms == 'Y') {
+                        return '<span class="badge badge-label bg-success"><i class="mdi mdi-circle-medium"></i>Yes</span>';
+                    } else {
+                        return '<span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>No</span>';
+                    }
                 })
                 ->addColumn('cluster', function ($row) {
                     if (!$row->cluster) {
@@ -69,9 +81,9 @@ class DeviceController extends Controller
                     return $row->instance->instance_name;
                 })
                 ->addColumn('action', 'admin.device._action')
+                ->rawColumns(['hit_nms', 'action', 'admin.device._action'])
                 ->toJson();
         }
-
         return view('admin.device.index', compact('instances'));
     }
 
@@ -88,6 +100,7 @@ class DeviceController extends Controller
         return view('admin.device.create', [
             'subnets' => $subnets,
             'appID' => $intances,
+            'initial_hit_nms' => 'Y'
         ]);
     }
 
@@ -99,130 +112,161 @@ class DeviceController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'category'      => 'required',
-            'appID'         => 'required',
-            'appEUI'        => 'required',
-            'appKey'        => 'required',
-            'devType'       => 'required',
-            'devName'       => 'required',
-            'devEUI'        => 'required',
-            'region'        => 'required',
-            'subnet_id'     => 'required',
-            'supportClassB' => 'required',
-            'supportClassC' => 'required',
-            'authType'      => 'required',
-        ];
 
-        if ($request->devType == 'otaa-type') {
-            $rules['macVersion'] = 'required';
-        }
-        if ($request->category == 'Power Meter') {
-            $rules['password_device'] = 'required';
-        }
-
-        if (request('authType') == 'abp') {
-            $rules['appSKey'] = 'required';
-            $rules['nwkSKey'] = 'required';
-            $rules['devAddr'] = 'required';
-        }
-
-        $validator = Validator::make(
-            $request->all(),
-            $rules,
-        );
-
-        if ($validator->fails()) {
-            return redirect()->back()->withInput($request->all())->withErrors($validator);
-        }
-
-        try {
-            $subnet = Subnet::Where('id', $request->subnet_id)->first();
-            $url_endpoint = setting_web()->endpoint_nms . '/openapi/device/create';
-            $api_token   = env('APITOKEN', setting_web()->token_callback);
-
-            $payload = [
-                "devEUI" => $request->devEUI,
-                "appEUI" =>  $request->appEUI,
-                "devType" =>  $request->devType,
-                "devName" => $request->devName,
-                "region" => $request->region,
-                "subnet" => $subnet->subnet,
-                "authType" => $request->authType,
-                "appID" => intval($request->appID),
-                "appKey" => $request->appKey,
-                "supportClassB" =>  $request->supportClassB == 'false' ? false : true,
-                "supportClassC" =>  $request->supportClassC == 'false' ? false : true,
+        if ($request->hit_nms == 'Y') {
+            $rules = [
+                'hit_nms'       => 'required',
+                'category'      => 'required',
+                'appID'         => 'required',
+                'appEUI'        => 'required',
+                'appKey'        => 'required',
+                'devType'       => 'required',
+                'devName'       => 'required',
+                'devEUI'        => 'required',
+                'region'        => 'required',
+                'subnet_id'     => 'required',
+                'supportClassB' => 'required',
+                'supportClassC' => 'required',
+                'authType'      => 'required',
             ];
-
 
             if ($request->devType == 'otaa-type') {
-                $payload['macVersion'] = $request->macVersion;
+                $rules['macVersion'] = 'required';
+            }
+            if ($request->category == 'Power Meter') {
+                $rules['password_device'] = 'required';
             }
 
-            if ($request->devType == 'abp-type') {
-                $payload['appSKey'] = $request->appSKey;
-                $payload['nwkSKey'] = $request->nwkSKey;
-                $payload['devAddr'] = $request->devAddr;
+            if (request('authType') == 'abp') {
+                $rules['appSKey'] = 'required';
+                $rules['nwkSKey'] = 'required';
+                $rules['devAddr'] = 'required';
             }
 
-            $client = new Client;
+            $validator = Validator::make(
+                $request->all(),
+                $rules,
+            );
 
-            $headers = [
-                'Content-Type'          => 'application/json',
-                'x-access-token' => $api_token,
-            ];
+            if ($validator->fails()) {
+                return redirect()->back()->withInput($request->all())->withErrors($validator);
+            }
 
-            $res = $client->post($url_endpoint, [
-                'headers'           => $headers,
-                'json'              => $payload,
-                'force_ip_resolve'  => 'v4',
-                'http_errors'       => false,
-                'timeout'           => 120,
-                'connect_timeout'   => 10,
-                'allow_redirects'   => false,
-                'verify'            => false,
-            ]);
+            try {
+                $subnet = Subnet::Where('id', $request->subnet_id)->first();
+                $url_endpoint = setting_web()->endpoint_nms . '/openapi/device/create';
+                $api_token   = env('APITOKEN', setting_web()->token_callback);
 
-            $response = $res->getBody()->getContents();
+                $payload = [
+                    "devEUI" => $request->devEUI,
+                    "appEUI" =>  $request->appEUI,
+                    "devType" =>  $request->devType,
+                    "devName" => $request->devName,
+                    "region" => $request->region,
+                    "subnet" => $subnet->subnet,
+                    "authType" => $request->authType,
+                    "appID" => intval($request->appID),
+                    "appKey" => $request->appKey,
+                    "supportClassB" =>  $request->supportClassB == 'false' ? false : true,
+                    "supportClassC" =>  $request->supportClassC == 'false' ? false : true,
+                ];
 
-            $response = json_decode($response);
 
-
-            if ($response->code != 0) {
-                $errorMessage = errorMessage($response->code);
-
-                if (!empty($errorMessage)) {
-                    Alert::toast('Failed to create device. ' . $errorMessage['message'], 'error');
-                } else {
-                    Alert::toast('Failed to create device. ', 'error');
+                if ($request->devType == 'otaa-type') {
+                    $payload['macVersion'] = $request->macVersion;
                 }
 
-                return redirect()->route('device.index');
-            }
-            $data = $request->except('_token');
-            $save = Device::create($data);
-            $lastInsertedId = $save->id;
-            // insert master latest dataa
+                if ($request->devType == 'abp-type') {
+                    $payload['appSKey'] = $request->appSKey;
+                    $payload['nwkSKey'] = $request->nwkSKey;
+                    $payload['devAddr'] = $request->devAddr;
+                }
 
-            if ($request->category == 'Water Meter') {
-                DB::table('master_latest_datas')->insert([
-                    'device_id' => $lastInsertedId,
+                $client = new Client;
+
+                $headers = [
+                    'Content-Type'          => 'application/json',
+                    'x-access-token' => $api_token,
+                ];
+
+                $res = $client->post($url_endpoint, [
+                    'headers'           => $headers,
+                    'json'              => $payload,
+                    'force_ip_resolve'  => 'v4',
+                    'http_errors'       => false,
+                    'timeout'           => 120,
+                    'connect_timeout'   => 10,
+                    'allow_redirects'   => false,
+                    'verify'            => false,
                 ]);
-            } else if ($request->category == 'Power Meter') {
-                DB::table('master_latest_data_power_meter')->insert([
-                    'device_id' => $lastInsertedId,
-                ]);
-            } else if ($request->category == 'Gas Meter') {
-                DB::table('master_latest_data_gas_meter')->insert([
-                    'device_id' => $lastInsertedId,
-                ]);
+
+                $response = $res->getBody()->getContents();
+
+                $response = json_decode($response);
+
+
+                if ($response->code != 0) {
+                    $errorMessage = errorMessage($response->code);
+
+                    if (!empty($errorMessage)) {
+                        Alert::toast('Failed to create device. ' . $errorMessage['message'], 'error');
+                    } else {
+                        Alert::toast('Failed to create device. ', 'error');
+                    }
+
+                    return redirect()->route('device.index');
+                }
+                $data = $request->except('_token');
+                $save = Device::create($data);
+                $lastInsertedId = $save->id;
+                // insert master latest dataa
+
+                if ($request->category == 'Water Meter') {
+                    DB::table('master_latest_datas')->insert([
+                        'device_id' => $lastInsertedId,
+                    ]);
+                } else if ($request->category == 'Power Meter') {
+                    DB::table('master_latest_data_power_meter')->insert([
+                        'device_id' => $lastInsertedId,
+                    ]);
+                } else if ($request->category == 'Gas Meter') {
+                    DB::table('master_latest_data_gas_meter')->insert([
+                        'device_id' => $lastInsertedId,
+                    ]);
+                }
+                Alert::toast('Device successfully created', 'success');
+            } catch (Exception $err) {
+                \Log::error($err);
+                Alert::toast('Failed to save records', 'error');
             }
-            Alert::toast('Device successfully created', 'success');
-        } catch (Exception $err) {
-            \Log::error($err);
-            Alert::toast('Failed to save records', 'error');
+        } else {
+            $rules = [
+                'hit_nms'      => 'required',
+                'category'      => 'required',
+                'appID'         => 'required',
+                'appKey'        => 'required',
+                'devName'       => 'required',
+                'devEUI'        => 'required',
+            ];
+
+            $validator = Validator::make(
+                $request->all(),
+                $rules,
+            );
+
+            if ($validator->fails()) {
+                return redirect()->back()->withInput($request->all())->withErrors($validator);
+            }
+            DB::table('devices')->insert([
+                'hit_nms'       => 'N',
+                'category'      => $request->category,
+                'appID'         => $request->appID,
+                'appKey'        => $request->appKey,
+                'devName'       => $request->devName,
+                'devEUI'       => $request->devEUI,
+            ]);
         }
+
 
         return redirect()->route('device.index');
     }
@@ -260,26 +304,11 @@ class DeviceController extends Controller
      */
     public function update(Request $request, Device $device)
     {
+
         $rules = [
-            // 'category'      => 'required',
-            // 'appID'         => 'required',
-            // 'appEUI'        => 'required',
-            // 'appKey'        => 'required',
-            // 'devType'       => 'required',
             'devName'       => 'required',
             'devEUI'        => 'required',
-            // 'region'        => 'required',
-            // 'subnet_id'       => 'required',
-            // 'supportClassB' => 'required',
-            // 'supportClassC' => 'required',
-            // 'macVersion'    => 'required',
         ];
-
-        // if (request('authType') == 'abp') {
-        //     $rules['appSKey'] = 'required';
-        //     $rules['nwkSKey'] = 'required';
-        //     $rules['devAddr'] = 'required';
-        // }
 
         if ($request->category == 'Power Meter') {
             $rules['password_device'] = 'required';
@@ -287,141 +316,152 @@ class DeviceController extends Controller
 
         $attr = request()->validate($rules);
 
-        try {
-            $url_update = setting_web()->endpoint_nms . '/openapi/device/update';
-            $url_check_device = setting_web()->endpoint_nms . '/openapi/device/status?devEUI=' . $device->devEUI;
 
-            $api_token   = env('APITOKEN', setting_web()->token_callback);
+        if ($device->hit_nms == 'Y') {
+            try {
+                $url_update = setting_web()->endpoint_nms . '/openapi/device/update';
+                $url_check_device = setting_web()->endpoint_nms . '/openapi/device/status?devEUI=' . $device->devEUI;
 
-            $curlOptions = [
-                CURLOPT_SSL_VERIFYPEER => 0,
-                CURLOPT_SSL_VERIFYHOST => 0
-            ];
+                $api_token   = env('APITOKEN', setting_web()->token_callback);
 
-            $device_check = Http::withOptions([
-                'curl' => $curlOptions,
-            ])->withHeaders([
-                'x-access-token' => $api_token
-            ])->get($url_check_device);
+                $curlOptions = [
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_SSL_VERIFYHOST => 0
+                ];
 
-            $response_check = $device_check->getBody()->getContents();
-            $response_check = json_decode($response_check);
+                $device_check = Http::withOptions([
+                    'curl' => $curlOptions,
+                ])->withHeaders([
+                    'x-access-token' => $api_token
+                ])->get($url_check_device);
 
-            if ($response_check->code != 0) {
-                $errorMessage = errorMessage($response_check->code);
+                $response_check = $device_check->getBody()->getContents();
+                $response_check = json_decode($response_check);
 
-                if (!empty($errorMessage)) {
-                    Alert::toast('Failed to update device! ' . $errorMessage['message'], 'error');
-                } else {
-                    Alert::toast('Failed to update device!', 'error');
+                if ($response_check->code != 0) {
+                    $errorMessage = errorMessage($response_check->code);
+
+                    if (!empty($errorMessage)) {
+                        Alert::toast('Failed to update device! ' . $errorMessage['message'], 'error');
+                    } else {
+                        Alert::toast('Failed to update device!', 'error');
+                    }
+
+                    return redirect()->route('device.index');
                 }
 
-                return redirect()->route('device.index');
-            }
+                $payload = [
+                    "devEUI" => $request->devEUI,
+                    "devName" => $request->devName,
+                ];
 
-            $payload = [
-                "devEUI" => $request->devEUI,
-                "devName" => $request->devName,
-            ];
+                $client = new Client;
+                $headers = [
+                    'Content-Type'          => 'application/json',
+                    'x-access-token' => $api_token,
+                ];
+                $res = $client->post($url_update, [
+                    'headers'           => $headers,
+                    'json'              => $payload,
+                    'force_ip_resolve'  => 'v4',
+                    'http_errors'       => false,
+                    'timeout'           => 120,
+                    'connect_timeout'   => 10,
+                    'allow_redirects'   => false,
+                    'verify'            => false,
+                ]);
 
-            $client = new Client;
+                $response = $res->getBody()->getContents();
 
-            $headers = [
-                'Content-Type'          => 'application/json',
-                'x-access-token' => $api_token,
-            ];
+                $response = json_decode($response);
 
-            $res = $client->post($url_update, [
-                'headers'           => $headers,
-                'json'              => $payload,
-                'force_ip_resolve'  => 'v4',
-                'http_errors'       => false,
-                'timeout'           => 120,
-                'connect_timeout'   => 10,
-                'allow_redirects'   => false,
-                'verify'            => false,
-            ]);
+                if ($response_check->code != 0) {
+                    $errorMessage = errorMessage($response_check->code);
 
-            $response = $res->getBody()->getContents();
+                    if (!empty($errorMessage)) {
+                        Alert::toast('Failed to update device! ' . $errorMessage['message'], 'error');
+                    } else {
+                        Alert::toast('Failed to update device!', 'error');
+                    }
 
-            $response = json_decode($response);
-
-            if ($response_check->code != 0) {
-                $errorMessage = errorMessage($response_check->code);
-
-                if (!empty($errorMessage)) {
-                    Alert::toast('Failed to update device! ' . $errorMessage['message'], 'error');
-                } else {
-                    Alert::toast('Failed to update device!', 'error');
+                    return redirect()->route('device.index');
                 }
 
-                return redirect()->route('device.index');
-            }
+                $device->update($attr);
 
+                Alert::toast('Device successfully updated', 'success');
+            } catch (Exception $err) {
+                \Log::error($err);
+                Alert::toast('Failed to update records', 'error');
+            }
+        } else {
             $device->update($attr);
-
             Alert::toast('Device successfully updated', 'success');
-        } catch (Exception $err) {
-            \Log::error($err);
-            Alert::toast('Failed to update records', 'error');
         }
-
         return redirect()->route('device.index');
     }
 
     public function destroy(Device $device)
     {
-        try {
-            $url_endpoint = setting_web()->endpoint_nms . '/openapi/device/delete';
-
-            $api_token   = env('APITOKEN', setting_web()->token_callback);
-
-            $payload = [
-                "devEUIs" => [$device->devEUI],
-            ];
-
-            $client = new Client;
-
-            $headers = [
-                'Content-Type'          => 'application/json',
-                'x-access-token' => $api_token,
-            ];
-
-            $res = $client->post($url_endpoint, [
-                'headers'           => $headers,
-                'json'              => $payload,
-                'force_ip_resolve'  => 'v4',
-                'http_errors'       => false,
-                'timeout'           => 120,
-                'connect_timeout'   => 10,
-                'allow_redirects'   => false,
-                'verify'            => false,
-            ]);
-
-            $response = $res->getBody()->getContents();
-
-            $response = json_decode($response);
-
-
-            if ($response->code != 0) {
-                $errorMessage = errorMessage($response->code);
-
-                if (!empty($errorMessage)) {
-                    Alert::toast('Failed to Delete device. ' . $errorMessage['message'], 'error');
-                } else {
-                    Alert::toast('Failed to delete device. ', 'error');
-                }
-
-                return redirect()->back();
-            }
+        if ($device->hit_nms == 'N') {
             // hapus raw data dan parsed data
             $deleted = DB::table('rawdata')->where('devEUI', $device->devEUI)->delete();
             $device->delete();
             Alert::toast('Device successfully deleted', 'success');
-        } catch (Exception $err) {
-            \Log::error($err);
-            Alert::toast('Failed to delete records', 'error');
+        } else {
+            try {
+                $url_endpoint = setting_web()->endpoint_nms . '/openapi/device/delete';
+
+                $api_token   = env('APITOKEN', setting_web()->token_callback);
+
+                $payload = [
+                    "devEUIs" => [$device->devEUI],
+                ];
+
+                $client = new Client;
+
+                $headers = [
+                    'Content-Type'          => 'application/json',
+                    'x-access-token' => $api_token,
+                ];
+
+                $res = $client->post($url_endpoint, [
+                    'headers'           => $headers,
+                    'json'              => $payload,
+                    'force_ip_resolve'  => 'v4',
+                    'http_errors'       => false,
+                    'timeout'           => 120,
+                    'connect_timeout'   => 10,
+                    'allow_redirects'   => false,
+                    'verify'            => false,
+                ]);
+
+                $response = $res->getBody()->getContents();
+
+                $response = json_decode($response);
+
+
+                if ($response->code != 0) {
+                    $errorMessage = errorMessage($response->code);
+
+                    if (!empty($errorMessage)) {
+                        Alert::toast('Failed to Delete device. ' . $errorMessage['message'], 'error');
+                    } else {
+                        Alert::toast('Failed to delete device. ', 'error');
+                    }
+
+                    return redirect()->back();
+                }
+                // hapus raw data dan parsed data
+                $deleted = DB::table('rawdata')->where('devEUI', $device->devEUI)->delete();
+                $device->delete();
+                Alert::toast('Device successfully deleted', 'success');
+            } catch (Exception $err) {
+                \Log::error($err);
+                Alert::toast('Failed to delete records', 'error');
+            }
         }
+
         return redirect()->route('device.index');
     }
 

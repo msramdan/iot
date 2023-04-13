@@ -19,6 +19,8 @@ Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::cla
 
 Route::controller(CallbackController::class)->group(function () {
     Route::post('/callback/gateway/uplink', 'index')->name('callback.index');
+    Route::post('/callback/gateway/gwstat', 'index')->name('gwstat.index');
+    Route::post('/callback/gateway/gwconnection', 'index')->name('gwconnection.index');
 });
 /**
  * Login Partner
