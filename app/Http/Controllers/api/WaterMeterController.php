@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use App\Models\DailyUsageDevice;
+use App\Models\ParsedWaterMater;
 
 class WaterMeterController extends Controller
 {
@@ -60,15 +63,44 @@ class WaterMeterController extends Controller
                         'created_at' => $time,
                         'updated_at' => $time,
                     ]);
-                    DB::table('daily_usage_devices')->insert([
-                        'device_id' => $device->id,
-                        'cluster_id' => $device->cluster_id,
-                        'device_type' => 'water_meter',
-                        'date' => '',
-                        'usage' => '',
-                        'created_at' => $time,
-                        'updated_at' => $time,
-                    ]);
+
+                    $yesterdayStart = Carbon::now()->subDay(2)->hour(00)->minute(00)->second(00);
+                    $yesterdayEnd   = Carbon::now()->subDay(2)->hour(23)->minute(59)->second(59);
+                    $today = Carbon::today()->format('Y-m-d');
+                    $yesterdayData = ParsedWaterMater::where('device_id', $device->id)
+                        ->whereBetween("created_at", [$yesterdayStart, $yesterdayEnd])
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+
+                    if ($yesterdayData) {
+                        $usage = floatval($request->input('data_value')) - floatval($yesterdayData->total_flow);
+                    } else {
+                        $usage = floatval($request->input('data_value'));
+                    }
+
+                    $dailyUsage = DailyUsageDevice::where('date', $today)->where('device_id', $device->id)->first();
+
+                    if (!$dailyUsage) {
+                        DailyUsageDevice::create(
+                            [
+                                'device_id' => $device->id,
+                                'device_type' => 'water_meter',
+                                'date' => $today,
+                                'usage' => $usage,
+                                // 'created_at' => $time,
+                                // 'updated_at' => $time,
+                            ]
+                        );
+                    } else {
+                        $dailyUsage->update([
+                            'device_id' => $device->id,
+                            'device_type' => 'water_meter',
+                            'date' => $today,
+                            'usage' => $usage,
+                            // 'created_at' => $time,
+                            // 'updated_at' => $time,
+                        ]);
+                    }
                 }
                 // 4. jika ada error tiket
                 if ($request->input('data_errorNum')) {

@@ -550,7 +550,7 @@ function handleWaterMeter($device_id, $request)
                 DailyUsageDevice::create(
                     [
                         'device_id' => $device_id,
-                        'cluster_id' => $device->cluster_id,
+                        // 'cluster_id' => $device->cluster_id,
                         'device_type' => 'water_meter',
                         'date' => $today,
                         'usage' => $usage,
@@ -559,7 +559,7 @@ function handleWaterMeter($device_id, $request)
             } else {
                 $dailyUsage->update([
                     'device_id' => $device_id,
-                    'cluster_id' => $device->cluster_id,
+                    // 'cluster_id' => $device->cluster_id,
                     'device_type' => 'water_meter',
                     'date' => $today,
                     'usage' => $usage,
@@ -822,7 +822,7 @@ function handlePowerMeter($device_id, $request)
                 DailyUsageDevice::create(
                     [
                         'device_id' => $device_id,
-                        'cluster_id' => $device->cluster_id,
+                        // 'cluster_id' => $device->cluster_id,
                         'device_type' => 'power_meter',
                         'date' => $today,
                         'usage' => $usage,
@@ -831,7 +831,7 @@ function handlePowerMeter($device_id, $request)
             } else {
                 $dailyUsage->update([
                     'device_id' => $device_id,
-                    'cluster_id' => $device->cluster_id,
+                    // 'cluster_id' => $device->cluster_id,
                     'device_type' => 'power_meter',
                     'date' => $today,
                     'usage' => $usage,
@@ -1161,7 +1161,7 @@ function handleGasMeter($device_id, $request)
             DailyUsageDevice::create(
                 [
                     'device_id' => $device_id,
-                    'cluster_id' => $device->cluster_id,
+                    // 'cluster_id' => $device->cluster_id,
                     'device_type' => 'gas_meter',
                     'date' => $today,
                     'usage' => $usage,
@@ -1170,7 +1170,7 @@ function handleGasMeter($device_id, $request)
         } else {
             $dailyUsage->update([
                 'device_id' => $device_id,
-                'cluster_id' => $device->cluster_id,
+                // 'cluster_id' => $device->cluster_id,
                 'device_type' => 'gas_meter',
                 'date' => $today,
                 'usage' => $usage,

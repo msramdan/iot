@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('device_id')->nullable();
             $table->string('device_type')->nullable();
-            $table->dateTime('date')->nullable();
+            $table->date('date')->nullable();
             $table->float('usage')->default(0);
             $table->timestamps();
         });
