@@ -83,9 +83,6 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header">
-                            <h4>Command Downlink</h4>
-                        </div>
                         <div class="card-body">
                             <center>
                                 @if ($lastData->status_valve == 'Open')
@@ -455,7 +452,7 @@
                     var end = new Date(split_dates[1].replace(',', '')).getTime();
 
                     var differenceTime = end - start;
-                    var differenceDay = differenceTime / (1000 * 3600 *24);
+                    var differenceDay = differenceTime / (1000 * 3600 * 24);
 
                     if (differenceDay > 30) {
                         Swal.fire({

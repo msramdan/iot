@@ -76,9 +76,6 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header">
-                            <h4>Command Downlink</h4>
-                        </div>
                         <div class="card-body">
                             <center>
 

@@ -29,6 +29,9 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
+                            <a href="{{ route('billing-data.index') }}" style="" class="btn btn-md btn-warning">
+                                <i class="mdi mdi-arrow-left-bold"></i> Back
+                            </a><br><br>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="card">

@@ -87,9 +87,6 @@
 
                     @if ($hit_nms == 'Y')
                         <div class="card">
-                            <div class="card-header">
-                                <h4>Command Downlink</h4>
-                            </div>
                             <div class="card-body">
                                 <center>
                                     @if ($lastData->status_valve == 'Open')

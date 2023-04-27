@@ -74,18 +74,15 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header">
-                            <h4>Command Downlink</h4>
-                        </div>
                         <div class="card-body">
                             <center>
                                 @if ($lastData->status_switch == 'OFF')
                                     <h4>Status Switch : <span
-                                            class="badge rounded-pill badge-outline-success">{{ $lastData->status_switch }}</span>
+                                            class="badge rounded-pill badge-outline-danger">{{ $lastData->status_switch }}</span>
                                     </h4>
                                 @elseif($lastData->status_switch == 'ON')
                                     <h4>Status Switch : <span
-                                            class="badge rounded-pill badge-outline-danger">{{ $lastData->status_switch }}</span>
+                                            class="badge rounded-pill badge-outline-success">{{ $lastData->status_switch }}</span>
                                     </h4>
                                 @else
                                     <h4>Status Switch : <span
@@ -101,8 +98,8 @@
                                 <input type="text" id="devEUI" name="devEUI" value="{{ $devEUI }}" hidden>
                                 <button type="submit" id="validation" class="btn btn-primary"
                                     style="margin-top:5px;">Validation Switch</button>
-                                <button id="open_switch" class="btn btn-success" style="margin-top:5px;">Switch OFF</button>
-                                <button id="close_switch" class="btn btn-danger" style="margin-top:5px;">Switch ON</button>
+                                <button id="open_switch" class="btn btn-danger" style="margin-top:5px;">Switch OFF</button>
+                                <button id="close_switch" class="btn btn-success" style="margin-top:5px;">Switch ON</button>
                             </center>
                         </div>
                     </div>
