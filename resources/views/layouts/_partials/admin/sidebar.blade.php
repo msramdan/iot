@@ -143,7 +143,7 @@
                         role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                         <i class="mdi mdi-math-log"></i> <span data-key="t-advance-ui">System Log</span>
                     </a>
-                    <div class="menu-dropdown collapse {{ set_show(['activity_log*', 'rawdata*', 'parsed-wm*']) }}"
+                    <div class="menu-dropdown collapse {{ set_show(['activity_log*', 'rawdata*', 'parsed-wm*', 'parsed-pm*', 'parsed-gm*']) }}"
                         id="sidebarAdvanceUI" style="">
                         <ul class="nav nav-sm flex-column">
                             @can('activity_log_show')
@@ -165,27 +165,28 @@
                                     role="button" aria-expanded="false" aria-controls="sidebarAccount"
                                     data-key="t-level-1.2"> Parsed Rawdata
                                 </a>
-                                <div class="menu-dropdown collapse" id="sidebarAccount" style="">
+                                <div class="menu-dropdown collapse {{ set_show(['parsed-wm*', 'parsed-pm*', 'parsed-gm*']) }}"
+                                    id="sidebarAccount" style="">
                                     <ul class="nav nav-sm flex-column">
                                         @can('parsed_wm_show')
                                             <li class="nav-item">
                                                 <a href="{{ route('parsed-wm.index') }}"
-                                                    class="nav-link {{ set_active(['parseddata*']) }}"
-                                                    data-key="t-level-2.1"> Water Meter</a>
+                                                    class="nav-link {{ set_active(['parsed-wm*']) }}" data-key="t-level-2.1">
+                                                    Water Meter</a>
                                             </li>
                                         @endcan
                                         @can('parsed_pm_show')
                                             <li class="nav-item">
                                                 <a href="{{ route('parsed-pm.index') }}"
-                                                    class="nav-link {{ set_active(['parseddata*']) }}"
-                                                    data-key="t-level-2.1"> Power Meter </a>
+                                                    class="nav-link {{ set_active(['parsed-pm*']) }}" data-key="t-level-2.1">
+                                                    Power Meter </a>
                                             </li>
                                         @endcan
                                         @can('parsed_gm_show')
                                             <li class="nav-item">
                                                 <a href="{{ route('parsed-gm.index') }}"
-                                                    class="nav-link {{ set_active(['parseddata*']) }}"
-                                                    data-key="t-level-2.1"> Gas Meter </a>
+                                                    class="nav-link {{ set_active(['parsed-gm*']) }}" data-key="t-level-2.1">
+                                                    Gas Meter </a>
                                             </li>
                                         @endcan
 

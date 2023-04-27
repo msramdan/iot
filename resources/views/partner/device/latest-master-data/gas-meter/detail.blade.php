@@ -179,7 +179,7 @@
                                         <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Gas Consumtion</th>
+                                                    <th>Gas Consumption</th>
                                                     <th>Date</th>
                                                 </tr>
                                             </thead>
@@ -384,7 +384,7 @@
                 }
             },
             title: {
-                text: 'Gas Consumtion'
+                text: 'Gas Consumption'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -394,7 +394,7 @@
             },
             yAxis: {
                 title: {
-                    text: 'Gas Consumtion'
+                    text: 'Gas Consumption'
                 }
             },
             plotOptions: {
@@ -406,7 +406,7 @@
                 }
             },
             series: [{
-                name: 'Gas Consumtion',
+                name: 'Gas Consumption',
                 data: JSON.parse(gas_consumption)
             }]
         });
@@ -538,7 +538,7 @@
                     var end = new Date(split_dates[1].replace(',', '')).getTime();
 
                     var differenceTime = end - start;
-                    var differenceDay = differenceTime / (1000 * 3600 *24);
+                    var differenceDay = differenceTime / (1000 * 3600 * 24);
 
                     if (differenceDay > 30) {
                         Swal.fire({

@@ -49,7 +49,7 @@
                                             <th>Rawdata</th>
                                             <th>Device Name</th>
                                             <th>Frame Id</th>
-                                            <th>Gas Consumtion</th>
+                                            <th>Gas Consumption</th>
                                             <th>Gas Total Purchase</th>
                                             <th>Purchase Remain</th>
                                             <th>Balance of battery</th>
