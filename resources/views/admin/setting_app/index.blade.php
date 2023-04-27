@@ -41,13 +41,14 @@
                                         <div class="mb-3">
                                             @if ($setting_app->logo != '' || $setting_app->logo != null)
                                                 <img src="{{ Storage::url('public/img/setting_app/') . $setting_app->logo }}"
-                                                    class="img-preview d-block w-50 mb-3 col-sm-5 rounded ">
-                                                <p style="color: red">* Choose a logo if you want to change it</p>
+                                                    class="img-preview d-block mb-3 col-sm-5 " style="width:200px">
                                             @endif
                                             <label class="form-label" for="logo">App Logo </label>
                                             <input type="file" class="form-control @error('logo') is-invalid @enderror"
                                                 id="logo" name="logo" onchange="previewImg()"
                                                 value="{{ $setting_app->logo }}">
+                                            <span style="color:red; font-size:10px">Dimensions suggestion : 200x60 pixels |
+                                                Max size : 2048 Kb </span>
                                             @error('logo')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
@@ -55,14 +56,14 @@
                                         <div class="mb-3">
                                             @if ($setting_app->favicon != '' || $setting_app->favicon != null)
                                                 <img src="{{ Storage::url('public/img/setting_app/') . $setting_app->favicon }}"
-                                                    class="img-preview d-block w-30 mb-3 col-sm-5 rounded "
-                                                    style="width: 50px">
-                                                <p style="color: red">* Choose favicon if you want to change it</p>
+                                                    class="img-preview d-block mb-3 col-sm-5 " style="width: 50px">
                                             @endif
                                             <label class="form-label" for="favicon">Favicon </label>
                                             <input type="file"
                                                 class="form-control @error('favicon') is-invalid @enderror" id="favicon"
                                                 name="favicon" onchange="previewImg()" value="{{ $setting_app->favicon }}">
+                                            <span style="color:red; font-size:10px">Dimensions suggestion : 512x512 pixels |
+                                                Max size : 2048 Kb </span>
                                             @error('favicon')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror

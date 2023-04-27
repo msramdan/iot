@@ -35,6 +35,8 @@ class SettingAppController extends Controller
                 'address' => 'required|string',
                 'token_callback' => 'required|string',
                 'endpoint_purchase_code' => 'required|string',
+                'favicon' => 'max:2048|dimensions:width=512,height=512',
+                'logo' => 'max:2048|dimensions:width=200,height=60',
                 'endpoint_nms' => 'required',
                 'is_notif_tele' => 'required'
             ]
