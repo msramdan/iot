@@ -1,17 +1,17 @@
 @extends('layouts.master')
-@section('title', 'Mater Latest Data Smart Gas Meter')
+@section('title', 'Smart Gas Meter')
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Master Data Smart Gas Meter</h4>
+                        <h4 class="mb-sm-0">Smart Gas Meter</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Parsed Data Smart Gas Meter</li>
+                                <li class="breadcrumb-item active">Smart Gas Meter</li>
                             </ol>
                         </div>
 
