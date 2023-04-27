@@ -6,17 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Rawdata;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class RawdataController extends Controller
 {
     public function index(Request $request)
     {
         if (request()->ajax()) {
-            $rawdata = Rawdata::with(['device', 'parsed_water_meter']);
+            $rawdata = DB::table('rawdata')
+                ->join('devices', 'rawdata.devEUI', '=', 'devices.devEUI')
+                ->select('rawdata.*', 'devices.category');
             $query_data = $request->query('rawdata');
 
             if (isset($query_data) && !empty($query_data)) {
-                $rawdata = $rawdata->where('id', $query_data);
+                $rawdata = $rawdata->where('rawdata.id', $query_data);
             }
 
             $rawdata = $rawdata->orderBy('id', 'DESC')->get();
@@ -35,17 +38,14 @@ class RawdataController extends Controller
                     } else if ($row->type_payload == 'Topup Gas Error') {
                         return '<button style="width:120px" class="btn btn-sm btn-danger"> Topup Error</button>';
                     } else {
-                        if ($row->device->category == 'Water Meter') {
+                        if ($row->category == 'Water Meter') {
                             return '<a href="' . url('/panel/parsed-wm?parsed_data=' . $row->id) . '" style="width:120px" target="_blank" class="btn btn-sm  btn-success"> Parsed Rawdata </a>';
-                        } else if ($row->device->category == 'Power Meter') {
+                        } else if ($row->category == 'Power Meter') {
                             return  '<a href="' . url('/panel/parsed-pm?parsed_data=' . $row->id) . '" style="width:120px" target="_blank" class="btn btn-sm  btn-success"> Parsed Rawdata </a>';
                         } else {
                             return  '<a href="' . url('/panel/parsed-gm?parsed_data=' . $row->id) . '" style="width:120px" target="_blank" class="btn btn-sm  btn-success"> Parsed Rawdata </a>';
                         }
                     }
-                })
-                ->addColumn('created_at', function ($row) {
-                    return $row->created_at->format('d M Y H:i:s');
                 })
                 ->rawColumns(['parsed', 'action'])
                 ->toJson();
