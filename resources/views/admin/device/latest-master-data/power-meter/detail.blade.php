@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Detail Data Power Meter')
+@section('title', 'Detail Data Smart Power Meter')
 @section('content')
     <style>
         .my-custom-scrollbar {
@@ -53,11 +53,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Detail Data Power Meter Dev Eui : {{ $devEUI }} </h4>
+                        <h4 class="mb-sm-0">Detail Data Smart Power Meter Dev Eui : {{ $devEUI }} </h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Detail Data Power Meter</li>
+                                <li class="breadcrumb-item active">Detail Data Smart Power Meter</li>
                             </ol>
                         </div>
 
@@ -170,7 +170,7 @@
                                         <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Tegangan</th>
+                                                    <th>Voltage</th>
                                                     <th>Date</th>
                                                 </tr>
                                             </thead>
@@ -236,7 +236,7 @@
                                         <table id="" class="table tabel-bordered table-sm " style="width:100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Frekuensi PLN</th>
+                                                    <th>Frequency’s PLN</th>
                                                     <th>Date</th>
                                                 </tr>
                                             </thead>
@@ -444,7 +444,7 @@
                 }
             },
             title: {
-                text: 'Tegangan'
+                text: 'Voltage'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -454,7 +454,7 @@
             },
             yAxis: {
                 title: {
-                    text: 'Tegangan'
+                    text: 'Voltage'
                 }
             },
             plotOptions: {
@@ -466,7 +466,7 @@
                 }
             },
             series: [{
-                name: 'tegangan',
+                name: 'Voltage',
                 data: JSON.parse(tegangan)
             }]
         });
@@ -520,7 +520,7 @@
                 }
             },
             title: {
-                text: 'Frekuensi PLN'
+                text: 'Frequency’s PLN'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -530,7 +530,7 @@
             },
             yAxis: {
                 title: {
-                    text: 'Frekuensi PLN'
+                    text: 'Frequency’s PLN'
                 }
             },
             plotOptions: {
@@ -542,7 +542,7 @@
                 }
             },
             series: [{
-                name: 'Frekuensi PLN',
+                name: 'Frequency’s PLN',
                 data: JSON.parse(frekuensi_pln)
             }]
         });

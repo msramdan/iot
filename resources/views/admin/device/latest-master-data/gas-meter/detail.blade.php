@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Mater Latest Data Device')
+@section('title', 'Detail Data Smart Gas Meter')
 @section('content')
     <style>
         .my-custom-scrollbar {
@@ -95,12 +95,12 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Detail Data Water Meter : {{ $devEUI }}</h4>
+                        <h4 class="mb-sm-0">Detail Data Smart Gas Meter : {{ $devEUI }}</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Detail Data Water Meter</li>
+                                <li class="breadcrumb-item active">Detail Data Smart Gas Meter</li>
                             </ol>
                         </div>
 
@@ -166,7 +166,7 @@
                                             @if ($lastData->meter_status_word != null)
                                                 @if ($json[1] == 'Prepaid')
                                                     <button type="button" class="btn btn-primary " data-bs-toggle="modal"
-                                                        style="margin-top:5px" data-bs-target="#myModal">Topup</button>
+                                                        style="margin-top:5px" data-bs-target="#myModal">Top Up</button>
                                                 @endif
                                                 <button type="submit" id="open_valve" class="btn btn-success"
                                                     style="margin-top:5px;">
@@ -185,7 +185,7 @@
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4>History Topup Gas</h4>
+                                    <h4>History Top Up Gas</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-wrapper-scroll-y my-custom-scrollbar2">
@@ -194,7 +194,7 @@
                                                 <tr>
                                                     <th>Total Gas</th>
                                                     <th>User</th>
-                                                    <th>Topup date </th>
+                                                    <th>Top Up date </th>
                                                     <th>Response date</th>
                                                     <th>Status</th>
                                                 </tr>
@@ -290,7 +290,7 @@
                                         <table id="" class="table table-sm table-bordered" style="width:100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Gas Consumtion</th>
+                                                    <th>Gas Consumption</th>
                                                     <th>Date</th>
                                                 </tr>
                                             </thead>
@@ -321,7 +321,7 @@
                                         <table id="" class="table table-sm table-bordered" style="width:100%">
                                             <thead>
                                                 <tr>
-                                                    <th>Gas total purchase</th>
+                                                    <th>Total Gas Purchase</th>
                                                     <th>Date</th>
                                                 </tr>
                                             </thead>
@@ -493,7 +493,7 @@
                 }
             },
             title: {
-                text: 'Gas Consumtion'
+                text: 'Gas Consumption'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -503,7 +503,7 @@
             },
             yAxis: {
                 title: {
-                    text: 'Gas Consumtion'
+                    text: 'Gas Consumption'
                 }
             },
             plotOptions: {
@@ -515,7 +515,7 @@
                 }
             },
             series: [{
-                name: 'Gas Consumtion',
+                name: 'Gas Consumption',
                 data: JSON.parse(gas_consumption)
             }]
         });
@@ -531,7 +531,7 @@
                 }
             },
             title: {
-                text: 'Gas Total Purchase'
+                text: 'Total Gas Purchase'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -541,7 +541,7 @@
             },
             yAxis: {
                 title: {
-                    text: 'Gas Total Purchase'
+                    text: 'Total Gas Purchase'
                 }
             },
             plotOptions: {
@@ -553,7 +553,7 @@
                 }
             },
             series: [{
-                name: 'Gas Total Purchase',
+                name: 'Total Gas Purchase',
                 data: JSON.parse(gas_total_purchase)
             }]
         });
@@ -645,7 +645,7 @@
                     var end = new Date(split_dates[1].replace(',', '')).getTime();
 
                     var differenceTime = end - start;
-                    var differenceDay = differenceTime / (1000 * 3600 *24);
+                    var differenceDay = differenceTime / (1000 * 3600 * 24);
 
                     if (differenceDay > 30) {
                         Swal.fire({

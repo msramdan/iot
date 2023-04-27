@@ -29,22 +29,22 @@
                             @can('master_water_meter_show')
                                 <li class="nav-item">
                                     <a href="{{ route('master_water_meter.index') }}"
-                                        class="nav-link {{ set_active(['master_water_meter*']) }}" data-key="t-remix">Latest
-                                        Data Water Meter</a>
+                                        class="nav-link {{ set_active(['master_water_meter*']) }}" data-key="t-remix">Smart
+                                        Water Meter</a>
                                 </li>
                             @endcan
                             @can('master_power_meter_show')
                                 <li class="nav-item">
                                     <a href="{{ route('master_power_meter.index') }}"
-                                        class="nav-link {{ set_active(['master_power_meter*']) }}" data-key="t-remix">Latest
-                                        Data Power Meter</a>
+                                        class="nav-link {{ set_active(['master_power_meter*']) }}" data-key="t-remix">Smart
+                                        Power Meter</a>
                                 </li>
                             @endcan
                             @can('master_gas_meter_show')
                                 <li class="nav-item">
                                     <a href="{{ route('master_gas_meter.index') }}"
-                                        class="nav-link {{ set_active(['master_gas_meter*']) }}" data-key="t-remix">Latest Data
-                                        Gas Meter</a>
+                                        class="nav-link {{ set_active(['master_gas_meter*']) }}" data-key="t-remix">Smart Gas
+                                        Meter</a>
                                 </li>
                             @endcan
                         </ul>
