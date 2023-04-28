@@ -75,9 +75,9 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Judul</th>
-                                            <th>Description</th>
                                             <th>Status</th>
                                             <th>Created At</th>
+                                            <th>Updated At</th>
                                             @canany(['ticket_show', 'ticket_update', 'ticket_delete'])
                                                 <th>Action</th>
                                             @endcanany
@@ -99,7 +99,7 @@
         let base_url = "{{ url('/') }}";
 
         const action =
-            '{{ auth()->user()->can('ticket_update') || auth()->user()->can('ticket_delete')? 'yes yes yes': '' }}'
+            '{{ auth()->user()->can('ticket_update') ||auth()->user()->can('ticket_delete')? 'yes yes yes': '' }}'
         let columns = [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
@@ -110,13 +110,13 @@
                 data: 'subject',
             },
             {
-                data: 'description',
-            },
-            {
                 data: 'status',
             },
             {
                 data: 'created_at',
+            },
+            {
+                data: 'updated_at',
             },
         ]
 

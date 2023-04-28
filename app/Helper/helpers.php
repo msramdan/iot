@@ -399,6 +399,7 @@ function createTiket($device_id, $devEUI, $type_device, $data)
                                         'is_device'   => 1,
                                     ];
                                     $tiket = Ticket::create($dataTiket);
+                                    $ticket_id = DB::getPdo()->lastInsertId();
                                 } else {
                                     $dataTiket = [
                                         'description'  => json_encode($abnormal),
@@ -417,7 +418,16 @@ function createTiket($device_id, $devEUI, $type_device, $data)
                                     'device_id'   => $device_id,
                                     'status'   => "alert",
                                 ]);
+                                $ticket_id = DB::getPdo()->lastInsertId();
                             }
+                            // insert log ticket
+                            DB::table('ticket_logs')->insert([
+                                'subject' => "Alert from device " . $devEUI,
+                                'description' => json_encode($abnormal),
+                                'ticket_id' => $ticket_id,
+                                // 'created_at' => $time,
+                                // 'updated_at' => $time,
+                            ]);
                         }
                         // send notif tele
                     }
