@@ -342,7 +342,7 @@ function insertGateway($gwid, $time, $status_online = null, $pktfwdStatus = null
     }
 }
 
-function createTiket($device_id, $devEUI, $type_device, $data)
+function createTiket($device_id, $devEUI, $type_device, $data, $time)
 {
     if ($data != null) {
         // get subintance
@@ -397,12 +397,16 @@ function createTiket($device_id, $devEUI, $type_device, $data)
                                         'device_id' => $device_id,
                                         'status'   => "alert",
                                         'is_device'   => 1,
+                                        'created_at' => $time,
+                                        'updated_at' => $time,
                                     ];
                                     $tiket = Ticket::create($dataTiket);
                                     $ticket_id = DB::getPdo()->lastInsertId();
                                 } else {
                                     $dataTiket = [
                                         'description'  => json_encode($abnormal),
+                                        'created_at' => $time,
+                                        'updated_at' => $time,
                                     ];
                                     // update ticket
                                     DB::table('tickets')
@@ -417,6 +421,8 @@ function createTiket($device_id, $devEUI, $type_device, $data)
                                     'is_device'   => 1,
                                     'device_id'   => $device_id,
                                     'status'   => "alert",
+                                    'created_at' => $time,
+                                    'updated_at' => $time,
                                 ]);
                                 $ticket_id = DB::getPdo()->lastInsertId();
                             }
@@ -425,8 +431,8 @@ function createTiket($device_id, $devEUI, $type_device, $data)
                                 'subject' => "Alert from device " . $devEUI,
                                 'description' => json_encode($abnormal),
                                 'ticket_id' => $ticket_id,
-                                // 'created_at' => $time,
-                                // 'updated_at' => $time,
+                                'created_at' => $time,
+                                'updated_at' => $time,
                             ]);
                         }
                         // send notif tele
@@ -574,7 +580,7 @@ function handleWaterMeter($device_id, $request)
             ->where('device_id', $device_id)
             ->update($params);
 
-        createTiket($device_id, $request->devEUI, $type_device = 'water_meter', $dataAbnormal);
+        createTiket($device_id, $request->devEUI, $type_device = 'water_meter', $dataAbnormal, $save->updated_at);
 
         if (isset($params['total_flow'])) {
             if ($yesterdayData) {
@@ -846,7 +852,7 @@ function handlePowerMeter($device_id, $request)
             ->where('device_id', $device_id)
             ->update($params);
 
-        createTiket($device_id, $request->devEUI, $type_device = 'power_meter', $dataAbnormal);
+        createTiket($device_id, $request->devEUI, $type_device = 'power_meter', $dataAbnormal, $save->updated_at);
 
         if (isset($params['total_energy'])) {
             if ($yesterdayData) {
@@ -1185,7 +1191,7 @@ function handleGasMeter($device_id, $request)
         ->where('device_id', $device_id)
         ->update($params);
 
-    createTiket($device_id, $request->devEUI, $type_device = 'gas_meter', $dataAbnormal);
+    createTiket($device_id, $request->devEUI, $type_device = 'gas_meter', $dataAbnormal, $save->updated_at);
 
     if (isset($params['gas_consumption'])) {
         if ($yesterdayData) {
