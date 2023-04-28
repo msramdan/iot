@@ -34,7 +34,7 @@
                                             <th style="text-align:center">Dev EUI</th>
                                             <th style="text-align:center">Frame Id</th>
                                             <th style="text-align:center">Gas Consumption</th>
-                                            <th style="text-align:center">Gas Total Purchase</th>
+                                            <th style="text-align:center">Total Gas Purchase</th>
                                             <th style="text-align:center">Purchase Remain</th>
                                             <th style="text-align:center">Balance of Battery</th>
                                             <th style="text-align:center">Valve Status</th>
