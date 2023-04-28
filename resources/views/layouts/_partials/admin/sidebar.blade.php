@@ -13,7 +13,7 @@
             <li class="nav-item">
                 <a class="nav-link menu-link {{ set_active('instance.*') }}" href="{{ route('instance.index') }}"
                     role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                    <i class="mdi mdi-bank"></i> <span data-key="t-dashboards">Instance</span>
+                    <i class="mdi mdi-bank"></i> <span data-key="t-dashboards">Instances</span>
                 </a>
             </li>
             @canany(['master_water_meter_show', 'master_power_meter_show', 'master_gas_meter_show'])

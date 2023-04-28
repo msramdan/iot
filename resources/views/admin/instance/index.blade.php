@@ -1,68 +1,67 @@
 @extends('layouts.master')
 @section('title', 'Data Instance')
 @section('content')
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Instance</h4>
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Instances</h4>
 
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Instance</li>
-                        </ol>
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Instances</li>
+                            </ol>
+                        </div>
+
                     </div>
-
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        @can('instance_create')
-                        <a href="{{ route('instance.create') }}" class="btn btn-md btn-secondary"> <i
-                                class="mdi mdi-plus"></i> Create</a>
-                        @endcan
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-sm" id="dataTable" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>#</th>
-                                        <th>App ID</th>
-                                        <th>App Name</th>
-                                        <th>Instance Code</th>
-                                        <th>Instance Name</th>
-                                        <th>Bussiness</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>City</th>
-                                        @canany(['instance_update', 'instance_delete'])
-                                        <th>Action</th>
-                                        @endcanany
-                                    </tr>
-                                </thead>
-                            </table>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            @can('instance_create')
+                                <a href="{{ route('instance.create') }}" class="btn btn-md btn-secondary"> <i
+                                        class="mdi mdi-plus"></i> Create</a>
+                            @endcan
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm" id="dataTable" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>#</th>
+                                            <th>App ID</th>
+                                            <th>App Name</th>
+                                            <th>Instance Code</th>
+                                            <th>Instance Name</th>
+                                            <th>Bussiness</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>City</th>
+                                            @canany(['instance_update', 'instance_delete'])
+                                                <th>Action</th>
+                                            @endcanany
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
 @endsection
 @push('js')
-<script>
-    const action =
+    <script>
+        const action =
             '{{ auth()->user()->can('instance_update') ||auth()->user()->can('instance_delete')? 'yes yes yes': '' }}'
-        let columns = [
-            {
+        let columns = [{
                 className: 'dt-control',
                 orderable: false,
                 data: null,
@@ -127,7 +126,7 @@
             columns: columns
         });
 
-        $('#dataTable tbody').on('click', 'td.dt-control', function () {
+        $('#dataTable tbody').on('click', 'td.dt-control', function() {
             var tr = $(this).closest('tr');
             var row = table.row(tr);
 
@@ -143,9 +142,9 @@
         const subinstance = data => {
             var subinstance = '';
 
-            data.forEach( val => {
+            data.forEach(val => {
                 subinstance += `<li class="list-group-item">${button(val)} ${val.name_subinstance}</li>`;
-            } )
+            })
             return `<ul class="list-group list-group-flush">
                         ${ subinstance }
                     </ul>`
@@ -153,10 +152,10 @@
 
         const button = (data) => {
             let button = '';
-            const url = '{{ url("/panel") }}' + `/instance/${data.instance_id}/subinstance/${data.id}`
+            const url = '{{ url('/panel') }}' + `/instance/${data.instance_id}/subinstance/${data.id}`
 
             return button = `
-                <a href="${'{{ url("/panel") }}' + `/subinstance/${data.id}`}/cluster" class="btn btn-sm  btn-warning" title="cluster"><i class="mdi mdi-bank"></i></a>
+                <a href="${'{{ url('/panel') }}' + `/subinstance/${data.id}`}/cluster" class="btn btn-sm  btn-warning" title="cluster"><i class="mdi mdi-bank"></i></a>
                 @can('subinstance_update')
                     <a href="${url+'/edit'}" class="btn btn-sm  btn-success"><i class="mdi mdi-pencil"></i> </a>
                 @endcan
@@ -171,5 +170,5 @@
                 `
 
         }
-</script>
+    </script>
 @endpush
