@@ -3,15 +3,19 @@
 @section('content')
     <div class="col-lg-6">
         <div class="p-lg-5 p-4">
-            <div>
-                <h5 class="text-primary">Welcome Back !</h5>
-                <p class="text-muted">Sign in to Admin Dashboard</p>
-            </div>
-
+            <center>
+                @if (setting_web()->logo != null)
+                    <img class="mb-2" src="{{ Storage::url('public/img/setting_app/') . setting_web()->logo }}"
+                        alt="">
+                @endif
+                <div>
+                    <p class="text-muted">Sign in to Admin Dashboard</p>
+                </div>
+            </center>
             <div class="mt-4">
                 <form class="user" method="POST" action="{{ route('admin_auth.store') }}">
                     @csrf
-                    <div class="mb-3">
+                    <div class="mb-2">
                         <label for="email" class="form-label">Email</label>
                         <input type="text" class="form-control @error('email') is-invalid @enderror" id="email"
                             name="email" placeholder="Enter your email : hello@indopay.com">
@@ -20,7 +24,7 @@
                         @enderror
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-2">
                         <label class="form-label" for="password">Password</label>
                         <input type="password" class="form-control @error('password') is-invalid @enderror"
                             placeholder="Enter password" id="password" name="password">
@@ -30,7 +34,7 @@
                     </div>
 
 
-                    <div class="mb-3">
+                    <div class="mb-2">
                         {!! NoCaptcha::display() !!}
                         {!! NoCaptcha::renderJs() !!}
                         @error('g-recaptcha-response')
@@ -44,7 +48,7 @@
                             onclick="myFunction()">
                         <label class="form-check-label" for="auth-remember-check">Show Password</label>
                     </div>
-                    <div class="mt-4">
+                    <div class="mt-2">
                         <button class="btn btn-success w-100" type="submit">Sign In</button>
                     </div>
                 </form>
