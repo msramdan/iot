@@ -75,6 +75,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Judul</th>
+                                            <th>Is Device</th>
                                             <th>Status</th>
                                             <th>Created At</th>
                                             <th>Updated At</th>
@@ -108,6 +109,9 @@
             },
             {
                 data: 'subject',
+            },
+            {
+                data: 'is_device',
             },
             {
                 data: 'status',

@@ -58,12 +58,12 @@
                     <i class="mdi mdi-book"></i> <span data-key="t-dashboards">Ticket</span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link menu-link {{ set_active('invoice.*') }}" href="{{ route('invoice.index') }}"
                     role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                     <i class="mdi mdi-book-information-variant"></i> <span data-key="t-dashboards">Billing Data</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </div>
 </div>

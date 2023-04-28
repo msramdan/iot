@@ -29,7 +29,16 @@ class TicketController extends Controller
                 ->addColumn('updated_at', function ($row) {
                     return $row->updated_at->format('d M Y H:i:s');
                 })
+                ->addColumn('is_device', function ($row) {
+                    if ($row->is_device == 1) {
+                        return '<span class="badge badge-label bg-success"><i class="mdi mdi-circle-medium"></i>Yes</span>';
+                    } else {
+                        return '<span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>No</span>';
+                    }
+                })
+
                 ->addColumn('action', 'admin.ticket._action')
+                ->rawColumns(['action', 'is_device'])
                 ->toJson();
         }
 
