@@ -382,13 +382,42 @@ function createTiket($device_id, $devEUI, $type_device, $data)
                             }
                         }
                         if (!empty($abnormal)) {
-                            // create tiket
-                            Ticket::create([
-                                'subject' => "Alert from device " . $devEUI,
-                                'description'  => json_encode($abnormal),
-                                'is_device'   => 1,
-                                'status'   => "alert",
-                            ]);
+                            // cek udah ada tiket atw blm
+                            $tickets = DB::table('tickets')
+                                ->where('device_id', '=', $device_id)
+                                ->latest()->first();
+
+                            if ($tickets) {
+                                // cek statusnya opened / closed, jika closed buat tiket baru
+                                if ($tickets->status != "alert") {
+                                    // create tiket
+                                    $dataTiket = [
+                                        'subject' => "Alert from device " . $devEUI,
+                                        'description'  => json_encode($abnormal),
+                                        'device_id' => $device_id,
+                                        'status'   => "alert",
+                                        'is_device'   => 1,
+                                    ];
+                                    $tiket = Ticket::create($dataTiket);
+                                } else {
+                                    $dataTiket = [
+                                        'description'  => json_encode($abnormal),
+                                    ];
+                                    // update ticket
+                                    DB::table('tickets')
+                                        ->where('id', $tickets->id)
+                                        ->update($dataTiket);
+                                }
+                            } else {
+                                // create tiket
+                                Ticket::create([
+                                    'subject' => "Alert from device " . $devEUI,
+                                    'description'  => json_encode($abnormal),
+                                    'is_device'   => 1,
+                                    'device_id'   => $device_id,
+                                    'status'   => "alert",
+                                ]);
+                            }
                         }
                         // send notif tele
                     }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('image_2')->nullable();
             $table->integer('author_id')->nullable();
             $table->integer('is_device');
+            $table->foreignId('device_id')->nullable()->constrained('devices')->restrictOnUpdate()->cascadeOnDelete();
             $table->enum('status', [
                 'open', 'acknowledge', 'closed', 'cancelled', 'need confirmation', 'alert'
             ]);
