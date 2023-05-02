@@ -5,7 +5,7 @@
 @include('layouts._partials.admin.style')
 
 <body>
-    <div class="modal fade" id="ajaxModelEditPassword">
+    {{-- <div class="modal fade" id="ajaxModelEditPassword">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
@@ -41,7 +41,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div id="layout-wrapper">
         {{-- header --}}

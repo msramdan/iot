@@ -7,7 +7,6 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\SettingAppController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Partner\HomeController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\VillageController;
@@ -21,7 +20,6 @@ use App\Http\Controllers\Admin\SubInstanceController;
 use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\GatewayController;
 use App\Http\Controllers\Admin\SubnetController;
-use App\Http\Controllers\CallbackController;
 use App\Http\Controllers\Admin\DeviceController;
 use App\Http\Controllers\Admin\ParsedWaterMaterController;
 use App\Http\Controllers\Admin\MasterLastestDataController;
@@ -40,12 +38,11 @@ Route::controller(LoginController::class)->group(function () {
 Route::get('/dashboard', function () {
     return redirect()->route('dashboard');
 });
-
 Route::controller(DashboardController::class)->group(function () {
     Route::get('/', 'index')->name('dashboard');
+    Route::get('/profile', 'profile')->name('profile');
     Route::put('/change_password', 'change_password')->name('dashboard.change_password');
 });
-
 Route::controller(MasterLastestDataController::class)->group(function () {
     //Water meter
     Route::get('/master-water-meter', 'waterMeterMaster')->name('master_water_meter.index');
@@ -57,7 +54,6 @@ Route::controller(MasterLastestDataController::class)->group(function () {
     Route::post('/closeSwitch', 'closeSwitch')->name('closeSwitch');
     Route::post('/validationSwitch', 'validationSwitch')->name('validationSwitch');
     Route::post('/topup', 'topup')->name('topup');
-
     Route::post('/openValveGas', 'openValveGas')->name('openValveGas');
     Route::post('/closeValveGas', 'closeValveGas')->name('closeValveGas');
     //Power Meter

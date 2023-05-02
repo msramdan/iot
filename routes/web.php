@@ -13,10 +13,8 @@ use App\Http\Controllers\Partner\ParsedGasMeterController;
 use App\Http\Controllers\Partner\ParsedPowerMeterController;
 use App\Http\Controllers\Partner\ParsedWaterMeterController;
 use App\Http\Controllers\Partner\MasterLatestDataController;
-use App\Models\ParsedGasMater;
 
 Route::get('/reload-captcha', [App\Http\Controllers\Auth\RegisterController::class, 'reloadCaptcha']);
-
 Route::controller(CallbackController::class)->group(function () {
     Route::post('/callback/gateway/uplink', 'index')->name('callback.index');
     Route::post('/callback/gateway/gwstat', 'index')->name('gwstat.index');

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Instance;
@@ -35,6 +36,11 @@ class DashboardController extends Controller
         return view('admin.dashbaord.index', compact('instances', 'total_instance', 'total_subinstance', 'total_cluster', 'total_gateway'));
     }
 
+    public function profile()
+    {
+        return view('admin.profile');
+    }
+
     public function change_password(Request $request)
     {
         $validator = Validator::make(
@@ -53,7 +59,7 @@ class DashboardController extends Controller
         );
 
         if ($validator->fails()) {
-             Alert::toast($validator->errors()->first(), 'error');
+            Alert::toast($validator->errors()->first(), 'error');
             return redirect()->back();
         }
 
@@ -71,5 +77,4 @@ class DashboardController extends Controller
             return redirect()->back();
         }
     }
-
 }
