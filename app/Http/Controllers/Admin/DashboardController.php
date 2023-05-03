@@ -14,9 +14,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
-use Exception;
-use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use App\Rules\MatchOldPassword;
 
 class DashboardController extends Controller
 {
@@ -46,16 +45,15 @@ class DashboardController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'password' => [
-                    'required', 'confirmed', Password::min(8)
-                        ->letters()
-                        ->mixedCase()
-                        ->numbers()
-                        ->symbols()
-                ],
+                'current_password' => ['required', new MatchOldPassword],
+                'password' => ['required', Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()],
+                'password_confirmation' => ['required', 'same:password'],
             ]
         );
-
 
         if ($validator->fails()) {
             return redirect()->back()->withInput($request->all())->withErrors($validator);
@@ -76,15 +74,13 @@ class DashboardController extends Controller
         }
     }
 
-    public function update_profile(Request $request)
+    public function change_profile(Request $request)
     {
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => "required|string|max:50|unique:users,name, " . $user->id,
-                'email' => "required|email|unique:users,email," . $user->id,
-                'password' => "confirmed",
-                'role' => "required"
+                'name' => "required|string|max:50|unique:users,name, " . auth()->user()->id,
+                'email' => "required|email|unique:users,email," . auth()->user()->id,
             ],
         );
         if ($validator->fails()) {
@@ -92,26 +88,17 @@ class DashboardController extends Controller
         }
         DB::beginTransaction();
         try {
-            $user = User::findOrFail($user->id);
-            if ($request->password == "" || $request->password == null) {
-                $user->update([
-                    'name'   => $request->name,
-                    'email'   => $request->email,
-                ]);
-            } else {
-                $user->update([
-                    'name'   => $request->name,
-                    'email'   => $request->email,
-                    'password'   => Hash::make($request->password),
-                ]);
-            }
-            $user->syncRoles($request->role);
+            $user = User::findOrFail(auth()->user()->id);
+            $user->update([
+                'name'   => $request->name,
+                'email'   => $request->email,
+            ]);
             Alert::toast('Profile successfully updated', 'success');
-            return redirect()->route('user.index');
+            return redirect()->back();
         } catch (\Throwable $th) {
             DB::rollBack();
             Alert::toast('Failed to update profile', 'error');
-            return redirect()->route('user.index');
+            return redirect()->back();
         } finally {
             DB::commit();
         }

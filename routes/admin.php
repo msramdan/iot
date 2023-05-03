@@ -42,6 +42,7 @@ Route::controller(DashboardController::class)->group(function () {
     Route::get('/', 'index')->name('dashboard');
     Route::get('/profile', 'profile')->name('profile');
     Route::put('/change_password', 'change_password')->name('dashboard.change_password');
+    Route::put('/change_profile', 'change_profile')->name('dashboard.change_profile');
 });
 Route::controller(MasterLastestDataController::class)->group(function () {
     //Water meter

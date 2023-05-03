@@ -27,18 +27,19 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
-                            <form action="" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('dashboard.change_profile') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
 
                                 <div class="form-group  mb-3">
                                     <label for="email">{{ __('E-mail Address') }}</label>
                                     <input type="email" name="email"
-                                        class="form-control @error('email', 'updateProfileInformation') is-invalid @enderror"
-                                        id="email" placeholder="{{ __('E-mail Address') }}"
+                                        class="form-control @error('email') is-invalid @enderror" id="email"
+                                        placeholder="{{ __('E-mail Address') }}"
                                         value="{{ old('email') ?? auth()->user()->email }}" required>
 
-                                    @error('email', 'updateProfileInformation')
+                                    @error('email')
                                         <span class="text-danger">
                                             {{ $message }}
                                         </span>
@@ -48,17 +49,17 @@
                                 <div class="form-group  mb-3">
                                     <label for="name">{{ __('Name') }}</label>
                                     <input type="text" name="name"
-                                        class="form-control  @error('name', 'updateProfileInformation') is-invalid @enderror"
-                                        id="name" placeholder="{{ __('Name') }}"
+                                        class="form-control  @error('name') is-invalid @enderror" id="name"
+                                        placeholder="{{ __('Name') }}"
                                         value="{{ old('name') ?? auth()->user()->name }}" required>
-                                    @error('name', 'updateProfileInformation')
+                                    @error('name')
                                         <span class="text-danger">
                                             {{ $message }}
                                         </span>
                                     @enderror
                                 </div>
-
-                                {{-- <div class="row">
+                                {{--
+                                <div class="row">
                                     <div class="col-md-3">
                                         <div class="avatar avatar-xl mb-3">
                                             @if (auth()->user()->avatar == null)
@@ -77,7 +78,6 @@
                                             <input type="file" name="avatar"
                                                 class="form-control @error('avatar', 'updateProfileInformation') is-invalid @enderror"
                                                 id="avatar">
-
                                             @error('avatar', 'updateProfileInformation')
                                                 <span class="text-danger">
                                                     {{ $message }}
@@ -107,10 +107,10 @@
                                 <div class="mb-3">
                                     <label for="password">{{ __('Current Password') }}</label>
                                     <input type="password" name="current_password"
-                                        class="form-control @error('current_password') is-invalid @enderror" id="password"
-                                        placeholder="Current Password">
+                                        class="form-control @error('current_password') is-invalid @enderror"
+                                        id="current_password" placeholder="Current Password">
                                     @error('current_password')
-                                        <span style="color: red;">dsadas</span>
+                                        <span style="color: red;">{{ $message }}</span>
                                     @enderror
                                 </div>
 
@@ -119,7 +119,7 @@
                                     <input type="password" name="password" id="password"
                                         class="form-control @error('password') is-invalid @enderror" id="password"
                                         placeholder="New Password">
-                                    <p style="color:red; font-size:10px">Password should contain at least 8 characters,
+                                    <p style="color:gray; font-size:10px">Password should contain at least 8 characters,
                                         1 uppercase, 1 lowercase, 1 number, and 1 symbol</p>
                                     @error('password')
                                         <span style="color: red;">{{ $message }}</span>
@@ -128,8 +128,13 @@
 
                                 <div class="mb-3">
                                     <label for="password_confirmation">{{ __('Confirm Password') }}</label>
-                                    <input type="password" class="form-control" id="password_confirmation"
-                                        name="password_confirmation" placeholder="Confirm Password">
+                                    <input type="password"
+                                        class="form-control @error('password_confirmation') is-invalid @enderror"
+                                        id="password_confirmation" name="password_confirmation"
+                                        placeholder="Confirm Password">
+                                    @error('password_confirmation')
+                                        <span style="color: red;">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">{{ __('Change Password') }}</button>
