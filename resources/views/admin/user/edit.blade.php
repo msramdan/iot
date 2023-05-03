@@ -56,7 +56,7 @@
                                         <button class="btn btn-outline-success" type="button"
                                             onclick="toggleShowPassword()"><i class="mdi mdi-eye"></i></button>
                                     </div>
-                                    <p style="color:red; font-size:10px">Password should contain at least 8 characters, 1
+                                    <p style="color:gray; font-size:10px">Password should contain at least 8 characters, 1
                                         uppercase, 1
                                         lowercase, 1 number, and 1 symbol</p>
                                     @error('password')

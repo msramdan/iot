@@ -108,7 +108,7 @@
                                     <label for="password">{{ __('Current Password') }}</label>
                                     <input type="password" name="current_password"
                                         class="form-control @error('current_password') is-invalid @enderror"
-                                        id="current_password" placeholder="Current Password">
+                                        id="current_password" placeholder="Current Password" required>
                                     @error('current_password')
                                         <span style="color: red;">{{ $message }}</span>
                                     @enderror
@@ -118,7 +118,7 @@
                                     <label for="password">{{ __('New Password') }}</label>
                                     <input type="password" name="password" id="password"
                                         class="form-control @error('password') is-invalid @enderror" id="password"
-                                        placeholder="New Password">
+                                        placeholder="New Password" required>
                                     <p style="color:gray; font-size:10px">Password should contain at least 8 characters,
                                         1 uppercase, 1 lowercase, 1 number, and 1 symbol</p>
                                     @error('password')
@@ -131,7 +131,7 @@
                                     <input type="password"
                                         class="form-control @error('password_confirmation') is-invalid @enderror"
                                         id="password_confirmation" name="password_confirmation"
-                                        placeholder="Confirm Password">
+                                        placeholder="Confirm Password" required>
                                     @error('password_confirmation')
                                         <span style="color: red;">{{ $message }}</span>
                                     @enderror
