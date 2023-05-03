@@ -47,20 +47,18 @@ class DashboardController extends Controller
             $request->all(),
             [
                 'password' => [
-                    'required', Password::min(8)
+                    'required', 'confirmed', Password::min(8)
                         ->letters()
                         ->mixedCase()
                         ->numbers()
                         ->symbols()
-                        ->uncompromised()
-                        ->rules('confirmed')
                 ],
             ]
         );
 
+
         if ($validator->fails()) {
-            Alert::toast($validator->errors()->first(), 'error');
-            return redirect()->back();
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
         }
 
         $user = User::findOrfail(auth()->user()->id);
@@ -70,11 +68,52 @@ class DashboardController extends Controller
         ]);
 
         if ($user) {
-            Alert::toast('Data Updated successfully', 'success');
+            Alert::toast('Change password successfully', 'success');
             return redirect()->back();
         } else {
-            Alert::toast('Data Updated successfully', 'success');
+            Alert::toast('Failed to Change password', 'success');
             return redirect()->back();
+        }
+    }
+
+    public function update_profile(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => "required|string|max:50|unique:users,name, " . $user->id,
+                'email' => "required|email|unique:users,email," . $user->id,
+                'password' => "confirmed",
+                'role' => "required"
+            ],
+        );
+        if ($validator->fails()) {
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+        DB::beginTransaction();
+        try {
+            $user = User::findOrFail($user->id);
+            if ($request->password == "" || $request->password == null) {
+                $user->update([
+                    'name'   => $request->name,
+                    'email'   => $request->email,
+                ]);
+            } else {
+                $user->update([
+                    'name'   => $request->name,
+                    'email'   => $request->email,
+                    'password'   => Hash::make($request->password),
+                ]);
+            }
+            $user->syncRoles($request->role);
+            Alert::toast('Profile successfully updated', 'success');
+            return redirect()->route('user.index');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Alert::toast('Failed to update profile', 'error');
+            return redirect()->route('user.index');
+        } finally {
+            DB::commit();
         }
     }
 }

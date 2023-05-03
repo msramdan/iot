@@ -37,7 +37,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <a href="{{ route('profile') }}" class="dropdown-item"><i
-                                class="mdi mdi-users text-muted fs-16 align-middle me-1"></i> <span
+                                class="mdi mdi-account text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle">Profile</span></a>
 
                         <a class="dropdown-item" href="{{ route('admin_auth.logout') }}"

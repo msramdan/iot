@@ -101,35 +101,37 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
-                            <form method="POST" action="{{ route('dashboard.change_password') }}">
+                            <form method="POST" action="">
                                 @csrf
                                 @method('put')
-                                <div class="mb-3">
+                                <div class="form-group  mb-3">
                                     <label for="password">{{ __('Current Password') }}</label>
                                     <input type="password" name="current_password"
-                                        class="form-control @error('current_password') is-invalid @enderror" id="password"
-                                        placeholder="Current Password">
-                                    @error('current_password')
-                                        <span style="color: red;">dsadas</span>
+                                        class="form-control @error('current_password', 'updatePassword') is-invalid @enderror"
+                                        id="password" placeholder="Current Password" required>
+                                    @error('current_password', 'updatePassword')
+                                        <span class="text-danger">
+                                            {{ $message }}
+                                        </span>
                                     @enderror
                                 </div>
 
-                                <div class="mb-3">
+                                <div class="form-group  mb-3">
                                     <label for="password">{{ __('New Password') }}</label>
-                                    <input type="password" name="password" id="password"
-                                        class="form-control @error('password') is-invalid @enderror" id="password"
-                                        placeholder="New Password">
-                                    <p style="color:red; font-size:10px">Password should contain at least 8 characters,
-                                        1 uppercase, 1 lowercase, 1 number, and 1 symbol</p>
-                                    @error('password')
-                                        <span style="color: red;">{{ $message }}</span>
+                                    <input type="password" name="password"
+                                        class="form-control @error('password', 'updatePassword') is-invalid @enderror"
+                                        id="password" placeholder="New Password" required>
+                                    @error('password', 'updatePassword')
+                                        <span class="text-danger">
+                                            {{ $message }}
+                                        </span>
                                     @enderror
                                 </div>
 
-                                <div class="mb-3">
+                                <div class="form-group  mb-3">
                                     <label for="password_confirmation">{{ __('Confirm Password') }}</label>
                                     <input type="password" class="form-control" id="password_confirmation"
-                                        name="password_confirmation" placeholder="Confirm Password">
+                                        name="password_confirmation" placeholder="Confirm Password" required>
                                 </div>
 
                                 <button type="submit" class="btn btn-primary">{{ __('Change Password') }}</button>

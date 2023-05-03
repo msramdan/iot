@@ -67,7 +67,6 @@
                                         required value="{{ old('password_confirmation') }}"
                                         placeholder="Password Confirmation" id="password_confirmation"
                                         name="password_confirmation">
-
                                     @error('password')
                                         <span style="color: red;">{{ $message }}</span>
                                     @enderror
