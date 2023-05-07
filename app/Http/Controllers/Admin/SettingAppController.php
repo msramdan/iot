@@ -37,6 +37,7 @@ class SettingAppController extends Controller
                 'endpoint_purchase_code' => 'required|string',
                 'favicon' => 'max:2048|dimensions:width=512,height=512',
                 'logo' => 'max:2048|dimensions:width=200,height=60',
+                'backround_login' => 'max:2048|dimensions:width=1200,height=675',
                 'endpoint_nms' => 'required',
                 'is_notif_tele' => 'required'
             ]
@@ -68,6 +69,17 @@ class SettingAppController extends Controller
                     'favicon'     => $banner->hashName(),
                 ]);
             }
+
+            if ($request->file('backround_login') != "" || $request->file('backround_login') != null) {
+                $filename = public_path() . '/backend/assets/images/auth-one-bg.jpg';
+                unlink($filename);
+                $destinationPath = 'backend/assets/images';
+                $request->backround_login->move(public_path($destinationPath), 'auth-one-bg.jpg');
+                $setting_app->update([
+                    'backround_login'     => 'auth-one-bg.jpg',
+                ]);
+            }
+
             $data  = [
                 'app_name' => $request->app_name,
                 'phone' => $request->phone,

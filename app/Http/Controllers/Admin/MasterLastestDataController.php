@@ -129,7 +129,7 @@ class MasterLastestDataController extends Controller
             ->orderBy('parsed_water_meter.id', 'asc')
             ->whereNull('status_valve')->get();
 
-        $dailyUsages = DailyUsageDevice::where('device_id', $id)->where('device_type', 'water_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
+        $dailyUsages = DailyUsageDevice::where('device_id', $id)->where('device_type', 'water_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'desc')->get();
         $parsed_dates = [];
         $baterai_datas = [];
         $temperature_datas = [];

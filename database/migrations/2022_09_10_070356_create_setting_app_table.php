@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('app_name');
             $table->string('logo')->nullable();
             $table->string('favicon');
+            $table->string('backround_login')->nullable();
             $table->string('phone');
             $table->string('email');
             $table->text('address');

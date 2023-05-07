@@ -116,9 +116,13 @@
 
                                 <div class="mb-3">
                                     <label for="password">{{ __('New Password') }}</label>
-                                    <input type="password" name="password" id="password"
-                                        class="form-control @error('password') is-invalid @enderror" id="password"
-                                        placeholder="New Password" required>
+                                    <div class="input-group">
+                                        <input type="password" name="password" id="password"
+                                            class="form-control @error('password') is-invalid @enderror" id="password"
+                                            placeholder="New Password" required>
+                                        <button class="btn btn-outline-success" type="button"
+                                            onclick="toggleShowPassword()"><i class="mdi mdi-eye"></i></button>
+                                    </div>
                                     <p style="color:gray; font-size:10px">Password should contain at least 8 characters,
                                         1 uppercase, 1 lowercase, 1 number, and 1 symbol</p>
                                     @error('password')
@@ -147,3 +151,17 @@
     </div>
 
 @endsection
+@push('js')
+    <script>
+        function toggleShowPassword() {
+            const type = $('input#password').attr('type');
+            if (type === "password") {
+                $('input#password').attr('type', 'text');
+                $('input#password_confirmation').attr('type', 'text');
+            } else {
+                $('input#password').attr('type', 'password');
+                $('input#password_confirmation').attr('type', 'password');
+            }
+        }
+    </script>
+@endpush

@@ -69,6 +69,23 @@
                                             @enderror
                                         </div>
                                         <div class="mb-3">
+                                            @if ($setting_app->backround_login != '' || $setting_app->backround_login != null)
+                                                <img src="{{ asset('backend/assets/images/auth-one-bg.jpg') }}"
+                                                    class="img-preview d-block mb-3 col-sm-5 " style="width:200px">
+                                            @endif
+                                            <label class="form-label" for="logo">Background Login </label>
+                                            <input type="file"
+                                                class="form-control @error('backround_login') is-invalid @enderror"
+                                                id="backround_login" name="backround_login" onchange="previewImg()"
+                                                value="{{ $setting_app->backround_login }}">
+                                            <span style="color:red; font-size:10px">Dimensions suggestion : 1200x675 pixels
+                                                |
+                                                Max size : 2048 Kb </span>
+                                            @error('backround_login')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="mb-3">
                                             <label class="form-label" for="phone">Phone</label>
                                             <input class="form-control @error('phone') is-invalid @enderror" id="phone"
                                                 type="text"

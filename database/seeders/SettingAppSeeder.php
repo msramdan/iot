@@ -20,6 +20,7 @@ class SettingAppSeeder extends Seeder
             'app_name' => 'Manajemen IOT Device',
             'logo' => '',
             'favicon' => '',
+            'backround_login' => '',
             'phone' => '083874731480',
             'email' => 'saepulramdan244@gmail.com',
             'address' => 'Perumahan SAI Residance Blok E6 , Tajur halang, Kabupaten Bogor',

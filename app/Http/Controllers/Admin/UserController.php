@@ -71,7 +71,6 @@ class UserController extends Controller
                         ->mixedCase()
                         ->numbers()
                         ->symbols()
-                        ->uncompromised()
                 ],
                 'role' => "required"
             ],
