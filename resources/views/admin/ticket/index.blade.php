@@ -136,7 +136,7 @@
         $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('tickets.index') }}",
+            ajax: "{{ route('tickets.index') }}?id={{ request()->get('id') }}&status={{ request()->get('status') }}",
             columns: columns
         });
     </script>

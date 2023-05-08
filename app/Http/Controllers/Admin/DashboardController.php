@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Models\Device;
+use App\Models\Ticket;
 use App\Rules\MatchOldPassword;
 
 class DashboardController extends Controller
@@ -27,12 +29,29 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $instances = Instance::get();
+        $subinstances = Subinstance::get();
+        $clusters = Cluster::get();
+        $gateways = Rawdata::groupBy('gwid')->get();
         $total_instance = Instance::count();
         $total_subinstance = SubInstance::count();
         $total_cluster = Cluster::count();
         $total_gateway = count(Rawdata::groupBy('gwid')->get());
+        $lastTenInstances = Instance::orderBy('created_at', 'DESC')->limit(10)->get();
+        $tickets = Ticket::orderBy('created_at', 'DESC')->get();
+        $ticketsByStatus = Ticket::select('status as name', DB::raw('COUNT(*) as y'))->groupBy('status')->get();
+        $jsonPercentageTicketByStatus = json_encode($ticketsByStatus);
+        $devicesByType = Device::select('category', DB::raw('COUNT(*) as qty'))->groupBy('category')->get();
+        $devicesByInstance = Device::select('instances.instance_name as name', DB::raw('COUNT(*) as qty'))
+            ->leftJoin('instances', 'instances.appID', '=', 'devices.appID')
+            ->groupBy('devices.appID')
+            ->get();
+        $devicesByLocation = Device::select('tbl_kabkot.kabupaten_kota as name', DB::raw('COUNT(*) as qty'))
+            ->leftJoin('instances', 'instances.appID', '=', 'devices.appID')
+            ->leftJoin('tbl_kabkot', 'tbl_kabkot.id', '=', 'instances.city_id')
+            ->groupBy('tbl_kabkot.id')
+            ->get();
 
-        return view('admin.dashbaord.index', compact('instances', 'total_instance', 'total_subinstance', 'total_cluster', 'total_gateway'));
+        return view('admin.dashbaord.index', compact('devicesByLocation', 'devicesByInstance', 'devicesByType', 'ticketsByStatus', 'jsonPercentageTicketByStatus', 'instances', 'total_instance', 'total_subinstance', 'total_cluster', 'total_gateway', 'subinstances', 'clusters', 'gateways', 'lastTenInstances', 'tickets'));
     }
 
     public function profile()
