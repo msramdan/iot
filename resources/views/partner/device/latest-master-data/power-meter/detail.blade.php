@@ -135,7 +135,7 @@
                                             <tbody>
                                                 @foreach ($dailyUsages as $data)
                                                     <tr>
-                                                        <td style="width: 50%">{{ $data->usage }} L</td>
+                                                        <td style="width: 50%">{{ $data->usage }} kW</td>
                                                         <td>{{ date('d/m/Y', strtotime($data->date)) }}</td>
                                                     </tr>
                                                 @endforeach

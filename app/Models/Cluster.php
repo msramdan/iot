@@ -11,6 +11,11 @@ class Cluster extends Model
 
     protected $guarded = ['id'];
 
+    public function instance()
+    {
+        return $this->belongsTo(Instance::class);
+    }
+
     public function subinstance()
     {
         return $this->belongsTo(Subinstance::class);
