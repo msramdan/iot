@@ -223,8 +223,9 @@
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
-                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                        data-target="{{ $total_instance }}"></span></h4>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalListInstances">
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_instance }}"></span></h4>
+                                                </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-success rounded fs-3">
@@ -235,6 +236,7 @@
                                     </div>
                                 </div>
                             </div><!-- end col -->
+
 
                             <div class="col-xl-3 col-md-6">
                                 <!-- card -->
@@ -248,8 +250,9 @@
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
-                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                        data-target="{{ $total_subinstance }}"></span></h4>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalListSubInstances">
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_subinstance }}"></span></h4>
+                                                </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-info rounded fs-3">
@@ -273,8 +276,9 @@
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
-                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                        data-target="{{ $total_cluster }}"></span></h4>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalListCluster">
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_cluster }}"></span></h4>
+                                                </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-danger rounded fs-3">
@@ -298,8 +302,9 @@
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
-                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value"
-                                                        data-target="{{ $total_gateway }}"></span></h4>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalListGateway">
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_gateway }}"></span></h4>
+                                                </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-warning rounded fs-3">
@@ -388,46 +393,23 @@
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table
-                                                class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>Status</th>
-                                                        <th>Total</th>
+                                                        <th>Code</th>
+                                                        <th>Name</th>
                                                     </tr>
                                                 </thead>
 
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
+                                                    @foreach ($lastTenInstances as $lastTenInstance)
+                                                        <tr onclick="lastTenInstanceShowModalInstance(`{{ json_encode($lastTenInstance) }}`)">
+                                                            <td>{{ $lastTenInstance->instance_code }}</td>
+                                                            <td>{{ $lastTenInstance->instance_name }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
-                                            <div style="margin-left: 5px;margin-right: 5px" class="alert alert-info"
-                                                role="alert">
-                                                <b>Total of all tickets :</b>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -438,104 +420,57 @@
                             <div class="col-xl-5 col-md-5">
                                 <div class="card" style="height: 450px">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1"><i
-                                                class="mdi mdi-book text-success fs-3"></i>Tickets List</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-book text-success fs-3"></i>Tickets List</h4>
                                     </div>
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table
-                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
                                                 <thead class="table-light">
                                                     <tr>
-                                                        <th>Judul</th>
-                                                        <th>Description</th>
+                                                        <th>No</th>
+                                                        <th>Subject</th>
                                                         <th>Status</th>
                                                         <th>Created At</th>
                                                     </tr>
                                                 </thead>
 
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
-                                                        <td>
-                                                            <div class="text-nowrap">$100.1K</div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
-                                                        <td>
-                                                            <div class="text-nowrap">$100.1K</div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
-                                                        <td>
-                                                            <div class="text-nowrap">$100.1K</div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
-                                                        <td>
-                                                            <div class="text-nowrap">$100.1K</div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
-                                                        <td>
-                                                            <div class="text-nowrap">$100.1K</div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
-                                                        <td>
-                                                            <div class="text-nowrap">$100.1K</div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
-                                                        <td>
-                                                            <div class="text-nowrap">$100.1K</div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
-                                                        <td>
-                                                            <div class="text-nowrap">$100.1K</div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
-                                                        <td>
-                                                            <div class="text-nowrap">$100.1K</div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td><span class="badge badge-soft-success p-2">Deal Won</span></td>
-                                                        <td>
-                                                            <div class="text-nowrap">$100.1K</div>
-                                                        </td>
-                                                    </tr>
+                                                    @foreach ($tickets as $indexTicket => $ticket)
+                                                        <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/panel/tickets?id={{ $ticket->id }}`">
+                                                            <td>{{ $indexTicket + 1 }}</td>
+                                                            <td>{{ $ticket->subject }}</td>
+                                                            <td>{{ $ticket->created_at }}</td>
+                                                            <td>
+                                                                @if ($ticket->status == 'open')
+                                                                    <span class="badge badge-soft-success p-2">
+                                                                        {{ $ticket->status }}
+                                                                    </span>
+                                                                @elseif($ticket->status == 'acknowledge')
+                                                                    <span class="badge badge-soft-info p-2">
+                                                                        {{ $ticket->status }}
+                                                                    </span>
+                                                                @elseif($ticket->status == 'closed')
+                                                                    <span class="badge badge-soft-dark p-2">
+                                                                        {{ $ticket->status }}
+                                                                    </span>
+                                                                @elseif($ticket->status == 'canceled')
+                                                                    <span class="badge badge-soft-dark p-2">
+                                                                        {{ $ticket->status }}
+                                                                    </span>
+                                                                @elseif($ticket->status == 'need confirmation')
+                                                                    <span class="badge badge-sofy-warning p-2">
+                                                                        {{ $ticket->status }}
+                                                                    </span>
+                                                                @elseif($ticket->status == 'alert')
+                                                                    <span class="badge badge-soft-danger p-2">
+                                                                        {{ $ticket->status }}
+                                                                    </span>
+                                                                @endif
+
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -565,45 +500,50 @@
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table
-                                                class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Status</th>
                                                         <th>Total</th>
                                                     </tr>
                                                 </thead>
-
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
+                                                    @foreach ($ticketsByStatus as $ticketByStatus)
+                                                        <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/panel/tickets?status={{ $ticketByStatus->name }}`">
+                                                            <td>
+                                                                @if ($ticketByStatus->name == 'open')
+                                                                    <span class="badge badge-soft-success p-2">
+                                                                        {{ $ticketByStatus->name }}
+                                                                    </span>
+                                                                @elseif($ticketByStatus->name == 'acknowledge')
+                                                                    <span class="badge badge-soft-info p-2">
+                                                                        {{ $ticketByStatus->name }}
+                                                                    </span>
+                                                                @elseif($ticketByStatus->name == 'closed')
+                                                                    <span class="badge badge-soft-dark p-2">
+                                                                        {{ $ticketByStatus->name }}
+                                                                    </span>
+                                                                @elseif($ticketByStatus->name == 'canceled')
+                                                                    <span class="badge badge-soft-dark p-2">
+                                                                        {{ $ticketByStatus->name }}
+                                                                    </span>
+                                                                @elseif($ticketByStatus->name == 'need confirmation')
+                                                                    <span class="badge badge-sofy-warning p-2">
+                                                                        {{ $ticketByStatus->name }}
+                                                                    </span>
+                                                                @elseif($ticketByStatus->name == 'alert')
+                                                                    <span class="badge badge-soft-danger p-2">
+                                                                        {{ $ticketByStatus->name }}
+                                                                    </span>
+                                                                @endif
+                                                            </td>
+                                                            <td>{{ $ticketByStatus->y }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
-                                            <div style="margin-left: 5px;margin-right: 5px" class="alert alert-info"
-                                                role="alert">
-                                                <b>Total of all tickets :</b>
+                                            <div style="margin-left: 5px;margin-right: 5px" class="alert alert-info" role="alert">
+                                                <b>Total of all tickets : {{ count($tickets) }}</b>
                                             </div>
                                         </div>
                                     </div>
@@ -616,16 +556,14 @@
                             <div class="col-xl-4 col-md-4">
                                 <div class="card" style="height: 450px">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1"><i
-                                                class="mdi mdi-tag text-success fs-3"></i>
+                                        <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-tag text-success fs-3"></i>
                                             Device By Type
                                         </h4>
                                     </div>
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table
-                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Device Type </th>
@@ -634,53 +572,12 @@
                                                 </thead>
 
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
+                                                    @foreach ($devicesByType as $deviceByType)
+                                                        <tr>
+                                                            <td>{{ $deviceByType->category }}</td>
+                                                            <td>{{ $deviceByType->qty }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -690,16 +587,14 @@
                             <div class="col-xl-4 col-md-4">
                                 <div class="card" style="height: 450px">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1"><i
-                                                class="mdi mdi-bank text-success fs-3"></i>
+                                        <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-bank text-success fs-3"></i>
                                             Device By
-                                            Intances</h4>
+                                            Instances</h4>
                                     </div>
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table
-                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Intance Name </th>
@@ -708,53 +603,12 @@
                                                 </thead>
 
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
+                                                    @foreach ($devicesByInstance as $deviceByInstance)
+                                                        <tr>
+                                                            <td>{{ $deviceByInstance->name }}</td>
+                                                            <td>{{ $deviceByInstance->qty }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -764,16 +618,14 @@
                             <div class="col-xl-4 col-md-4">
                                 <div class="card" style="height: 450px">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1"><i
-                                                class="mdi mdi-map-marker text-success fs-3"></i> Device
+                                        <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-map-marker text-success fs-3"></i> Device
                                             By
                                             Location</h4>
                                     </div>
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table
-                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Location </th>
@@ -782,53 +634,12 @@
                                                 </thead>
 
                                                 <tbody>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Sep 20, 2021</td>
-                                                        <td>Sep 20, 2021</td>
-
-                                                    </tr>
+                                                    @foreach ($devicesByLocation as $deviceByLocation)
+                                                        <tr>
+                                                            <td>{{ $deviceByLocation->name }}</td>
+                                                            <td>{{ $deviceByLocation->qty }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -842,6 +653,206 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal List Instances -->
+    <div class="modal fade" id="modalListInstances" tabindex="-1" aria-labelledby="modalListInstancesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalListInstancesLabel">Total Instances</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th style="white-space: nowrap">APP ID</th>
+                                    <th style="white-space: nowrap">APP Name</th>
+                                    <th style="white-space: nowrap">Push URL</th>
+                                    <th style="white-space: nowrap">Instance Code</th>
+                                    <th style="white-space: nowrap">Instance Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($instances as $indexInstance => $instance)
+                                    <tr>
+                                        <td>{{ $indexInstance + 1 }}</td>
+                                        <td>{{ $instance->appID }}</td>
+                                        <td>{{ $instance->appName }}</td>
+                                        <td>{{ $instance->push_url }}</td>
+                                        <td>{{ $instance->instance_code }}</td>
+                                        <td>{{ $instance->instance_name }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modal List Instances -->
+
+    <!-- Modal List Sub Instances -->
+    <div class="modal fade" id="modalListSubInstances" tabindex="-1" aria-labelledby="modalListSubInstancesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalListSubInstancesLabel">Total Sub Instances</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th style="white-space: nowrap">Instance</th>
+                                    <th style="white-space: nowrap">Code</th>
+                                    <th style="white-space: nowrap">Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($subinstances as $indexSubInstance => $subInstance)
+                                    <tr>
+                                        <td>{{ $indexSubInstance + 1 }}</td>
+                                        <td>{{ $subInstance->instance ? $subInstance->instance->instance_name : '-' }}</td>
+                                        <td>{{ $subInstance->code_subinstance }}</td>
+                                        <td>{{ $subInstance->name_subinstance }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modal List Sub Instances -->
+
+    <!-- Modal List Cluster -->
+    <div class="modal fade" id="modalListCluster" tabindex="-1" aria-labelledby="modalListClusterLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalListClusterLabel">Total Cluster</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th style="white-space: nowrap">Instansi</th>
+                                    <th style="white-space: nowrap">Sub Instansi</th>
+                                    <th style="white-space: nowrap">Code</th>
+                                    <th style="white-space: nowrap">Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($clusters as $indexCluster => $cluster)
+                                    <tr>
+                                        <td>{{ $indexCluster + 1 }}</td>
+                                        <td>{{ $cluster->instance->instance_name }}</td>
+                                        <td>{{ $cluster->subinstance->name_subinstance }}</td>
+                                        <td>{{ $cluster->kode }}</td>
+                                        <td>{{ $cluster->name }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modal List Cluster -->
+
+    <!-- Modal List Gateways -->
+    <div class="modal fade" id="modalListGateway" tabindex="-1" aria-labelledby="modalListGatewayLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalListGatewayLabel">Total Gateways</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table datatable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th style="white-space: nowrap">DEV EUI</th>
+                                    <th style="white-space: nowrap">APP ID</th>
+                                    <th style="white-space: nowrap">Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($gateways as $indexGateway => $gateway)
+                                    <tr>
+                                        <td>{{ $indexGateway + 1 }}</td>
+                                        <td>{{ $gateway->devEUI }}</td>
+                                        <td>{{ $gateway->appID }}</td>
+                                        <td>{{ $gateway->type }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modal List Gateways -->
+
+    <!-- Modal Instance -->
+    <div class="modal fade" id="lastTenInstanceModalInstance" tabindex="-1" aria-labelledby="lastTenInstanceModalInstanceLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="lastTenInstanceModalInstanceLabel">Instance Detail</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="white-space: nowrap">APP ID</th>
+                                    <th style="white-space: nowrap">APP Name</th>
+                                    <th style="white-space: nowrap">Push URL</th>
+                                    <th style="white-space: nowrap">Instance Code</th>
+                                    <th style="white-space: nowrap">Instance Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Modal Instance -->
 
 @endsection
 @push('js')
@@ -908,6 +919,8 @@
                     }
                 });
             }
+
+            $('.datatable').DataTable();
         });
     </script>
 
@@ -944,28 +957,33 @@
                 }
             },
             series: [{
-                name: 'Brands',
+                name: 'Tickets',
                 colorByPoint: true,
-                data: [{
-                    name: 'Chrome',
-                    y: 74.77
-                }, {
-                    name: 'Edge',
-                    y: 12.82
-                }, {
-                    name: 'Firefox',
-                    y: 4.63
-                }, {
-                    name: 'Safari',
-                    y: 2.44
-                }, {
-                    name: 'Internet Explorer',
-                    y: 2.02
-                }, {
-                    name: 'Other',
-                    y: 3.28
-                }]
+                data: JSON.parse(`{!! $jsonPercentageTicketByStatus !!}`)
             }]
         });
+    </script>
+
+    <script>
+        function lastTenInstanceShowModalInstance(jsonObjInstance) {
+            const objInstance = JSON.parse(jsonObjInstance);
+            const tbodyElement = document.querySelector('#lastTenInstanceModalInstance tbody');
+
+            tbodyElement.innerHTML = '';
+            tbodyElement.insertAdjacentHTML('beforeend',
+                `
+                <tr>
+                    <td>${objInstance.appID}</td>
+                    <td>${objInstance.appName}</td>
+                    <td>${objInstance.push_url}</td>
+                    <td>${objInstance.instance_code}</td>
+                    <td>${objInstance.instance_name}</td>
+                </tr>
+                `
+            );
+
+            const modalLastTenInstanceDetail = new bootstrap.Modal(document.getElementById('lastTenInstanceModalInstance'));
+            modalLastTenInstanceDetail.toggle('show');
+        }
     </script>
 @endpush
