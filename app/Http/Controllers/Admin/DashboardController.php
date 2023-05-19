@@ -31,11 +31,11 @@ class DashboardController extends Controller
         $instances = Instance::get();
         $subinstances = Subinstance::get();
         $clusters = Cluster::get();
-        $gateways = Rawdata::groupBy('gwid')->get();
+        $devices = Device::with(['subnet', 'cluster'])->orderBy('id', 'desc')->get();
         $total_instance = Instance::count();
         $total_subinstance = SubInstance::count();
         $total_cluster = Cluster::count();
-        $total_gateway = count(Rawdata::groupBy('gwid')->get());
+        $total_device = Device::count();
         $lastTenInstances = Instance::orderBy('created_at', 'DESC')->limit(10)->get();
         $tickets = Ticket::orderBy('created_at', 'DESC')->get();
         $ticketsByStatus = Ticket::select('status as name', DB::raw('COUNT(*) as y'))->groupBy('status')->get();
@@ -51,7 +51,7 @@ class DashboardController extends Controller
             ->groupBy('tbl_kabkot.id')
             ->get();
 
-        return view('admin.dashbaord.index', compact('devicesByLocation', 'devicesByInstance', 'devicesByType', 'ticketsByStatus', 'jsonPercentageTicketByStatus', 'instances', 'total_instance', 'total_subinstance', 'total_cluster', 'total_gateway', 'subinstances', 'clusters', 'gateways', 'lastTenInstances', 'tickets'));
+        return view('admin.dashbaord.index', compact('devicesByLocation', 'devicesByInstance', 'devicesByType', 'ticketsByStatus', 'jsonPercentageTicketByStatus', 'instances', 'total_instance', 'total_subinstance', 'total_cluster', 'total_device', 'subinstances', 'clusters', 'devices', 'lastTenInstances', 'tickets'));
     }
 
     public function profile()

@@ -223,13 +223,16 @@
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalListInstances">
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_instance }}"></span></h4>
+                                                <a href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#modalListInstances">
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            class="counter-value"
+                                                            data-target="{{ $total_instance }}"></span></h4>
                                                 </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-success rounded fs-3">
-                                                    <i class="bx bx-dollar-circle"></i>
+                                                    <i class="mdi mdi-bank"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -250,13 +253,16 @@
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalListSubInstances">
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_subinstance }}"></span></h4>
+                                                <a href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#modalListSubInstances">
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            class="counter-value"
+                                                            data-target="{{ $total_subinstance }}"></span></h4>
                                                 </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-info rounded fs-3">
-                                                    <i class="bx bx-shopping-bag"></i>
+                                                    <i class="mdi mdi-format-float-left"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -277,12 +283,14 @@
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalListCluster">
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_cluster }}"></span></h4>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            class="counter-value" data-target="{{ $total_cluster }}"></span>
+                                                    </h4>
                                                 </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-danger rounded fs-3">
-                                                    <i class="bx bx-wallet"></i>
+                                                    <i class="mdi mdi-format-list-bulleted"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -297,18 +305,20 @@
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 overflow-hidden">
                                                 <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Total
-                                                    Gateway</p>
+                                                    Device</p>
                                             </div>
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalListGateway">
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_gateway }}"></span></h4>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            class="counter-value" data-target="{{ $total_device }}"></span>
+                                                    </h4>
                                                 </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-warning rounded fs-3">
-                                                    <i class="bx bx-user-circle"></i>
+                                                    <i class="mdi mdi-devices"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -393,7 +403,8 @@
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Code</th>
@@ -403,7 +414,8 @@
 
                                                 <tbody>
                                                     @foreach ($lastTenInstances as $lastTenInstance)
-                                                        <tr onclick="lastTenInstanceShowModalInstance(`{{ json_encode($lastTenInstance) }}`)">
+                                                        <tr
+                                                            onclick="lastTenInstanceShowModalInstance(`{{ json_encode($lastTenInstance) }}`)">
                                                             <td>{{ $lastTenInstance->instance_code }}</td>
                                                             <td>{{ $lastTenInstance->instance_name }}</td>
                                                         </tr>
@@ -420,12 +432,14 @@
                             <div class="col-xl-5 col-md-5">
                                 <div class="card" style="height: 450px">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-book text-success fs-3"></i>Tickets List</h4>
+                                        <h4 class="card-title mb-0 flex-grow-1"><i
+                                                class="mdi mdi-book text-success fs-3"></i>Tickets List</h4>
                                     </div>
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>No</th>
@@ -437,7 +451,8 @@
 
                                                 <tbody>
                                                     @foreach ($tickets as $indexTicket => $ticket)
-                                                        <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/panel/tickets?id={{ $ticket->id }}`">
+                                                        <tr style="cursor: pointer"
+                                                            onclick="window.location.href = `{{ url('/') }}/panel/tickets?id={{ $ticket->id }}`">
                                                             <td>{{ $indexTicket + 1 }}</td>
                                                             <td>{{ $ticket->subject }}</td>
                                                             <td>{{ $ticket->created_at }}</td>
@@ -500,7 +515,8 @@
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Status</th>
@@ -509,7 +525,8 @@
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($ticketsByStatus as $ticketByStatus)
-                                                        <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/panel/tickets?status={{ $ticketByStatus->name }}`">
+                                                        <tr style="cursor: pointer"
+                                                            onclick="window.location.href = `{{ url('/') }}/panel/tickets?status={{ $ticketByStatus->name }}`">
                                                             <td>
                                                                 @if ($ticketByStatus->name == 'open')
                                                                     <span class="badge badge-soft-success p-2">
@@ -542,7 +559,8 @@
                                                     @endforeach
                                                 </tbody>
                                             </table>
-                                            <div style="margin-left: 5px;margin-right: 5px" class="alert alert-info" role="alert">
+                                            <div style="margin-left: 5px;margin-right: 5px" class="alert alert-info"
+                                                role="alert">
                                                 <b>Total of all tickets : {{ count($tickets) }}</b>
                                             </div>
                                         </div>
@@ -556,14 +574,16 @@
                             <div class="col-xl-4 col-md-4">
                                 <div class="card" style="height: 450px">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-tag text-success fs-3"></i>
+                                        <h4 class="card-title mb-0 flex-grow-1"><i
+                                                class="mdi mdi-tag text-success fs-3"></i>
                                             Device By Type
                                         </h4>
                                     </div>
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Device Type </th>
@@ -587,14 +607,16 @@
                             <div class="col-xl-4 col-md-4">
                                 <div class="card" style="height: 450px">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-bank text-success fs-3"></i>
+                                        <h4 class="card-title mb-0 flex-grow-1"><i
+                                                class="mdi mdi-bank text-success fs-3"></i>
                                             Device By
                                             Instances</h4>
                                     </div>
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Intance Name </th>
@@ -618,14 +640,16 @@
                             <div class="col-xl-4 col-md-4">
                                 <div class="card" style="height: 450px">
                                     <div class="card-header align-items-center d-flex">
-                                        <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-map-marker text-success fs-3"></i> Device
+                                        <h4 class="card-title mb-0 flex-grow-1"><i
+                                                class="mdi mdi-map-marker text-success fs-3"></i> Device
                                             By
                                             Location</h4>
                                     </div>
 
                                     <div class="card-body">
                                         <div class="table-responsive table-card">
-                                            <table class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
+                                            <table
+                                                class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Location </th>
@@ -655,7 +679,8 @@
     </div>
 
     <!-- Modal List Instances -->
-    <div class="modal fade" id="modalListInstances" tabindex="-1" aria-labelledby="modalListInstancesLabel" aria-hidden="true">
+    <div class="modal fade" id="modalListInstances" tabindex="-1" aria-labelledby="modalListInstancesLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -699,7 +724,8 @@
     <!-- End of Modal List Instances -->
 
     <!-- Modal List Sub Instances -->
-    <div class="modal fade" id="modalListSubInstances" tabindex="-1" aria-labelledby="modalListSubInstancesLabel" aria-hidden="true">
+    <div class="modal fade" id="modalListSubInstances" tabindex="-1" aria-labelledby="modalListSubInstancesLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -739,7 +765,8 @@
     <!-- End of Modal List Sub Instances -->
 
     <!-- Modal List Cluster -->
-    <div class="modal fade" id="modalListCluster" tabindex="-1" aria-labelledby="modalListClusterLabel" aria-hidden="true">
+    <div class="modal fade" id="modalListCluster" tabindex="-1" aria-labelledby="modalListClusterLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -781,11 +808,12 @@
     <!-- End of Modal List Cluster -->
 
     <!-- Modal List Gateways -->
-    <div class="modal fade" id="modalListGateway" tabindex="-1" aria-labelledby="modalListGatewayLabel" aria-hidden="true">
+    <div class="modal fade" id="modalListGateway" tabindex="-1" aria-labelledby="modalListGatewayLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalListGatewayLabel">Total Gateways</h5>
+                    <h5 class="modal-title" id="modalListGatewayLabel">Total Devices</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -794,18 +822,26 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th style="white-space: nowrap">DEV EUI</th>
-                                    <th style="white-space: nowrap">APP ID</th>
-                                    <th style="white-space: nowrap">Type</th>
+                                    <th>App ID</th>
+                                    <th>Instance</th>
+                                    {{-- <th>Cluster</th> --}}
+                                    <th>Category</th>
+                                    <th>Hit Nms</th>
+                                    <th>Dev EUI</th>
+                                    <th>Dev Name</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($gateways as $indexGateway => $gateway)
+                                @foreach ($devices as $index => $device)
                                     <tr>
-                                        <td>{{ $indexGateway + 1 }}</td>
-                                        <td>{{ $gateway->devEUI }}</td>
-                                        <td>{{ $gateway->appID }}</td>
-                                        <td>{{ $gateway->type }}</td>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $device->appID }}</td>
+                                        <td>{{ $device->instance->instance_name }}</td>
+                                        {{-- <td>{{ $device->cluster->name }}</td> --}}
+                                        <td>{{ $device->category }}</td>
+                                        <td>{{ $device->hit_nms }}</td>
+                                        <td>{{ $device->devEUI }}</td>
+                                        <td>{{ $device->devName }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -821,7 +857,8 @@
     <!-- End of Modal List Gateways -->
 
     <!-- Modal Instance -->
-    <div class="modal fade" id="lastTenInstanceModalInstance" tabindex="-1" aria-labelledby="lastTenInstanceModalInstanceLabel" aria-hidden="true">
+    <div class="modal fade" id="lastTenInstanceModalInstance" tabindex="-1"
+        aria-labelledby="lastTenInstanceModalInstanceLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
