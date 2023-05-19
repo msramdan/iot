@@ -300,7 +300,7 @@ class MasterLastestDataController extends Controller
             ->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
-            ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
+            ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'desc')->get();
 
         $parsed_dates = [];
         $tegangan_datas = [];
@@ -484,7 +484,7 @@ class MasterLastestDataController extends Controller
             ->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
-            ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
+            ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'desc')->get();
 
         $parsed_dates = [];
         $gas_consumtion_datas = [];
