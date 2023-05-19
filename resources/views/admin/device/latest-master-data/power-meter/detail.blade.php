@@ -172,7 +172,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $data)
+                                                @foreach ($dataTable as $data)
                                                     <tr>
                                                         <td>{{ $data->tegangan }} V</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
@@ -205,7 +205,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->arus }} A</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -238,7 +238,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->frekuensi_pln }} Hz</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -271,7 +271,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->active_power }} kW</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -304,7 +304,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->power_factor }}</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -337,7 +337,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->total_energy }} kWh</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>

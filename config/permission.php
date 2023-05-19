@@ -25,25 +25,25 @@ return [
             'device_delete',
             'device_sign'
         ],
-        'province' => [
+        'provinsi' => [
             'province_show',
             'province_create',
             'province_update',
             'province_delete',
         ],
-        'city' => [
+        'kabupaten/kota' => [
             'city_show',
             'city_create',
             'city_update',
             'city_delete',
         ],
-        'district' => [
+        'kecamatan' => [
             'district_show',
             'district_create',
             'district_update',
             'district_delete',
         ],
-        'village' => [
+        'kelurahan/desa' => [
             'village_show',
             'village_create',
             'village_update',

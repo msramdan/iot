@@ -12,12 +12,8 @@ use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Http;
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
 use Illuminate\Support\Facades\Validator;
-use Tymon\JWTAuth\Payload;
 use Illuminate\Support\Facades\DB;
 
 use function GuzzleHttp\json_decode;

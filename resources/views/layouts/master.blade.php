@@ -48,7 +48,7 @@
         @include('layouts._partials.admin.header')
         <div class="app-menu navbar-menu">
             <div class="navbar-brand-box">
-                <a href="index.html" class="logo logo-dark">
+                <a href="/panel" class="logo logo-dark">
                     <span class="logo-sm">
                         @if (setting_web()->favicon != null)
                             <img src="{{ Storage::url('public/img/setting_app/') . setting_web()->favicon }}"
@@ -62,7 +62,7 @@
                         @endif
                     </span>
                 </a>
-                <a href="index.html" class="logo logo-light">
+                <a href="/panel" class="logo logo-light">
                     <span class="logo-sm">
                         @if (setting_web()->favicon != null)
                             <img src="{{ Storage::url('public/img/setting_app/') . setting_web()->favicon }}"
