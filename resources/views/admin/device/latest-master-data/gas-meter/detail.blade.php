@@ -292,7 +292,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $data)
+                                                @foreach ($dataTable as $data)
                                                     <tr>
                                                         <td>{{ $data->gas_consumption }} m3</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
@@ -323,7 +323,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->gas_total_purchase }} m3</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -355,7 +355,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $res)
+                                                @foreach ($dataTable as $res)
                                                     <tr>
                                                         <td>{{ $res->purchase_remain }} m3</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($res->created_at)) }}</td>
@@ -387,7 +387,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $res)
+                                                @foreach ($dataTable as $res)
                                                     <tr>
                                                         <td>{{ $res->balance_of_battery }} %</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($res->created_at)) }}</td>
@@ -466,6 +466,9 @@
                     borderWidth: 0,
                 }
             },
+            credits: {
+                enabled: false
+            },
 
             tooltip: {
                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
@@ -511,6 +514,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Gas Consumption',
                 data: JSON.parse(gas_consumption)
@@ -548,6 +554,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'Total Gas Purchase',
@@ -587,6 +596,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Purchase Remain',
                 data: JSON.parse(purchase_remain)
@@ -624,6 +636,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'Balance of Battery',

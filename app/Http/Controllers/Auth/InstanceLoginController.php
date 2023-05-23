@@ -26,7 +26,8 @@ class InstanceLoginController extends Controller
             $request->all(),
             [
                 'email' => 'required|email|string',
-                'password' => 'required'
+                'password' => 'required',
+                'g-recaptcha-response' => 'required|captcha'
             ]
         );
 

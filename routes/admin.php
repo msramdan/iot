@@ -35,7 +35,9 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('login', 'login')->name('admin_auth.store');
     Route::post('logout', 'logout')->name('admin_auth.logout');
 });
-Route::get('/dashboard', function () {
+
+Route::middleware(['auth:web'])->group(function () {
+    Route::get('/dashboard', function () {
     return redirect()->route('dashboard');
 });
 Route::controller(DashboardController::class)->group(function () {
@@ -121,4 +123,7 @@ Route::controller(GatewayController::class)->group(function () {
 Route::prefix('billing-data')->controller(BillingdataController::class)->group(function () {
     Route::get('/', 'index')->name('billing-data.index');
     Route::get('detail/{id}', 'detail')->name('billing-data.show');
+});
+
+
 });

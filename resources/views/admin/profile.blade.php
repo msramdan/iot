@@ -106,9 +106,15 @@
                                 @method('put')
                                 <div class="mb-3">
                                     <label for="password">{{ __('Current Password') }}</label>
-                                    <input type="password" name="current_password"
-                                        class="form-control @error('current_password') is-invalid @enderror"
-                                        id="current_password" placeholder="Current Password" required>
+                                    <div class="input-group">
+                                        <input type="password" name="current_password" id="current_password"
+                                            class="form-control @error('current_password') is-invalid @enderror"
+                                            placeholder="Current Password" required>
+                                        <button class="btn btn-outline-success" type="button"
+                                            onclick="toggleShowPasswordCurrent()"><i class="mdi mdi-eye"></i></button>
+                                    </div>
+
+
                                     @error('current_password')
                                         <span style="color: red;">{{ $message }}</span>
                                     @enderror
@@ -118,7 +124,7 @@
                                     <label for="password">{{ __('New Password') }}</label>
                                     <div class="input-group">
                                         <input type="password" name="password" id="password"
-                                            class="form-control @error('password') is-invalid @enderror" id="password"
+                                            class="form-control @error('password') is-invalid @enderror"
                                             placeholder="New Password" required>
                                         <button class="btn btn-outline-success" type="button"
                                             onclick="toggleShowPassword()"><i class="mdi mdi-eye"></i></button>
@@ -161,6 +167,17 @@
             } else {
                 $('input#password').attr('type', 'password');
                 $('input#password_confirmation').attr('type', 'password');
+            }
+        }
+    </script>
+
+    <script>
+        function toggleShowPasswordCurrent() {
+            const type = $('input#current_password').attr('type');
+            if (type === "password") {
+                $('input#current_password').attr('type', 'text');
+            } else {
+                $('input#current_password').attr('type', 'password');
             }
         }
     </script>

@@ -383,6 +383,16 @@
             formInputan(this.value)
         })
 
+        $('#myform :checkbox').change(function() {
+            // this will contain a reference to the checkbox
+            if (this.checked) {
+                // the checkbox is now checked
+            } else {
+                // the checkbox is now no longer checked
+            }
+        });
+
+
         function formInputan(value) {
             if (value == 'Y') {
                 $('#form_appEUI').show();

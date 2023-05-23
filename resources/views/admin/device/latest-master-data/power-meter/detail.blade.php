@@ -141,7 +141,7 @@
                                             <tbody>
                                                 @foreach ($dailyUsages as $data)
                                                     <tr>
-                                                        <td style="width: 50%">{{ $data->usage }} L</td>
+                                                        <td style="width: 50%">{{ $data->usage }} kW</td>
                                                         <td>{{ date('d/m/Y', strtotime($data->date)) }}</td>
                                                     </tr>
                                                 @endforeach
@@ -172,7 +172,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $data)
+                                                @foreach ($dataTable as $data)
                                                     <tr>
                                                         <td>{{ $data->tegangan }} V</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
@@ -205,7 +205,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->arus }} A</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -238,7 +238,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->frekuensi_pln }} Hz</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -271,7 +271,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->active_power }} kW</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -304,7 +304,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->power_factor }}</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -337,7 +337,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->total_energy }} kWh</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -417,6 +417,9 @@
                     borderWidth: 0,
                 }
             },
+            credits: {
+                enabled: false
+            },
 
             tooltip: {
                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
@@ -462,6 +465,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Voltage',
                 data: JSON.parse(tegangan)
@@ -499,6 +505,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'arus',
@@ -538,6 +547,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Frequency’s PLN',
                 data: JSON.parse(frekuensi_pln)
@@ -575,6 +587,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'Active Power',
@@ -614,6 +629,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Power Factor',
                 data: JSON.parse(power_factor)
@@ -651,6 +669,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'Total Energy',
