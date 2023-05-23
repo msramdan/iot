@@ -466,6 +466,9 @@
                     borderWidth: 0,
                 }
             },
+            credits: {
+                enabled: false
+            },
 
             tooltip: {
                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
@@ -511,6 +514,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Gas Consumption',
                 data: JSON.parse(gas_consumption)
@@ -548,6 +554,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'Total Gas Purchase',
@@ -587,6 +596,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Purchase Remain',
                 data: JSON.parse(purchase_remain)
@@ -624,6 +636,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'Balance of Battery',

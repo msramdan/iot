@@ -368,6 +368,9 @@
                     borderWidth: 0,
                 }
             },
+            credits: {
+                enabled: false
+            },
 
             tooltip: {
                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
@@ -413,6 +416,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Battery Status',
                 data: JSON.parse(batrai_status)
@@ -442,6 +448,9 @@
                 title: {
                     text: 'Temperature'
                 }
+            },
+            credits: {
+                enabled: false
             },
             plotOptions: {
                 line: {
@@ -488,6 +497,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'Total Flow',

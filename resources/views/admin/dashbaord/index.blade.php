@@ -503,7 +503,6 @@
                                         <figure class="highcharts-figure">
                                             <div id="container"></div>
                                         </figure>
-
                                     </div>
                                 </div>
                             </div>
@@ -962,8 +961,6 @@
     </script>
 
     <script>
-        // Data retrieved from https://netmarketshare.com/
-        // Build the chart
         Highcharts.chart('container', {
             chart: {
                 plotBackgroundColor: null,
@@ -992,6 +989,9 @@
                     },
                     showInLegend: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'Tickets',
