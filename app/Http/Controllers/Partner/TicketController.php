@@ -14,8 +14,21 @@ class TicketController extends Controller
 {
     public function index()
     {
+        $ticket = Ticket::where('author_id', auth()->id());
+
+        if (request()->get('id')) {
+            $ticket->where('tickets.id', request()->get('id'));
+        }
+
+
+        if (request()->get('status')) {
+            $ticket->where('tickets.status', request()->get('status'));
+        }
+
+        $ticket->orderBy('id', 'desc')->get();
+
         if (request()->ajax()) {
-            return DataTables::of(Ticket::whereAuthorId(auth()->id()))
+            return DataTables::of($ticket)
                 ->addIndexColumn()
                 ->addColumn('action', 'partner.ticket._action')
                 ->toJson();
@@ -24,12 +37,12 @@ class TicketController extends Controller
         return view('partner.ticket.index');
     }
 
-    public function create ()
+    public function create()
     {
         return view('partner.ticket.create');
     }
 
-    public function store ()
+    public function store()
     {
         $attr = request()->validate([
             'subject' => 'required',
@@ -62,7 +75,7 @@ class TicketController extends Controller
 
     public function edit(Ticket $ticket)
     {
-       return view('partner.ticket.edit', compact('ticket'));
+        return view('partner.ticket.edit', compact('ticket'));
     }
 
     /**
@@ -107,10 +120,10 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
-        try{
+        try {
             $ticket = Ticket::find($id);
-            if(!empty($ticket->image_1)) Storage::delete($ticket->image_1);
-            if(!empty($ticket->image_2)) Storage::delete($ticket->image_2);
+            if (!empty($ticket->image_1)) Storage::delete($ticket->image_1);
+            if (!empty($ticket->image_2)) Storage::delete($ticket->image_2);
             $ticket->delete();
             Alert::toast('Ticket successfully deleted', 'success');
         } catch (Exception $err) {

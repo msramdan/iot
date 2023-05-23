@@ -23,8 +23,7 @@
                     <div class="card">
                         <div class="card-header">
                             @can('device_create')
-                                <a href="{{ route('device.create') }}" class="btn btn-md btn-secondary"> <i
-                                        class="mdi mdi-plus"></i> Create
+                                <a href="{{ route('device.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i> Create
                                 </a>
                             @endcan
                         </div>
@@ -157,7 +156,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('device.index') }}",
+                url: "{{ route('device.index') }}?kabkot_id={{ request()->get('kabkot_id') }}&instance_app_id={{ request()->get('instance_app_id') }}&category={{ request()->get('category') }}",
                 data: function(s) {
                     s.instance = $('select[name=instance] option').filter(':selected').val()
                     s.category_device = $('select[name=category_device] option').filter(':selected').val()
