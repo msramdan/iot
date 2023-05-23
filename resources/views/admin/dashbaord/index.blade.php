@@ -592,7 +592,7 @@
 
                                                 <tbody>
                                                     @foreach ($devicesByType as $deviceByType)
-                                                        <tr>
+                                                        <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/panel/device?category={{ $deviceByType->category }}`">
                                                             <td>{{ $deviceByType->category }}</td>
                                                             <td>{{ $deviceByType->qty }}</td>
                                                         </tr>
@@ -625,7 +625,7 @@
 
                                                 <tbody>
                                                     @foreach ($devicesByInstance as $deviceByInstance)
-                                                        <tr>
+                                                        <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/panel/device?instance_app_id={{ $deviceByInstance->instance_app_id }}`">
                                                             <td>{{ $deviceByInstance->name }}</td>
                                                             <td>{{ $deviceByInstance->qty }}</td>
                                                         </tr>
@@ -658,7 +658,7 @@
 
                                                 <tbody>
                                                     @foreach ($devicesByLocation as $deviceByLocation)
-                                                        <tr>
+                                                        <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/panel/device?kabkot_id={{ $deviceByLocation->tbl_kabkot_id }}`">
                                                             <td>{{ $deviceByLocation->name }}</td>
                                                             <td>{{ $deviceByLocation->qty }}</td>
                                                         </tr>

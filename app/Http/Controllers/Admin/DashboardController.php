@@ -41,11 +41,11 @@ class DashboardController extends Controller
         $ticketsByStatus = Ticket::select('status as name', DB::raw('COUNT(*) as y'))->groupBy('status')->get();
         $jsonPercentageTicketByStatus = json_encode($ticketsByStatus);
         $devicesByType = Device::select('category', DB::raw('COUNT(*) as qty'))->groupBy('category')->get();
-        $devicesByInstance = Device::select('instances.instance_name as name', DB::raw('COUNT(*) as qty'))
+        $devicesByInstance = Device::select('instances.instance_name as name', DB::raw('COUNT(*) as qty'), 'instances.appID as instance_app_id')
             ->leftJoin('instances', 'instances.appID', '=', 'devices.appID')
             ->groupBy('devices.appID')
             ->get();
-        $devicesByLocation = Device::select('tbl_kabkot.kabupaten_kota as name', DB::raw('COUNT(*) as qty'))
+        $devicesByLocation = Device::select('tbl_kabkot.kabupaten_kota as name', DB::raw('COUNT(*) as qty'), 'tbl_kabkot.id as tbl_kabkot_id')
             ->leftJoin('instances', 'instances.appID', '=', 'devices.appID')
             ->leftJoin('tbl_kabkot', 'tbl_kabkot.id', '=', 'instances.city_id')
             ->groupBy('tbl_kabkot.id')

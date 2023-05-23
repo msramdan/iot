@@ -148,7 +148,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('instances.device.index') }}",
+                url: "{{ route('instances.device.index') }}?category={{ request()->get('category') }}&kabkot_id={{ request()->get('kabkot_id') }}&subInstanceId={{ request()->get('subInstanceId') }}",
                 data: function(s) {
                     s.subinstance_id = $('select[name=subinstance_id] option').filter(':selected').val()
                     s.category_device = $('select[name=category_device] option').filter(':selected').val()

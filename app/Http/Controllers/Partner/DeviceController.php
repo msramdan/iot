@@ -26,7 +26,7 @@ class DeviceController extends Controller
                 ->join('clusters', 'devices.cluster_id', '=', 'clusters.id')
                 ->join('subinstances', 'clusters.subinstance_id', '=', 'subinstances.id')
                 ->select('devices.*', 'clusters.name', 'subinstances.name_subinstance')
-                ->where('appID', $instance->appID);
+                ->where('devices.appID', $instance->appID);
 
             if ($request->has('category_device') && !empty($request->category_device)) {
                 $device = $device->where('category', $request->category_device);
@@ -40,6 +40,19 @@ class DeviceController extends Controller
 
             if ($request->has('query_cluster_id') && !empty($request->query_cluster_id)) {
                 $device = $device->where('cluster_id', $request->query_cluster_id);
+            }
+
+            if (!($request->category_device || $request->subinstance_id || $request->cluster_id || $request->query_cluster_id)) {
+                $device->when($request->category, function ($q) use ($request) {
+                    return $q->where('devices.category', $request->category);
+                });
+                $device->when($request->kabkot_id, function ($q) use ($request) {
+                    return $q->leftJoin('instances', 'instances.appID', '=', 'devices.appID')
+                        ->where('instances.city_id', $request->kabkot_id);
+                });
+                $device->when($request->subInstanceId, function ($q) use ($request) {
+                    return $q->where('clusters.subinstance_id', $request->subInstanceId);
+                });
             }
 
             $device = $device->orderBy('devices.id', 'desc')->get();
