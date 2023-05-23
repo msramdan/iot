@@ -281,11 +281,8 @@ class MasterLatestDataController extends Controller
         $lastData = MasterLatestDataPowerMeter::where('device_id', $id)->first();
         $date = $request->query('date');
 
-        $parsed_data = ParsedPowerMater::with(['device' => function ($q) use ($instance) {
-            $q->with(['cluster' => function ($s) use ($instance) {
-                $s->where('instance_id', $instance->id);
-            }]);
-        }])->where('device_id', $id);
+        $parsed_data = ParsedPowerMater::where('device_id', $id);
+        $dataTable = ParsedPowerMater::where('device_id', $id);
 
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
@@ -301,10 +298,18 @@ class MasterLatestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'asc')
-            ->whereNull('status_switch')->get();
+        $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates])
+            ->orderBy('id', 'asc')
+            ->whereNull('status_switch')
+            ->get();
+        $dataTable = $dataTable->whereBetween('created_at', [$start_dates, $end_dates])
+            ->orderBy('id', 'desc')
+            ->whereNull('status_switch')
+            ->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
+            ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'desc')->get();
+        $dailyUsages2 = DailyUsageDevice::where('device_id', $id)
             ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
         $parsed_dates = [];
@@ -329,7 +334,7 @@ class MasterLatestDataController extends Controller
             array_push($total_energy_datas, floatval($data->total_energy));
         }
 
-        foreach ($dailyUsages as $daily) {
+        foreach ($dailyUsages2 as $daily) {
             array_push($daily_usage_dates, strtotime($daily->date));
             array_push($daily_usage_datas, $daily->usage);
         }
@@ -337,6 +342,7 @@ class MasterLatestDataController extends Controller
 
         return view('partner.device.latest-master-data.power-meter.detail', compact(
             'parsed_data',
+            'dataTable',
             'device_id',
             'start_dates',
             'end_dates',
