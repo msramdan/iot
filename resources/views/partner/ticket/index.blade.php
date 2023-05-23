@@ -1,35 +1,34 @@
 @extends('layouts.master_partner')
 @section('title', 'Data Ticket')
 @section('content')
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Ticket</h4>
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Ticket</h4>
 
-                    <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('instances.dashboard') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Ticket</li>
-                        </ol>
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="{{ route('instances.dashboard') }}">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Ticket</li>
+                            </ol>
+                        </div>
+
                     </div>
-
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        {{-- @can('ticket_create') --}}
-                        <a href="{{ route('instances.tickets.create') }}" class="btn btn-md btn-secondary"> <i
-                                class="mdi mdi-plus"></i> Create
-                        </a>
-                        {{-- @endcan --}}
-                    </div>
-                    <div class="card-body">
-                        {{-- <div class="row">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            {{-- @can('ticket_create') --}}
+                            <a href="{{ route('instances.tickets.create') }}" class="btn btn-md btn-secondary"> <i class="mdi mdi-plus"></i> Create
+                            </a>
+                            {{-- @endcan --}}
+                        </div>
+                        <div class="card-body">
+                            {{-- <div class="row">
                             <div class="col-md-3">
                                 <form method="get">
                                     @csrf
@@ -70,35 +69,35 @@
                                 </form>
                             </div>
                         </div> --}}
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-sm" id="dataTable">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Judul</th>
-                                        <th>Description</th>
-                                        <th>Status</th>
-                                        <th>Created At</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm" id="dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Judul</th>
+                                            <th>Description</th>
+                                            <th>Status</th>
+                                            <th>Created At</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-</div>
+    </div>
 @endsection
 @push('js')
-<script>
-    let base_url = "{{ url('/') }}";
+    <script>
+        let base_url = "{{ url('/') }}";
 
         const action =
-            '{{ auth()->user()->can('ticket_update') || auth()->user()->can('ticket_delete')? 'yes yes yes': '' }}'
+            '{{ auth()->user()->can('ticket_update') ||auth()->user()->can('ticket_delete')? 'yes yes yes': '' }}'
         let columns = [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
@@ -113,7 +112,7 @@
             },
             {
                 data: 'status',
-                render: function(data, type, row, meta){
+                render: function(data, type, row, meta) {
                     let color;
                     switch (data) {
                         case 'open':
@@ -123,7 +122,7 @@
                         case 'cancelled':
                             color = 'danger'
                             break;
-                    
+
                         default:
                             color = 'warning'
                             break;
@@ -134,7 +133,7 @@
             },
             {
                 data: 'created_at',
-                render: function(data, type, row, meta){
+                render: function(data, type, row, meta) {
                     return moment(data).format('DD MMM YYYY')
                 }
             },
@@ -150,8 +149,8 @@
         $('#dataTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('instances.tickets.index') }}",
+            ajax: "{{ route('instances.tickets.index') }}?id={{ request()->get('id') }}&status={{ request()->get('status') }}",
             columns: columns
         });
-</script>
+    </script>
 @endpush

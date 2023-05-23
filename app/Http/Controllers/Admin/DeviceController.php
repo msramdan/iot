@@ -48,7 +48,22 @@ class DeviceController extends Controller
                 $device = $device->where('hit_nms', $request->hit_nms);
             }
 
-            $device = $device->orderBy('id', 'desc')->get();
+
+            if (!($request->category_device || $request->instance || $request->hit_nms)) {
+                $device->when($request->kabkot_id, function ($q) use ($request) {
+                    return $q->leftJoin('instances', 'instances.appID', '=', 'devices.appID')
+                        ->where('instances.city_id', $request->kabkot_id);
+                });
+                $device->when($request->instance_app_id, function ($q) use ($request) {
+                    return $q->where('appID', $request->instance_app_id);
+                });
+                $device->when($request->category, function ($q) use ($request) {
+                    return $q->where('devices.category', $request->category);
+                });
+            }
+
+
+            $device = $device->orderBy('devices.id', 'desc')->get();
 
             return DataTables::of($device)
                 ->addIndexColumn()
