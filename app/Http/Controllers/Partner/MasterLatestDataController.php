@@ -113,6 +113,7 @@ class MasterLatestDataController extends Controller
                 $s->where('clusters.instance_id', $instance->id);
             }]);
         }])->where('parsed_water_meter.device_id', $id);
+        $dataTable = ParsedWaterMater::where('device_id', $id);
 
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
@@ -127,12 +128,15 @@ class MasterLatestDataController extends Controller
         }
 
         $device_id = $id;
+        $dataTable = $dataTable->whereBetween('created_at', [$start_dates, $end_dates])
+            ->orderBy('parsed_water_meter.id', 'desc')
+            ->whereNull('status_valve')->get();
+        $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates])
+            ->orderBy('parsed_water_meter.id', 'asc')
+            ->whereNull('status_valve')->get();
 
-        $parsed_data = $parsed_data->whereNull('status_valve')
-            ->orderBy('id', 'desc')
-            ->get();
-
-        $dailyUsages = DailyUsageDevice::where('device_id', $id)->whereBetween('created_at', [$start_dates, $end_dates])->get();
+        $dailyUsages = DailyUsageDevice::where('device_id', $id)->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'desc')->get();
+        $dailyUsages2 = DailyUsageDevice::where('device_id', $id)->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
         $parsed_dates = [];
         $baterai_datas = [];
@@ -153,13 +157,14 @@ class MasterLatestDataController extends Controller
             array_push($total_flow_datas, $total_flow);
         }
 
-        foreach ($dailyUsages as $daily) {
+        foreach ($dailyUsages2 as $daily) {
             array_push($daily_usage_dates, strtotime($daily->date));
             array_push($daily_usage_datas, $daily->usage);
         }
 
         return view('partner.device.latest-master-data.water-meter.detail', compact(
             'parsed_data',
+            'dataTable',
             'device_id',
             'start_dates',
             'end_dates',
@@ -450,12 +455,8 @@ class MasterLatestDataController extends Controller
         $date = $request->query('date');
         $instance = Auth::guard('instances')->user();
         $lastData = MasterLatestDataGasMeter::where('device_id', $id)->first();
-
-        $parsed_data = ParsedGasMater::with(['device' => function ($q) use ($instance) {
-            $q->with(['cluster' => function ($s) use ($instance) {
-                $s->where('instance_id', $instance->id);
-            }]);
-        }])->where('device_id', $id);
+        $parsed_data = ParsedGasMater::where('device_id', $id);
+        $dataTable = ParsedGasMater::where('device_id', $id);
 
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
@@ -473,9 +474,18 @@ class MasterLatestDataController extends Controller
 
         $device_id = $id;
 
-        $parsed_data = $parsed_data->orderBy('id', 'asc')->get();
+        $parsed_data = $parsed_data->whereBetween('created_at', [$start_dates, $end_dates])
+            ->orderBy('id', 'asc')
+            ->whereNotNull('gas_consumption')
+            ->get();
+        $dataTable = $dataTable->whereBetween('created_at', [$start_dates, $end_dates])
+            ->orderBy('id', 'desc')
+            ->whereNotNull('gas_consumption')
+            ->get();
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
+            ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'desc')->get();
+        $dailyUsages2 = DailyUsageDevice::where('device_id', $id)
             ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
         $parsed_dates = [];
@@ -496,7 +506,7 @@ class MasterLatestDataController extends Controller
             array_push($balance_of_bateray_datas, floatval($data->balance_of_battery));
         }
 
-        foreach ($dailyUsages as $daily) {
+        foreach ($dailyUsages2 as $daily) {
             array_push($daily_usage_dates, strtotime($daily->date));
             array_push($daily_usage_datas, $daily->usage);
         }
@@ -504,6 +514,7 @@ class MasterLatestDataController extends Controller
 
         return view('partner.device.latest-master-data.gas-meter.detail', compact(
             'parsed_data',
+            'dataTable',
             'device_id',
             'start_dates',
             'end_dates',

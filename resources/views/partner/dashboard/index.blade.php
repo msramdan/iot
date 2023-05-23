@@ -795,6 +795,9 @@
                     showInLegend: true
                 }
             },
+             credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Tickets',
                 colorByPoint: true,

@@ -171,7 +171,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $data)
+                                                @foreach ($dataTable as $data)
                                                     <tr>
                                                         <td>{{ $data->batrai_status }} %</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
@@ -203,7 +203,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->temperatur }} C</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -235,7 +235,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($parsed_data as $item)
+                                                @foreach ($dataTable as $item)
                                                     <tr>
                                                         <td>{{ $item->total_flow }} L</td>
                                                         <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
@@ -314,6 +314,9 @@
                     borderWidth: 0,
                 }
             },
+            credits: {
+                enabled: false
+            },
 
             tooltip: {
                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
@@ -359,6 +362,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Batrai status',
                 data: JSON.parse(batrai_status)
@@ -397,6 +403,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Temperature',
                 data: JSON.parse(temperature)
@@ -434,6 +443,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'Total Flow',

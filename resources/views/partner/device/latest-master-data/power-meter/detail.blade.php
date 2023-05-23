@@ -411,6 +411,9 @@
                     borderWidth: 0,
                 }
             },
+            credits: {
+                enabled: false
+            },
 
             tooltip: {
                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
@@ -456,6 +459,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'tegangan',
                 data: JSON.parse(tegangan)
@@ -493,6 +499,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'arus',
@@ -532,6 +541,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Frekuensi PLN',
                 data: JSON.parse(frekuensi_pln)
@@ -569,6 +581,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'Active Power',
@@ -608,6 +623,9 @@
                     enableMouseTracking: true
                 }
             },
+            credits: {
+                enabled: false
+            },
             series: [{
                 name: 'Power Factor',
                 data: JSON.parse(power_factor)
@@ -645,6 +663,9 @@
                     },
                     enableMouseTracking: true
                 }
+            },
+            credits: {
+                enabled: false
             },
             series: [{
                 name: 'Total Energy',
