@@ -31,8 +31,8 @@ class HomeController extends Controller
         $subinstances = Subinstance::whereInstanceId(auth()->id())->get();
         $total_subinstance = Subinstance::whereInstanceId(auth()->id())->count();
         $clusters = Cluster::whereInstanceId(auth()->id())->get();
-        $devices = Device::whereIn('cluster_id', $clusters->pluck('id'))->get();
-        $total_device = Device::whereIn('cluster_id', $clusters->pluck('id'))->count();
+        $devices = Device::with(['subnet', 'cluster'])->where('appID', $instance->appID)->orderBy('id', 'desc')->get();
+        $total_device = Device::where('appID', $instance->appID)->count();
         $total_cluster = $clusters->count();
         $tickets = Ticket::whereAuthorId(auth()->id())->orderBy('created_at', 'DESC')->get();
         $ticketsByStatus = Ticket::select('status as name', DB::raw('COUNT(*) as y'))->whereAuthorId(auth()->id())->groupBy('status')->get();

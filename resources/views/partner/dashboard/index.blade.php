@@ -224,13 +224,16 @@
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalListSubInstances">
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_subinstance }}"></span></h4>
+                                                <a href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#modalListSubInstances">
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            class="counter-value"
+                                                            data-target="{{ $total_subinstance }}"></span></h4>
                                                 </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-info rounded fs-3">
-                                                    <i class="bx bx-shopping-bag"></i>
+                                                    <i class="mdi mdi-format-float-left"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -251,12 +254,14 @@
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalListCluster">
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_cluster }}"></span></h4>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            class="counter-value" data-target="{{ $total_cluster }}"></span>
+                                                    </h4>
                                                 </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-danger rounded fs-3">
-                                                    <i class="bx bx-wallet"></i>
+                                                    <i class="mdi mdi-format-list-bulleted"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -277,12 +282,14 @@
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalListDevice">
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_device }}"></span></h4>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
+                                                            class="counter-value" data-target="{{ $total_device }}"></span>
+                                                    </h4>
                                                 </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-warning rounded fs-3">
-                                                    <i class="bx bx-user-circle"></i>
+                                                    <i class="mdi mdi-devices"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -339,7 +346,8 @@
                 <div class="col-xl-5 col-md-5">
                     <div class="card" style="height: 450px">
                         <div class="card-header align-items-center d-flex">
-                            <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-book text-success fs-3"></i>Tickets List</h4>
+                            <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-book text-success fs-3"></i>Tickets
+                                List</h4>
                         </div>
 
                         <div class="card-body">
@@ -356,7 +364,8 @@
 
                                     <tbody>
                                         @foreach ($tickets as $indexTicket => $ticket)
-                                            <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/tickets?id={{ $ticket->id }}`">
+                                            <tr style="cursor: pointer"
+                                                onclick="window.location.href = `{{ url('/') }}/tickets?id={{ $ticket->id }}`">
                                                 <td>{{ $indexTicket + 1 }}</td>
                                                 <td>{{ $ticket->subject }}</td>
                                                 <td>{{ $ticket->created_at }}</td>
@@ -428,7 +437,8 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($ticketsByStatus as $ticketByStatus)
-                                            <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/tickets?status={{ $ticketByStatus->name }}`">
+                                            <tr style="cursor: pointer"
+                                                onclick="window.location.href = `{{ url('/') }}/tickets?status={{ $ticketByStatus->name }}`">
                                                 <td>
                                                     @if ($ticketByStatus->name == 'open')
                                                         <span class="badge badge-soft-success p-2">
@@ -492,7 +502,8 @@
 
                                     <tbody>
                                         @foreach ($devicesByType as $deviceByType)
-                                            <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/device?category={{ $deviceByType->category }}`">
+                                            <tr style="cursor: pointer"
+                                                onclick="window.location.href = `{{ url('/') }}/device?category={{ $deviceByType->category }}`">
                                                 <td>{{ $deviceByType->category }}</td>
                                                 <td>{{ $deviceByType->qty }}</td>
                                             </tr>
@@ -523,7 +534,8 @@
 
                                     <tbody>
                                         @foreach ($devicesBySubInstance as $deviceBySubInstance)
-                                            <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/device?subInstanceId={{ $deviceBySubInstance->subinstance_id }}`">
+                                            <tr style="cursor: pointer"
+                                                onclick="window.location.href = `{{ url('/') }}/device?subInstanceId={{ $deviceBySubInstance->subinstance_id }}`">
                                                 <td>{{ $deviceBySubInstance->name }}</td>
                                                 <td>{{ $deviceBySubInstance->qty }}</td>
                                             </tr>
@@ -537,7 +549,8 @@
                 <div class="col-xl-4 col-md-4">
                     <div class="card" style="height: 450px">
                         <div class="card-header align-items-center d-flex">
-                            <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-map-marker text-success fs-3"></i> Device
+                            <h4 class="card-title mb-0 flex-grow-1"><i class="mdi mdi-map-marker text-success fs-3"></i>
+                                Device
                                 By
                                 Location</h4>
                         </div>
@@ -554,7 +567,8 @@
 
                                     <tbody>
                                         @foreach ($devicesByLocation as $deviceByLocation)
-                                            <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/device?kabkot_id={{ $deviceByLocation->tbl_kabkot_id }}`">
+                                            <tr style="cursor: pointer"
+                                                onclick="window.location.href = `{{ url('/') }}/device?kabkot_id={{ $deviceByLocation->tbl_kabkot_id }}`">
                                                 <td>{{ $deviceByLocation->name }}</td>
                                                 <td>{{ $deviceByLocation->qty }}</td>
                                             </tr>
@@ -572,7 +586,8 @@
     </div>
 
     <!-- Modal List Sub Instances -->
-    <div class="modal fade" id="modalListSubInstances" tabindex="-1" aria-labelledby="modalListSubInstancesLabel" aria-hidden="true">
+    <div class="modal fade" id="modalListSubInstances" tabindex="-1" aria-labelledby="modalListSubInstancesLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -612,7 +627,8 @@
     <!-- End of Modal List Sub Instances -->
 
     <!-- Modal List Cluster -->
-    <div class="modal fade" id="modalListCluster" tabindex="-1" aria-labelledby="modalListClusterLabel" aria-hidden="true">
+    <div class="modal fade" id="modalListCluster" tabindex="-1" aria-labelledby="modalListClusterLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -654,7 +670,8 @@
     <!-- End of Modal List Cluster -->
 
     <!-- Modal List Device -->
-    <div class="modal fade" id="modalListDevice" tabindex="-1" aria-labelledby="modalListDeviceLabel" aria-hidden="true">
+    <div class="modal fade" id="modalListDevice" tabindex="-1" aria-labelledby="modalListDeviceLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -667,17 +684,23 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th style="white-space: nowrap">Cluster</th>
-                                    <th style="white-space: nowrap">Category</th>
-                                    <th style="white-space: nowrap">Device Name</th>
+                                    <th>App ID</th>
+                                    <th>Instance</th>
+                                    <th>Category</th>
+                                    <th>Hit Nms</th>
+                                    <th>Dev EUI</th>
+                                    <th>Dev Name</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($devices as $indexDevice => $device)
+                                @foreach ($devices as $index => $device)
                                     <tr>
-                                        <td>{{ $indexDevice + 1 }}</td>
-                                        <td>{{ $device->cluster->name }}</td>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $device->appID }}</td>
+                                        <td>{{ $device->instance->instance_name }}</td>
                                         <td>{{ $device->category }}</td>
+                                        <td>{{ $device->hit_nms }}</td>
+                                        <td>{{ $device->devEUI }}</td>
                                         <td>{{ $device->devName }}</td>
                                     </tr>
                                 @endforeach
@@ -795,7 +818,7 @@
                     showInLegend: true
                 }
             },
-             credits: {
+            credits: {
                 enabled: false
             },
             series: [{
