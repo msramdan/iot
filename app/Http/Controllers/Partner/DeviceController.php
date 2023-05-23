@@ -23,8 +23,8 @@ class DeviceController extends Controller
 
         if (request()->ajax()) {
             $device = DB::table('devices')
-                ->join('clusters', 'devices.cluster_id', '=', 'clusters.id')
-                ->join('subinstances', 'clusters.subinstance_id', '=', 'subinstances.id')
+                ->leftjoin('clusters', 'devices.cluster_id', '=', 'clusters.id')
+                ->leftjoin('subinstances', 'clusters.subinstance_id', '=', 'subinstances.id')
                 ->select('devices.*', 'clusters.name', 'subinstances.name_subinstance')
                 ->where('devices.appID', $instance->appID);
 
