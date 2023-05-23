@@ -33,6 +33,15 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="mb-2">
+                        {!! NoCaptcha::display() !!}
+                        {!! NoCaptcha::renderJs() !!}
+                        @error('g-recaptcha-response')
+                            <span class="text-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
 
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="auth-remember-check"
