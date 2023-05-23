@@ -302,6 +302,8 @@ class MasterLastestDataController extends Controller
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
             ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'desc')->get();
+        $dailyUsages2 = DailyUsageDevice::where('device_id', $id)
+            ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
         $parsed_dates = [];
         $tegangan_datas = [];
@@ -325,7 +327,7 @@ class MasterLastestDataController extends Controller
             array_push($total_energy_datas, floatval($data->total_energy));
         }
 
-        foreach ($dailyUsages as $daily) {
+        foreach ($dailyUsages2 as $daily) {
             array_push($daily_usage_dates, strtotime($daily->date));
             array_push($daily_usage_datas, $daily->usage);
         }
@@ -486,6 +488,8 @@ class MasterLastestDataController extends Controller
 
         $dailyUsages = DailyUsageDevice::where('device_id', $id)
             ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'desc')->get();
+        $dailyUsages2 = DailyUsageDevice::where('device_id', $id)
+            ->where('device_type', 'gas_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
         $parsed_dates = [];
         $gas_consumtion_datas = [];
@@ -497,7 +501,6 @@ class MasterLastestDataController extends Controller
 
         foreach ($parsed_data as $data) {
             $dates = strtotime($data->created_at);
-
             array_push($parsed_dates, $dates);
             array_push($gas_consumtion_datas, floatval($data->gas_consumption));
             array_push($gas_total_purchase_datas, floatval($data->gas_total_purchase));
@@ -505,7 +508,7 @@ class MasterLastestDataController extends Controller
             array_push($balance_of_bateray_datas, floatval($data->balance_of_battery));
         }
 
-        foreach ($dailyUsages as $daily) {
+        foreach ($dailyUsages2 as $daily) {
             array_push($daily_usage_dates, strtotime($daily->date));
             array_push($daily_usage_datas, $daily->usage);
         }
