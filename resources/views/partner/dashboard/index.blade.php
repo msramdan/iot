@@ -224,11 +224,8 @@
                                         </div>
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
-                                                <a href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#modalListSubInstances">
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                                            class="counter-value"
-                                                            data-target="{{ $total_subinstance }}"></span></h4>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalListSubInstances">
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_subinstance }}"></span></h4>
                                                 </a>
                                             </div>
                                             <div class="avatar-sm flex-shrink-0">
@@ -254,8 +251,7 @@
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalListCluster">
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                                            class="counter-value" data-target="{{ $total_cluster }}"></span>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_cluster }}"></span>
                                                     </h4>
                                                 </a>
                                             </div>
@@ -282,8 +278,7 @@
                                         <div class="d-flex align-items-end justify-content-between mt-4">
                                             <div>
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalListDevice">
-                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span
-                                                            class="counter-value" data-target="{{ $total_device }}"></span>
+                                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total_device }}"></span>
                                                     </h4>
                                                 </a>
                                             </div>
@@ -331,6 +326,87 @@
                 </div> <!-- end col -->
             </div>
 
+            {{-- grafik knob --}}
+            <div class="row">
+                <div class="col-xl-3 col-md-3">
+                    <div class="card" style="height: 350px">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">
+                                Water Meter Status
+                            </h4>
+                        </div>
+
+                        <div class="card-body">
+                            <div class=" h-100 d-flex flex-column align-items-center justify-content-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <input type="text" readonly value="{{ $deviceStatusWaterMeter->amount_total > 0 ? number_format(($deviceStatusWaterMeter->amount_not_err / $deviceStatusWaterMeter->amount_total) * 100, 2, '.', '.') : 0 }}" id="water-meter-status" data-fgColor="{{ $deviceStatusWaterMeter->device_is_health ? '#45CB85' : '#F06548' }}" data-width="150" data-height="150" />
+                                </div>
+                                <div class="mt-3 d-flex align-items-end">
+                                    <i class="mdi mdi-{{ $deviceStatusWaterMeter->device_is_health ? 'checkbox-marked-circle' : 'alert' }}" style="font-size: 1.5rem; transform: translateY(-.2rem); margin-right: .2rem; color: {{ $deviceStatusWaterMeter->device_is_health ? '#45CB85' : '#F06548' }}"></i>
+                                    <h3 style="font-weight: bold" class="text-{{ $deviceStatusWaterMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusWaterMeter->device_is_health ? 'Success' : 'Warning' }}</h3>
+                                </div>
+                                <span style="font-size: 1.075rem" class="text-{{ $deviceStatusWaterMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusWaterMeter->amount_not_err }}/{{ $deviceStatusWaterMeter->amount_total }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-3">
+                    <div class="card" style="height: 350px">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">
+                                Power Meter Status
+                            </h4>
+                        </div>
+
+                        <div class="card-body">
+                            <div class=" h-100 d-flex flex-column align-items-center justify-content-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <input type="text" readonly value="{{ $deviceStatusPowerMeter->amount_total > 0 ? number_format(($deviceStatusPowerMeter->amount_not_err / $deviceStatusPowerMeter->amount_total) * 100, 2, '.', '.') : 0 }}" id="power-meter-status" data-fgColor="{{ $deviceStatusPowerMeter->device_is_health ? '#45CB85' : '#F06548' }}" data-width="150" data-height="150" />
+                                </div>
+                                <div class="mt-3 d-flex align-items-end">
+                                    <i class="mdi mdi-{{ $deviceStatusPowerMeter->device_is_health ? 'checkbox-marked-circle' : 'alert' }}" style="font-size: 1.5rem; transform: translateY(-.2rem); margin-right: .2rem; color: {{ $deviceStatusPowerMeter->device_is_health ? '#45CB85' : '#F06548' }}"></i>
+                                    <h3 style="font-weight: bold" class="text-{{ $deviceStatusPowerMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusPowerMeter->device_is_health ? 'Success' : 'Warning' }}</h3>
+                                </div>
+                                <span style="font-size: 1.075rem" class="text-{{ $deviceStatusPowerMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusPowerMeter->amount_not_err }}/{{ $deviceStatusPowerMeter->amount_total }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-3">
+                    <div class="card" style="height: 350px">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">
+                                Gas Meter Status</h4>
+                        </div>
+
+                        <div class="card-body">
+                            <div class=" h-100 d-flex flex-column align-items-center justify-content-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <input type="text" readonly value="{{ $deviceStatusGasMeter->amount_total > 0 ? number_format(($deviceStatusGasMeter->amount_not_err / $deviceStatusGasMeter->amount_total) * 100, 2, '.', '.') : 0 }}" id="gas-meter-status" data-fgColor="{{ $deviceStatusGasMeter->device_is_health ? '#45CB85' : '#F06548' }}" data-width="150" data-height="150" />
+                                </div>
+                                <div class="mt-3 d-flex align-items-end">
+                                    <i class="mdi mdi-{{ $deviceStatusGasMeter->device_is_health ? 'checkbox-marked-circle' : 'alert' }}" style="font-size: 1.5rem; transform: translateY(-.2rem); margin-right: .2rem; color: {{ $deviceStatusGasMeter->device_is_health ? '#45CB85' : '#F06548' }}"></i>
+                                    <h3 style="font-weight: bold" class="text-{{ $deviceStatusGasMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusGasMeter->device_is_health ? 'Success' : 'Warning' }}</h3>
+                                </div>
+                                <span style="font-size: 1.075rem" class="text-{{ $deviceStatusGasMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusGasMeter->amount_not_err }}/{{ $deviceStatusGasMeter->amount_total }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-3">
+                    <div class="card" style="height: 350px">
+                        <div class="card-header align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1"> Overall System</h4>
+                        </div>
+
+                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                            <i class="mdi mdi-{{ $isDeviceStatusError ? 'alert' : 'checkbox-marked-circle' }}" style="font-size: 9rem; color: {{ $isDeviceStatusError ? '#F06548' : '#45CB85' }}"></i>
+                            <h2 style="font-weight: bold; margin-top: -2.5rem" class="text-{{ $isDeviceStatusError ? 'danger' : 'success' }}">{{ $isDeviceStatusError ? 'Warning' : 'Success' }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {{-- map --}}
             <div class="row">
                 <div class="col-12">
@@ -364,8 +440,7 @@
 
                                     <tbody>
                                         @foreach ($tickets as $indexTicket => $ticket)
-                                            <tr style="cursor: pointer"
-                                                onclick="window.location.href = `{{ url('/') }}/tickets?id={{ $ticket->id }}`">
+                                            <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/tickets?id={{ $ticket->id }}`">
                                                 <td>{{ $indexTicket + 1 }}</td>
                                                 <td>{{ $ticket->subject }}</td>
                                                 <td>{{ $ticket->created_at }}</td>
@@ -437,8 +512,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($ticketsByStatus as $ticketByStatus)
-                                            <tr style="cursor: pointer"
-                                                onclick="window.location.href = `{{ url('/') }}/tickets?status={{ $ticketByStatus->name }}`">
+                                            <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/tickets?status={{ $ticketByStatus->name }}`">
                                                 <td>
                                                     @if ($ticketByStatus->name == 'open')
                                                         <span class="badge badge-soft-success p-2">
@@ -502,8 +576,7 @@
 
                                     <tbody>
                                         @foreach ($devicesByType as $deviceByType)
-                                            <tr style="cursor: pointer"
-                                                onclick="window.location.href = `{{ url('/') }}/device?category={{ $deviceByType->category }}`">
+                                            <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/device?category={{ $deviceByType->category }}`">
                                                 <td>{{ $deviceByType->category }}</td>
                                                 <td>{{ $deviceByType->qty }}</td>
                                             </tr>
@@ -534,8 +607,7 @@
 
                                     <tbody>
                                         @foreach ($devicesBySubInstance as $deviceBySubInstance)
-                                            <tr style="cursor: pointer"
-                                                onclick="window.location.href = `{{ url('/') }}/device?subInstanceId={{ $deviceBySubInstance->subinstance_id }}`">
+                                            <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/device?subInstanceId={{ $deviceBySubInstance->subinstance_id }}`">
                                                 <td>{{ $deviceBySubInstance->name }}</td>
                                                 <td>{{ $deviceBySubInstance->qty }}</td>
                                             </tr>
@@ -567,8 +639,7 @@
 
                                     <tbody>
                                         @foreach ($devicesByLocation as $deviceByLocation)
-                                            <tr style="cursor: pointer"
-                                                onclick="window.location.href = `{{ url('/') }}/device?kabkot_id={{ $deviceByLocation->tbl_kabkot_id }}`">
+                                            <tr style="cursor: pointer" onclick="window.location.href = `{{ url('/') }}/device?kabkot_id={{ $deviceByLocation->tbl_kabkot_id }}`">
                                                 <td>{{ $deviceByLocation->name }}</td>
                                                 <td>{{ $deviceByLocation->qty }}</td>
                                             </tr>
@@ -586,8 +657,7 @@
     </div>
 
     <!-- Modal List Sub Instances -->
-    <div class="modal fade" id="modalListSubInstances" tabindex="-1" aria-labelledby="modalListSubInstancesLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalListSubInstances" tabindex="-1" aria-labelledby="modalListSubInstancesLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -627,8 +697,7 @@
     <!-- End of Modal List Sub Instances -->
 
     <!-- Modal List Cluster -->
-    <div class="modal fade" id="modalListCluster" tabindex="-1" aria-labelledby="modalListClusterLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalListCluster" tabindex="-1" aria-labelledby="modalListClusterLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -670,8 +739,7 @@
     <!-- End of Modal List Cluster -->
 
     <!-- Modal List Device -->
-    <div class="modal fade" id="modalListDevice" tabindex="-1" aria-labelledby="modalListDeviceLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modalListDevice" tabindex="-1" aria-labelledby="modalListDeviceLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -718,6 +786,7 @@
 @endsection
 
 @push('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Knob/1.2.13/jquery.knob.min.js" integrity="sha512-NhRZzPdzMOMf005Xmd4JonwPftz4Pe99mRVcFeRDcdCtfjv46zPIi/7ZKScbpHD/V0HB1Eb+ZWigMqw94VUVaw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function() {
             var i = 1;
@@ -850,5 +919,12 @@
             const modalLastTenInstanceDetail = new bootstrap.Modal(document.getElementById('lastTenInstanceModalInstance'));
             modalLastTenInstanceDetail.toggle('show');
         }
+    </script>
+    <script>
+        $(function() {
+            $("#water-meter-status").knob();
+            $("#power-meter-status").knob();
+            $("#gas-meter-status").knob();
+        });
     </script>
 @endpush

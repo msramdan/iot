@@ -35,9 +35,9 @@
                                         <div class="input-group mb-4">
                                             <select name="category_device" id="category_device" class="form-control">
                                                 <option value="">-- Filter By Category Device --</option>
-                                                <option value="Water Meter">Water Meter</option>
-                                                <option value="Power Meter">Power Meter</option>
-                                                <option value="Gas Meter">Gas Meter</option>
+                                                <option value="Water Meter" {{ request()->get('category') == 'Water Meter' ? 'selected' : '' }}>Water Meter</option>
+                                                <option value="Power Meter" {{ request()->get('category') == 'Power Meter' ? 'selected' : '' }}>Power Meter</option>
+                                                <option value="Gas Meter" {{ request()->get('category') == 'Gas Meter' ? 'selected' : '' }}>Gas Meter</option>
                                             </select>
                                         </div>
                                     </form>
@@ -61,7 +61,7 @@
                                             <select name="instance" id="instance" class="form-control">
                                                 <option value="">-- Filter By Instance --</option>
                                                 @foreach ($instances as $instance)
-                                                    <option value="{{ $instance->appID }}">{{ $instance->instance_name }}
+                                                    <option value="{{ $instance->appID }}" {{ request()->get('instance_app_id') == $instance->appID ? 'selected' : '' }}>{{ $instance->instance_name }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -167,14 +167,17 @@
         });
 
         $('#instance').change(function() {
+            window.history.pushState("object or string", "Title", "/panel/device");
             table.draw();
         })
 
         $('#category_device').change(function() {
+            window.history.pushState("object or string", "Title", "/panel/device");
             table.draw();
         })
 
         $('#hit_nms').change(function() {
+            window.history.pushState("object or string", "Title", "/panel/device");
             table.draw();
         })
     </script>

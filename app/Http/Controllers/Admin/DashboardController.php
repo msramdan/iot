@@ -50,8 +50,38 @@ class DashboardController extends Controller
             ->leftJoin('tbl_kabkot', 'tbl_kabkot.id', '=', 'instances.city_id')
             ->groupBy('tbl_kabkot.id')
             ->get();
+        $deviceStatus = collect(DB::select("SELECT 
+            (SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category AND is_error IS NULL) as amount_not_err,
+            (SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category) as amount_total,
+            ((SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category) / (SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category AND is_error IS NULL) = 1) as device_is_health,
+            category
+        FROM devices group by category"));
+        $deviceStatusWaterMeter = $deviceStatus->first(function ($item) {
+            return $item->category == 'Water Meter';
+        }) ?? (object) [
+            'amount_not_err' => 0,
+            'amount_total' => 0,
+            'device_is_health' => true,
+        ];
+        $deviceStatusPowerMeter = $deviceStatus->first(function ($item) {
+            return $item->category == 'Power Meter';
+        }) ?? (object) [
+            'amount_not_err' => 0,
+            'amount_total' => 0,
+            'device_is_health' => true,
+        ];
+        $deviceStatusGasMeter = $deviceStatus->first(function ($item) {
+            return $item->category == 'Gas Meter';
+        }) ?? (object) [
+            'amount_not_err' => 0,
+            'amount_total' => 0,
+            'device_is_health' => true,
+        ];
+        $isDeviceStatusError = $deviceStatus->contains(function ($item) {
+            return ($item->amount_not_err / $item->amount_total) != 1;
+        }) ?? false;
 
-        return view('admin.dashbaord.index', compact('devicesByLocation', 'devicesByInstance', 'devicesByType', 'ticketsByStatus', 'jsonPercentageTicketByStatus', 'instances', 'total_instance', 'total_subinstance', 'total_cluster', 'total_device', 'subinstances', 'clusters', 'devices', 'lastTenInstances', 'tickets'));
+        return view('admin.dashbaord.index', compact('devicesByLocation', 'devicesByInstance', 'devicesByType', 'ticketsByStatus', 'jsonPercentageTicketByStatus', 'instances', 'total_instance', 'total_subinstance', 'total_cluster', 'total_device', 'subinstances', 'clusters', 'devices', 'lastTenInstances', 'tickets', 'deviceStatusWaterMeter', 'deviceStatusPowerMeter', 'deviceStatusGasMeter', 'isDeviceStatusError'));
     }
 
     public function profile()

@@ -32,8 +32,7 @@
                                             <select name="subinstance_id" id="subinstance_id" class="form-control">
                                                 <option value="">-- Filter By SubInstance --</option>
                                                 @foreach ($subinstances as $subinstance)
-                                                    <option value="{{ $subinstance->id }}">
-                                                        {{ $subinstance->name_subinstance }}</option>
+                                                    <option value="{{ $subinstance->id }}" {{ request()->get('subInstanceId') == $subinstance->id ? 'selected' : '' }}>{{ $subinstance->name_subinstance }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -62,9 +61,9 @@
                                         <div class="input-group mb-4">
                                             <select name="category_device" id="category_device" class="form-control">
                                                 <option value="">-- Filter By Category Device --</option>
-                                                <option value="Water Meter">Water Meter</option>
-                                                <option value="Power Meter">Power Meter</option>
-                                                <option value="Gas Meter">Gas Meter</option>
+                                                <option value="Water Meter" {{ request()->get('category') == 'Water Meter' ? 'selected' : '' }}>Water Meter</option>
+                                                <option value="Power Meter" {{ request()->get('category') == 'Power Meter' ? 'selected' : '' }}>Power Meter</option>
+                                                <option value="Gas Meter" {{ request()->get('category') == 'Gas Meter' ? 'selected' : '' }}>Gas Meter</option>
                                             </select>
                                         </div>
                                     </form>
@@ -160,14 +159,17 @@
         });
 
         $('#subinstance_id').change(function() {
+            window.history.pushState("object or string", "Title", "/device");
             table.draw();
         })
 
         $('#cluster_id').change(function() {
+            window.history.pushState("object or string", "Title", "/device");
             table.draw();
         })
 
         $('#category_device').change(function() {
+            window.history.pushState("object or string", "Title", "/device");
             table.draw();
         })
     </script>
