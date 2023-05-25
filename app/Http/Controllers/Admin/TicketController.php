@@ -134,7 +134,6 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        dd($ticket);
         $attr = request()->validate([
             'subject' => 'required',
             'description' => 'required',
@@ -156,7 +155,7 @@ class TicketController extends Controller
                 if ($request->status == 'closed') {
                     $is_error = null;
                 } else {
-                    $is_error = 'error';
+                    $is_error = 1;
                 }
                 DB::table('devices')
                     ->where('id', $ticket->device_id)
