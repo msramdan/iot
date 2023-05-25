@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
 {
@@ -133,6 +134,7 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
+        dd($ticket);
         $attr = request()->validate([
             'subject' => 'required',
             'description' => 'required',
@@ -140,7 +142,6 @@ class TicketController extends Controller
             'image_2' => 'mimes:jpg,jpeg,png',
             'status' => 'required',
         ]);
-
         if (request()->has('image_1')) {
             $attr['image_1'] = request('image_1')->store('image');
         }
@@ -151,6 +152,16 @@ class TicketController extends Controller
 
         try {
             $ticket->update($attr);
+            if ($ticket->is_device == 1) {
+                if ($request->status == 'closed') {
+                    $is_error = null;
+                } else {
+                    $is_error = 'error';
+                }
+                DB::table('devices')
+                    ->where('id', $ticket->device_id)
+                    ->update(['is_error' => $is_error]);
+            }
             Alert::toast('Ticket successfully updated', 'success');
         } catch (Exception $err) {
             Alert::toast('Failed to update records', 'error');

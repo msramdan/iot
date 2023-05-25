@@ -345,6 +345,11 @@ function insertGateway($gwid, $time, $status_online = null, $pktfwdStatus = null
 function createTiket($device_id, $devEUI, $type_device, $data, $time)
 {
     if ($data != null) {
+        // update device status
+        DB::table('devices')
+            ->where('id', $device_id)
+            ->update(['is_error' => 1]);
+
         // get subintance
         $subintanceData = DB::table('devices')
             ->join('clusters', 'devices.cluster_id', '=', 'clusters.id')
@@ -397,6 +402,7 @@ function createTiket($device_id, $devEUI, $type_device, $data, $time)
                                         'device_id' => $device_id,
                                         'status'   => "alert",
                                         'is_device'   => 1,
+                                        'device_id'   => $device_id,
                                         'created_at' => $time,
                                         'updated_at' => $time,
                                     ];
@@ -697,6 +703,7 @@ function handleWaterMeter($device_id, $request)
             'subject' => "Alert from device " . $request->devEUI,
             'description'  => json_encode($error),
             'is_device'   => 1,
+            'device_id'   => $device_id,
             'status'   => "alert",
         ]);
         return "Alert Data Water Meter Success";
@@ -1153,6 +1160,7 @@ function handleGasMeter($device_id, $request)
                 'subject' => "Alert from device " . $request->devEUI,
                 'description'  => json_encode($errorTiket),
                 'is_device'   => 1,
+                'device_id'   => $device_id,
                 'status'   => "alert",
             ]);
         }
