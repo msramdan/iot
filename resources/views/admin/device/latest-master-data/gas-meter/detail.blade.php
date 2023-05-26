@@ -233,7 +233,8 @@
                                                         </td>
                                                         <td>{{ $data->status }}</td>
                                                         @if ($data->status == 'Pending')
-                                                            <td><a href="" class="btn btn-success">Resend</a></td>
+                                                            <td><a href="{{ route('resend', $data->id) }}"
+                                                                    class="btn btn-success">Resend</a></td>
                                                         @else
                                                             <td><button class="btn btn-success" disabled>Resend</button>
                                                             </td>

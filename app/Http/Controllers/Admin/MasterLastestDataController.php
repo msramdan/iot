@@ -795,4 +795,24 @@ class MasterLastestDataController extends Controller
         Alert::info('Please Waiting Response From Server', 'In progress to Topup Gas');
         return redirect()->back();
     }
+
+    public function resend(Request $request, $id)
+    {
+        $data = DB::table('history_topup_gas_meter')
+            ->where('id', $id)
+            ->first();
+        $device = DB::table('devices')
+            ->where('id', $data->device_id)
+            ->first();
+        Http::withHeaders(['x-access-token' => setting_web()->token_callback])
+            ->withOptions(['verify' => false])
+            ->post(setting_web()->endpoint_nms . '/openapi/devicedl/create', [
+                "devEUI" => $device->devEUI,
+                "data" => $data->payload,
+                "confirmed" => true,
+                "fport" => 8
+            ]);
+        Alert::info('Resend topup gas success', 'Please Waiting Response From Server');
+        return redirect()->back();
+    }
 }
