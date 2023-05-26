@@ -56,23 +56,34 @@ class DashboardController extends Controller
             ((SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category) / (SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category AND is_error IS NULL) = 1) as device_is_health,
             category
         FROM devices group by category"));
+        $totalPercentageDeviceStatus = Device::count() > 0 ? (Device::whereNull('is_error')->count() / Device::count()) * 100 : 0;
+
         $deviceStatusWaterMeter = $deviceStatus->first(function ($item) {
+            $item->percentage = $item->amount_total > 0 ? ($item->amount_not_err / $item->amount_total) * 100 : 0;
+
             return $item->category == 'Water Meter';
         }) ?? (object) [
+            'percentage' => 0,
             'amount_not_err' => 0,
             'amount_total' => 0,
             'device_is_health' => true,
         ];
         $deviceStatusPowerMeter = $deviceStatus->first(function ($item) {
+            $item->percentage = $item->amount_total > 0 ? ($item->amount_not_err / $item->amount_total) * 100 : 0;
+
             return $item->category == 'Power Meter';
         }) ?? (object) [
+            'percentage' => 0,
             'amount_not_err' => 0,
             'amount_total' => 0,
             'device_is_health' => true,
         ];
         $deviceStatusGasMeter = $deviceStatus->first(function ($item) {
+            $item->percentage = $item->amount_total > 0 ? ($item->amount_not_err / $item->amount_total) * 100 : 0;
+
             return $item->category == 'Gas Meter';
         }) ?? (object) [
+            'percentage' => 0,
             'amount_not_err' => 0,
             'amount_total' => 0,
             'device_is_health' => true,
@@ -81,7 +92,7 @@ class DashboardController extends Controller
             return ($item->amount_not_err / $item->amount_total) != 1;
         }) ?? false;
 
-        return view('admin.dashbaord.index', compact('devicesByLocation', 'devicesByInstance', 'devicesByType', 'ticketsByStatus', 'jsonPercentageTicketByStatus', 'instances', 'total_instance', 'total_subinstance', 'total_cluster', 'total_device', 'subinstances', 'clusters', 'devices', 'lastTenInstances', 'tickets', 'deviceStatusWaterMeter', 'deviceStatusPowerMeter', 'deviceStatusGasMeter', 'isDeviceStatusError'));
+        return view('admin.dashbaord.index', compact('devicesByLocation', 'devicesByInstance', 'devicesByType', 'ticketsByStatus', 'jsonPercentageTicketByStatus', 'instances', 'total_instance', 'total_subinstance', 'total_cluster', 'total_device', 'subinstances', 'clusters', 'devices', 'lastTenInstances', 'tickets', 'deviceStatusWaterMeter', 'deviceStatusPowerMeter', 'deviceStatusGasMeter', 'isDeviceStatusError', 'totalPercentageDeviceStatus'));
     }
 
     public function profile()

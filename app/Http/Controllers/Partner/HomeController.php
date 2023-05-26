@@ -59,24 +59,34 @@ class HomeController extends Controller
         FROM devices 
         WHERE appId = '$instance->appID'
         group by category"));
+        $totalPercentageDeviceStatus = Device::where('appID', $instance->appID)->count() > 0 ? (Device::where('appID', $instance->appID)->whereNull('is_error')->count() / Device::where('appID', $instance->appID)->count()) * 100 : 0;
 
         $deviceStatusWaterMeter = $deviceStatus->first(function ($item) {
+            $item->percentage = $item->amount_total > 0 ? ($item->amount_not_err / $item->amount_total) * 100 : 0;
+
             return $item->category == 'Water Meter';
         }) ?? (object) [
+            'percentage' => 0,
             'amount_not_err' => 0,
             'amount_total' => 0,
             'device_is_health' => true,
         ];
         $deviceStatusPowerMeter = $deviceStatus->first(function ($item) {
+            $item->percentage = $item->amount_total > 0 ? ($item->amount_not_err / $item->amount_total) * 100 : 0;
+
             return $item->category == 'Power Meter';
         }) ?? (object) [
+            'percentage' => 0,
             'amount_not_err' => 0,
             'amount_total' => 0,
             'device_is_health' => true,
         ];
         $deviceStatusGasMeter = $deviceStatus->first(function ($item) {
+            $item->percentage = $item->amount_total > 0 ? ($item->amount_not_err / $item->amount_total) * 100 : 0;
+
             return $item->category == 'Gas Meter';
         }) ?? (object) [
+            'percentage' => 0,
             'amount_not_err' => 0,
             'amount_total' => 0,
             'device_is_health' => true,
@@ -85,7 +95,7 @@ class HomeController extends Controller
             return ($item->amount_not_err / $item->amount_total) != 1;
         }) ?? false;
 
-        return view('partner.dashboard.index', compact('subinstances', 'total_subinstance', 'total_cluster', 'total_device', 'tickets', 'ticketsByStatus', 'devicesByType', 'devicesBySubInstance', 'devicesByLocation', 'instances', 'jsonPercentageTicketByStatus', 'clusters', 'devices', 'deviceStatusWaterMeter', 'deviceStatusPowerMeter', 'deviceStatusGasMeter', 'isDeviceStatusError'));
+        return view('partner.dashboard.index', compact('subinstances', 'total_subinstance', 'total_cluster', 'total_device', 'tickets', 'ticketsByStatus', 'devicesByType', 'devicesBySubInstance', 'devicesByLocation', 'instances', 'jsonPercentageTicketByStatus', 'clusters', 'devices', 'deviceStatusWaterMeter', 'deviceStatusPowerMeter', 'deviceStatusGasMeter', 'isDeviceStatusError', 'totalPercentageDeviceStatus'));
     }
 
     public function change_password(Request $request)

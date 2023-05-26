@@ -339,13 +339,13 @@
                         <div class="card-body">
                             <div class=" h-100 d-flex flex-column align-items-center justify-content-center">
                                 <div class="d-flex align-items-center justify-content-center">
-                                    <input type="text" readonly value="{{ $deviceStatusWaterMeter->amount_total > 0 ? number_format(($deviceStatusWaterMeter->amount_not_err / $deviceStatusWaterMeter->amount_total) * 100, 2, '.', '.') : 0 }}" id="water-meter-status" data-fgColor="{{ $deviceStatusWaterMeter->device_is_health ? '#45CB85' : '#F06548' }}" data-width="150" data-height="150" />
+                                    <input type="text" readonly value="{{ number_format($deviceStatusWaterMeter->percentage, 2, '.', '.') }}" id="water-meter-status" data-fgColor="{{ $deviceStatusWaterMeter->device_is_health ? '#45CB85' : ($deviceStatusWaterMeter->percentage >= 85 ? '#FFBE0B' : '#F06548') }}" data-width="150" data-height="150" />
                                 </div>
                                 <div class="mt-3 d-flex align-items-end">
-                                    <i class="mdi mdi-{{ $deviceStatusWaterMeter->device_is_health ? 'checkbox-marked-circle' : 'alert' }}" style="font-size: 1.5rem; transform: translateY(-.2rem); margin-right: .2rem; color: {{ $deviceStatusWaterMeter->device_is_health ? '#45CB85' : '#F06548' }}"></i>
-                                    <h3 style="font-weight: bold" class="text-{{ $deviceStatusWaterMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusWaterMeter->device_is_health ? 'Success' : 'Warning' }}</h3>
+                                    <i class="mdi mdi-{{ $deviceStatusWaterMeter->device_is_health ? 'checkbox-marked-circle' : 'alert' }}" style="font-size: 1.5rem; transform: translateY(-.2rem); margin-right: .2rem; color: {{ $deviceStatusWaterMeter->device_is_health ? '#45CB85' : ($deviceStatusWaterMeter->percentage >= 85 ? '#FFBE0B' : '#F06548') }}"></i>
+                                    <h3 style="font-weight: bold" class="text-{{ $deviceStatusWaterMeter->device_is_health ? 'success' : ($deviceStatusWaterMeter->percentage >= 85 ? 'warning' : 'danger') }}">{{ $deviceStatusWaterMeter->device_is_health ? 'Success' : 'Warning' }}</h3>
                                 </div>
-                                <span style="font-size: 1.075rem" class="text-{{ $deviceStatusWaterMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusWaterMeter->amount_not_err }}/{{ $deviceStatusWaterMeter->amount_total }}</span>
+                                <span style="font-size: 1.075rem" class="text-{{ $deviceStatusWaterMeter->device_is_health ? 'success' : ($deviceStatusWaterMeter->percentage >= 85 ? 'warning' : 'danger') }}">{{ $deviceStatusWaterMeter->amount_not_err }}/{{ $deviceStatusWaterMeter->amount_total }}</span>
                             </div>
                         </div>
                     </div>
@@ -361,13 +361,13 @@
                         <div class="card-body">
                             <div class=" h-100 d-flex flex-column align-items-center justify-content-center">
                                 <div class="d-flex align-items-center justify-content-center">
-                                    <input type="text" readonly value="{{ $deviceStatusPowerMeter->amount_total > 0 ? number_format(($deviceStatusPowerMeter->amount_not_err / $deviceStatusPowerMeter->amount_total) * 100, 2, '.', '.') : 0 }}" id="power-meter-status" data-fgColor="{{ $deviceStatusPowerMeter->device_is_health ? '#45CB85' : '#F06548' }}" data-width="150" data-height="150" />
+                                    <input type="text" readonly value="{{ number_format($deviceStatusPowerMeter->percentage, 2, '.', '.') }}" id="power-meter-status" data-fgColor="{{ $deviceStatusPowerMeter->device_is_health ? '#45CB85' : ($deviceStatusPowerMeter->percentage >= 85 ? '#FFBE0B' : '#F06548') }}" data-width="150" data-height="150" />
                                 </div>
                                 <div class="mt-3 d-flex align-items-end">
-                                    <i class="mdi mdi-{{ $deviceStatusPowerMeter->device_is_health ? 'checkbox-marked-circle' : 'alert' }}" style="font-size: 1.5rem; transform: translateY(-.2rem); margin-right: .2rem; color: {{ $deviceStatusPowerMeter->device_is_health ? '#45CB85' : '#F06548' }}"></i>
-                                    <h3 style="font-weight: bold" class="text-{{ $deviceStatusPowerMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusPowerMeter->device_is_health ? 'Success' : 'Warning' }}</h3>
+                                    <i class="mdi mdi-{{ $deviceStatusPowerMeter->device_is_health ? 'checkbox-marked-circle' : 'alert' }}" style="font-size: 1.5rem; transform: translateY(-.2rem); margin-right: .2rem; color: {{ $deviceStatusPowerMeter->device_is_health ? '#45CB85' : ($deviceStatusPowerMeter->percentage >= 85 ? '#FFBE0B' : '#F06548') }}"></i>
+                                    <h3 style="font-weight: bold" class="text-{{ $deviceStatusPowerMeter->device_is_health ? 'success' : ($deviceStatusPowerMeter->percentage >= 85 ? 'warning' : 'danger') }}">{{ $deviceStatusPowerMeter->device_is_health ? 'Success' : 'Warning' }}</h3>
                                 </div>
-                                <span style="font-size: 1.075rem" class="text-{{ $deviceStatusPowerMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusPowerMeter->amount_not_err }}/{{ $deviceStatusPowerMeter->amount_total }}</span>
+                                <span style="font-size: 1.075rem" class="text-{{ $deviceStatusPowerMeter->device_is_health ? 'success' : ($deviceStatusPowerMeter->percentage >= 85 ? 'warning' : 'danger') }}">{{ $deviceStatusPowerMeter->amount_not_err }}/{{ $deviceStatusPowerMeter->amount_total }}</span>
                             </div>
                         </div>
                     </div>
@@ -382,13 +382,13 @@
                         <div class="card-body">
                             <div class=" h-100 d-flex flex-column align-items-center justify-content-center">
                                 <div class="d-flex align-items-center justify-content-center">
-                                    <input type="text" readonly value="{{ $deviceStatusGasMeter->amount_total > 0 ? number_format(($deviceStatusGasMeter->amount_not_err / $deviceStatusGasMeter->amount_total) * 100, 2, '.', '.') : 0 }}" id="gas-meter-status" data-fgColor="{{ $deviceStatusGasMeter->device_is_health ? '#45CB85' : '#F06548' }}" data-width="150" data-height="150" />
+                                    <input type="text" readonly value="{{ number_format($deviceStatusGasMeter->percentage, 2, '.', '.') }}" id="gas-meter-status" data-fgColor="{{ $deviceStatusGasMeter->device_is_health ? '#45CB85' : ($deviceStatusGasMeter->percentage >= 85 ? '#FFBE0B' : '#F06548') }}" data-width="150" data-height="150" />
                                 </div>
                                 <div class="mt-3 d-flex align-items-end">
-                                    <i class="mdi mdi-{{ $deviceStatusGasMeter->device_is_health ? 'checkbox-marked-circle' : 'alert' }}" style="font-size: 1.5rem; transform: translateY(-.2rem); margin-right: .2rem; color: {{ $deviceStatusGasMeter->device_is_health ? '#45CB85' : '#F06548' }}"></i>
-                                    <h3 style="font-weight: bold" class="text-{{ $deviceStatusGasMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusGasMeter->device_is_health ? 'Success' : 'Warning' }}</h3>
+                                    <i class="mdi mdi-{{ $deviceStatusGasMeter->device_is_health ? 'checkbox-marked-circle' : 'alert' }}" style="font-size: 1.5rem; transform: translateY(-.2rem); margin-right: .2rem; color: {{ $deviceStatusGasMeter->device_is_health ? '#45CB85' : ($deviceStatusGasMeter->percentage >= 85 ? '#FFBE0B' : '#F06548') }}"></i>
+                                    <h3 style="font-weight: bold" class="text-{{ $deviceStatusGasMeter->device_is_health ? 'success' : ($deviceStatusGasMeter->percentage >= 85 ? 'warning' : 'danger') }}">{{ $deviceStatusGasMeter->device_is_health ? 'Success' : 'Warning' }}</h3>
                                 </div>
-                                <span style="font-size: 1.075rem" class="text-{{ $deviceStatusGasMeter->device_is_health ? 'success' : 'danger' }}">{{ $deviceStatusGasMeter->amount_not_err }}/{{ $deviceStatusGasMeter->amount_total }}</span>
+                                <span style="font-size: 1.075rem" class="text-{{ $deviceStatusGasMeter->device_is_health ? 'success' : ($deviceStatusGasMeter->percentage >= 85 ? 'warning' : 'danger') }}">{{ $deviceStatusGasMeter->amount_not_err }}/{{ $deviceStatusGasMeter->amount_total }}</span>
                             </div>
                         </div>
                     </div>
@@ -400,8 +400,8 @@
                         </div>
 
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                            <i class="mdi mdi-{{ $isDeviceStatusError ? 'alert' : 'checkbox-marked-circle' }}" style="font-size: 9rem; color: {{ $isDeviceStatusError ? '#F06548' : '#45CB85' }}"></i>
-                            <h2 style="font-weight: bold; margin-top: -2.5rem" class="text-{{ $isDeviceStatusError ? 'danger' : 'success' }}">{{ $isDeviceStatusError ? 'Warning' : 'Success' }}</h2>
+                            <i class="mdi mdi-{{ $isDeviceStatusError ? 'alert' : 'checkbox-marked-circle' }}" style="font-size: 9rem; color: {{ $isDeviceStatusError ? ($totalPercentageDeviceStatus >= 85 ? '#FFBE0B' : '#F06548') : '#45CB85' }}"></i>
+                            <h2 style="font-weight: bold; margin-top: -2.5rem" class="text-{{ $isDeviceStatusError ? ($totalPercentageDeviceStatus >= 85 ? 'warning' : 'danger') : 'success' }}">{{ $isDeviceStatusError ? 'Warning' : 'Success' }}</h2>
                         </div>
                     </div>
                 </div>

@@ -28,30 +28,35 @@ class DeviceController extends Controller
     public function index(Request $request)
     {
         $instances = Instance::all();
+        $arrLocation = Device::select('tbl_kabkot.id as id', 'tbl_kabkot.kabupaten_kota as name')->leftJoin('instances', 'instances.appID', '=', 'devices.appID')->leftJoin('tbl_kabkot', 'tbl_kabkot.id', 'instances.city_id')->groupBy('instances.city_id')->get();
 
         if (request()->ajax()) {
-            $device = Device::with(['subnet', 'cluster']);
+            $device = Device::with(['subnet', 'cluster', 'instance']);
 
             if ($request->has('category_device') && !empty($request->category_device)) {
                 $device = $device->where('category', $request->category_device);
             }
 
             if ($request->has('instance') && !empty($request->instance)) {
-                $device = $device->where('appID', $request->instance);
+                $device = $device->where('devices.appID', $request->instance);
             }
 
             if ($request->has('hit_nms') && !empty($request->hit_nms)) {
                 $device = $device->where('hit_nms', $request->hit_nms);
             }
 
+            if ($request->has('location_device') && !empty($request->location_device)) {
+                $device->leftJoin('instances', 'instances.appID', '=', 'devices.appID');
+                $device->where('instances.city_id', $request->location_device);
+            }
 
-            if (!($request->category_device || $request->instance || $request->hit_nms)) {
+            if (!($request->category_device || $request->instance || $request->hit_nms || $request->location_device)) {
                 $device->when($request->kabkot_id, function ($q) use ($request) {
                     return $q->leftJoin('instances', 'instances.appID', '=', 'devices.appID')
                         ->where('instances.city_id', $request->kabkot_id);
                 });
                 $device->when($request->instance_app_id, function ($q) use ($request) {
-                    return $q->where('appID', $request->instance_app_id);
+                    return $q->where('devices.appID', $request->instance_app_id);
                 });
                 $device->when($request->category, function ($q) use ($request) {
                     return $q->where('devices.category', $request->category);
@@ -95,7 +100,7 @@ class DeviceController extends Controller
                 ->rawColumns(['hit_nms', 'action', 'admin.device._action'])
                 ->toJson();
         }
-        return view('admin.device.index', compact('instances'));
+        return view('admin.device.index', compact('instances', 'arrLocation'));
     }
 
     /**
