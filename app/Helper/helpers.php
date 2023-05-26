@@ -1249,11 +1249,16 @@ function pengurangGasMeter($data)
             } else {
                 $a = cekAngka($datas);
                 $jml = $a - 3;
-                $string .= $jml;
+                if ($jml > 9) {
+                    $a = cekAbjHex($jml);
+                    $string .= $a;
+                } else {
+                    $string .= $jml;
+                }
             }
         }
     }
-    $cek =  (int)  $string;
+    $cek = $string;
     $cek2 = str_pad($cek, 2, "0", STR_PAD_LEFT);
     return $cek2;
 }
