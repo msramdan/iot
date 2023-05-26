@@ -51,14 +51,14 @@ class DeviceController extends Controller
             }
 
             if (!($request->category_device || $request->instance || $request->hit_nms || $request->location_device)) {
-                $device->when($request->kabkot_id, function ($q) use ($request) {
+                $device->when($request->kabkot_id && $request->location_device, function ($q) use ($request) {
                     return $q->leftJoin('instances', 'instances.appID', '=', 'devices.appID')
                         ->where('instances.city_id', $request->kabkot_id);
                 });
-                $device->when($request->instance_app_id, function ($q) use ($request) {
+                $device->when($request->instance_app_id && $request->instance, function ($q) use ($request) {
                     return $q->where('devices.appID', $request->instance_app_id);
                 });
-                $device->when($request->category, function ($q) use ($request) {
+                $device->when($request->category && $request->category_device, function ($q) use ($request) {
                     return $q->where('devices.category', $request->category);
                 });
             }

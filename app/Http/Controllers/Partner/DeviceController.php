@@ -48,13 +48,13 @@ class DeviceController extends Controller
             }
 
             if (!($request->category_device || $request->subinstance_id || $request->cluster_id || $request->location_device || $request->query_cluster_id)) {
-                $device->when($request->category, function ($q) use ($request) {
+                $device->when($request->category && $request->category_device, function ($q) use ($request) {
                     return $q->where('devices.category', $request->category);
                 });
-                $device->when($request->kabkot_id, function ($q) use ($request) {
+                $device->when($request->kabkot_id && $request->location_device, function ($q) use ($request) {
                     return $q->where('instances.city_id', $request->kabkot_id);
                 });
-                $device->when($request->subInstanceId, function ($q) use ($request) {
+                $device->when($request->subInstanceId && $request->subinstance_id, function ($q) use ($request) {
                     return $q->where('clusters.subinstance_id', $request->subInstanceId);
                 });
             }
