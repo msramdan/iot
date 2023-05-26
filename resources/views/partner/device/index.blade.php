@@ -69,6 +69,20 @@
                                     </form>
                                 </div>
 
+                                <div class="col-md-3">
+                                    <form method="get">
+                                        @csrf
+                                        <div class="input-group mb-4">
+                                            <select name="location_device" id="location_device" class="form-control">
+                                                <option value="">-- Filter By Location --</option>
+                                                @foreach ($arrLocation as $location)
+                                                    <option value="{{ $location->id }}" {{ request()->get('kabkot_id') == $location->id ? 'selected' : '' }}>{{ $location->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-sm" id="dataTable">
@@ -152,6 +166,7 @@
                     s.subinstance_id = $('select[name=subinstance_id] option').filter(':selected').val()
                     s.category_device = $('select[name=category_device] option').filter(':selected').val()
                     s.cluster_id = $('select[name=cluster_id] option').filter(':selected').val()
+                    s.location_device = $('select[name=location_device] option').filter(':selected').val()
                     s.query_cluster_id = query_cluster_id
                 }
             },
@@ -169,6 +184,11 @@
         })
 
         $('#category_device').change(function() {
+            window.history.pushState("object or string", "Title", "/device");
+            table.draw();
+        })
+
+        $('#location_device').change(function() {
             window.history.pushState("object or string", "Title", "/device");
             table.draw();
         })
