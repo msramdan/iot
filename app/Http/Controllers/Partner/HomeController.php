@@ -27,6 +27,7 @@ class HomeController extends Controller
     public function index()
     {
         $instance = Instance::where('id', auth()->guard('instances')->user()->id)->first();
+
         $instances = Instance::where('id', $instance->id)->get();
         $subinstances = Subinstance::whereInstanceId(auth()->id())->get();
         $total_subinstance = Subinstance::whereInstanceId(auth()->id())->count();
@@ -50,9 +51,41 @@ class HomeController extends Controller
             ->where('instances.appID', $instance->appID)
             ->groupBy('tbl_kabkot.id')
             ->get();
+        $deviceStatus = collect(DB::select("SELECT 
+            (SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category AND appId = devices.appId AND is_error IS NULL) as amount_not_err,
+            (SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category AND appId = devices.appId) as amount_total,
+            ((SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category AND appId = devices.appId) / (SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category AND is_error IS NULL AND appId = devices.appId) = 1) as device_is_health,
+            category
+        FROM devices 
+        WHERE appId = '$instance->appID'
+        group by category"));
 
+        $deviceStatusWaterMeter = $deviceStatus->first(function ($item) {
+            return $item->category == 'Water Meter';
+        }) ?? (object) [
+            'amount_not_err' => 0,
+            'amount_total' => 0,
+            'device_is_health' => true,
+        ];
+        $deviceStatusPowerMeter = $deviceStatus->first(function ($item) {
+            return $item->category == 'Power Meter';
+        }) ?? (object) [
+            'amount_not_err' => 0,
+            'amount_total' => 0,
+            'device_is_health' => true,
+        ];
+        $deviceStatusGasMeter = $deviceStatus->first(function ($item) {
+            return $item->category == 'Gas Meter';
+        }) ?? (object) [
+            'amount_not_err' => 0,
+            'amount_total' => 0,
+            'device_is_health' => true,
+        ];
+        $isDeviceStatusError = $deviceStatus->contains(function ($item) {
+            return ($item->amount_not_err / $item->amount_total) != 1;
+        }) ?? false;
 
-        return view('partner.dashboard.index', compact('subinstances', 'total_subinstance', 'total_cluster', 'total_device', 'tickets', 'ticketsByStatus', 'devicesByType', 'devicesBySubInstance', 'devicesByLocation', 'instances', 'jsonPercentageTicketByStatus', 'clusters', 'devices'));
+        return view('partner.dashboard.index', compact('subinstances', 'total_subinstance', 'total_cluster', 'total_device', 'tickets', 'ticketsByStatus', 'devicesByType', 'devicesBySubInstance', 'devicesByLocation', 'instances', 'jsonPercentageTicketByStatus', 'clusters', 'devices', 'deviceStatusWaterMeter', 'deviceStatusPowerMeter', 'deviceStatusGasMeter', 'isDeviceStatusError'));
     }
 
     public function change_password(Request $request)
