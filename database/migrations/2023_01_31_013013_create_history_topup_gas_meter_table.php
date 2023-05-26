@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('device_id')->constrained('devices')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('status', 100)->nullable();
+            $table->string('payload')->nullable();
             $table->timestamps();
         });
     }

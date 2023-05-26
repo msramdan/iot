@@ -60,15 +60,30 @@
         style="display: none;">
         <div class="modal-dialog">
             <div class="modal-content">
+                @php
+                    $cekDevice = DB::table('history_topup_gas_meter')
+                        ->where('device_id', $device_id)
+                        ->where('status', 'Pending')
+                        ->first();
+                @endphp
                 <form action="{{ route('topup') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <h5 class="fs-15">
                             <div class="col-xxl-12">
                                 <div>
-                                    <label for="firstName" class="form-label">Total Gas (m3)</label>
-                                    <input type="number" autocomplete="off" step="any" name="total"
-                                        class="form-control" id="firstName" placeholder="" required>
+                                    @if ($cekDevice)
+                                        <center>
+                                            <i class="mdi mdi-alert" style="font-size: 8rem; color: #F06548"></i>
+                                            <p><span style="color: red">Note : There is still a queue of top up requests on
+                                                    the
+                                                    server</span></p>
+                                        </center>
+                                    @else
+                                        <label for="firstName" class="form-label">Total Gas (m3)</label>
+                                        <input type="number" autocomplete="off" step="any" name="total"
+                                            class="form-control" id="firstName" placeholder="" required>
+                                    @endif
                                 </div>
                                 <br>
                                 <div>
@@ -82,7 +97,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="subnit" class="btn btn-primary ">Submit</button>
+                        @if (!$cekDevice)
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        @endif
+
                     </div>
                 </form>
 
@@ -194,6 +212,7 @@
                                                     <th>Top Up date </th>
                                                     <th>Response date</th>
                                                     <th>Status</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -213,6 +232,12 @@
 
                                                         </td>
                                                         <td>{{ $data->status }}</td>
+                                                        @if ($data->status == 'Pending')
+                                                            <td><a href="" class="btn btn-success">Resend</a></td>
+                                                        @else
+                                                            <td><button class="btn btn-success" disabled>Resend</button>
+                                                            </td>
+                                                        @endif
                                                     </tr>
                                                 @endforeach
                                             </tbody>

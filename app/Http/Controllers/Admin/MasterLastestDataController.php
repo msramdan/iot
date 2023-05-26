@@ -787,6 +787,7 @@ class MasterLastestDataController extends Controller
             'total_gas' => $request->total,
             'device_id' => $request->device_id,
             'user_id' =>  \Auth::user()->id,
+            'payload' => $payloadData,
             'created_at' => date('Y-m-d H:i:s'),
             'status' => 'Pending'
         ]);
