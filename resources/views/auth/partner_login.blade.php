@@ -19,7 +19,7 @@
                     <div class="mb-2">
                         <label for="email" class="form-label">Email</label>
                         <input type="text" class="form-control @error('email') is-invalid @enderror" id="email"
-                            name="email" placeholder="Enter your email : hello@indopay.com">
+                            name="email" placeholder="Enter your email">
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
