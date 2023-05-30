@@ -387,7 +387,7 @@
             },
             title: {
                 align: 'center',
-                text: 'Daily Usage'
+                text: 'Daily Usage {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -444,7 +444,7 @@
                 }
             },
             title: {
-                text: 'Voltage'
+                text: 'Voltage {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -485,7 +485,7 @@
                 }
             },
             title: {
-                text: 'Arus'
+                text: 'Arus {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -526,7 +526,7 @@
                 }
             },
             title: {
-                text: 'Frequency’s PLN'
+                text: 'Frequency’s PLN {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -567,7 +567,7 @@
                 }
             },
             title: {
-                text: 'Active Power'
+                text: 'Active Power {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -608,7 +608,7 @@
                 }
             },
             title: {
-                text: 'Power Factor'
+                text: 'Power Factor {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -649,7 +649,7 @@
                 }
             },
             title: {
-                text: 'Total Energy'
+                text: 'Total Energy {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"

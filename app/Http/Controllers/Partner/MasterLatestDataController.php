@@ -107,6 +107,9 @@ class MasterLatestDataController extends Controller
         $instance = Auth::guard('instances')->user();
         $lastData = MasterLatestData::where('device_id', $id)->first();
         $date = $request->query('date');
+        $device = Device::where('id', $id)->first();
+        $devEUI = $device->devEUI;
+        $devName = $device->devName;
 
         $parsed_data = ParsedWaterMater::with(['device' => function ($q) use ($instance) {
             $q->with(['cluster' => function ($s) use ($instance) {
@@ -171,6 +174,8 @@ class MasterLatestDataController extends Controller
             'lastData',
             'parsed_dates',
             'baterai_datas',
+            'devEUI',
+            'devName',
             'temperature_datas',
             'total_flow_datas',
             'dailyUsages',
@@ -280,6 +285,9 @@ class MasterLatestDataController extends Controller
         $instance = Auth::guard('instances')->user();
         $lastData = MasterLatestDataPowerMeter::where('device_id', $id)->first();
         $date = $request->query('date');
+        $device = Device::where('id', $id)->first();
+        $devEUI = $device->devEUI;
+        $devName = $device->devName;
 
         $parsed_data = ParsedPowerMater::where('device_id', $id);
         $dataTable = ParsedPowerMater::where('device_id', $id);
@@ -348,6 +356,8 @@ class MasterLatestDataController extends Controller
             'end_dates',
             'lastData',
             'parsed_dates',
+            'devEUI',
+            'devName',
             'tegangan_datas',
             'arus_datas',
             'frekuensi_datas',
@@ -463,6 +473,9 @@ class MasterLatestDataController extends Controller
         $lastData = MasterLatestDataGasMeter::where('device_id', $id)->first();
         $parsed_data = ParsedGasMater::where('device_id', $id);
         $dataTable = ParsedGasMater::where('device_id', $id);
+        $device = Device::where('id', $id)->first();
+        $devEUI = $device->devEUI;
+        $devName = $device->devName;
 
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
@@ -525,6 +538,8 @@ class MasterLatestDataController extends Controller
             'start_dates',
             'end_dates',
             'lastData',
+            'devEUI',
+            'devName',
             'parsed_dates',
             'gas_consumtion_datas',
             'gas_total_purchase_datas',

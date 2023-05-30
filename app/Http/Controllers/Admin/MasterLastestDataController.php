@@ -104,6 +104,7 @@ class MasterLastestDataController extends Controller
 
         $device = Device::where('id', $id)->first();
         $devEUI = $device->devEUI;
+        $devName = $device->devName;
         $hit_nms = $device->hit_nms;
 
         $lastData = MasterLatestData::where('device_id', $id)->first();
@@ -169,6 +170,7 @@ class MasterLastestDataController extends Controller
             'end_dates',
             'hit_nms',
             'devEUI',
+            'devName',
             'lastData',
             'parsed_dates',
             'baterai_datas',
@@ -277,6 +279,7 @@ class MasterLastestDataController extends Controller
         $device = Device::where('id', $id)->first();
         $lastData = MasterLatestDataPowerMeter::where('device_id', $id)->first();
         $devEUI = $device->devEUI;
+        $devName = $device->devName;
         $start_dates = Carbon::now()->firstOfMonth();
         $end_dates = Carbon::now()->endOfMonth();
 
@@ -337,6 +340,7 @@ class MasterLastestDataController extends Controller
             'dataTable',
             'device_id',
             'start_dates',
+            'devName',
             'end_dates',
             'devEUI',
             'lastData',
@@ -455,6 +459,7 @@ class MasterLastestDataController extends Controller
         $dataTable = ParsedGasMater::where('device_id', $id);
         $device = Device::where('id', $id)->first();
         $devEUI = $device->devEUI;
+        $devName = $device->devName;
         $lastData = MasterLatestDataGasMeter::where('device_id', $id)->first();
         $history = DB::table('history_topup_gas_meter')
             ->join('users', 'history_topup_gas_meter.user_id', '=', 'users.id')
@@ -521,6 +526,7 @@ class MasterLastestDataController extends Controller
             'history',
             'end_dates',
             'devEUI',
+            'devName',
             'lastData',
             'parsed_dates',
             'gas_consumtion_datas',

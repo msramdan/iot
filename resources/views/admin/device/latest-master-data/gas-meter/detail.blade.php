@@ -462,7 +462,7 @@
             },
             title: {
                 align: 'center',
-                text: 'Daily Usage'
+                text: 'Daily Usage {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -519,7 +519,7 @@
                 }
             },
             title: {
-                text: 'Gas Consumption'
+                text: 'Gas Consumption {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -560,7 +560,7 @@
                 }
             },
             title: {
-                text: 'Total Gas Purchase'
+                text: 'Total Gas Purchase {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -601,7 +601,7 @@
                 }
             },
             title: {
-                text: 'Purchase Remain'
+                text: 'Purchase Remain {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -642,7 +642,7 @@
                 }
             },
             title: {
-                text: 'Balance of Battery'
+                text: 'Balance of Battery {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"

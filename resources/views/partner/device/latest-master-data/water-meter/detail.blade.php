@@ -284,7 +284,7 @@
             },
             title: {
                 align: 'center',
-                text: 'Daily Usage'
+                text: 'Daily Usage {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -341,7 +341,7 @@
                 }
             },
             title: {
-                text: 'Baterai status'
+                text: 'Baterai status {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -382,7 +382,7 @@
                 }
             },
             title: {
-                text: 'Temperature'
+                text: 'Temperature {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
@@ -423,7 +423,7 @@
                 }
             },
             title: {
-                text: 'Total Flow'
+                text: 'Total Flow {{ $devName }} <br> {{ $devEUI }}'
             },
             subtitle: {
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
