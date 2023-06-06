@@ -418,6 +418,7 @@ function createTiket($device_id, $devEUI, $type_device, $data, $time)
                                     DB::table('tickets')
                                         ->where('id', $tickets->id)
                                         ->update($dataTiket);
+                                    $ticket_id = $tickets->id;
                                 }
                             } else {
                                 // create tiket
