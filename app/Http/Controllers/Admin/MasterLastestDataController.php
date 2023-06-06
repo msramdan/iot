@@ -308,7 +308,6 @@ class MasterLastestDataController extends Controller
         $dailyUsages2 = DailyUsageDevice::where('device_id', $id)
             ->where('device_type', 'power_meter')->whereBetween('created_at', [$start_dates, $end_dates])->orderBy('id', 'asc')->get();
 
-        $parsed_dates = [];
         $tegangan_datas = [];
         $arus_datas = [];
         $frekuensi_datas = [];
@@ -317,17 +316,47 @@ class MasterLastestDataController extends Controller
         $total_energy_datas = [];
         $daily_usage_dates = [];
         $daily_usage_datas = [];
+        // dates
+        $tegangan_datas_dates = [];
+        $arus_datas_dates = [];
+
+        $frekuensi_datas_dates = [];
+        $active_power_datas_dates = [];
+
+        $power_factor_datas_dates = [];
+        $total_energy_datas_dates = [];
+
 
         foreach ($parsed_data as $data) {
             $dates = strtotime($data->created_at);
+            if ($data->tegangan != null) {
+                array_push($tegangan_datas, floatval($data->tegangan));
+                array_push($tegangan_datas_dates, $dates);
+            }
+            if ($data->arus != null) {
+                array_push($arus_datas, floatval($data->arus));
+                array_push($arus_datas_dates, $dates);
+            }
 
-            array_push($parsed_dates, $dates);
-            array_push($tegangan_datas, floatval($data->tegangan));
-            array_push($arus_datas, floatval($data->arus));
-            array_push($frekuensi_datas, floatval($data->frekuensi_pln));
-            array_push($active_power_datas, floatval($data->active_power));
-            array_push($power_factor_datas, floatval($data->power_factor));
-            array_push($total_energy_datas, floatval($data->total_energy));
+            if ($data->frekuensi_pln != null) {
+                array_push($frekuensi_datas, floatval($data->frekuensi_pln));
+                array_push($frekuensi_datas_dates, $dates);
+            }
+
+            if ($data->active_power != null) {
+                array_push($active_power_datas, floatval($data->active_power));
+                array_push($active_power_datas_dates, $dates);
+            }
+
+            if ($data->power_factor != null) {
+                array_push($power_factor_datas, floatval($data->power_factor));
+                array_push($power_factor_datas_dates, $dates);
+            }
+
+            if ($data->total_energy != null) {
+                array_push($total_energy_datas, floatval($data->total_energy));
+                array_push($total_energy_datas_dates, $dates);
+            }
         }
 
         foreach ($dailyUsages2 as $daily) {
@@ -344,7 +373,6 @@ class MasterLastestDataController extends Controller
             'end_dates',
             'devEUI',
             'lastData',
-            'parsed_dates',
             'tegangan_datas',
             'arus_datas',
             'frekuensi_datas',
@@ -353,7 +381,13 @@ class MasterLastestDataController extends Controller
             'total_energy_datas',
             'dailyUsages',
             'daily_usage_dates',
-            'daily_usage_datas'
+            'daily_usage_datas',
+            'tegangan_datas_dates',
+            'arus_datas_dates',
+            'frekuensi_datas_dates',
+            'active_power_datas_dates',
+            'power_factor_datas_dates',
+            'total_energy_datas_dates'
         ));
     }
 

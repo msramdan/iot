@@ -173,10 +173,13 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($dataTable as $data)
-                                                    <tr>
-                                                        <td>{{ $data->tegangan }} V</td>
-                                                        <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}</td>
-                                                    </tr>
+                                                    @if ($data->tegangan != null)
+                                                        <tr>
+                                                            <td>{{ $data->tegangan }} V</td>
+                                                            <td>{{ date('d/m/Y H:i:s', strtotime($data->created_at)) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -206,10 +209,13 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($dataTable as $item)
-                                                    <tr>
-                                                        <td>{{ $item->arus }} A</td>
-                                                        <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
-                                                    </tr>
+                                                    @if ($item->arus != null)
+                                                        <tr>
+                                                            <td>{{ $item->arus }} A</td>
+                                                            <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -239,10 +245,13 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($dataTable as $item)
-                                                    <tr>
-                                                        <td>{{ $item->frekuensi_pln }} Hz</td>
-                                                        <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
-                                                    </tr>
+                                                    @if ($item->frekuensi_pln != null)
+                                                        <tr>
+                                                            <td>{{ $item->frekuensi_pln }} Hz</td>
+                                                            <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -272,10 +281,13 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($dataTable as $item)
-                                                    <tr>
-                                                        <td>{{ $item->active_power }} kW</td>
-                                                        <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
-                                                    </tr>
+                                                    @if ($item->active_power != null)
+                                                        <tr>
+                                                            <td>{{ $item->active_power }} kW</td>
+                                                            <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -305,10 +317,13 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($dataTable as $item)
-                                                    <tr>
-                                                        <td>{{ $item->power_factor }}</td>
-                                                        <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
-                                                    </tr>
+                                                    @if ($item->power_factor != null)
+                                                        <tr>
+                                                            <td>{{ $item->power_factor }}</td>
+                                                            <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -338,10 +353,13 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($dataTable as $item)
-                                                    <tr>
-                                                        <td>{{ $item->total_energy }} kWh</td>
-                                                        <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}</td>
-                                                    </tr>
+                                                    @if ($item->total_energy != null)
+                                                        <tr>
+                                                            <td>{{ $item->total_energy }} kWh</td>
+                                                            <td>{{ date('d/m/Y H:i:s', strtotime($item->created_at)) }}
+                                                            </td>
+                                                        </tr>
+                                                    @endif
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -369,12 +387,6 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-    <script>
-        var dates = "{{ json_encode($parsed_dates) }}";
-        dates = JSON.parse(dates).map((date) => {
-            return moment.unix(date).format('DD/MM/YYYY HH:mm')
-        });
-    </script>
     <script>
         var daily_dates = "{{ json_encode($daily_usage_dates) }}";
         var daily_usage = "{{ json_encode($daily_usage_datas) }}";
@@ -435,6 +447,10 @@
     </script>
     <script>
         var tegangan = "{{ json_encode($tegangan_datas) }}";
+        var tegangan_datas_dates = "{{ json_encode($tegangan_datas_dates) }}";
+        tegangan_datas_dates = JSON.parse(tegangan_datas_dates).map((date) => {
+            return moment.unix(date).format('DD/MM/YYYY HH:mm')
+        });
         Highcharts.chart('chart-container', {
             chart: {
                 type: 'line',
@@ -450,7 +466,7 @@
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
             },
             xAxis: {
-                categories: dates
+                categories: tegangan_datas_dates
             },
             yAxis: {
                 title: {
@@ -476,6 +492,10 @@
     </script>
     <script>
         var arus = "{{ json_encode($arus_datas) }}";
+        var arus_datas_dates = "{{ json_encode($arus_datas_dates) }}";
+        arus_datas_dates = JSON.parse(arus_datas_dates).map((date) => {
+            return moment.unix(date).format('DD/MM/YYYY HH:mm')
+        });
         Highcharts.chart('chart-container2', {
             chart: {
                 type: 'line',
@@ -491,7 +511,7 @@
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
             },
             xAxis: {
-                categories: dates
+                categories: arus_datas_dates
             },
             yAxis: {
                 title: {
@@ -517,6 +537,10 @@
     </script>
     <script>
         var frekuensi_pln = "{{ json_encode($frekuensi_datas) }}";
+        var frekuensi_datas_dates = "{{ json_encode($frekuensi_datas_dates) }}";
+        frekuensi_datas_dates = JSON.parse(frekuensi_datas_dates).map((date) => {
+            return moment.unix(date).format('DD/MM/YYYY HH:mm')
+        });
         Highcharts.chart('chart-container3', {
             chart: {
                 type: 'line',
@@ -532,7 +556,7 @@
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
             },
             xAxis: {
-                categories: dates
+                categories: frekuensi_datas_dates
             },
             yAxis: {
                 title: {
@@ -558,6 +582,10 @@
     </script>
     <script>
         var active_power = "{{ json_encode($active_power_datas) }}";
+        var active_power_datas_dates = "{{ json_encode($active_power_datas_dates) }}";
+        active_power_datas_dates = JSON.parse(active_power_datas_dates).map((date) => {
+            return moment.unix(date).format('DD/MM/YYYY HH:mm')
+        });
         Highcharts.chart('chart-container4', {
             chart: {
                 type: 'line',
@@ -573,7 +601,7 @@
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
             },
             xAxis: {
-                categories: dates
+                categories: active_power_datas_dates
             },
             yAxis: {
                 title: {
@@ -599,6 +627,10 @@
     </script>
     <script>
         var power_factor = "{{ json_encode($power_factor_datas) }}";
+        var power_factor_datas_dates = "{{ json_encode($power_factor_datas_dates) }}";
+        power_factor_datas_dates = JSON.parse(power_factor_datas_dates).map((date) => {
+            return moment.unix(date).format('DD/MM/YYYY HH:mm')
+        });
         Highcharts.chart('chart-container5', {
             chart: {
                 type: 'line',
@@ -614,7 +646,7 @@
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
             },
             xAxis: {
-                categories: dates
+                categories: power_factor_datas_dates
             },
             yAxis: {
                 title: {
@@ -640,6 +672,10 @@
     </script>
     <script>
         var total_energy = "{{ json_encode($total_energy_datas) }}";
+        var total_energy_datas_dates = "{{ json_encode($total_energy_datas_dates) }}";
+        total_energy_datas_dates = JSON.parse(total_energy_datas_dates).map((date) => {
+            return moment.unix(date).format('DD/MM/YYYY HH:mm')
+        });
         Highcharts.chart('chart-container6', {
             chart: {
                 type: 'line',
@@ -655,7 +691,7 @@
                 text: "{{ date('d M Y', strtotime($start_dates)) }} - {{ date('d M Y', strtotime($end_dates)) }}"
             },
             xAxis: {
-                categories: dates
+                categories: total_energy_datas_dates
             },
             yAxis: {
                 title: {
