@@ -34,7 +34,7 @@ class ParsedWaterMaterController extends Controller
                 $parsed_data = $parsed_data->where('device_id', $request->device);
             }
 
-            $parsed_data = $parsed_data->orderBy('id', 'desc')->limit(5000)->get();
+            $parsed_data = $parsed_data->orderBy('id', 'desc')->limit(3000)->get();
 
             return DataTables::of($parsed_data)
                 ->addIndexColumn()

@@ -14,7 +14,7 @@ class RawdataController extends Controller
     {
         if (request()->ajax()) {
             $rawdata = DB::table('rawdata')
-                ->join('devices', 'rawdata.devEUI', '=', 'devices.devEUI')->limit(5000)
+                ->join('devices', 'rawdata.devEUI', '=', 'devices.devEUI')
                 ->select('rawdata.*', 'devices.category');
             $query_data = $request->query('rawdata');
 
