@@ -751,7 +751,7 @@ function handlePowerMeter($device_id, $request)
             $frekuensi_pln = littleEndian(substr($hex, 58, 4)) / 100;
             $active_power = littleEndian(substr($hex, 64, 6)) / 10000;
             $power_factor = littleEndian(substr($hex, 114, 4)) / 1000;
-            $total_energy = littleEndian(substr($hex, 132, 4)) / 100;
+            $total_energy = littleEndian(substr($hex, 132, 8)) / 100;
             $params = [
                 'rawdata_id' => $lastInsertedId,
                 'device_id' => $device_id,
@@ -814,7 +814,7 @@ function handlePowerMeter($device_id, $request)
             ];
             // mini frame 4
         } else if ($idenfikasi == "02000406") {
-            $total_energy = littleEndian(substr($hex, 22, 4)) / 100;
+            $total_energy = littleEndian(substr($hex, 22, 8)) / 100;
             $params = [
                 'rawdata_id' => $lastInsertedId,
                 'device_id' => $device_id,
