@@ -18,6 +18,12 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class BillingdataController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:billing_show')->only('index');
+    }
+
     public function index(Request $request)
     {
         $start_dates = Carbon::now()->firstOfMonth();

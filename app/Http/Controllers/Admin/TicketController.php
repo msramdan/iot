@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('permission:ticket_show')->only('index');
+    }
+
     public function index()
     {
         $ticket = Ticket::with('created_by');

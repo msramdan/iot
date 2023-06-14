@@ -10,12 +10,14 @@
                     <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('instance.*') }}" href="{{ route('instance.index') }}"
-                    role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                    <i class="mdi mdi-bank"></i> <span data-key="t-dashboards">Instances</span>
-                </a>
-            </li>
+            @canany(['instance_show'])
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ set_active('instance.*') }}" href="{{ route('instance.index') }}"
+                        role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="mdi mdi-bank"></i> <span data-key="t-dashboards">Instances</span>
+                    </a>
+                </li>
+            @endcanany
             @canany(['master_water_meter_show', 'master_power_meter_show', 'master_gas_meter_show'])
                 <li class="nav-item">
                     <a class="nav-link menu-link collapsed" href="#latestData" data-bs-toggle="collapse" role="button"
@@ -51,31 +53,40 @@
                     </div>
                 </li>
             @endcanany
-            <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('device.*') }}" href="{{ route('device.index') }}"
-                    role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                    <i class="mdi mdi-devices"></i> <span data-key="t-dashboards">Management Device</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('gateway.*') }}" href="{{ route('gateway.index') }}"
-                    role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                    <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards">Gateway</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('tickets.*') }}" href="{{ route('tickets.index') }}"
-                    role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                    <i class="mdi mdi-book"></i> <span data-key="t-dashboards">Ticket</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link menu-link {{ set_active('billing-data.*') }}"
-                    href="{{ route('billing-data.index') }}" role="button" aria-expanded="false"
-                    aria-controls="sidebarDashboards">
-                    <i class="mdi mdi-book-information-variant"></i> <span data-key="t-dashboards">Billing Data</span>
-                </a>
-            </li>
+
+            @canany(['device_show'])
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ set_active('device.*') }}" href="{{ route('device.index') }}"
+                        role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="mdi mdi-devices"></i> <span data-key="t-dashboards">Management Device</span>
+                    </a>
+                </li>
+            @endcanany
+            @canany(['gateway_show'])
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ set_active('gateway.*') }}" href="{{ route('gateway.index') }}"
+                        role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards">Gateway</span>
+                    </a>
+                </li>
+            @endcanany
+            @canany(['ticket_show'])
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ set_active('tickets.*') }}" href="{{ route('tickets.index') }}"
+                        role="button" aria-expanded="false" aria-controls="sidebarDashboards">
+                        <i class="mdi mdi-book"></i> <span data-key="t-dashboards">Ticket</span>
+                    </a>
+                </li>
+            @endcanany
+            @canany(['billing_show'])
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ set_active('billing-data.*') }}"
+                        href="{{ route('billing-data.index') }}" role="button" aria-expanded="false"
+                        aria-controls="sidebarDashboards">
+                        <i class="mdi mdi-book-information-variant"></i> <span data-key="t-dashboards">Billing Data</span>
+                    </a>
+                </li>
+            @endcanany
             @canany(['bussiness_show', 'subnet_show'])
                 <li class="nav-item">
                     <a class="nav-link menu-link collapsed" href="#sidebarIcons" data-bs-toggle="collapse" role="button"
@@ -87,7 +98,8 @@
                             @can('bussiness_show')
                                 <li class="nav-item">
                                     <a href="{{ route('bussiness.index') }}" class="nav-link {{ set_active(['bussiness*']) }}"
-                                        data-key="t-remix">Business Type</a>
+                                        data-key="t-remix">Business
+                                        Type</a>
                                 </li>
                             @endcan
                             @can('subnet_show')
