@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('subinstance_id');
             $table->string('type_device');
             $table->string('field_data');
-            $table->float('min_tolerance', 10, 2);
-            $table->float('max_tolerance', 10, 2);
+            $table->double('min_tolerance', 10, 8);
+            $table->double('max_tolerance', 10, 8);
             $table->timestamps();
             $table->foreign('subinstance_id')->references('id')->on('subinstances')->onDelete('cascade');
         });
