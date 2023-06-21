@@ -873,12 +873,12 @@ function handlePowerMeter($device_id, $request)
                             'device_id' => $device_id,
                             'device_type' => 'power_meter',
                             'date' => $today,
-                            'usage' => floatval($params['total_energy']) - $dataKemarin[0]->total_energy,
+                            'usage' => floatval($params['total_energy']) - floatval($dataKemarin[0]->total_energy),
                         ]
                     );
                 } else {
                     $dailyUsage->update([
-                        'usage' => floatval($params['total_energy']) - $dataKemarin[0]->total_energy,
+                        'usage' => floatval($params['total_energy']) - floatval($dataKemarin[0]->total_energy),
                     ]);
                 }
             }
@@ -1217,12 +1217,12 @@ function handleGasMeter($device_id, $request)
                         'device_id' => $device_id,
                         'device_type' => 'gas_meter',
                         'date' => $today,
-                        'usage' => floatval($params['gas_consumption']) - $dataKemarin[0]->gas_consumption,
+                        'usage' => floatval($params['gas_consumption']) - floatval($dataKemarin[0]->gas_consumption),
                     ]
                 );
             } else {
                 $dailyUsage->update([
-                    'usage' => floatval($params['gas_consumption']) - $dataKemarin[0]->gas_consumption,
+                    'usage' => floatval($params['gas_consumption']) - floatval($dataKemarin[0]->gas_consumption),
                 ]);
             }
         }
