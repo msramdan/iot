@@ -572,16 +572,6 @@ function handleWaterMeter($device_id, $request)
             $dataAbnormal = [];
         }
 
-        $yesterdayStart = Carbon::now()->subDay(2)->hour(00)->minute(00)->second(00);
-        $yesterdayEnd   = Carbon::now()->subDay(2)->hour(23)->minute(59)->second(59);
-        $today = Carbon::today()->format('Y-m-d');
-        $yesterdayData = ParsedWaterMater::where('device_id', $device_id)
-            ->whereBetween("created_at", [$yesterdayStart, $yesterdayEnd])
-            ->orderBy('created_at', 'desc')
-            ->first();
-
-        $device = Device::find($device_id);
-
         DB::table('parsed_water_meter')->insert($params);
         DB::table('master_latest_datas')
             ->where('device_id', $device_id)
@@ -589,33 +579,48 @@ function handleWaterMeter($device_id, $request)
 
         createTiket($device_id, $request->devEUI, $type_device = 'water_meter', $dataAbnormal, $save->updated_at);
 
-        if (isset($params['total_flow'])) {
-            if ($yesterdayData) {
-                $usage = floatval($params['total_flow']) - floatval($yesterdayData->total_flow);
-            } else {
-                $usage = floatval($params['total_flow']);
+        $today = Carbon::today()->format('Y-m-d');
+        $kemarin = date('Y-m-d', strtotime("-1 day", strtotime(date("Y-m-d"))));
+        // get lat data hari kemarin
+        $sql = "SELECT * FROM parsed_water_meter where DATE_FORMAT(created_at,'%Y-%m-%d') = '$kemarin' ORDER BY id DESC LIMIT 1";
+        $dataKemarin = DB::select($sql);
+        if ($dataKemarin) {
+            // cek ke table daily ada atw tidak
+            if (isset($params['total_flow'])) {
+                $dailyUsage = DailyUsageDevice::where('date', $today)->where('device_id', $device_id)->first();
+                if (!$dailyUsage) {
+                    // gk ada insert langsung
+                    DailyUsageDevice::create(
+                        [
+                            'device_id' => $device_id,
+                            'device_type' => 'water_meter',
+                            'date' => $today,
+                            'usage' => floatval($params['total_flow']) - $dataKemarin[0]->total_flow,
+                        ]
+                    );
+                } else {
+                    $dailyUsage->update([
+                        'usage' => floatval($params['total_flow']) - $dataKemarin[0]->total_flow,
+                    ]);
+                }
             }
-
-            $dailyUsage = DailyUsageDevice::where('date', $today)->where('device_id', $device_id)->first();
-
-            if (!$dailyUsage) {
-                DailyUsageDevice::create(
-                    [
-                        'device_id' => $device_id,
-                        // 'cluster_id' => $device->cluster_id,
-                        'device_type' => 'water_meter',
-                        'date' => $today,
-                        'usage' => $usage,
-                    ]
-                );
-            } else {
-                $dailyUsage->update([
-                    'device_id' => $device_id,
-                    // 'cluster_id' => $device->cluster_id,
-                    'device_type' => 'water_meter',
-                    'date' => $today,
-                    'usage' => $usage,
-                ]);
+        } else {
+            if (isset($params['total_flow'])) {
+                $dailyUsage = DailyUsageDevice::where('date', $today)->where('device_id', $device_id)->first();
+                if (!$dailyUsage) {
+                    DailyUsageDevice::create(
+                        [
+                            'device_id' => $device_id,
+                            'device_type' => 'water_meter',
+                            'date' => $today,
+                            'usage' => floatval($params['total_flow']),
+                        ]
+                    );
+                } else {
+                    $dailyUsage->update([
+                        'usage' => floatval($params['total_flow']),
+                    ]);
+                }
             }
         }
         return "success";
