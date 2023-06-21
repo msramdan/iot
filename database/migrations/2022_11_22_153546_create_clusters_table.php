@@ -19,12 +19,12 @@ return new class extends Migration
             $table->foreignId('subinstance_id');
             $table->string('kode');
             $table->string('name');
-            $table->float('xpercentage_water')->nullable();
-            $table->float('yfixed_cost_water')->nullable();
-            $table->float('xpercentage_power')->nullable();
-            $table->float('yfixed_cost_power')->nullable();
-            $table->float('xpercentage_gas')->nullable();
-            $table->float('yfixed_cost_gas')->nullable();
+            $table->float('xpercentage_water', 10, 4)->nullable();
+            $table->float('yfixed_cost_water', 10, 4)->nullable();
+            $table->float('xpercentage_power', 10, 4)->nullable();
+            $table->float('yfixed_cost_power', 10, 4)->nullable();
+            $table->float('xpercentage_gas', 10, 4)->nullable();
+            $table->float('yfixed_cost_gas', 10, 4)->nullable();
             $table->timestamps();
         });
     }
