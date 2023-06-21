@@ -28,8 +28,8 @@
                             <form action="{{ route('subinstance.cluster.store', $subinstance->id) }}" method="post"
                                 id="create">
                                 @csrf
-                                <input type="hidden" name="subinstance_id" value="{{ $subinstance->id }}">
-                                <input type="hidden" name="instance_id" value="{{ $subinstance->instance_id }}">
+                                <input type="text" name="subinstance_id" value="{{ $subinstance->id }}">
+                                <input type="text" name="instance_id" value="{{ $subinstance->instance_id }}">
                                 <div class="mb-3">
                                     <label for="">Kode</label>
                                     <input type="text" name="kode" class="form-control" id="kode"
