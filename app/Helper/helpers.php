@@ -582,7 +582,7 @@ function handleWaterMeter($device_id, $request)
         $today = Carbon::today()->format('Y-m-d');
         $kemarin = date('Y-m-d', strtotime("-1 day", strtotime(date("Y-m-d"))));
         // get lat data hari kemarin
-        $sql = "SELECT * FROM parsed_water_meter where DATE_FORMAT(created_at,'%Y-%m-%d') = '$kemarin' ORDER BY id DESC LIMIT 1";
+        $sql = "SELECT * FROM parsed_water_meter where DATE_FORMAT(created_at,'%Y-%m-%d') = '$kemarin' and device_id='$device_id' ORDER BY id DESC LIMIT 1";
         $dataKemarin = DB::select($sql);
         if ($dataKemarin) {
             // cek ke table daily ada atw tidak
@@ -860,7 +860,7 @@ function handlePowerMeter($device_id, $request)
         $today = Carbon::today()->format('Y-m-d');
         $kemarin = date('Y-m-d', strtotime("-1 day", strtotime(date("Y-m-d"))));
         // get lat data hari kemarin
-        $sql = "SELECT * FROM parsed_power_meter where DATE_FORMAT(created_at,'%Y-%m-%d') = '$kemarin' ORDER BY id DESC LIMIT 1";
+        $sql = "SELECT * FROM parsed_power_meter where DATE_FORMAT(created_at,'%Y-%m-%d') = '$kemarin' and device_id='$device_id' ORDER BY id DESC LIMIT 1";
         $dataKemarin = DB::select($sql);
         if ($dataKemarin) {
             // cek ke table daily ada atw tidak
@@ -1204,7 +1204,7 @@ function handleGasMeter($device_id, $request)
     $today = Carbon::today()->format('Y-m-d');
     $kemarin = date('Y-m-d', strtotime("-1 day", strtotime(date("Y-m-d"))));
     // get lat data hari kemarin
-    $sql = "SELECT * FROM parsed_gas_meter where DATE_FORMAT(created_at,'%Y-%m-%d') = '$kemarin' ORDER BY id DESC LIMIT 1";
+    $sql = "SELECT * FROM parsed_gas_meter where DATE_FORMAT(created_at,'%Y-%m-%d') = '$kemarin' and device_id='$device_id' ORDER BY id DESC LIMIT 1";
     $dataKemarin = DB::select($sql);
     if ($dataKemarin) {
         // cek ke table daily ada atw tidak
