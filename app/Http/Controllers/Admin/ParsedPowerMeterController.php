@@ -12,7 +12,7 @@ class ParsedPowerMeterController extends Controller
 {
     public function index(Request $request)
     {
-        $devices = Device::all();
+        $devices = Device::where('category', 'Power Meter')->get();
 
         if (request()->ajax()) {
             $parsed_data = ParsedPowerMater::with('rawdata')->with(['device' => function ($q) {

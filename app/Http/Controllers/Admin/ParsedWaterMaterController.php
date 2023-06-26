@@ -12,7 +12,7 @@ class ParsedWaterMaterController extends Controller
 {
     public function index(Request $request)
     {
-        $devices = Device::all();
+        $devices = Device::where('category', 'Water Meter')->get();
 
         if (request()->ajax()) {
             $parsed_data = ParsedWaterMater::with('rawdata')->with(['device' => function ($q) {

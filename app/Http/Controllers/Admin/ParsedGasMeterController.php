@@ -12,7 +12,7 @@ class ParsedGasMeterController extends Controller
 {
     public function index(Request $request)
     {
-        $devices = Device::all();
+        $devices = Device::where('category', 'Gas Meter')->get();
 
         if (request()->ajax()) {
             $parsed_data = ParsedGasMater::with('rawdata')->with(['device' => function ($q) {
