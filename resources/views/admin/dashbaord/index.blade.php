@@ -487,7 +487,7 @@
                                                 class="mdi mdi-book text-success fs-3"></i>Tickets List</h4>
                                     </div>
 
-                                    <div class="card-body">
+                                    <div class="card-body" style="overflow-y: scroll;">
                                         <div class="table-responsive table-card">
                                             <table
                                                 class="table table-borderless table-hover table-nowrap align-middle mb-0 table-sm">
