@@ -23,7 +23,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form method="POST" action="{{ route('user.store') }}">
+                            <form method="POST" action="{{ route('user.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="name">Name</label>
@@ -83,6 +83,20 @@
                                         @endforeach
                                     </select>
                                     @error('role')
+                                        <span style="color: red;">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="photo">Photo</label>
+                                    <input class="form-control @error('photo') is-invalid @enderror"
+                                        id="
+                                    photo" type="file"
+                                        value="{{ old('photo') }}" placeholder="Nama Kategori Produk" name="photo"
+                                        autocomplete="off">
+                                    <p style="color:gray; font-size:10px">File Type : jpg,png,jpeg || Max File : 1048 Kb
+                                    </p>
+                                    @error('photo')
                                         <span style="color: red;">{{ $message }}</span>
                                     @enderror
                                 </div>

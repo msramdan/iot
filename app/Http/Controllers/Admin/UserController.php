@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Storage;
 
 
 class UserController extends Controller
@@ -30,6 +31,14 @@ class UserController extends Controller
             $query = User::with('roles:id,name');
             return Datatables::of($query)
                 ->addIndexColumn()
+                ->addColumn('photo', function ($row) {
+                    if ($row->photo != null || $row->photo != '') {
+                        return asset('storage/photo/' . $row->photo);
+                    } else {
+                        return asset('frontend/default.png');
+                    }
+                })
+
                 ->addColumn('roles', function ($row) {
                     return $row->roles->first()->name;
                 })
@@ -65,6 +74,7 @@ class UserController extends Controller
             [
                 'name' => "required|string|max:50|unique:users,name",
                 'email' => "required|email|unique:users,email",
+                'photo' => 'required|image|mimes:jpg,png,jpeg|max:1048',
                 'password' => [
                     'required', 'confirmed', Password::min(8)
                         ->letters()
@@ -81,10 +91,14 @@ class UserController extends Controller
 
         DB::beginTransaction();
         try {
+            $photo = $request->file('photo');
+            $photo->storeAs('public/photo', $photo->hashName());
+
             $user = User::create([
                 'name'   => $request->name,
                 'email'   => $request->email,
                 'password'   => Hash::make($request->password),
+                'photo'          => $photo->hashName(),
             ]);
             $user->assignRole($request->role);
             Alert::toast('Data saved successfully', 'success');
@@ -138,6 +152,7 @@ class UserController extends Controller
                 'name' => "required|string|max:50|unique:users,name, " . $user->id,
                 'email' => "required|email|unique:users,email," . $user->id,
                 'password' => "confirmed",
+                'photo' => 'image|mimes:jpg,png,jpeg|max:1048',
                 'role' => "required"
             ],
         );
@@ -147,6 +162,16 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $user = User::findOrFail($user->id);
+
+            if ($request->file('photo') != "") {
+                Storage::disk('local')->delete('public/photo/' . $user->photo);
+                $photo = $request->file('photo');
+                $photo->storeAs('public/photo', $photo->hashName());
+                $user->update([
+                    'photo'          => $photo->hashName(),
+                ]);
+            }
+
             if ($request->password == "" || $request->password == null) {
                 $user->update([
                     'name'   => $request->name,
@@ -181,6 +206,8 @@ class UserController extends Controller
     {
         DB::beginTransaction();
         try {
+            Storage::disk('local')->delete('public/photo/' . $user->photo);
+
             $user->removeRole($user->roles->first());
             $user->delete();
             Alert::toast('Data deleted successfully', 'success');

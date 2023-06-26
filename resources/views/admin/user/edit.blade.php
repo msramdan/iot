@@ -24,7 +24,8 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form method="POST" action="{{ route('user.update', $user->id) }}">
+                            <form method="POST" action="{{ route('user.update', $user->id) }}"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="mb-3">
@@ -92,6 +93,25 @@
                                         @endforeach
                                     </select>
                                     @error('role')
+                                        <span style="color: red;">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    @if ($user->photo != '' || $user->photo != null)
+                                        <img src="{{ Storage::url('public/photo/') . $user->photo }}"
+                                            class="img-preview d-block w-40 mb-3 col-sm-5 rounded img-thumbnail "
+                                            style="width: 150px">
+                                    @endif
+                                    <label for="photo">photo user</label>
+                                    <input class="form-control @error('photo') is-invalid @enderror"
+                                        id="
+                                    photo" type="file"
+                                        value="{{ old('photo') }}" placeholder="Nama user Produk" name="photo"
+                                        autocomplete="off">
+                                    <p style="color:gray; font-size:10px">File Type : jpg,png,jpeg || Max File : 1048 Kb
+                                    </p>
+                                    @error('photo')
                                         <span style="color: red;">{{ $message }}</span>
                                     @enderror
                                 </div>
