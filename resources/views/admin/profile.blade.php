@@ -58,34 +58,37 @@
                                         </span>
                                     @enderror
                                 </div>
-                                {{--
+
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="avatar avatar-xl mb-3">
-                                            @if (auth()->user()->avatar == null)
-                                                <img src="https://www.gravatar.com/avatar/{{ md5(strtolower(trim(auth()->user()->email))) }}&s=500"
-                                                    alt="Avatar">
+                                            @if (auth()->user()->photo == null)
+                                                <img style="width: 120px" src="{{ asset('frontend/default.png') }}"
+                                                    alt="">
                                             @else
-                                                <img src="{{ asset('uploads/images/avatars/' . auth()->user()->avatar) }}"
-                                                    alt="Avatar" style="width: 120px">
+                                                <img style="width: 120px"
+                                                    src="{{ asset('storage/photo/' . auth()->user()->photo) }}"
+                                                    alt="Photo">
                                             @endif
                                         </div>
                                     </div>
 
                                     <div class="col-md-9">
                                         <div class="form-group">
-                                            <label for="avatar">{{ __('Avatar') }}</label>
-                                            <input type="file" name="avatar"
-                                                class="form-control @error('avatar', 'updateProfileInformation') is-invalid @enderror"
-                                                id="avatar">
-                                            @error('avatar', 'updateProfileInformation')
+                                            <label for="avatar">{{ __('Photo') }}</label>
+                                            <input type="file" name="photo"
+                                                class="form-control @error('photo') is-invalid @enderror" id="photo">
+                                            <p style="color:gray; font-size:10px">File Type : jpg,png,jpeg || Max File :
+                                                1048 Kb
+                                            </p>
+                                            @error('photo')
                                                 <span class="text-danger">
                                                     {{ $message }}
                                                 </span>
                                             @enderror
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
                                 <button type="submit" class="btn btn-primary">{{ __('Update Profile') }}</button>
                             </form>
                         </div>

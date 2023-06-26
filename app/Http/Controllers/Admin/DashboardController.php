@@ -18,6 +18,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Device;
 use App\Models\Ticket;
 use App\Rules\MatchOldPassword;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -50,7 +51,7 @@ class DashboardController extends Controller
             ->leftJoin('tbl_kabkot', 'tbl_kabkot.id', '=', 'instances.city_id')
             ->groupBy('tbl_kabkot.id')
             ->get();
-        $deviceStatus = collect(DB::select("SELECT 
+        $deviceStatus = collect(DB::select("SELECT
             (SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category AND is_error IS NULL) as amount_not_err,
             (SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category) as amount_total,
             ((SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category) / (SELECT COUNT(*) FROM devices device_child WHERE device_child.category = devices.category AND is_error IS NULL) = 1) as device_is_health,
@@ -141,6 +142,7 @@ class DashboardController extends Controller
             [
                 'name' => "required|string|max:50|unique:users,name, " . auth()->user()->id,
                 'email' => "required|email|unique:users,email," . auth()->user()->id,
+                'photo' => 'image|mimes:jpg,png,jpeg|max:1048',
             ],
         );
         if ($validator->fails()) {
@@ -149,6 +151,15 @@ class DashboardController extends Controller
         DB::beginTransaction();
         try {
             $user = User::findOrFail(auth()->user()->id);
+
+            if ($request->file('photo') != "") {
+                Storage::disk('local')->delete('public/photo/' . $user->photo);
+                $photo = $request->file('photo');
+                $photo->storeAs('public/photo', $photo->hashName());
+                $user->update([
+                    'photo'          => $photo->hashName(),
+                ]);
+            }
             $user->update([
                 'name'   => $request->name,
                 'email'   => $request->email,
